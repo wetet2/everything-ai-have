@@ -3,6 +3,7 @@ import { useState } from "react";
 import { GEMINI_API_KEY } from "../constants";
 
 import instruction from "@/instruction.md";
+import MicTest from "../MicTest";
 
 const ai = new GoogleGenAI({ apiKey: GEMINI_API_KEY });
 
@@ -12,18 +13,23 @@ const GeminiTestComponent = () => {
 
   const [resultList, setResultList] = useState<{ q: string; a: string }[]>([]);
 
-  const handleClick = async () => {
+  const handleRequestAi = async (input: string) => {
     setIsLoading(true);
     const response = await ai.models.generateContent({
       model: `gemini-3.1-flash-lite-preview`,
-      contents: inputValue,
+      contents: input,
       config: { systemInstruction: instruction },
     });
     const text = response?.text;
     if (text) {
-      setResultList((prev) => [...prev, { q: inputValue, a: text }]);
+      setResultList((prev) => [...prev, { q: input, a: text }]);
     }
     setIsLoading(false);
+  };
+
+  const handleSpeechEnd = (text: string) => {
+    setInputValue(text);
+    handleRequestAi(text);
   };
 
   return (
@@ -37,27 +43,36 @@ const GeminiTestComponent = () => {
         flexDirection: "column",
       }}
     >
+      <div style={{ marginBottom: 12 }}>
+        <MicTest onInputEnd={handleSpeechEnd} />
+      </div>
       <div style={{ display: "flex" }}>
         <input
           type="text"
           value={inputValue}
           onKeyDown={(e) => {
-            if (e.key === "Enter") handleClick();
+            if (e.key === "Enter") handleRequestAi(inputValue);
           }}
           disabled={isLoading}
           onChange={(e) => setInputValue(e.target.value)}
           style={{ width: 300, height: 40, fontSize: 14, padding: "0 8px" }}
         />
         <div style={{ width: 8 }}></div>
-        <button style={{ width: 120, height: 40 }} onClick={handleClick}>
+        <button
+          style={{ width: 120, height: 40 }}
+          onClick={() => handleRequestAi(inputValue)}
+        >
           {isLoading ? "로딩중..." : "실행"}
         </button>
       </div>
 
       <div style={{ marginTop: 24 }}>
         <ul>
-          {resultList.map((result, index) => (
-            <li key={index} style={{ maxWidth: 1000, lineHeight: 1.5 }}>
+          {resultList.toReversed().map((result, index) => (
+            <li
+              key={index}
+              style={{ maxWidth: 1000, lineHeight: 1.5, marginBottom: 16 }}
+            >
               <strong>질문:</strong> {result.q}
               <br />
               <strong>답변:</strong> {result.a}

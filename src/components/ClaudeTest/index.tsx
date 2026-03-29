@@ -2,7 +2,7 @@ import Anthropic from "@anthropic-ai/sdk";
 import { useState } from "react";
 import { CLAUDE_API_KEY } from "../constants";
 
-import instruction from "./instruction.md";
+import instruction from "@/instruction.md";
 
 const anthropic = new Anthropic({
   apiKey: CLAUDE_API_KEY,

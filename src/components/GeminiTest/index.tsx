@@ -2,7 +2,7 @@ import { GoogleGenAI } from "@google/genai";
 import { useState } from "react";
 import { GEMINI_API_KEY } from "../constants";
 
-import instruction from "./instruction.md";
+import instruction from "@/instruction.md";
 
 const ai = new GoogleGenAI({ apiKey: GEMINI_API_KEY });
 

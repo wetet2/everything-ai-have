@@ -32,6 +32,10 @@ const GeminiTestComponent = () => {
     handleRequestAi(text);
   };
 
+  const handleInput = (text: string) => {
+    setInputValue(text);
+  };
+
   return (
     <div
       style={{
@@ -44,7 +48,7 @@ const GeminiTestComponent = () => {
       }}
     >
       <div style={{ marginBottom: 12 }}>
-        <MicBrowserSpeech onInputEnd={handleSpeechEnd} />
+        <MicBrowserSpeech onInput={handleInput} onInputEnd={handleSpeechEnd} />
       </div>
       <div style={{ display: "flex" }}>
         <input

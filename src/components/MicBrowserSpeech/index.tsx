@@ -2,11 +2,7 @@ import { use, useEffect, useRef, useState } from "react";
 
 import * as S from "./styled";
 
-const MicBrowserSpeech = ({
-  onInputEnd,
-}: {
-  onInputEnd: (text: string) => void;
-}) => {
+const MicBrowserSpeech = ({ onInput, onInputEnd }: any) => {
   const buttonRef = useRef<HTMLButtonElement>(null);
   const textRef = useRef<string>("");
   const [inputText, setInputText] = useState("");
@@ -59,6 +55,7 @@ const MicBrowserSpeech = ({
           text += event.results[i][0].transcript;
         }
         setInputText(text);
+        onInput(text);
         textRef.current = text;
       };
 

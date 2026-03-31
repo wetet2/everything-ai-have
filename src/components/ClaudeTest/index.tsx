@@ -3,7 +3,7 @@ import { useState } from "react";
 import { CLAUDE_API_KEY } from "../constants";
 
 import instruction from "@/instruction.md";
-import MicTest from "../MicTest";
+import MicBrowserSpeech from "../MicBrowserSpeech";
 
 const anthropic = new Anthropic({
   apiKey: CLAUDE_API_KEY,
@@ -53,7 +53,7 @@ const ClaudeTestComponent = () => {
       }}
     >
       <div style={{ marginBottom: 12 }}>
-        <MicTest onInputEnd={handleSpeechEnd} />
+        <MicBrowserSpeech onInputEnd={handleSpeechEnd} />
       </div>
       <div style={{ display: "flex" }}>
         <input

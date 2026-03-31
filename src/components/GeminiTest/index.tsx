@@ -3,7 +3,7 @@ import { useState } from "react";
 import { GEMINI_API_KEY } from "../constants";
 
 import instruction from "@/instruction.md";
-import MicTest from "../MicTest";
+import MicBrowserSpeech from "../MicBrowserSpeech";
 
 const ai = new GoogleGenAI({ apiKey: GEMINI_API_KEY });
 
@@ -44,7 +44,7 @@ const GeminiTestComponent = () => {
       }}
     >
       <div style={{ marginBottom: 12 }}>
-        <MicTest onInputEnd={handleSpeechEnd} />
+        <MicBrowserSpeech onInputEnd={handleSpeechEnd} />
       </div>
       <div style={{ display: "flex" }}>
         <input

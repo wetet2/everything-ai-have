@@ -1,3 +1,3 @@
-import MicTest from "@/components/MicTest";
+import MicGoogleCloudStt from "@/components/MicGoogleCloudStt";
 
-export default MicTest;
+export default MicGoogleCloudStt;

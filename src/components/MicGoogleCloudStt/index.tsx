@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 import { STT_API_KEY } from "../constants";
 
-const API_KEY = STT_API_KEY;
+const API_KEY = STT_API_KEY || "";
 
 let mediaRecorder: any;
 let audioChunks: any = [];

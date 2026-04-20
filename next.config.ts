@@ -14,6 +14,7 @@ const nextConfig: NextConfig = {
     unoptimized: true,
   },
   pageExtensions: ["ts", "tsx", "js", "jsx", "mdx", "md"],
+  allowedDevOrigins: ["192.168.0.38"],
 
   webpack: (config) => {
     config.module.rules.push({ test: /\.md$/, use: "raw-loader" });

@@ -51,6 +51,8 @@ const GeminiTestComponent = () => {
     null,
   );
   const [sessionId, setSessionId] = useState<string | null>(null);
+  const [sessionOptions, setSessionOptions] = useState<any>(null);
+  const [selectedSessionOption, setSelectedSessionOption] = useState<any>(null);
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
 
   const handleAutoResizeTextarea = (e: FormEvent<HTMLTextAreaElement>) => {
@@ -58,101 +60,6 @@ const GeminiTestComponent = () => {
     textarea.style.height = "auto";
     textarea.style.height = `${textarea.scrollHeight}px`;
   };
-
-  useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({
-      behavior: "smooth",
-      block: "end",
-    });
-  }, [messages, isLoading]);
-
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-
-    try {
-      const rawStorage = window.localStorage.getItem(CHAT_STORAGE_KEY);
-      const parsedStorage: ChatStorage = rawStorage
-        ? JSON.parse(rawStorage)
-        : { sessions: [] };
-      const sessions = Array.isArray(parsedStorage?.sessions)
-        ? parsedStorage.sessions
-        : [];
-
-      let currentSessionId = window.sessionStorage.getItem(ACTIVE_SESSION_KEY);
-      let currentSession = currentSessionId
-        ? sessions.find((session) => session.id === currentSessionId)
-        : undefined;
-
-      if (!currentSession) {
-        currentSessionId = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
-        currentSession = {
-          id: currentSessionId,
-          startedAt: new Date().toISOString(),
-          messages: [],
-        };
-        sessions.push(currentSession);
-
-        const nextStorage: ChatStorage = { sessions };
-        window.localStorage.setItem(
-          CHAT_STORAGE_KEY,
-          JSON.stringify(nextStorage),
-        );
-      }
-
-      if (!currentSessionId || !currentSession) return;
-
-      window.sessionStorage.setItem(ACTIVE_SESSION_KEY, currentSessionId);
-      setSessionId(currentSessionId);
-      setSessions(sessions);
-      setMessages(
-        Array.isArray(currentSession.messages) ? currentSession.messages : [],
-      );
-    } catch (error) {
-      console.error("failed to read chat history", error);
-    } finally {
-      setIsMessagesHydrated(true);
-    }
-  }, []);
-
-  useEffect(() => {
-    if (typeof window === "undefined" || !isMessagesHydrated || !sessionId)
-      return;
-
-    try {
-      const rawStorage = window.localStorage.getItem(CHAT_STORAGE_KEY);
-      const parsedStorage: ChatStorage = rawStorage
-        ? JSON.parse(rawStorage)
-        : { sessions: [] };
-      const sessions = Array.isArray(parsedStorage?.sessions)
-        ? parsedStorage.sessions
-        : [];
-      const targetIndex = sessions.findIndex(
-        (session) => session.id === sessionId,
-      );
-
-      if (targetIndex >= 0) {
-        sessions[targetIndex] = {
-          ...sessions[targetIndex],
-          messages,
-        };
-      } else {
-        sessions.push({
-          id: sessionId,
-          startedAt: new Date().toISOString(),
-          messages,
-        });
-      }
-
-      const nextStorage: ChatStorage = { sessions };
-      window.localStorage.setItem(
-        CHAT_STORAGE_KEY,
-        JSON.stringify(nextStorage),
-      );
-      setSessions(sessions);
-    } catch (error) {
-      console.error("failed to save chat history", error);
-    }
-  }, [messages, isMessagesHydrated, sessionId]);
 
   const getSessionOptionLabel = (session: ChatSession) => {
     const firstQuestion = session.messages.find(
@@ -237,22 +144,6 @@ const GeminiTestComponent = () => {
     }
   };
 
-  const sessionOptions: SessionOption[] = [
-    { value: CREATE_SESSION_OPTION_VALUE, label: "+ 새로운 대화 생성" },
-    ...[...sessions]
-      .sort(
-        (a, b) =>
-          new Date(b.startedAt).getTime() - new Date(a.startedAt).getTime(),
-      )
-      .map((session) => ({
-        value: session.id,
-        label: getSessionOptionLabel(session),
-      })),
-  ];
-
-  const selectedSessionOption =
-    sessionOptions.find((option) => option.value === sessionId) ?? null;
-
   const getStatusLabel = () => {
     if (streamStatus === "requesting") return "요청 전송 중...";
     if (streamStatus === "thinking") return "생각하는 중...";
@@ -291,7 +182,8 @@ const GeminiTestComponent = () => {
       }));
 
       const responseStream = await ai.models.generateContentStream({
-        model: `gemini-3.1-flash-lite-preview`,
+        // model: `gemini-3.1-flash-lite-preview`,
+        model: `gemini-3.1-pro-preview`,
         contents: [...history, { role: "user", parts: [{ text: input }] }],
         config: {},
       });
@@ -307,7 +199,10 @@ const GeminiTestComponent = () => {
         setMessages((prev) =>
           prev.map((message) =>
             message.id === assistantMessageId
-              ? { ...message, text: message.text + (chunk.text ?? "") }
+              ? {
+                  ...message,
+                  text: message.text + (chunk.text?.replace(/~/g, "\\~") ?? ""),
+                }
               : message,
           ),
         );
@@ -334,6 +229,135 @@ const GeminiTestComponent = () => {
       }
     }
   };
+
+  useEffect(() => {
+    setSessionOptions([
+      { value: CREATE_SESSION_OPTION_VALUE, label: "+ 새로운 대화 생성" },
+      ...[...sessions]
+        .sort(
+          (a, b) =>
+            new Date(b.startedAt).getTime() - new Date(a.startedAt).getTime(),
+        )
+        .map((session) => ({
+          value: session.id,
+          label: getSessionOptionLabel(session),
+        })),
+    ]);
+  }, [sessions]);
+
+  useEffect(() => {
+    if (sessionOptions) {
+      setSelectedSessionOption(
+        sessionOptions.find((option: any) => option.value === sessionId) ??
+          null,
+      );
+    }
+  }, [sessionOptions, sessionId]);
+
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({
+      behavior: "smooth",
+      block: "end",
+    });
+  }, [messages, isLoading]);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    try {
+      const rawStorage = window.localStorage.getItem(CHAT_STORAGE_KEY);
+      const parsedStorage: ChatStorage = rawStorage
+        ? JSON.parse(rawStorage)
+        : { sessions: [] };
+      const sessions = Array.isArray(parsedStorage?.sessions)
+        ? parsedStorage.sessions
+        : [];
+
+      let currentSessionId = window.sessionStorage.getItem(ACTIVE_SESSION_KEY);
+      let currentSession = currentSessionId
+        ? sessions.find((session) => session.id === currentSessionId)
+        : undefined;
+
+      if (!currentSession) {
+        currentSessionId = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+        currentSession = {
+          id: currentSessionId,
+          startedAt: new Date().toISOString(),
+          messages: [],
+        };
+        sessions.push(currentSession);
+
+        const nextStorage: ChatStorage = { sessions };
+        window.localStorage.setItem(
+          CHAT_STORAGE_KEY,
+          JSON.stringify(nextStorage),
+        );
+      }
+
+      if (!currentSessionId || !currentSession) return;
+
+      window.sessionStorage.setItem(ACTIVE_SESSION_KEY, currentSessionId);
+
+      console.log(10, currentSession.messages);
+      setSessionId(currentSessionId);
+      setSessions(sessions);
+      setMessages(
+        Array.isArray(currentSession.messages)
+          ? currentSession.messages.map((e) => {
+              if (e.role === "assistant") {
+                return { ...e, text: e.text.replace(/~/g, "\\~") };
+              } else {
+                return e;
+              }
+            })
+          : [],
+      );
+    } catch (error) {
+      console.error("failed to read chat history", error);
+    } finally {
+      setIsMessagesHydrated(true);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (typeof window === "undefined" || !isMessagesHydrated || !sessionId)
+      return;
+
+    try {
+      const rawStorage = window.localStorage.getItem(CHAT_STORAGE_KEY);
+      const parsedStorage: ChatStorage = rawStorage
+        ? JSON.parse(rawStorage)
+        : { sessions: [] };
+      const sessions = Array.isArray(parsedStorage?.sessions)
+        ? parsedStorage.sessions
+        : [];
+      const targetIndex = sessions.findIndex(
+        (session) => session.id === sessionId,
+      );
+
+      if (targetIndex >= 0) {
+        sessions[targetIndex] = {
+          ...sessions[targetIndex],
+          messages,
+        };
+      } else {
+        sessions.push({
+          id: sessionId,
+          startedAt: new Date().toISOString(),
+          messages,
+        });
+      }
+
+      const nextStorage: ChatStorage = { sessions };
+      window.localStorage.setItem(
+        CHAT_STORAGE_KEY,
+        JSON.stringify(nextStorage),
+      );
+      setSessions(sessions);
+    } catch (error) {
+      console.error("failed to save chat history", error);
+    }
+  }, [messages, isMessagesHydrated, sessionId]);
 
   return (
     <S.Page>

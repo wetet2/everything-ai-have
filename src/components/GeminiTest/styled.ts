@@ -143,7 +143,8 @@ export const MarkdownContainer = styled.div`
 
   code {
     font-family:
-      "Fira Code", "Consolas", "Menlo", "Monaco", "Courier New", monospace;
+      "Fira Code", "Consolas", "Menlo", "Monaco", "Courier New", "Pretendard",
+      monospace;
     font-size: 13px;
   }
 

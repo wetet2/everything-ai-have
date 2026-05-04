@@ -7,6 +7,9 @@ import Select from "react-select";
 import rehypeHighlight from "rehype-highlight";
 import remarkGfm from "remark-gfm";
 
+import SendIcon from "../../../resources/icons/SendIcon";
+import TrashIcon from "../../../resources/icons/TrashIcon";
+import TrashXIcon from "../../../resources/icons/TrashXIcon";
 import CopyablePre from "./CopyablePre";
 
 import * as S from "./styled";
@@ -36,8 +39,10 @@ type SessionOption = {
 
 type AiProvider = "gemini" | "claude";
 
+const AI_MAX_CONTEXT = 5;
 const CHAT_STORAGE_KEY = "wetet-chat-messages";
 const ACTIVE_SESSION_KEY = "wetet-chat-active-session-id";
+const SETTINGS_STORAGE_KEY = "wetet-settings";
 const CREATE_SESSION_OPTION_VALUE = "__create_session__";
 
 const GEMINI_MODEL_OPTIONS = [
@@ -46,8 +51,9 @@ const GEMINI_MODEL_OPTIONS = [
 ];
 
 const CLAUDE_MODEL_OPTIONS = [
-  { value: "claude-sonnet-4-5", label: "Sonnet 4.5" },
-  { value: "claude-opus-4-5", label: "Opus 4.5" },
+  { value: "claude-haiku-4-5-20251001", label: "haiku 4.5" },
+  { value: "claude-sonnet-4-6", label: "Sonnet 4.6" },
+  { value: "claude-opus-4-6", label: "Opus 4.6" },
 ];
 
 const GeminiTestComponent = () => {
@@ -61,7 +67,7 @@ const GeminiTestComponent = () => {
 
   const [isMounted, setIsMounted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [inputValue, setInputValue] = useState("");
+  // const [inputValue, setInputValue] = useState("");
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [sessions, setSessions] = useState<ChatSession[]>([]);
   const [isMessagesHydrated, setIsMessagesHydrated] = useState(false);
@@ -83,14 +89,24 @@ const GeminiTestComponent = () => {
   const modelOptions =
     provider === "gemini" ? GEMINI_MODEL_OPTIONS : CLAUDE_MODEL_OPTIONS;
 
+  const saveSettings = (nextProvider: AiProvider, nextModel: string) => {
+    try {
+      window.localStorage.setItem(
+        SETTINGS_STORAGE_KEY,
+        JSON.stringify({ provider: nextProvider, model: nextModel }),
+      );
+    } catch {}
+  };
+
   const handleProviderChange = (next: AiProvider) => {
     if (isLoading) return;
-    setProvider(next);
-    setSelectedModel(
+    const nextModel =
       next === "gemini"
         ? GEMINI_MODEL_OPTIONS[0].value
-        : CLAUDE_MODEL_OPTIONS[0].value,
-    );
+        : CLAUDE_MODEL_OPTIONS[0].value;
+    setProvider(next);
+    setSelectedModel(nextModel);
+    saveSettings(next, nextModel);
   };
 
   const handleMessagesAreaScroll = () => {
@@ -223,7 +239,7 @@ const GeminiTestComponent = () => {
     input: string,
     assistantMessageId: number,
   ) => {
-    const history = messages.slice(-10).map((m) => ({
+    const history = messages.slice(-1 * AI_MAX_CONTEXT).map((m) => ({
       role: m.role === "user" ? "user" : "model",
       parts: [{ text: m.text }],
     }));
@@ -264,7 +280,7 @@ const GeminiTestComponent = () => {
       dangerouslyAllowBrowser: true,
     });
 
-    const history = messages.slice(-10).map((m) => ({
+    const history = messages.slice(-1 * AI_MAX_CONTEXT).map((m) => ({
       role: m.role as "user" | "assistant",
       content: m.text,
     }));
@@ -326,7 +342,7 @@ const GeminiTestComponent = () => {
       userMessage,
       { id: assistantMessageId, role: "assistant", text: "" },
     ]);
-    setInputValue("");
+    textAreaRef.current.value = "";
     setTimeout(() => {
       handleAutoResizeTextarea();
     }, 0);
@@ -449,6 +465,35 @@ const GeminiTestComponent = () => {
     } finally {
       setIsMessagesHydrated(true);
     }
+
+    // settings 로드
+    try {
+      const rawSettings = window.localStorage.getItem(SETTINGS_STORAGE_KEY);
+      if (rawSettings) {
+        const parsed = JSON.parse(rawSettings) as {
+          provider?: AiProvider;
+          model?: string;
+        };
+        const savedProvider = parsed.provider;
+        const savedModel = parsed.model;
+        const allModels = [...GEMINI_MODEL_OPTIONS, ...CLAUDE_MODEL_OPTIONS];
+        if (
+          savedProvider &&
+          (savedProvider === "gemini" || savedProvider === "claude")
+        ) {
+          setProvider(savedProvider);
+          if (savedModel && allModels.some((m) => m.value === savedModel)) {
+            setSelectedModel(savedModel);
+          } else {
+            setSelectedModel(
+              savedProvider === "gemini"
+                ? GEMINI_MODEL_OPTIONS[0].value
+                : CLAUDE_MODEL_OPTIONS[0].value,
+            );
+          }
+        }
+      }
+    } catch {}
 
     setIsMounted(true);
   }, []);
@@ -583,43 +628,14 @@ const GeminiTestComponent = () => {
           onClick={handleDeleteSession}
           disabled={isLoading}
         >
-          <svg
-            width="18"
-            height="18"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          >
-            <polyline points="3 6 5 3 21 3 19 6"></polyline>
-            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-            <line x1="10" y1="11" x2="10" y2="17"></line>
-            <line x1="14" y1="11" x2="14" y2="17"></line>
-          </svg>
+          <TrashIcon />
         </S.DeleteSessionButton>
         <S.DeleteAllSessionsButton
           title="전체 대화 삭제"
           onClick={handleDeleteAllSessions}
           disabled={isLoading}
         >
-          <svg
-            width="18"
-            height="18"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          >
-            <polyline points="3 6 5 3 21 3 19 6"></polyline>
-            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-            <line x1="10" y1="11" x2="10" y2="17"></line>
-            <line x1="14" y1="11" x2="14" y2="17"></line>
-            <line x1="4" y1="4" x2="20" y2="20"></line>
-          </svg>
+          <TrashXIcon />
         </S.DeleteAllSessionsButton>
       </S.SessionSelectWrap>
 
@@ -668,11 +684,31 @@ const GeminiTestComponent = () => {
 
         <S.InputArea>
           <S.ModelSelectWrap>
+            <S.ProviderToggleWrap>
+              <S.ProviderToggleButton
+                $active={provider === "gemini"}
+                onClick={() => handleProviderChange("gemini")}
+                disabled={isLoading}
+              >
+                Gemini
+              </S.ProviderToggleButton>
+              <S.ProviderToggleButton
+                $active={provider === "claude"}
+                onClick={() => handleProviderChange("claude")}
+                disabled={isLoading}
+              >
+                Claude
+              </S.ProviderToggleButton>
+            </S.ProviderToggleWrap>
             {modelOptions.map((opt) => (
               <S.ModelChip
                 key={opt.value}
                 $active={selectedModel === opt.value}
-                onClick={() => !isLoading && setSelectedModel(opt.value)}
+                onClick={() => {
+                  if (isLoading) return;
+                  setSelectedModel(opt.value);
+                  saveSettings(provider, opt.value);
+                }}
                 disabled={isLoading}
               >
                 {opt.label}
@@ -682,74 +718,27 @@ const GeminiTestComponent = () => {
           <S.InputRow>
             <S.TextInput
               ref={textAreaRef}
-              value={inputValue}
               onInput={handleAutoResizeTextarea}
               onKeyDown={(e) => {
                 if (e.key === "Enter" && !e.shiftKey) {
                   e.preventDefault();
-                  handleRequestAi(inputValue);
+                  handleRequestAi(textAreaRef.current.value);
                 }
               }}
               disabled={isLoading}
-              onChange={(e) => setInputValue(e.target.value)}
               placeholder="AI에게 물어보세요"
               rows={1}
             />
             <S.InputSpacer />
             <S.SendButton
-              disabled={isLoading || !inputValue.trim()}
-              onClick={() => handleRequestAi(inputValue)}
+              disabled={isLoading}
+              onClick={() => handleRequestAi(textAreaRef.current.value)}
             >
-              {isLoading ? (
-                <S.SpinnerIcon
-                  width="18"
-                  height="18"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <circle cx="12" cy="12" r="9" strokeOpacity="0.25" />
-                  <path d="M12 3a9 9 0 0 1 9 9" />
-                </S.SpinnerIcon>
-              ) : (
-                <svg
-                  width="18"
-                  height="18"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <line x1="5" y1="12" x2="19" y2="12"></line>
-                  <polyline points="12 5 19 12 12 19"></polyline>
-                </svg>
-              )}
+              {isLoading ? <S.SpinnerIcon /> : <SendIcon />}
             </S.SendButton>
           </S.InputRow>
         </S.InputArea>
       </S.ChatContainer>
-
-      <S.ProviderToggleWrap>
-        <S.ProviderToggleButton
-          $active={provider === "gemini"}
-          onClick={() => handleProviderChange("gemini")}
-          disabled={isLoading}
-        >
-          Gemini
-        </S.ProviderToggleButton>
-        <S.ProviderToggleButton
-          $active={provider === "claude"}
-          onClick={() => handleProviderChange("claude")}
-          disabled={isLoading}
-        >
-          Claude
-        </S.ProviderToggleButton>
-      </S.ProviderToggleWrap>
     </S.Page>
   );
 };

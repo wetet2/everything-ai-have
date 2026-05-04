@@ -1,3 +1,4 @@
+import SpinnerIconBase from "../../../resources/icons/SpinnerIcon";
 import styled, { keyframes } from "styled-components";
 
 const spin = keyframes`
@@ -292,14 +293,20 @@ export const SendButton = styled.button`
   cursor: pointer;
 `;
 
-export const SpinnerIcon = styled.svg`
+export const SpinnerIcon = styled(SpinnerIconBase)`
   animation: ${spin} 0.8s linear infinite;
 `;
 
 export const ModelSelectWrap = styled.div`
   display: flex;
+  align-items: center;
   gap: 6px;
   margin-bottom: 8px;
+`;
+
+export const ModelChipGroup = styled.div`
+  display: flex;
+  gap: 6px;
 `;
 
 export const ModelChip = styled.button<{ $active: boolean }>`
@@ -357,21 +364,21 @@ export const DeleteSessionButton = styled.button`
 export const ProviderToggleWrap = styled.div`
   display: flex;
   align-items: center;
-  justify-content: center;
   gap: 0;
-  margin-top: 10px;
+
+  width: 161px;
+
   background: #e5e7eb;
   border-radius: 20px;
   padding: 3px;
-  width: fit-content;
-  align-self: center;
+  flex-shrink: 0;
 `;
 
 export const ProviderToggleButton = styled.button<{ $active: boolean }>`
   padding: 5px 18px;
   border-radius: 16px;
   font-size: 13px;
-  font-weight: ${({ $active }) => ($active ? 600 : 400)};
+  /* font-weight: ${({ $active }) => ($active ? 600 : 400)}; */
   border: none;
   background: ${({ $active }) => ($active ? "#fff" : "transparent")};
   color: ${({ $active }) => ($active ? "#111827" : "#6b7280")};
@@ -379,6 +386,9 @@ export const ProviderToggleButton = styled.button<{ $active: boolean }>`
     $active ? "0 1px 4px rgba(0,0,0,0.10)" : "none"};
   cursor: pointer;
   transition: all 0.18s;
+
+  text-shadow: ${({ $active }) =>
+    $active ? "0 0 0.5px #111827, 0 0 0.5px #111827" : "none"};
 
   &:hover:not(:disabled) {
     color: #111827;

@@ -1,17 +1,14 @@
 import { GoogleGenAI } from "@google/genai";
-import { useEffect, useRef, useState, type FormEvent } from "react";
+import { useRouter } from "next/router";
+import { useEffect, useMemo, useRef, useState } from "react";
 import Markdown from "react-markdown";
 import Select from "react-select";
 import rehypeHighlight from "rehype-highlight";
 import remarkGfm from "remark-gfm";
 
-import { GEMINI_API_KEY } from "../constants";
 import CopyablePre from "./CopyablePre";
 
 import * as S from "./styled";
-
-const ai = new GoogleGenAI({ apiKey: GEMINI_API_KEY });
-ai.models.list().then((res) => console.log("Available models:", res));
 
 type ChatMessage = {
   id: number;
@@ -40,7 +37,17 @@ const CHAT_STORAGE_KEY = "wetet-chat-messages";
 const ACTIVE_SESSION_KEY = "wetet-chat-active-session-id";
 const CREATE_SESSION_OPTION_VALUE = "__create_session__";
 
+const MODEL_OPTIONS = [
+  { value: "gemini-3.1-flash-lite-preview", label: "Flash Lite" },
+  { value: "gemini-3.1-pro-preview", label: "Pro" },
+];
+
 const GeminiTestComponent = () => {
+  const router = useRouter();
+  const apiKey = router.query.key as string | undefined;
+  const ai = useMemo(() => new GoogleGenAI({ apiKey: apiKey ?? "" }), [apiKey]);
+
+  const [isMounted, setIsMounted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [inputValue, setInputValue] = useState("");
   const [messages, setMessages] = useState<ChatMessage[]>([]);
@@ -50,13 +57,26 @@ const GeminiTestComponent = () => {
   const [activeAssistantId, setActiveAssistantId] = useState<number | null>(
     null,
   );
+  const [selectedModel, setSelectedModel] = useState(MODEL_OPTIONS[0].value);
   const [sessionId, setSessionId] = useState<string | null>(null);
   const [sessionOptions, setSessionOptions] = useState<any>(null);
   const [selectedSessionOption, setSelectedSessionOption] = useState<any>(null);
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
+  const messagesAreaRef = useRef<HTMLDivElement | null>(null);
+  const isUserScrolledUpRef = useRef(false);
+  const textAreaRef = useRef<any>(null);
 
-  const handleAutoResizeTextarea = (e: FormEvent<HTMLTextAreaElement>) => {
-    const textarea = e.currentTarget;
+  const handleMessagesAreaScroll = () => {
+    const el = messagesAreaRef.current;
+    if (!el) return;
+    const threshold = 50;
+    const isAtBottom =
+      el.scrollHeight - el.scrollTop - el.clientHeight < threshold;
+    isUserScrolledUpRef.current = !isAtBottom;
+  };
+
+  const handleAutoResizeTextarea = () => {
+    const textarea = textAreaRef.current;
     textarea.style.height = "auto";
     textarea.style.height = `${textarea.scrollHeight}px`;
   };
@@ -144,6 +164,29 @@ const GeminiTestComponent = () => {
     }
   };
 
+  const handleDeleteAllSessions = () => {
+    if (isLoading) return;
+
+    const ok = window.confirm(
+      "모든 대화 세션을 삭제하시겠습니까? 삭제된 대화는 복구할 수 없습니다.",
+    );
+    if (!ok) return;
+
+    try {
+      window.localStorage.setItem(
+        CHAT_STORAGE_KEY,
+        JSON.stringify({ sessions: [] }),
+      );
+      window.sessionStorage.removeItem(ACTIVE_SESSION_KEY);
+
+      setSessions([]);
+      handleSelectSession(CREATE_SESSION_OPTION_VALUE);
+    } catch (error) {
+      console.error("failed to delete all sessions", error);
+      alert("전체 세션 삭제 중 오류가 발생했습니다.");
+    }
+  };
+
   const getStatusLabel = () => {
     if (streamStatus === "requesting") return "요청 전송 중...";
     if (streamStatus === "thinking") return "생각하는 중...";
@@ -164,12 +207,16 @@ const GeminiTestComponent = () => {
     };
     const assistantMessageId = Date.now() + 1;
 
+    isUserScrolledUpRef.current = false;
     setMessages((prev) => [
       ...prev,
       userMessage,
       { id: assistantMessageId, role: "assistant", text: "" },
     ]);
     setInputValue("");
+    setTimeout(() => {
+      handleAutoResizeTextarea();
+    }, 0);
     setIsLoading(true);
     setStreamStatus("requesting");
     setActiveAssistantId(assistantMessageId);
@@ -182,8 +229,7 @@ const GeminiTestComponent = () => {
       }));
 
       const responseStream = await ai.models.generateContentStream({
-        // model: `gemini-3.1-flash-lite-preview`,
-        model: `gemini-3.1-pro-preview`,
+        model: selectedModel,
         contents: [...history, { role: "user", parts: [{ text: input }] }],
         config: {},
       });
@@ -255,15 +301,15 @@ const GeminiTestComponent = () => {
   }, [sessionOptions, sessionId]);
 
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({
-      behavior: "smooth",
-      block: "end",
-    });
+    if (!isUserScrolledUpRef.current) {
+      messagesEndRef.current?.scrollIntoView({
+        behavior: "smooth",
+        block: "end",
+      });
+    }
   }, [messages, isLoading]);
 
   useEffect(() => {
-    if (typeof window === "undefined") return;
-
     try {
       const rawStorage = window.localStorage.getItem(CHAT_STORAGE_KEY);
       const parsedStorage: ChatStorage = rawStorage
@@ -298,7 +344,6 @@ const GeminiTestComponent = () => {
 
       window.sessionStorage.setItem(ACTIVE_SESSION_KEY, currentSessionId);
 
-      console.log(10, currentSession.messages);
       setSessionId(currentSessionId);
       setSessions(sessions);
       setMessages(
@@ -317,6 +362,8 @@ const GeminiTestComponent = () => {
     } finally {
       setIsMessagesHydrated(true);
     }
+
+    setIsMounted(true);
   }, []);
 
   useEffect(() => {
@@ -328,12 +375,26 @@ const GeminiTestComponent = () => {
       const parsedStorage: ChatStorage = rawStorage
         ? JSON.parse(rawStorage)
         : { sessions: [] };
-      const sessions = Array.isArray(parsedStorage?.sessions)
+      let sessions = Array.isArray(parsedStorage?.sessions)
         ? parsedStorage.sessions
         : [];
       const targetIndex = sessions.findIndex(
         (session) => session.id === sessionId,
       );
+
+      if (messages.length === 0) {
+        // 메시지가 비어있으면 해당 세션을 저장하지 않고 기존 항목도 제거
+        if (targetIndex >= 0) {
+          sessions = sessions.filter((session) => session.id !== sessionId);
+          const nextStorage: ChatStorage = { sessions };
+          window.localStorage.setItem(
+            CHAT_STORAGE_KEY,
+            JSON.stringify(nextStorage),
+          );
+          setSessions(sessions);
+        }
+        return;
+      }
 
       if (targetIndex >= 0) {
         sessions[targetIndex] = {
@@ -358,6 +419,8 @@ const GeminiTestComponent = () => {
       console.error("failed to save chat history", error);
     }
   }, [messages, isMessagesHydrated, sessionId]);
+
+  if (!isMounted) return null;
 
   return (
     <S.Page>
@@ -450,10 +513,35 @@ const GeminiTestComponent = () => {
             <line x1="14" y1="11" x2="14" y2="17"></line>
           </svg>
         </S.DeleteSessionButton>
+        <S.DeleteAllSessionsButton
+          title="전체 대화 삭제"
+          onClick={handleDeleteAllSessions}
+          disabled={isLoading}
+        >
+          <svg
+            width="18"
+            height="18"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <polyline points="3 6 5 3 21 3 19 6"></polyline>
+            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+            <line x1="10" y1="11" x2="10" y2="17"></line>
+            <line x1="14" y1="11" x2="14" y2="17"></line>
+            <line x1="4" y1="4" x2="20" y2="20"></line>
+          </svg>
+        </S.DeleteAllSessionsButton>
       </S.SessionSelectWrap>
 
       <S.ChatContainer>
-        <S.MessagesArea>
+        <S.MessagesArea
+          ref={messagesAreaRef}
+          onScroll={handleMessagesAreaScroll}
+        >
           {messages.length === 0 ? (
             <S.EmptyMessage>
               질문을 입력하면 AI와 대화를 시작할 수 있습니다.
@@ -493,8 +581,21 @@ const GeminiTestComponent = () => {
         </S.MessagesArea>
 
         <S.InputArea>
+          <S.ModelSelectWrap>
+            {MODEL_OPTIONS.map((opt) => (
+              <S.ModelChip
+                key={opt.value}
+                $active={selectedModel === opt.value}
+                onClick={() => !isLoading && setSelectedModel(opt.value)}
+                disabled={isLoading}
+              >
+                {opt.label}
+              </S.ModelChip>
+            ))}
+          </S.ModelSelectWrap>
           <S.InputRow>
             <S.TextInput
+              ref={textAreaRef}
               value={inputValue}
               onInput={handleAutoResizeTextarea}
               onKeyDown={(e) => {
@@ -514,7 +615,19 @@ const GeminiTestComponent = () => {
               onClick={() => handleRequestAi(inputValue)}
             >
               {isLoading ? (
-                "..."
+                <S.SpinnerIcon
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <circle cx="12" cy="12" r="9" strokeOpacity="0.25" />
+                  <path d="M12 3a9 9 0 0 1 9 9" />
+                </S.SpinnerIcon>
               ) : (
                 <svg
                   width="18"

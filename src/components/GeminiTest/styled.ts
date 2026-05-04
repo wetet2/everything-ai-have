@@ -1,4 +1,9 @@
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
+
+const spin = keyframes`
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+`;
 
 export const Page = styled.div`
   display: flex;
@@ -16,7 +21,7 @@ export const ChatContainer = styled.div`
   flex: 1;
   min-height: 0;
 
-  width: min(680px, 95vw);
+  width: min(1000px, 95vw);
   border: 1px solid #e5e7eb;
   border-radius: 18px;
   overflow: hidden;
@@ -27,7 +32,7 @@ export const ChatContainer = styled.div`
 `;
 
 export const SessionSelectWrap = styled.div`
-  width: min(680px, 95vw);
+  width: min(1000px, 95vw);
   margin-bottom: 12px;
   display: flex;
   gap: 8px;
@@ -93,7 +98,7 @@ export const MessageItem = styled.li<{ $isUser: boolean }>`
 `;
 
 export const ChatBody = styled.div`
-  max-width: min(88%, 560px);
+  max-width: min(90%, 880px);
 `;
 
 export const MarkdownContainer = styled.div`
@@ -194,6 +199,7 @@ export const ChatBubble = styled(MarkdownContainer)<{ $isUser: boolean }>`
   border-color: ${({ $isUser }) => ($isUser ? "#6f54ff" : "#e6e8ee")};
   border-radius: ${({ $isUser }) =>
     $isUser ? "16px 16px 4px 16px" : "16px 16px 16px 4px"};
+  white-space: ${({ $isUser }) => ($isUser ? "pre-wrap" : "")};
 `;
 
 export const CodeBlockWrap = styled.div`
@@ -255,7 +261,7 @@ export const TextInput = styled.textarea`
   line-height: 1.5;
   padding: 10px 14px;
   border: 1px solid #e4e7ec;
-  border-radius: 999px;
+  border-radius: 20px;
   background: #f1f3f6;
   scrollbar-width: none;
   -ms-overflow-style: none;
@@ -285,6 +291,43 @@ export const SendButton = styled.button`
   cursor: pointer;
 `;
 
+export const SpinnerIcon = styled.svg`
+  animation: ${spin} 0.8s linear infinite;
+`;
+
+export const ModelSelectWrap = styled.div`
+  display: flex;
+  gap: 6px;
+  margin-bottom: 8px;
+`;
+
+export const ModelChip = styled.button<{ $active: boolean }>`
+  padding: 3px 10px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 400;
+  border: 1px solid ${({ $active }) => ($active ? "#6f54ff" : "#d1d5db")};
+  background: ${({ $active }) => ($active ? "#ede9ff" : "#fff")};
+  color: ${({ $active }) => ($active ? "#6f54ff" : "#6b7280")};
+  text-shadow: ${({ $active }) =>
+    $active ? "0 0 0.5px #6f54ff, 0 0 0.5px #6f54ff" : "none"};
+  cursor: pointer;
+  transition: all 0.15s;
+
+  &:hover:not(:disabled) {
+    border-color: #6f54ff;
+    color: #6f54ff;
+    text-shadow:
+      0 0 0.5px #6f54ff,
+      0 0 0.5px #6f54ff;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+`;
+
 export const DeleteSessionButton = styled.button`
   display: inline-flex;
   align-items: center;
@@ -302,6 +345,31 @@ export const DeleteSessionButton = styled.button`
   &:hover:not(:disabled) {
     background: #fef2f2;
     border-color: #fca5a5;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+`;
+
+export const DeleteAllSessionsButton = styled.button`
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+  background: #fff1f2;
+  color: #dc2626;
+  cursor: pointer;
+  transition: all 0.2s;
+
+  &:hover:not(:disabled) {
+    background: #fee2e2;
+    border-color: #f87171;
   }
 
   &:disabled {

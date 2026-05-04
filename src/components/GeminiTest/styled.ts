@@ -354,6 +354,42 @@ export const DeleteSessionButton = styled.button`
   }
 `;
 
+export const ProviderToggleWrap = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  margin-top: 10px;
+  background: #e5e7eb;
+  border-radius: 20px;
+  padding: 3px;
+  width: fit-content;
+  align-self: center;
+`;
+
+export const ProviderToggleButton = styled.button<{ $active: boolean }>`
+  padding: 5px 18px;
+  border-radius: 16px;
+  font-size: 13px;
+  font-weight: ${({ $active }) => ($active ? 600 : 400)};
+  border: none;
+  background: ${({ $active }) => ($active ? "#fff" : "transparent")};
+  color: ${({ $active }) => ($active ? "#111827" : "#6b7280")};
+  box-shadow: ${({ $active }) =>
+    $active ? "0 1px 4px rgba(0,0,0,0.10)" : "none"};
+  cursor: pointer;
+  transition: all 0.18s;
+
+  &:hover:not(:disabled) {
+    color: #111827;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+`;
+
 export const DeleteAllSessionsButton = styled.button`
   display: inline-flex;
   align-items: center;

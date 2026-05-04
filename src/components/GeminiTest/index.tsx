@@ -1,3 +1,4 @@
+import Anthropic from "@anthropic-ai/sdk";
 import { GoogleGenAI } from "@google/genai";
 import { useRouter } from "next/router";
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -33,19 +34,30 @@ type SessionOption = {
   label: string;
 };
 
+type AiProvider = "gemini" | "claude";
+
 const CHAT_STORAGE_KEY = "wetet-chat-messages";
 const ACTIVE_SESSION_KEY = "wetet-chat-active-session-id";
 const CREATE_SESSION_OPTION_VALUE = "__create_session__";
 
-const MODEL_OPTIONS = [
-  { value: "gemini-3.1-flash-lite-preview", label: "Flash Lite" },
-  { value: "gemini-3.1-pro-preview", label: "Pro" },
+const GEMINI_MODEL_OPTIONS = [
+  { value: "gemini-3.1-flash-lite-preview", label: "Gemini 3.1 Flash Lite" },
+  { value: "gemini-3.1-pro-preview", label: "Gemini 3.1 Pro" },
+];
+
+const CLAUDE_MODEL_OPTIONS = [
+  { value: "claude-sonnet-4-5", label: "Sonnet 4.5" },
+  { value: "claude-opus-4-5", label: "Opus 4.5" },
 ];
 
 const GeminiTestComponent = () => {
   const router = useRouter();
-  const apiKey = router.query.key as string | undefined;
-  const ai = useMemo(() => new GoogleGenAI({ apiKey: apiKey ?? "" }), [apiKey]);
+  const gkey = router.query.gkey as string | undefined;
+  const ckey = router.query.ckey as string | undefined;
+
+  const [provider, setProvider] = useState<AiProvider>("gemini");
+
+  const ai = useMemo(() => new GoogleGenAI({ apiKey: gkey ?? "" }), [gkey]);
 
   const [isMounted, setIsMounted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -57,7 +69,9 @@ const GeminiTestComponent = () => {
   const [activeAssistantId, setActiveAssistantId] = useState<number | null>(
     null,
   );
-  const [selectedModel, setSelectedModel] = useState(MODEL_OPTIONS[0].value);
+  const [selectedModel, setSelectedModel] = useState(
+    GEMINI_MODEL_OPTIONS[0].value,
+  );
   const [sessionId, setSessionId] = useState<string | null>(null);
   const [sessionOptions, setSessionOptions] = useState<any>(null);
   const [selectedSessionOption, setSelectedSessionOption] = useState<any>(null);
@@ -65,6 +79,19 @@ const GeminiTestComponent = () => {
   const messagesAreaRef = useRef<HTMLDivElement | null>(null);
   const isUserScrolledUpRef = useRef(false);
   const textAreaRef = useRef<any>(null);
+
+  const modelOptions =
+    provider === "gemini" ? GEMINI_MODEL_OPTIONS : CLAUDE_MODEL_OPTIONS;
+
+  const handleProviderChange = (next: AiProvider) => {
+    if (isLoading) return;
+    setProvider(next);
+    setSelectedModel(
+      next === "gemini"
+        ? GEMINI_MODEL_OPTIONS[0].value
+        : CLAUDE_MODEL_OPTIONS[0].value,
+    );
+  };
 
   const handleMessagesAreaScroll = () => {
     const el = messagesAreaRef.current;
@@ -139,7 +166,6 @@ const GeminiTestComponent = () => {
     try {
       const nextSessions = sessions.filter((s) => s.id !== sessionId);
 
-      // localStorage 업데이트
       window.localStorage.setItem(
         CHAT_STORAGE_KEY,
         JSON.stringify({ sessions: nextSessions }),
@@ -147,7 +173,6 @@ const GeminiTestComponent = () => {
 
       setSessions(nextSessions);
 
-      // 삭제 후 처리: 남은 세션이 있으면 가장 최근 세션으로 이동, 없으면 초기화
       if (nextSessions.length > 0) {
         const mostRecent = [...nextSessions].sort(
           (a, b) =>
@@ -155,7 +180,6 @@ const GeminiTestComponent = () => {
         )[0];
         handleSelectSession(mostRecent.id);
       } else {
-        // 모든 세션이 삭제된 경우 새로운 세션 생성 로직 실행
         handleSelectSession(CREATE_SESSION_OPTION_VALUE);
       }
     } catch (error) {
@@ -195,6 +219,95 @@ const GeminiTestComponent = () => {
     return "";
   };
 
+  const handleRequestGemini = async (
+    input: string,
+    assistantMessageId: number,
+  ) => {
+    const history = messages.slice(-10).map((m) => ({
+      role: m.role === "user" ? "user" : "model",
+      parts: [{ text: m.text }],
+    }));
+
+    const responseStream = await ai.models.generateContentStream({
+      model: selectedModel,
+      contents: [...history, { role: "user", parts: [{ text: input }] }],
+      config: {},
+    });
+    setStreamStatus("thinking");
+    let hasReceivedTextChunk = false;
+
+    for await (const chunk of responseStream) {
+      if (!hasReceivedTextChunk) {
+        hasReceivedTextChunk = true;
+        setStreamStatus("streaming");
+      }
+
+      setMessages((prev) =>
+        prev.map((message) =>
+          message.id === assistantMessageId
+            ? {
+                ...message,
+                text: message.text + (chunk.text?.replace(/~/g, "\\~") ?? ""),
+              }
+            : message,
+        ),
+      );
+    }
+  };
+
+  const handleRequestClaude = async (
+    input: string,
+    assistantMessageId: number,
+  ) => {
+    const claudeClient = new Anthropic({
+      apiKey: ckey ?? "",
+      dangerouslyAllowBrowser: true,
+    });
+
+    const history = messages.slice(-10).map((m) => ({
+      role: m.role as "user" | "assistant",
+      content: m.text,
+    }));
+
+    const claudeMessages = [
+      ...history,
+      { role: "user" as const, content: input },
+    ];
+
+    const stream = claudeClient.messages.stream({
+      model: selectedModel,
+      max_tokens: 8096,
+      messages: claudeMessages,
+    });
+
+    setStreamStatus("thinking");
+    let hasReceivedTextChunk = false;
+
+    for await (const chunk of stream) {
+      if (
+        chunk.type === "content_block_delta" &&
+        chunk.delta.type === "text_delta"
+      ) {
+        const textDelta = chunk.delta as { type: "text_delta"; text: string };
+        if (!hasReceivedTextChunk) {
+          hasReceivedTextChunk = true;
+          setStreamStatus("streaming");
+        }
+        setMessages((prev) =>
+          prev.map((message) =>
+            message.id === assistantMessageId
+              ? {
+                  ...message,
+                  text:
+                    message.text + (textDelta.text?.replace(/~/g, "\\~") ?? ""),
+                }
+              : message,
+          ),
+        );
+      }
+    }
+  };
+
   const handleRequestAi = async (rawInput: string) => {
     const input = rawInput.trim();
     if (!input || isLoading) return;
@@ -222,36 +335,10 @@ const GeminiTestComponent = () => {
     setActiveAssistantId(assistantMessageId);
 
     try {
-      // 최신 10개의 대화 내역만 추출하여 Gemini 형식으로 변환 (assistant -> model)
-      const history = messages.slice(-10).map((m) => ({
-        role: m.role === "user" ? "user" : "model",
-        parts: [{ text: m.text }],
-      }));
-
-      const responseStream = await ai.models.generateContentStream({
-        model: selectedModel,
-        contents: [...history, { role: "user", parts: [{ text: input }] }],
-        config: {},
-      });
-      setStreamStatus("thinking");
-      let hasReceivedTextChunk = false;
-
-      for await (const chunk of responseStream) {
-        if (!hasReceivedTextChunk) {
-          hasReceivedTextChunk = true;
-          setStreamStatus("streaming");
-        }
-
-        setMessages((prev) =>
-          prev.map((message) =>
-            message.id === assistantMessageId
-              ? {
-                  ...message,
-                  text: message.text + (chunk.text?.replace(/~/g, "\\~") ?? ""),
-                }
-              : message,
-          ),
-        );
+      if (provider === "gemini") {
+        await handleRequestGemini(input, assistantMessageId);
+      } else {
+        await handleRequestClaude(input, assistantMessageId);
       }
     } catch (error) {
       hasError = true;
@@ -383,7 +470,6 @@ const GeminiTestComponent = () => {
       );
 
       if (messages.length === 0) {
-        // 메시지가 비어있으면 해당 세션을 저장하지 않고 기존 항목도 제거
         if (targetIndex >= 0) {
           sessions = sessions.filter((session) => session.id !== sessionId);
           const nextStorage: ChatStorage = { sessions };
@@ -582,7 +668,7 @@ const GeminiTestComponent = () => {
 
         <S.InputArea>
           <S.ModelSelectWrap>
-            {MODEL_OPTIONS.map((opt) => (
+            {modelOptions.map((opt) => (
               <S.ModelChip
                 key={opt.value}
                 $active={selectedModel === opt.value}
@@ -647,6 +733,23 @@ const GeminiTestComponent = () => {
           </S.InputRow>
         </S.InputArea>
       </S.ChatContainer>
+
+      <S.ProviderToggleWrap>
+        <S.ProviderToggleButton
+          $active={provider === "gemini"}
+          onClick={() => handleProviderChange("gemini")}
+          disabled={isLoading}
+        >
+          Gemini
+        </S.ProviderToggleButton>
+        <S.ProviderToggleButton
+          $active={provider === "claude"}
+          onClick={() => handleProviderChange("claude")}
+          disabled={isLoading}
+        >
+          Claude
+        </S.ProviderToggleButton>
+      </S.ProviderToggleWrap>
     </S.Page>
   );
 };

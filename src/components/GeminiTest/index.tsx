@@ -263,7 +263,7 @@ const GeminiTestComponent = () => {
           message.id === assistantMessageId
             ? {
                 ...message,
-                text: message.text + (chunk.text?.replace(/~/g, "\\~") ?? ""),
+                text: message.text + (chunk.text ?? ""),
               }
             : message,
         ),
@@ -314,8 +314,7 @@ const GeminiTestComponent = () => {
             message.id === assistantMessageId
               ? {
                   ...message,
-                  text:
-                    message.text + (textDelta.text?.replace(/~/g, "\\~") ?? ""),
+                  text: message.text + (textDelta.text ?? ""),
                 }
               : message,
           ),
@@ -450,15 +449,7 @@ const GeminiTestComponent = () => {
       setSessionId(currentSessionId);
       setSessions(sessions);
       setMessages(
-        Array.isArray(currentSession.messages)
-          ? currentSession.messages.map((e) => {
-              if (e.role === "assistant") {
-                return { ...e, text: e.text.replace(/~/g, "\\~") };
-              } else {
-                return e;
-              }
-            })
-          : [],
+        Array.isArray(currentSession.messages) ? currentSession.messages : [],
       );
     } catch (error) {
       console.error("failed to read chat history", error);
@@ -663,7 +654,7 @@ const GeminiTestComponent = () => {
                       )}
                     <S.ChatBubble $isUser={message.role === "user"}>
                       <Markdown
-                        remarkPlugins={[remarkGfm]}
+                        remarkPlugins={[[remarkGfm]]}
                         rehypePlugins={[rehypeHighlight]}
                         components={{
                           pre: ({ children }) => (
@@ -671,7 +662,7 @@ const GeminiTestComponent = () => {
                           ),
                         }}
                       >
-                        {message.text}
+                        {message.text.replace(/(['|"|)|`])\*\*(.)/g, "$1** $2")}
                       </Markdown>
                     </S.ChatBubble>
                   </S.ChatBody>

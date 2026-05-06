@@ -158,7 +158,7 @@ export const MarkdownContainer = styled.div`
   :not(pre) > code {
     padding: 2px 6px;
     border-radius: 6px;
-    background: #eef2ff;
+    background: #c7e1ff;
     color: #1f2937;
   }
 

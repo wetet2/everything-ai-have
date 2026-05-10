@@ -32,7 +32,7 @@ const CopyablePre = ({ children }: { children: ReactNode }) => {
       <S.CopyButton type="button" onClick={handleCopy}>
         {copied ? "복사됨" : "복사"}
       </S.CopyButton>
-      <pre>{children}</pre>
+      <S.CodePre>{children}</S.CodePre>
     </S.CodeBlockWrap>
   );
 };

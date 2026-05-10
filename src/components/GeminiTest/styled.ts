@@ -7,22 +7,27 @@ const spin = keyframes`
 `;
 
 export const Page = styled.div`
+  position: fixed;
+  inset: 0;
+
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
 
-  width: 100vw;
-  height: 100vh;
   padding: 24px;
   background: #d9dde6;
+
+  @media screen and (max-width: 720px) {
+    padding: 16px;
+  }
 `;
 
 export const ChatContainer = styled.div`
   flex: 1;
   min-height: 0;
 
-  width: min(1000px, 95vw);
+  width: min(1000px, 95vw, 100%);
   border: 1px solid #e5e7eb;
   border-radius: 18px;
   overflow: hidden;
@@ -33,7 +38,7 @@ export const ChatContainer = styled.div`
 `;
 
 export const SessionSelectWrap = styled.div`
-  width: min(1000px, 95vw);
+  width: min(1000px, 95vw, 100%);
   margin-bottom: 12px;
   display: flex;
   gap: 8px;
@@ -78,6 +83,10 @@ export const MessagesArea = styled.div`
   &::-webkit-scrollbar-thumb:hover {
     background: #d1d5db;
   }
+
+  @media screen and (max-width: 720px) {
+    padding: 12px;
+  }
 `;
 
 export const EmptyMessage = styled.div`
@@ -98,8 +107,9 @@ export const MessageItem = styled.li<{ $isUser: boolean }>`
   margin-bottom: 14px;
 `;
 
-export const ChatBody = styled.div`
-  max-width: min(90%, 880px);
+export const ChatBody = styled.div<{ $isUser: boolean }>`
+  max-width: none;
+  width: ${({ $isUser }) => ($isUser ? "" : "100%")};
 `;
 
 export const MarkdownContainer = styled.div`
@@ -151,7 +161,7 @@ export const MarkdownContainer = styled.div`
 
   pre code {
     color: #e2e8f0;
-    display: block;
+    /* display: block; */
     line-height: 1.55;
   }
 
@@ -206,6 +216,14 @@ export const ChatBubble = styled(MarkdownContainer)<{ $isUser: boolean }>`
 
 export const CodeBlockWrap = styled.div`
   position: relative;
+`;
+
+export const CodePre = styled.pre`
+  & > code {
+    display: inline-block;
+    min-width: 100%;
+    padding-right: 56px;
+  }
 `;
 
 export const CopyButton = styled.button`
@@ -302,38 +320,10 @@ export const ModelSelectWrap = styled.div`
   align-items: center;
   gap: 6px;
   margin-bottom: 8px;
-`;
 
-export const ModelChipGroup = styled.div`
-  display: flex;
-  gap: 6px;
-`;
-
-export const ModelChip = styled.button<{ $active: boolean }>`
-  padding: 3px 10px;
-  border-radius: 12px;
-  font-size: 12px;
-  font-weight: 400;
-  border: 1px solid ${({ $active }) => ($active ? "#6f54ff" : "#d1d5db")};
-  background: ${({ $active }) => ($active ? "#ede9ff" : "#fff")};
-  color: ${({ $active }) => ($active ? "#6f54ff" : "#6b7280")};
-  text-shadow: ${({ $active }) =>
-    $active ? "0 0 0.5px #6f54ff, 0 0 0.5px #6f54ff" : "none"};
-  cursor: pointer;
-  transition: all 0.15s;
-
-  &:hover:not(:disabled) {
-    border-color: #6f54ff;
-    color: #6f54ff;
-    text-shadow:
-      0 0 0.5px #6f54ff,
-      0 0 0.5px #6f54ff;
-  }
-
-  &:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-  }
+  white-space: nowrap;
+  /* overflow-x: auto;
+  overflow-y: hidden; */
 `;
 
 export const DeleteSessionButton = styled.button`

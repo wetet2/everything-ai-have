@@ -646,25 +646,31 @@ const GeminiTestComponent = () => {
                   key={message.id}
                   $isUser={message.role === "user"}
                 >
-                  <S.ChatBody>
+                  <S.ChatBody $isUser={message.role === "user"}>
                     {isLoading &&
                       message.role === "assistant" &&
                       message.id === activeAssistantId && (
                         <S.StatusText>{getStatusLabel()}</S.StatusText>
                       )}
-                    <S.ChatBubble $isUser={message.role === "user"}>
-                      <Markdown
-                        remarkPlugins={[[remarkGfm]]}
-                        rehypePlugins={[rehypeHighlight]}
-                        components={{
-                          pre: ({ children }) => (
-                            <CopyablePre>{children}</CopyablePre>
-                          ),
-                        }}
-                      >
-                        {message.text.replace(/(['|"|)|`])\*\*(.)/g, "$1** $2")}
-                      </Markdown>
-                    </S.ChatBubble>
+
+                    {message.text && (
+                      <S.ChatBubble $isUser={message.role === "user"}>
+                        <Markdown
+                          remarkPlugins={[[remarkGfm]]}
+                          rehypePlugins={[rehypeHighlight]}
+                          components={{
+                            pre: ({ children }) => (
+                              <CopyablePre>{children}</CopyablePre>
+                            ),
+                          }}
+                        >
+                          {message.text.replace(
+                            /(['|"|)|`])\*\*(.)/g,
+                            "$1** $2",
+                          )}
+                        </Markdown>
+                      </S.ChatBubble>
+                    )}
                   </S.ChatBody>
                 </S.MessageItem>
               ))}
@@ -691,20 +697,68 @@ const GeminiTestComponent = () => {
                 Claude
               </S.ProviderToggleButton>
             </S.ProviderToggleWrap>
-            {modelOptions.map((opt) => (
-              <S.ModelChip
-                key={opt.value}
-                $active={selectedModel === opt.value}
-                onClick={() => {
-                  if (isLoading) return;
-                  setSelectedModel(opt.value);
-                  saveSettings(provider, opt.value);
-                }}
-                disabled={isLoading}
-              >
-                {opt.label}
-              </S.ModelChip>
-            ))}
+            <Select
+              options={modelOptions}
+              value={
+                modelOptions.find((opt) => opt.value === selectedModel) ?? null
+              }
+              onChange={(opt) => {
+                if (!opt || isLoading) return;
+                setSelectedModel(opt.value);
+                saveSettings(provider, opt.value);
+              }}
+              isSearchable={false}
+              isDisabled={isLoading}
+              menuPlacement="top"
+              styles={{
+                container: (base) => ({
+                  ...base,
+                  minWidth: 160,
+                }),
+                control: (base, state) => ({
+                  ...base,
+                  minHeight: 32,
+                  height: 32,
+                  borderRadius: 8,
+                  fontSize: 13,
+                  borderColor: state.isFocused ? "#94a3b8" : "#d1d5db",
+                  boxShadow: "none",
+                  cursor: "pointer",
+                  "&:hover": {
+                    borderColor: "#94a3b8",
+                  },
+                }),
+                valueContainer: (base) => ({
+                  ...base,
+                  padding: "0 8px",
+                }),
+                indicatorsContainer: (base) => ({
+                  ...base,
+                  height: 32,
+                  paddingRight: 4,
+                }),
+                indicatorSeparator: () => ({
+                  display: "none",
+                }),
+                menu: (base) => ({
+                  ...base,
+                  zIndex: 10,
+                  minWidth: 160,
+                }),
+                option: (base, state) => ({
+                  ...base,
+                  fontSize: 13,
+                  backgroundColor: state.isFocused ? "#f3f4f6" : "#fff",
+                  color: "#111827",
+                  cursor: "pointer",
+                }),
+                singleValue: (base) => ({
+                  ...base,
+                  color: "#111827",
+                  fontSize: 13,
+                }),
+              }}
+            />
           </S.ModelSelectWrap>
           <S.InputRow>
             <S.TextInput

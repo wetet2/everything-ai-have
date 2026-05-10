@@ -547,7 +547,7 @@ const GeminiTestComponent = () => {
   return (
     <S.Page>
       <S.SessionSelectWrap>
-        <div style={{ flex: 1 }}>
+        <div style={{ flex: 1, minWidth: 0 }}>
           <Select<SessionOption, false>
             options={sessionOptions}
             value={selectedSessionOption}
@@ -710,10 +710,12 @@ const GeminiTestComponent = () => {
               isSearchable={false}
               isDisabled={isLoading}
               menuPlacement="top"
+              menuIsOpen
               styles={{
                 container: (base) => ({
                   ...base,
-                  minWidth: 160,
+                  flex: 1,
+                  minWidth: 0,
                 }),
                 control: (base, state) => ({
                   ...base,
@@ -744,6 +746,7 @@ const GeminiTestComponent = () => {
                   ...base,
                   zIndex: 10,
                   minWidth: 160,
+                  right: 0,
                 }),
                 option: (base, state) => ({
                   ...base,

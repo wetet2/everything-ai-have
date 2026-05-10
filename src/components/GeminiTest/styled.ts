@@ -27,7 +27,7 @@ export const ChatContainer = styled.div`
   flex: 1;
   min-height: 0;
 
-  width: min(1000px, 95vw, 100%);
+  width: min(1000px, 100%);
   border: 1px solid #e5e7eb;
   border-radius: 18px;
   overflow: hidden;
@@ -38,7 +38,7 @@ export const ChatContainer = styled.div`
 `;
 
 export const SessionSelectWrap = styled.div`
-  width: min(1000px, 95vw, 100%);
+  width: min(1000px, 100%);
   margin-bottom: 12px;
   display: flex;
   gap: 8px;
@@ -356,8 +356,6 @@ export const ProviderToggleWrap = styled.div`
   align-items: center;
   gap: 0;
 
-  width: 161px;
-
   background: #e5e7eb;
   border-radius: 20px;
   padding: 3px;
@@ -368,7 +366,6 @@ export const ProviderToggleButton = styled.button<{ $active: boolean }>`
   padding: 5px 18px;
   border-radius: 16px;
   font-size: 13px;
-  /* font-weight: ${({ $active }) => ($active ? 600 : 400)}; */
   border: none;
   background: ${({ $active }) => ($active ? "#fff" : "transparent")};
   color: ${({ $active }) => ($active ? "#111827" : "#6b7280")};
@@ -387,6 +384,10 @@ export const ProviderToggleButton = styled.button<{ $active: boolean }>`
   &:disabled {
     opacity: 0.5;
     cursor: not-allowed;
+  }
+
+  @media screen and (max-width: 720px) {
+    padding: 5px 8px;
   }
 `;
 

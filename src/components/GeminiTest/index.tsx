@@ -710,7 +710,6 @@ const GeminiTestComponent = () => {
               isSearchable={false}
               isDisabled={isLoading}
               menuPlacement="top"
-              menuIsOpen
               styles={{
                 container: (base) => ({
                   ...base,

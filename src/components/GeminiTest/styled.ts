@@ -170,6 +170,7 @@ export const MarkdownContainer = styled.div`
     border-radius: 6px;
     background: #c7e1ff;
     color: #1f2937;
+    word-break: break-word;
   }
 
   .hljs-keyword,

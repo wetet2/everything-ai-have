@@ -6,6 +6,7 @@ import Markdown from "react-markdown";
 import Select from "react-select";
 import rehypeHighlight from "rehype-highlight";
 import remarkGfm from "remark-gfm";
+import dynamic from "next/dynamic";
 
 import SendIcon from "../../../resources/icons/SendIcon";
 import TrashIcon from "../../../resources/icons/TrashIcon";
@@ -18,6 +19,7 @@ type ChatMessage = {
   id: number;
   role: "user" | "assistant";
   text: string;
+  images?: string[]; // base64 또는 URL
 };
 
 type StreamStatus = "idle" | "requesting" | "thinking" | "streaming" | "error";
@@ -46,14 +48,17 @@ const SETTINGS_STORAGE_KEY = "wetet-settings";
 const CREATE_SESSION_OPTION_VALUE = "__create_session__";
 
 const GEMINI_MODEL_OPTIONS = [
+  { value: "gemini-3.5-flash", label: "Gemini 3.5 Flash" },
   { value: "gemini-3.1-flash-lite-preview", label: "Gemini 3.1 Flash Lite" },
   { value: "gemini-3.1-pro-preview", label: "Gemini 3.1 Pro" },
 ];
 
 const CLAUDE_MODEL_OPTIONS = [
   { value: "claude-haiku-4-5-20251001", label: "haiku 4.5" },
+  { value: "claude-sonnet-4-5", label: "Sonnet 4.5" },
   { value: "claude-sonnet-4-6", label: "Sonnet 4.6" },
   { value: "claude-opus-4-6", label: "Opus 4.6" },
+  { value: "claude-opus-4-7", label: "Opus 4.7" },
 ];
 
 const GeminiTestComponent = () => {
@@ -64,6 +69,9 @@ const GeminiTestComponent = () => {
   const [provider, setProvider] = useState<AiProvider>("gemini");
 
   const ai = useMemo(() => new GoogleGenAI({ apiKey: gkey ?? "" }), [gkey]);
+
+  // 모델 리스트 출력
+  // if (ai) ai.models.list().then((e) => console.log(e));
 
   const [isMounted, setIsMounted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);

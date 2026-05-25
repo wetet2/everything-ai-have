@@ -12,5 +12,11 @@
   },
   "eslint.nodePath": ".yarn/sdks",
   "typescript.tsdk": ".yarn/sdks/typescript/lib",
-  "typescript.enablePromptUseWorkspaceTsdk": true
+  "typescript.enablePromptUseWorkspaceTsdk": true,
+  "chat.tools.terminal.autoApprove": {
+    "/^node -e \"const \\{ GoogleGenAI \\} = require\\('@google/genai'\\); const ai = new GoogleGenAI\\(\\{apiKey: process\\.env\\.GEMINI_API_KEY \\|\\| 'dummy'\\}\\); ai\\.models\\.list\\(\\)\\.then\\(res => console\\.log\\(res\\)\\)\\.catch\\(console\\.error\\)\"$/": {
+      "approve": true,
+      "matchCommandLine": true
+    }
+  }
 }

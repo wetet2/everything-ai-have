@@ -51,6 +51,9 @@ const GEMINI_MODEL_OPTIONS = [
   { value: "gemini-3.5-flash", label: "Gemini 3.5 Flash" },
   { value: "gemini-3.1-flash-lite-preview", label: "Gemini 3.1 Flash Lite" },
   { value: "gemini-3.1-pro-preview", label: "Gemini 3.1 Pro" },
+  { value: "imagen-4.0-ultra-generate-001", label: "Imagen 4 ultra" },
+  { value: "imagen-4.0-generate-001", label: "Imagen 4" },
+  { value: "models/imagen-4.0-fast-generate-001", label: "Imagen 4 fast" },
 ];
 
 const CLAUDE_MODEL_OPTIONS = [
@@ -247,6 +250,62 @@ const GeminiTestComponent = () => {
     input: string,
     assistantMessageId: number,
   ) => {
+    // 이미지 생성 모델인 경우
+    if (selectedModel.startsWith("imagen-")) {
+      setStreamStatus("thinking");
+      try {
+        const response = await ai.models.generateImages({
+          model: selectedModel,
+          prompt: input,
+          config: {
+            numberOfImages: 1,
+            outputMimeType: "image/png",
+          },
+        });
+
+        const base64Image = response.generatedImages?.[0]?.image?.imageBytes;
+
+        if (base64Image) {
+          const imageUrl = `data:image/png;base64,${base64Image}`;
+          setMessages((prev) =>
+            prev.map((message) =>
+              message.id === assistantMessageId
+                ? {
+                    ...message,
+                    text: "이미지가 생성되었습니다.",
+                    images: [imageUrl],
+                  }
+                : message,
+            ),
+          );
+        } else {
+          setMessages((prev) =>
+            prev.map((message) =>
+              message.id === assistantMessageId
+                ? {
+                    ...message,
+                    text: "이미지 생성에 실패했습니다. (응답 데이터 없음)",
+                  }
+                : message,
+            ),
+          );
+        }
+      } catch (e: any) {
+        setMessages((prev) =>
+          prev.map((message) =>
+            message.id === assistantMessageId
+              ? {
+                  ...message,
+                  text: `이미지 생성 중 오류가 발생했습니다: ${e.message}`,
+                }
+              : message,
+          ),
+        );
+      }
+      setStreamStatus("idle");
+      return;
+    }
+
     const history = messages.slice(-1 * AI_MAX_CONTEXT).map((m) => ({
       role: m.role === "user" ? "user" : "model",
       parts: [{ text: m.text }],
@@ -526,16 +585,27 @@ const GeminiTestComponent = () => {
         return;
       }
 
+      const messagesToSave = messages.map((msg) => {
+        if (msg.images && msg.images.length > 0) {
+          return {
+            ...msg,
+            images: [],
+            text: msg.text + (msg.text ? "\n\n[이미지]" : "[이미지]"),
+          };
+        }
+        return msg;
+      });
+
       if (targetIndex >= 0) {
         sessions[targetIndex] = {
           ...sessions[targetIndex],
-          messages,
+          messages: messagesToSave,
         };
       } else {
         sessions.push({
           id: sessionId,
           startedAt: new Date().toISOString(),
-          messages,
+          messages: messagesToSave,
         });
       }
 
@@ -677,6 +747,30 @@ const GeminiTestComponent = () => {
                             "$1** $2",
                           )}
                         </Markdown>
+                      </S.ChatBubble>
+                    )}
+
+                    {message.images && message.images.length > 0 && (
+                      <S.ChatBubble
+                        $isUser={message.role === "user"}
+                        style={{
+                          marginTop: "8px",
+                          padding: 0,
+                          overflow: "hidden",
+                        }}
+                      >
+                        {message.images.map((imgUrl, i) => (
+                          <img
+                            key={i}
+                            src={imgUrl}
+                            alt="Generated content"
+                            style={{
+                              display: "block",
+                              maxWidth: "100%",
+                              borderRadius: "8px",
+                            }}
+                          />
+                        ))}
                       </S.ChatBubble>
                     )}
                   </S.ChatBody>

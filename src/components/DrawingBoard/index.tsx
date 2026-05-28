@@ -4,12 +4,13 @@ import PenIcon from "../../../resources/icons/PenIcon";
 import RectIcon from "../../../resources/icons/RectIcon";
 import TextIcon from "../../../resources/icons/TextIcon";
 import TrashIcon from "../../../resources/icons/TrashIcon";
+import CircleIcon from "../../../resources/icons/CircleIcon";
 import * as S from "./styled";
 
 // 기본 팔레트 색상 8가지
 const COLOR_PALETTE = [
   "#000000", // 검정
-  // "#ffffff", // 흰색
+  "#ffffff", // 흰색
   "#ef4444", // 빨강
   "#FFA500", // 오렌지
   "#22c55e", // 초록
@@ -18,7 +19,7 @@ const COLOR_PALETTE = [
   "#d946ef", // 마젠타
 ];
 
-type DrawMode = "pen" | "rect" | "text";
+type DrawMode = "pen" | "rect" | "circle" | "text";
 
 type TextInput = {
   visible: boolean;
@@ -72,6 +73,8 @@ export default function DrawingBoard() {
   const startPos = useRef({ x: 0, y: 0 });
   // 직사각형 그릴 때 배경 스냅샷 (실시간 프리뷰용)
   const rectSnapshot = useRef<ImageData | null>(null);
+  // Shift 키 눌림 상태 추적
+  const isShiftPressed = useRef(false);
 
   // 스택 상태를 React state에 동기화
   const syncStackState = useCallback(() => {
@@ -193,6 +196,14 @@ export default function DrawingBoard() {
           canvas.width,
           canvas.height,
         );
+      } else if (mode === "circle") {
+        // 원 프리뷰를 위해 현재 상태 스냅샷 저장
+        rectSnapshot.current = ctx.getImageData(
+          0,
+          0,
+          canvas.width,
+          canvas.height,
+        );
       }
     },
     [mode, saveState, textInput, handleTextConfirm],
@@ -221,12 +232,38 @@ export default function DrawingBoard() {
         }
         const x = Math.min(startPos.current.x, pos.x);
         const y = Math.min(startPos.current.y, pos.y);
-        const w = Math.abs(pos.x - startPos.current.x);
-        const h = Math.abs(pos.y - startPos.current.y);
+        let w = Math.abs(pos.x - startPos.current.x);
+        let h = Math.abs(pos.y - startPos.current.y);
+        // Shift 키가 눌려있으면 정사각형으로 그리기
+        if (isShiftPressed.current) {
+          const size = Math.min(w, h);
+          w = size;
+          h = size;
+        }
         ctx.strokeStyle = color;
         ctx.lineWidth = lineWidth;
         ctx.lineJoin = "miter";
         ctx.strokeRect(x, y, w, h);
+      } else if (mode === "circle") {
+        // 스냅샷으로 복원 후 원 프리뷰 그리기
+        if (rectSnapshot.current) {
+          ctx.putImageData(rectSnapshot.current, 0, 0);
+        }
+        let rx = Math.abs(pos.x - startPos.current.x) / 2;
+        let ry = Math.abs(pos.y - startPos.current.y) / 2;
+        // Shift 키가 눌려있으면 진원으로 그리기
+        if (isShiftPressed.current) {
+          const r = Math.min(rx, ry);
+          rx = r;
+          ry = r;
+        }
+        const centerX = Math.min(startPos.current.x, pos.x) + rx;
+        const centerY = Math.min(startPos.current.y, pos.y) + ry;
+        ctx.strokeStyle = color;
+        ctx.lineWidth = lineWidth;
+        ctx.beginPath();
+        ctx.ellipse(centerX, centerY, rx, ry, 0, 0, Math.PI * 2);
+        ctx.stroke();
       }
     },
     [mode, color, lineWidth],
@@ -248,12 +285,39 @@ export default function DrawingBoard() {
         }
         const x = Math.min(startPos.current.x, pos.x);
         const y = Math.min(startPos.current.y, pos.y);
-        const w = Math.abs(pos.x - startPos.current.x);
-        const h = Math.abs(pos.y - startPos.current.y);
+        let w = Math.abs(pos.x - startPos.current.x);
+        let h = Math.abs(pos.y - startPos.current.y);
+        // Shift 키가 눌려있으면 정사각형으로 그리기
+        if (isShiftPressed.current) {
+          const size = Math.min(w, h);
+          w = size;
+          h = size;
+        }
         ctx.strokeStyle = color;
         ctx.lineWidth = lineWidth;
         ctx.lineJoin = "miter";
         ctx.strokeRect(x, y, w, h);
+        rectSnapshot.current = null;
+      } else if (mode === "circle") {
+        const pos = getPos(e);
+        if (rectSnapshot.current) {
+          ctx.putImageData(rectSnapshot.current, 0, 0);
+        }
+        let rx = Math.abs(pos.x - startPos.current.x) / 2;
+        let ry = Math.abs(pos.y - startPos.current.y) / 2;
+        // Shift 키가 눌려있으면 진원으로 그리기
+        if (isShiftPressed.current) {
+          const r = Math.min(rx, ry);
+          rx = r;
+          ry = r;
+        }
+        const centerX = Math.min(startPos.current.x, pos.x) + rx;
+        const centerY = Math.min(startPos.current.y, pos.y) + ry;
+        ctx.strokeStyle = color;
+        ctx.lineWidth = lineWidth;
+        ctx.beginPath();
+        ctx.ellipse(centerX, centerY, rx, ry, 0, 0, Math.PI * 2);
+        ctx.stroke();
         rectSnapshot.current = null;
       }
     },
@@ -337,19 +401,25 @@ export default function DrawingBoard() {
       textOverlayRef.current?.focus();
     }
   }, [textInput.visible, textInput.x, textInput.y]);
-
-  // 키보드 단축키 (Ctrl+Z / Ctrl+Y 또는 Ctrl+Shift+Z)
+  // 키보드 핸들러 통합: Shift 추적 + 단축키 처리
   useEffect(() => {
     const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Shift") {
+        isShiftPressed.current = true;
+      }
+
       // 텍스트 입력 중에는 단축키 무시
       if (document.activeElement === textOverlayRef.current) return;
+
       if (e.ctrlKey && e.key === "z") {
         e.preventDefault();
         handleUndo();
+        return;
       }
       if (e.ctrlKey && (e.key === "y" || (e.shiftKey && e.key === "Z"))) {
         e.preventDefault();
         handleRedo();
+        return;
       }
       if (e.key === "t") {
         e.preventDefault();
@@ -358,6 +428,10 @@ export default function DrawingBoard() {
       if (e.key === "r" && !e.ctrlKey) {
         e.preventDefault();
         setMode("rect");
+      }
+      if (e.key === "o" && !e.ctrlKey) {
+        e.preventDefault();
+        setMode("circle");
       }
       if (e.key === "p") {
         e.preventDefault();
@@ -368,8 +442,19 @@ export default function DrawingBoard() {
         handleClear();
       }
     };
+
+    const onKeyUp = (e: KeyboardEvent) => {
+      if (e.key === "Shift") {
+        isShiftPressed.current = false;
+      }
+    };
+
     window.addEventListener("keydown", onKeyDown);
-    return () => window.removeEventListener("keydown", onKeyDown);
+    window.addEventListener("keyup", onKeyUp);
+    return () => {
+      window.removeEventListener("keydown", onKeyDown);
+      window.removeEventListener("keyup", onKeyUp);
+    };
   }, [handleUndo, handleRedo, handleClear]);
 
   useEffect(() => {
@@ -395,6 +480,13 @@ export default function DrawingBoard() {
             title="직사각형"
           >
             <RectIcon />
+          </S.ModeButton>
+          <S.ModeButton
+            $active={mode === "circle"}
+            onClick={() => setMode("circle")}
+            title="원"
+          >
+            <CircleIcon />
           </S.ModeButton>
           <S.ModeButton
             $active={mode === "text"}

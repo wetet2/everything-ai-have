@@ -645,6 +645,7 @@ export default function DrawingBoard() {
         if (textInput.visible) {
           // 기존 텍스트 입력 중이면 먼저 확정
           handleTextConfirm(textInput.value, textInput.x, textInput.y);
+          return;
         }
         setTextInput({ visible: true, x: pos.x, y: pos.y, value: "" });
         setTextInputWidth(80);

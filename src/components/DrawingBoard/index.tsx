@@ -1399,6 +1399,31 @@ export default function DrawingBoard() {
     renderScene([]);
   }, [saveState, renderScene]);
 
+  // 이동/리사이즈 가능한(확정 전) 이미지를 삭제
+  const handleDeleteFloatingImage = useCallback(() => {
+    if (loadedImagesRef.current.length === 0) return;
+
+    saveState();
+    const targetIndex =
+      draggingImageIndex ??
+      resizingImageIndex ??
+      loadedImagesRef.current.length - 1;
+
+    setLoadedImages((prev) => {
+      if (prev.length === 0) return prev;
+      const safeIndex = Math.max(0, Math.min(targetIndex, prev.length - 1));
+      const next = prev.filter((_, idx) => idx !== safeIndex);
+      loadedImagesRef.current = next;
+      renderScene(next);
+      return next;
+    });
+
+    setDraggingImageIndex(null);
+    setResizingImageIndex(null);
+    setActiveResizeHandle(null);
+    setCanvasCursor("default");
+  }, [draggingImageIndex, resizingImageIndex, saveState, renderScene]);
+
   // 실행 취소
   const handleUndo = useCallback(() => {
     if (undoStack.current.length === 0) return;
@@ -1474,21 +1499,23 @@ export default function DrawingBoard() {
         e.preventDefault();
         setMode("text");
       }
-      if (e.key === "r" && !e.ctrlKey && !e.metaKey) {
+      if (e.key === "e" && !e.ctrlKey && !e.metaKey) {
         e.preventDefault();
         setMode("rect");
       }
-      if (e.key === "o" && !e.ctrlKey && !e.metaKey) {
+      if (e.key === "r" && !e.ctrlKey && !e.metaKey) {
         e.preventDefault();
         setMode("circle");
       }
-      if (e.key === "p") {
+      if (e.key === "w") {
         e.preventDefault();
         setMode("pen");
       }
       if (e.key === "Delete") {
-        e.preventDefault();
-        handleClear();
+        if (mode === "image" && loadedImagesRef.current.length > 0) {
+          e.preventDefault();
+          handleDeleteFloatingImage();
+        }
       }
     };
 
@@ -1507,7 +1534,7 @@ export default function DrawingBoard() {
   }, [
     handleUndo,
     handleRedo,
-    handleClear,
+    handleDeleteFloatingImage,
     mode,
     commitFloatingImagesToDrawingLayer,
   ]);
@@ -1562,28 +1589,28 @@ export default function DrawingBoard() {
           <S.ModeButton
             $active={mode === "pen"}
             onClick={() => setMode("pen")}
-            title="펜"
+            title="펜(w)"
           >
             <PenIcon />
           </S.ModeButton>
           <S.ModeButton
             $active={mode === "rect"}
             onClick={() => setMode("rect")}
-            title="직사각형"
+            title="직사각형(e)"
           >
             <RectIcon />
           </S.ModeButton>
           <S.ModeButton
             $active={mode === "circle"}
             onClick={() => setMode("circle")}
-            title="원"
+            title="원(r)"
           >
             <CircleIcon />
           </S.ModeButton>
           <S.ModeButton
             $active={mode === "text"}
             onClick={() => setMode("text")}
-            title="텍스트"
+            title="텍스트(t)"
           >
             <TextIcon />
           </S.ModeButton>
@@ -1606,7 +1633,7 @@ export default function DrawingBoard() {
             <S.ColorPickerButtonWrap>
               <S.ColorPickerButton
                 onClick={() => setShowColorPicker(!showColorPicker)}
-                title="색상 선택기"
+                title="직접 선택"
                 $color={color}
               >
                 <span style={{ fontSize: "18px", fontWeight: "bold" }}>+</span>

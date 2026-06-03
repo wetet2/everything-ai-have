@@ -58,6 +58,66 @@ export const ColorSwatch = styled.button<ColorSwatchProps>`
   }
 `;
 
+export const ColorPickerButtonWrap = styled.div`
+  position: relative;
+`;
+
+interface ColorPickerButtonProps {
+  $color: string;
+}
+
+export const ColorPickerButton = styled.button<ColorPickerButtonProps>`
+  width: 40px;
+  height: 28px;
+  border-radius: 6px;
+  border: 2px solid #d1d5db;
+  background: ${({ $color }) => $color};
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  transition: all 0.15s;
+  position: relative;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+
+  span {
+    margin-bottom: 1px;
+    line-height: 1;
+    font-size: 18px;
+    font-weight: bold;
+    color: ${({ $color }) => {
+      // 밝은 색상인 경우 검은색, 어두운 색상인 경우 흰색 텍스트
+      const hex = $color.replace("#", "");
+      const r = parseInt(hex.substring(0, 2), 16);
+      const g = parseInt(hex.substring(2, 4), 16);
+      const b = parseInt(hex.substring(4, 6), 16);
+      const brightness = (r * 299 + g * 587 + b * 114) / 1000;
+      return brightness > 155 ? "#000000" : "#ffffff";
+    }};
+    text-shadow: 0 0 2px rgba(0, 0, 0, 0.3);
+  }
+
+  &:hover {
+    border-color: #3b82f6;
+    transform: scale(1.08);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  }
+`;
+
+export const ColorPickerPopover = styled.div`
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  z-index: 100;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+
+  .chrome-picker {
+    font-family: inherit !important;
+  }
+`;
+
 export const Slider = styled.input`
   width: 100px;
   accent-color: #3b82f6;

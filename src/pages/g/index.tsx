@@ -1,3 +1,3 @@
-import GeminiTestComponent from "@/components/GeminiTest";
+import AiChatComponent from "@/components/AiChat";
 
-export default GeminiTestComponent;
+export default AiChatComponent;

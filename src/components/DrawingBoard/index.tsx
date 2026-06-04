@@ -1658,7 +1658,7 @@ export default function DrawingBoard() {
             <S.Slider
               type="range"
               min={1}
-              max={100}
+              max={70}
               value={lineWidth}
               onChange={(e) => setLineWidth(Number(e.target.value))}
             />

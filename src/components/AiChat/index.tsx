@@ -6,7 +6,6 @@ import Markdown from "react-markdown";
 import Select from "react-select";
 import rehypeHighlight from "rehype-highlight";
 import remarkGfm from "remark-gfm";
-import dynamic from "next/dynamic";
 
 import SendIcon from "../../../resources/icons/SendIcon";
 import TrashIcon from "../../../resources/icons/TrashIcon";
@@ -64,14 +63,25 @@ const CLAUDE_MODEL_OPTIONS = [
   { value: "claude-opus-4-7", label: "Opus 4.7" },
 ];
 
-const GeminiTestComponent = () => {
+const AiChatComponent = () => {
   const router = useRouter();
   const gkey = router.query.gkey as string | undefined;
   const ckey = router.query.ckey as string | undefined;
 
   const [provider, setProvider] = useState<AiProvider>("gemini");
 
-  const ai = useMemo(() => new GoogleGenAI({ apiKey: gkey ?? "" }), [gkey]);
+  const geminiAi = useMemo(
+    () => new GoogleGenAI({ apiKey: gkey ?? "" }),
+    [gkey],
+  );
+  const claudeAi = useMemo(
+    () =>
+      new Anthropic({
+        apiKey: ckey ?? "",
+        dangerouslyAllowBrowser: true,
+      }),
+    [ckey],
+  );
 
   // 모델 리스트 출력
   // if (ai) ai.models.list().then((e) => console.log(e));
@@ -224,14 +234,12 @@ const GeminiTestComponent = () => {
     if (!ok) return;
 
     try {
-      window.localStorage.setItem(
-        CHAT_STORAGE_KEY,
-        JSON.stringify({ sessions: [] }),
-      );
+      window.localStorage.removeItem(CHAT_STORAGE_KEY);
       window.sessionStorage.removeItem(ACTIVE_SESSION_KEY);
 
       setSessions([]);
-      handleSelectSession(CREATE_SESSION_OPTION_VALUE);
+      setSessionId(null);
+      setMessages([]);
     } catch (error) {
       console.error("failed to delete all sessions", error);
       alert("전체 세션 삭제 중 오류가 발생했습니다.");
@@ -254,7 +262,7 @@ const GeminiTestComponent = () => {
     if (selectedModel.startsWith("imagen-")) {
       setStreamStatus("thinking");
       try {
-        const response = await ai.models.generateImages({
+        const response = await geminiAi.models.generateImages({
           model: selectedModel,
           prompt: input,
           config: {
@@ -311,11 +319,12 @@ const GeminiTestComponent = () => {
       parts: [{ text: m.text }],
     }));
 
-    const responseStream = await ai.models.generateContentStream({
+    const responseStream = await geminiAi.models.generateContentStream({
       model: selectedModel,
       contents: [...history, { role: "user", parts: [{ text: input }] }],
       config: {},
     });
+
     setStreamStatus("thinking");
     let hasReceivedTextChunk = false;
 
@@ -342,11 +351,6 @@ const GeminiTestComponent = () => {
     input: string,
     assistantMessageId: number,
   ) => {
-    const claudeClient = new Anthropic({
-      apiKey: ckey ?? "",
-      dangerouslyAllowBrowser: true,
-    });
-
     const history = messages.slice(-1 * AI_MAX_CONTEXT).map((m) => ({
       role: m.role as "user" | "assistant",
       content: m.text,
@@ -357,7 +361,7 @@ const GeminiTestComponent = () => {
       { role: "user" as const, content: input },
     ];
 
-    const stream = claudeClient.messages.stream({
+    const stream = claudeAi.messages.stream({
       model: selectedModel,
       max_tokens: 8096,
       messages: claudeMessages,
@@ -619,6 +623,33 @@ const GeminiTestComponent = () => {
       console.error("failed to save chat history", error);
     }
   }, [messages, isMessagesHydrated, sessionId]);
+
+  useEffect(() => {
+    (async () => {
+      /** 모델 목록 조회 */
+      if (gkey && geminiAi) {
+        console.log();
+        console.log("==============================================");
+        console.log("============ Gemini 모델 목록 =================");
+        console.log("==============================================");
+        const modelList = (await geminiAi.models.list()) as any;
+        modelList?.pageInternal?.forEach((model: any) =>
+          console.log(model.name + ` (${model.displayName})`),
+        );
+      }
+
+      if (ckey && claudeAi) {
+        console.log();
+        console.log("==============================================");
+        console.log("============ Claude 모델 목록 =================");
+        console.log("==============================================");
+        const response = await claudeAi.models.list();
+        response.data.forEach((model: any) => {
+          console.log(`모델 ID: ${model.id}`);
+        });
+      }
+    })();
+  }, [geminiAi, claudeAi, ckey, gkey]);
 
   if (!isMounted) return null;
 
@@ -892,4 +923,4 @@ const GeminiTestComponent = () => {
   );
 };
 
-export default GeminiTestComponent;
+export default AiChatComponent;

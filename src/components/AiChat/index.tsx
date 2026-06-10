@@ -13,6 +13,8 @@ import TrashXIcon from "../../../resources/icons/TrashXIcon";
 import CopyablePre from "./CopyablePre";
 
 import * as S from "./styled";
+import Image from "next/image";
+import { isEmpty } from "lodash-es";
 
 type ChatMessage = {
   id: number;
@@ -46,21 +48,21 @@ const ACTIVE_SESSION_KEY = "wetet-chat-active-session-id";
 const SETTINGS_STORAGE_KEY = "wetet-settings";
 const CREATE_SESSION_OPTION_VALUE = "__create_session__";
 
-const GEMINI_MODEL_OPTIONS = [
-  { value: "gemini-3.5-flash", label: "Gemini 3.5 Flash" },
-  { value: "gemini-3.1-flash-lite-preview", label: "Gemini 3.1 Flash Lite" },
-  { value: "gemini-3.1-pro-preview", label: "Gemini 3.1 Pro" },
-  { value: "imagen-4.0-ultra-generate-001", label: "Imagen 4 ultra" },
-  { value: "imagen-4.0-generate-001", label: "Imagen 4" },
-  { value: "models/imagen-4.0-fast-generate-001", label: "Imagen 4 fast" },
+const FAVORITE_MODELS_GEMINI = [
+  "gemini-3.5-flash",
+  "gemini-3.1-flash-lite-preview",
+  "gemini-3.1-pro-preview",
+  "imagen-4.0-ultra-generate-001",
+  "imagen-4.0-generate-001",
+  "models/imagen-4.0-fast-generate-001",
 ];
 
-const CLAUDE_MODEL_OPTIONS = [
-  { value: "claude-haiku-4-5-20251001", label: "haiku 4.5" },
-  { value: "claude-sonnet-4-5", label: "Sonnet 4.5" },
-  { value: "claude-sonnet-4-6", label: "Sonnet 4.6" },
-  { value: "claude-opus-4-6", label: "Opus 4.6" },
-  { value: "claude-opus-4-7", label: "Opus 4.7" },
+const FAVORITE_MODELS_CLAUDE = [
+  "claude-haiku-4-5-20251001",
+  "claude-sonnet-4-5",
+  "claude-sonnet-4-6",
+  "claude-opus-4-6",
+  "claude-opus-4-7",
 ];
 
 const AiChatComponent = () => {
@@ -96,19 +98,45 @@ const AiChatComponent = () => {
   const [activeAssistantId, setActiveAssistantId] = useState<number | null>(
     null,
   );
-  const [selectedModel, setSelectedModel] = useState(
-    GEMINI_MODEL_OPTIONS[0].value,
-  );
+  const [selectedModel, setSelectedModel] = useState("");
   const [sessionId, setSessionId] = useState<string | null>(null);
   const [sessionOptions, setSessionOptions] = useState<any>(null);
   const [selectedSessionOption, setSelectedSessionOption] = useState<any>(null);
+  //
+  const [modelsOfGemini, setModelsOfGemini] = useState<any[]>([]);
+  const [modelsOfAnthropic, setModelsOfAnthropic] = useState<any[]>([]);
+  //
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
   const messagesAreaRef = useRef<HTMLDivElement | null>(null);
   const isUserScrolledUpRef = useRef(false);
   const textAreaRef = useRef<any>(null);
 
-  const modelOptions =
-    provider === "gemini" ? GEMINI_MODEL_OPTIONS : CLAUDE_MODEL_OPTIONS;
+  const modelOptions = useMemo(() => {
+    const _gemini1 = modelsOfGemini
+      ?.filter((e) => FAVORITE_MODELS_GEMINI.includes(e.value))
+      .map((e) => ({ ...e, isFavorite: true }));
+    const _gemini2 = modelsOfGemini?.filter(
+      (e) => !FAVORITE_MODELS_GEMINI.includes(e.value),
+    );
+    const _claude1 = modelsOfAnthropic
+      ?.filter((e) => FAVORITE_MODELS_CLAUDE.includes(e.value))
+      .map((e) => ({ ...e, isFavorite: true }));
+    const _claude2 = modelsOfAnthropic?.filter(
+      (e) => !FAVORITE_MODELS_CLAUDE.includes(e.value),
+    );
+    const _models =
+      provider === "gemini"
+        ? [..._gemini1, ..._gemini2]
+        : [..._claude1, ..._claude2];
+
+    return _models;
+  }, [provider, modelsOfGemini, modelsOfAnthropic]);
+
+  useEffect(() => {
+    if (modelOptions?.length > 0) {
+      setSelectedModel(modelOptions[0].value);
+    }
+  }, [modelOptions]);
 
   const saveSettings = (nextProvider: AiProvider, nextModel: string) => {
     try {
@@ -122,9 +150,7 @@ const AiChatComponent = () => {
   const handleProviderChange = (next: AiProvider) => {
     if (isLoading) return;
     const nextModel =
-      next === "gemini"
-        ? GEMINI_MODEL_OPTIONS[0].value
-        : CLAUDE_MODEL_OPTIONS[0].value;
+      next === "gemini" ? modelsOfGemini[0].value : modelsOfAnthropic[0].value;
     setProvider(next);
     setSelectedModel(nextModel);
     saveSettings(next, nextModel);
@@ -259,7 +285,7 @@ const AiChatComponent = () => {
     assistantMessageId: number,
   ) => {
     // 이미지 생성 모델인 경우
-    if (selectedModel.startsWith("imagen-")) {
+    if (selectedModel?.startsWith("imagen-")) {
       setStreamStatus("thinking");
       try {
         const response = await geminiAi.models.generateImages({
@@ -483,6 +509,8 @@ const AiChatComponent = () => {
   }, [messages, isLoading]);
 
   useEffect(() => {
+    if (isEmpty(modelsOfGemini) || isEmpty(modelsOfAnthropic)) return;
+
     try {
       const rawStorage = window.localStorage.getItem(CHAT_STORAGE_KEY);
       const parsedStorage: ChatStorage = rawStorage
@@ -538,7 +566,7 @@ const AiChatComponent = () => {
         };
         const savedProvider = parsed.provider;
         const savedModel = parsed.model;
-        const allModels = [...GEMINI_MODEL_OPTIONS, ...CLAUDE_MODEL_OPTIONS];
+        const allModels = [...modelsOfGemini, ...modelsOfAnthropic];
         if (
           savedProvider &&
           (savedProvider === "gemini" || savedProvider === "claude")
@@ -547,18 +575,14 @@ const AiChatComponent = () => {
           if (savedModel && allModels.some((m) => m.value === savedModel)) {
             setSelectedModel(savedModel);
           } else {
-            setSelectedModel(
-              savedProvider === "gemini"
-                ? GEMINI_MODEL_OPTIONS[0].value
-                : CLAUDE_MODEL_OPTIONS[0].value,
-            );
+            setSelectedModel(modelOptions[0].value);
           }
         }
       }
     } catch {}
 
     setIsMounted(true);
-  }, []);
+  }, [modelOptions]);
 
   useEffect(() => {
     if (typeof window === "undefined" || !isMessagesHydrated || !sessionId)
@@ -636,6 +660,12 @@ const AiChatComponent = () => {
         modelList?.pageInternal?.forEach((model: any) =>
           console.log(model.name + ` (${model.displayName})`),
         );
+        setModelsOfGemini(
+          modelList?.pageInternal?.map((model: any) => ({
+            value: model.name.replace("models/", ""),
+            label: model.displayName,
+          })) ?? [],
+        );
       }
 
       if (ckey && claudeAi) {
@@ -647,6 +677,12 @@ const AiChatComponent = () => {
         response.data.forEach((model: any) => {
           console.log(`모델 ID: ${model.id}`);
         });
+        setModelsOfAnthropic(
+          response.data.map((model: any) => ({
+            value: model.id,
+            label: model.id,
+          })) ?? [],
+        );
       }
     })();
   }, [geminiAi, claudeAi, ckey, gkey]);
@@ -791,7 +827,7 @@ const AiChatComponent = () => {
                         }}
                       >
                         {message.images.map((imgUrl, i) => (
-                          <img
+                          <Image
                             key={i}
                             src={imgUrl}
                             alt="Generated content"
@@ -880,13 +916,16 @@ const AiChatComponent = () => {
                   minWidth: 160,
                   right: 0,
                 }),
-                option: (base, state) => ({
-                  ...base,
-                  fontSize: 13,
-                  backgroundColor: state.isFocused ? "#f3f4f6" : "#fff",
-                  color: "#111827",
-                  cursor: "pointer",
-                }),
+                option: (base, state) => {
+                  return {
+                    ...base,
+                    fontSize: 13,
+                    backgroundColor: state.isFocused ? "#f3f4f6" : "#fff",
+                    fontWeight: state.data.isFavorite ? "700" : "400",
+                    color: "#111827",
+                    cursor: "pointer",
+                  };
+                },
                 singleValue: (base) => ({
                   ...base,
                   color: "#111827",

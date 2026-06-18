@@ -36,7 +36,6 @@ type ResizeHandle = "n" | "s" | "e" | "w" | "ne" | "nw" | "se" | "sw";
 const IMAGE_RESIZE_HANDLE_SIZE = 10;
 const IMAGE_MIN_SIZE = 20;
 const TEXT_OVERLAY_DRAW_OFFSET_X = 7;
-const TEXT_OVERLAY_DRAW_OFFSET_Y = 6;
 
 type BoardSnapshot = {
   drawingLayer: ImageData;
@@ -185,20 +184,21 @@ export default function DrawingBoard() {
       // 점선 느낌의 외곽선
       ctx.setLineDash(isActive ? [8, 5] : [6, 5]);
       ctx.lineDashOffset = -outlineDashOffset;
-      ctx.lineWidth = isActive ? 2 : 1.5;
+      ctx.lineWidth = 2;
       ctx.strokeStyle = isActive
-        ? "rgba(37, 99, 235, 0.95)"
+        ? "rgba(30, 64, 175, 1)"
         : "rgba(59, 130, 246, 0.8)";
       ctx.strokeRect(x, y, w, h);
 
-      // 리사이즈 핸들
+      // 리사이즈 핸들 (외곽선과 달리 실선으로 표시)
+      ctx.setLineDash([]);
       handles.forEach((handle) => {
         ctx.beginPath();
         ctx.fillStyle = "#ffffff";
         ctx.strokeStyle = isActive
-          ? "rgba(37, 99, 235, 0.95)"
+          ? "rgba(30, 64, 175, 1)"
           : "rgba(59, 130, 246, 0.8)";
-        ctx.lineWidth = 1.5;
+        ctx.lineWidth = 2;
         ctx.rect(handle.x - hs / 2, handle.y - hs / 2, hs, hs);
         ctx.fill();
         ctx.stroke();
@@ -303,11 +303,16 @@ export default function DrawingBoard() {
       if (!drawingLayer) return;
 
       const targetImages = images ?? loadedImagesRef.current;
+      const dpr = window.devicePixelRatio || 1;
 
-      // 항상 흰 배경 위에 드로잉 레이어 + 이미지 레이어 순서로 합성
+      // 배경과 드로잉 레이어는 1:1 픽셀 매핑으로 합성 (변환 초기화)
+      ctx.save();
+      ctx.setTransform(1, 0, 0, 1, 0, 0);
       ctx.fillStyle = "#ffffff";
       ctx.fillRect(0, 0, canvas.width, canvas.height);
       ctx.drawImage(drawingLayer, 0, 0);
+      ctx.restore();
+
       targetImages.forEach((img) => {
         ctx.drawImage(img.data, img.x, img.y, img.width, img.height);
       });
@@ -461,21 +466,32 @@ export default function DrawingBoard() {
       const drawingCtx = drawingLayer?.getContext("2d");
       if (!ctx || !drawingLayer || !drawingCtx) return;
 
+      const dpr = window.devicePixelRatio || 1;
+
       // 기존 드로잉 레이어를 임시 캔버스에 복사
       const tempDrawingLayer = document.createElement("canvas");
       tempDrawingLayer.width = drawingLayer.width;
       tempDrawingLayer.height = drawingLayer.height;
       tempDrawingLayer.getContext("2d")?.drawImage(drawingLayer, 0, 0);
 
-      // wrap 전체를 꽉 채움
-      canvas.width = wrap.clientWidth;
-      canvas.height = wrap.clientHeight;
-      drawingLayer.width = wrap.clientWidth;
-      drawingLayer.height = wrap.clientHeight;
+      // HiDPI 대응: 캔버스 내적 픽셀 수를 DPR 배로 늘리고 CSS 크기는 그대로 유지
+      canvas.width = wrap.clientWidth * dpr;
+      canvas.height = wrap.clientHeight * dpr;
+      canvas.style.width = `${wrap.clientWidth}px`;
+      canvas.style.height = `${wrap.clientHeight}px`;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
-      // 드로잉 레이어 내용 복원 후 장면 재합성
+      drawingLayer.width = wrap.clientWidth * dpr;
+      drawingLayer.height = wrap.clientHeight * dpr;
+      drawingCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+      // 드로잉 레이어 내용 복원 (변환을 초기화해서 1:1 픽셀 복사)
+      drawingCtx.save();
+      drawingCtx.setTransform(1, 0, 0, 1, 0, 0);
       drawingCtx.clearRect(0, 0, drawingLayer.width, drawingLayer.height);
       drawingCtx.drawImage(tempDrawingLayer, 0, 0);
+      drawingCtx.restore();
+
       renderScene();
     };
 
@@ -612,10 +628,12 @@ export default function DrawingBoard() {
       drawingCtx.font = `${fontSize}px sans-serif`;
       drawingCtx.fillStyle = getDrawColor();
       drawingCtx.textBaseline = "top";
+      // 입력창 중앙이 클릭 위치이므로, 캔버스 텍스트 y는 폰트 높이 절반만큼 위로 보정
+      const textOffsetY = -fontSize / 2 + fontSize / 20;
       drawingCtx.fillText(
         value,
         x + TEXT_OVERLAY_DRAW_OFFSET_X,
-        y + TEXT_OVERLAY_DRAW_OFFSET_Y,
+        y + textOffsetY,
       );
       renderScene();
       setTextInput({ visible: false, x: 0, y: 0, value: "" });
@@ -1369,19 +1387,27 @@ export default function DrawingBoard() {
     const drawingLayer = drawingLayerRef.current;
     if (!drawingLayer) return;
 
+    const dpr = window.devicePixelRatio || 1;
+
     // 투명 픽셀이 검정으로 보이지 않도록 임시 캔버스에 흰 배경 + 내용 합성
     const tempCanvas = document.createElement("canvas");
     tempCanvas.width = canvas.width;
     tempCanvas.height = canvas.height;
     const tempCtx = tempCanvas.getContext("2d");
     if (!tempCtx) return;
+
+    // 드로잉 레이어는 1:1 픽셀 매핑으로 복사
+    tempCtx.setTransform(1, 0, 0, 1, 0, 0);
     tempCtx.fillStyle = "#ffffff";
     tempCtx.fillRect(0, 0, tempCanvas.width, tempCanvas.height);
-    // 가이드 UI가 아닌 실제 레이어만 합성해서 저장
     tempCtx.drawImage(drawingLayer, 0, 0);
+
+    // 이미지 좌표는 CSS 픽셀이므로 DPR 스케일로 그림
+    tempCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
     loadedImagesRef.current.forEach((img) => {
       tempCtx.drawImage(img.data, img.x, img.y, img.width, img.height);
     });
+
     const link = document.createElement("a");
     link.download = `drawing-${Date.now()}.png`;
     link.href = tempCanvas.toDataURL("image/png");
@@ -1394,7 +1420,13 @@ export default function DrawingBoard() {
     const drawingCtx = drawingLayer?.getContext("2d");
     if (!drawingLayer || !drawingCtx) return;
     saveState();
-    drawingCtx.clearRect(0, 0, drawingLayer.width, drawingLayer.height);
+    const dpr = window.devicePixelRatio || 1;
+    drawingCtx.clearRect(
+      0,
+      0,
+      drawingLayer.width / dpr,
+      drawingLayer.height / dpr,
+    );
     loadedImagesRef.current = [];
     setLoadedImages([]);
     renderScene([]);
@@ -1673,7 +1705,7 @@ export default function DrawingBoard() {
             <S.Slider
               type="range"
               min={8}
-              max={40}
+              max={100}
               value={fontSize}
               onChange={(e) => setFontSize(Number(e.target.value))}
             />

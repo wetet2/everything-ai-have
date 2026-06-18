@@ -207,6 +207,7 @@ export const TextOverlay = styled.input<TextOverlayProps>`
   position: absolute;
   left: ${({ $x }) => $x}px;
   top: ${({ $y }) => $y}px;
+  transform: translateY(-50%);
   font-size: ${({ $fontSize }) => $fontSize}px;
   color: ${({ $color }) => $color};
   background: rgba(255, 255, 255, 0.85);

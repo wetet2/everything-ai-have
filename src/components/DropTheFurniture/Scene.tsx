@@ -52,19 +52,21 @@ function SceneContent({
   return (
     <>
       <color attach="background" args={["#ffffff"]} />
-      <ambientLight intensity={0.7} />
+      {/* 주변광을 낮춰 그림자 부분을 더 어둡게 */}
+      <ambientLight intensity={0.3} />
       <directionalLight
         position={[8000, 30000, 8000]}
-        intensity={1}
+        intensity={1.5}
         castShadow
-        shadow-mapSize={[2048, 2048]}
+        shadow-mapSize={[4096, 4096]}
         shadow-camera-left={-100000}
         shadow-camera-right={100000}
         shadow-camera-top={100000}
         shadow-camera-bottom={-100000}
         shadow-camera-near={0.5}
         shadow-camera-far={200000}
-        shadow-bias={-0.0005}
+        shadow-bias={-0.001}
+        shadow-normalBias={0.02}
       />
 
       {/* 무한 그리드: 칩셀 1m, 섹션 5m, 화면 내에서는 페이드 없이 항상 보임 */}

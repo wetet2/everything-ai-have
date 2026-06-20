@@ -1645,7 +1645,7 @@ export default function DrawingBoard() {
   }, [showColorPicker]);
 
   useEffect(() => {
-    document.title = "그림판";
+    document.title = "아주 쉬운 그림판";
   }, []);
 
   const effectiveCanvasCursor = (() => {

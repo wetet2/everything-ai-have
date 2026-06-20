@@ -17,7 +17,7 @@ export const Toolbar = styled.div`
   width: 100%;
   z-index: 20;
 
-  padding: 4px;
+  padding: 8px;
   background: linear-gradient(180deg, #3a3f47 0%, #2a2e35 100%);
   border: 1px solid rgba(255, 255, 255, 0.06);
 `;
@@ -82,7 +82,7 @@ export const ToolButtonLabel = styled.span`
 
 export const ToolDivider = styled.div`
   width: 1px;
-  height: 36px;
+  height: 20px;
   background: rgba(255, 255, 255, 0.12);
   margin: 0 4px;
 `;

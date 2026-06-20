@@ -1,0 +1,152 @@
+import { useEffect, useRef } from "react";
+import { Canvas, useThree } from "@react-three/fiber";
+import { OrbitControls, Grid } from "@react-three/drei";
+import { DoubleSide } from "three";
+import RoomObject from "./RoomObject";
+import Furniture from "./Furniture";
+import { PlacedItem, Room, FurnitureItem, TransformMode } from "./types";
+
+export type CameraState = {
+  position: [number, number, number];
+  target: [number, number, number];
+};
+
+type SceneProps = {
+  items: PlacedItem[];
+  selectedId: string | null;
+  mode: TransformMode;
+  cameraState: CameraState;
+  wallOpacity: number;
+  onSelect: (id: string | null) => void;
+  onChange: (id: string, updates: Partial<PlacedItem>) => void;
+  onCameraChange: (state: CameraState) => void;
+};
+
+function SceneContent({
+  items,
+  selectedId,
+  mode,
+  cameraState,
+  wallOpacity,
+  onSelect,
+  onChange,
+  onCameraChange,
+}: SceneProps) {
+  const { camera } = useThree();
+  const controlsRef = useRef<any>(null);
+
+  useEffect(() => {
+    camera.position.set(...cameraState.position);
+    const controls = controlsRef.current;
+    if (controls) {
+      controls.target.set(...cameraState.target);
+      controls.update();
+    }
+  }, [camera, cameraState]);
+
+  const rooms = items.filter((item): item is Room => item.kind === "room");
+  const unassignedFurniture = items.filter(
+    (item): item is FurnitureItem => item.kind === "furniture" && !item.roomId,
+  );
+
+  return (
+    <>
+      <color attach="background" args={["#ffffff"]} />
+      <ambientLight intensity={0.7} />
+      <directionalLight
+        position={[8000, 30000, 8000]}
+        intensity={1}
+        castShadow
+        shadow-mapSize={[2048, 2048]}
+        shadow-camera-left={-100000}
+        shadow-camera-right={100000}
+        shadow-camera-top={100000}
+        shadow-camera-bottom={-100000}
+        shadow-camera-near={0.5}
+        shadow-camera-far={200000}
+        shadow-bias={-0.0005}
+      />
+
+      {/* 무한 그리드: 칩셀 1m, 섹션 5m, 화면 내에서는 페이드 없이 항상 보임 */}
+      <Grid
+        position={[0, 5, 0]}
+        cellSize={1000}
+        sectionSize={5000}
+        cellThickness={0.8}
+        sectionThickness={1}
+        cellColor="#9ca3af"
+        sectionColor="#9ca3af"
+        fadeDistance={200000}
+        fadeStrength={0}
+        infiniteGrid
+        followCamera
+        side={DoubleSide}
+      />
+
+      {rooms.map((room) => (
+        <RoomObject
+          key={room.id}
+          data={room}
+          rooms={rooms}
+          furniture={items.filter(
+            (item): item is FurnitureItem =>
+              item.kind === "furniture" && item.roomId === room.id,
+          )}
+          isSelected={room.id === selectedId}
+          selectedFurnitureId={selectedId}
+          mode={mode}
+          wallOpacity={wallOpacity}
+          onSelect={onSelect}
+          onChange={onChange}
+        />
+      ))}
+
+      {unassignedFurniture.map((furniture) => (
+        <Furniture
+          key={furniture.id}
+          data={furniture}
+          room={null}
+          siblingFurniture={[]}
+          isSelected={furniture.id === selectedId}
+          mode={mode}
+          onSelect={onSelect}
+          onChange={(id, updates) =>
+            onChange(id, updates as Partial<PlacedItem>)
+          }
+        />
+      ))}
+
+      <OrbitControls
+        ref={controlsRef}
+        makeDefault
+        onEnd={() => {
+          const controls = controlsRef.current;
+          onCameraChange({
+            position: [camera.position.x, camera.position.y, camera.position.z],
+            target: controls
+              ? [controls.target.x, controls.target.y, controls.target.z]
+              : [0, 0, 0],
+          });
+        }}
+      />
+    </>
+  );
+}
+
+export default function Scene(props: SceneProps) {
+  return (
+    <Canvas
+      shadows
+      camera={{
+        position: props.cameraState.position,
+        fov: 45,
+        near: 10,
+        far: 200000,
+      }}
+      onPointerMissed={() => props.onSelect(null)}
+      style={{ width: "100%", height: "100%" }}
+    >
+      <SceneContent {...props} />
+    </Canvas>
+  );
+}

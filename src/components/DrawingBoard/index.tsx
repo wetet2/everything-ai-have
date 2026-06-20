@@ -542,9 +542,9 @@ export default function DrawingBoard() {
             height *= ratio;
           }
 
-          // 캔버스 중앙에 배치
-          const x = (canvas.width - width) / 2;
-          const y = (canvas.height - height) / 2;
+          // 이미지를 캔버스 왼쪽 상단에 배치
+          const x = 10;
+          const y = 10;
 
           // 먼저 현재 상태 저장
           saveState();
@@ -714,8 +714,8 @@ export default function DrawingBoard() {
         if (textInput.visible) {
           // 기존 텍스트 입력 중이면 먼저 확정
           handleTextConfirm(textInput.value, textInput.x, textInput.y);
-          return;
         }
+        // 클릭한 위치에서 새 텍스트 입력 활성화
         setTextInput({ visible: true, x: pos.x, y: pos.y, value: "" });
         setTextInputWidth(80);
         return;
@@ -1740,7 +1740,7 @@ export default function DrawingBoard() {
           {mode === "text" ? (
             <S.SizeSection>
               <S.SizeHeader>
-                <S.SizeLabel>FONT SIZE</S.SizeLabel>
+                <S.SizeLabel>폰트</S.SizeLabel>
                 <S.SizeValue>{fontSize} px</S.SizeValue>
               </S.SizeHeader>
               <S.SizeSlider
@@ -1754,7 +1754,7 @@ export default function DrawingBoard() {
           ) : (
             <S.SizeSection>
               <S.SizeHeader>
-                <S.SizeLabel>SIZE</S.SizeLabel>
+                <S.SizeLabel>두께</S.SizeLabel>
                 <S.SizeValue>{lineWidth} px</S.SizeValue>
               </S.SizeHeader>
               <S.SizeSlider
@@ -1799,10 +1799,10 @@ export default function DrawingBoard() {
           >
             <SaveIcon />
           </S.ToolButton>
-          <S.ToolButton onClick={handleClear} title="Clear all">
+          <S.ToolButton onClick={handleClear} title="전체 삭제">
             <TrashIcon />
           </S.ToolButton>
-          <S.ToolButton onClick={handleDownload} title="Download image">
+          <S.ToolButton onClick={handleDownload} title="이미지 다운로드">
             <DownloadIcon />
           </S.ToolButton>
         </S.ToolGroup>

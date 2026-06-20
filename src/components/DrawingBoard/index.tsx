@@ -6,10 +6,12 @@ import RectIcon from "../../../resources/icons/RectIcon";
 import TextIcon from "../../../resources/icons/TextIcon";
 import TrashIcon from "../../../resources/icons/TrashIcon";
 import CircleIcon from "../../../resources/icons/CircleIcon";
-import ImageIcon from "../../../resources/icons/ImageIcon";
+import SaveIcon from "../../../resources/icons/SaveIcon";
+import UndoIcon from "../../../resources/icons/UndoIcon";
+import RedoIcon from "../../../resources/icons/RedoIcon";
 import * as S from "./styled";
 
-// 기본 팔레트 색상 8가지
+// 이미지 기준 2x4 팔레트 색상
 const COLOR_PALETTE = [
   "#000000", // 검정
   "#ffffff", // 흰색
@@ -61,7 +63,7 @@ export default function DrawingBoard() {
 
   // 현재 설정
   const [color, setColor] = useState("#000000");
-  const [lineWidth, setLineWidth] = useState(4);
+  const [lineWidth, setLineWidth] = useState(5);
   const [fontSize, setFontSize] = useState(24);
   const [mode, setMode] = useState<DrawMode>("pen");
   const [canvasCursor, setCanvasCursor] = useState("crosshair");
@@ -108,6 +110,9 @@ export default function DrawingBoard() {
     value: "",
   });
   const textOverlayRef = useRef<HTMLInputElement>(null);
+  // 텍스트 입력 오버레이 드래그 상태
+  const isDraggingTextRef = useRef(false);
+  const textDragStartRef = useRef({ x: 0, y: 0, inputX: 0, inputY: 0 });
   // 텍스트 입력창 동적 너비 (px)
   const [textInputWidth, setTextInputWidth] = useState(80);
 
@@ -303,7 +308,6 @@ export default function DrawingBoard() {
       if (!drawingLayer) return;
 
       const targetImages = images ?? loadedImagesRef.current;
-      const dpr = window.devicePixelRatio || 1;
 
       // 배경과 드로잉 레이어는 1:1 픽셀 매핑으로 합성 (변환 초기화)
       ctx.save();
@@ -639,6 +643,53 @@ export default function DrawingBoard() {
       setTextInput({ visible: false, x: 0, y: 0, value: "" });
     },
     [fontSize, getDrawColor, saveState, renderScene],
+  );
+
+  // 텍스트 입력 오버레이 드래그 시작
+  const handleTextPointerDown = useCallback(
+    (e: React.PointerEvent<HTMLDivElement>) => {
+      if (!textInput.visible) return;
+      isDraggingTextRef.current = true;
+      (e.target as HTMLDivElement).setPointerCapture(e.pointerId);
+      textDragStartRef.current = {
+        x: e.clientX,
+        y: e.clientY,
+        inputX: textInput.x,
+        inputY: textInput.y,
+      };
+      // 포커스 이동과 텍스트 선택을 막아 입력 상태를 유지
+      e.preventDefault();
+    },
+    [textInput.visible, textInput.x, textInput.y],
+  );
+
+  // 텍스트 입력 오버레이 드래그 중
+  const handleTextPointerMove = useCallback(
+    (e: React.PointerEvent<HTMLDivElement>) => {
+      if (!isDraggingTextRef.current) return;
+      const deltaX = e.clientX - textDragStartRef.current.x;
+      const deltaY = e.clientY - textDragStartRef.current.y;
+      setTextInput((prev) => ({
+        ...prev,
+        x: textDragStartRef.current.inputX + deltaX,
+        y: textDragStartRef.current.inputY + deltaY,
+      }));
+    },
+    [],
+  );
+
+  // 텍스트 입력 오버레이 드래그 종료
+  const handleTextPointerUp = useCallback(
+    (e: React.PointerEvent<HTMLDivElement>) => {
+      if (!isDraggingTextRef.current) return;
+      isDraggingTextRef.current = false;
+      (e.target as HTMLDivElement).releasePointerCapture(e.pointerId);
+      // 드래그 후에도 입력을 계속할 수 있도록 포커스 유지
+      requestAnimationFrame(() => {
+        textOverlayRef.current?.focus();
+      });
+    },
+    [],
   );
 
   const handleMouseDown = useCallback(
@@ -1618,42 +1669,42 @@ export default function DrawingBoard() {
       <S.Toolbar>
         {/* 모드 선택 */}
         <S.ToolGroup>
-          <S.Label>도구</S.Label>
-          <S.ModeButton
+          <S.ToolButton
             $active={mode === "pen"}
             onClick={() => setMode("pen")}
             title="펜(w)"
           >
             <PenIcon />
-          </S.ModeButton>
-          <S.ModeButton
+          </S.ToolButton>
+          <S.ToolButton
             $active={mode === "rect"}
             onClick={() => setMode("rect")}
             title="직사각형(e)"
           >
             <RectIcon />
-          </S.ModeButton>
-          <S.ModeButton
+          </S.ToolButton>
+          <S.ToolButton
             $active={mode === "circle"}
             onClick={() => setMode("circle")}
             title="원(r)"
           >
             <CircleIcon />
-          </S.ModeButton>
-          <S.ModeButton
+          </S.ToolButton>
+          <S.ToolButton
             $active={mode === "text"}
             onClick={() => setMode("text")}
             title="텍스트(t)"
           >
             <TextIcon />
-          </S.ModeButton>
+          </S.ToolButton>
         </S.ToolGroup>
+
+        <S.ToolDivider />
 
         {/* 색상 팔레트 */}
         <S.ToolGroup>
-          <S.Label>색상</S.Label>
           <S.ColorPalette>
-            {COLOR_PALETTE.map((c) => (
+            {COLOR_PALETTE.flat().map((c) => (
               <S.ColorSwatch
                 key={c}
                 $color={c}
@@ -1662,94 +1713,98 @@ export default function DrawingBoard() {
                 title={c}
               />
             ))}
-            {/* 커스텀 색상 선택 버튼 */}
-            <S.ColorPickerButtonWrap>
-              <S.ColorPickerButton
-                onClick={() => setShowColorPicker(!showColorPicker)}
-                title="직접 선택"
-                $color={color}
-              >
-                <span style={{ fontSize: "18px", fontWeight: "bold" }}>+</span>
-              </S.ColorPickerButton>
-              {showColorPicker && (
-                <S.ColorPickerPopover ref={colorPickerRef}>
-                  <CompactPicker
-                    color={color}
-                    onChange={(newColor) => setColor(newColor.hex)}
-                  />
-                </S.ColorPickerPopover>
-              )}
-            </S.ColorPickerButtonWrap>
+
+            <S.ColorSwatch
+              onClick={() => setShowColorPicker(!showColorPicker)}
+              title="직접 선택"
+            >
+              C
+            </S.ColorSwatch>
           </S.ColorPalette>
+          <S.ColorPickerButtonWrap>
+            {showColorPicker && (
+              <S.ColorPickerPopover ref={colorPickerRef}>
+                <CompactPicker
+                  color={color}
+                  onChange={(newColor) => setColor(newColor.hex)}
+                />
+              </S.ColorPickerPopover>
+            )}
+          </S.ColorPickerButtonWrap>
         </S.ToolGroup>
 
-        {/* 선 두께 (텍스트, 이미지 모드 제외) */}
-        {mode !== "text" && mode !== "image" && (
-          <S.ToolGroup>
-            <S.Label>두께</S.Label>
-            <S.Slider
-              type="range"
-              min={1}
-              max={70}
-              value={lineWidth}
-              onChange={(e) => setLineWidth(Number(e.target.value))}
-            />
-            <S.SliderValue>{lineWidth}px</S.SliderValue>
-          </S.ToolGroup>
-        )}
+        <S.ToolDivider />
 
-        {/* 폰트 크기 (텍스트 모드 전용) */}
-        {mode === "text" && (
-          <S.ToolGroup>
-            <S.Label>폰트 크기</S.Label>
-            <S.Slider
-              type="range"
-              min={8}
-              max={100}
-              value={fontSize}
-              onChange={(e) => setFontSize(Number(e.target.value))}
-            />
-            <S.SliderValue>{fontSize}px</S.SliderValue>
-          </S.ToolGroup>
-        )}
+        {/* 두께 / 폰트 크기 */}
+        <S.ToolGroup>
+          {mode === "text" ? (
+            <S.SizeSection>
+              <S.SizeHeader>
+                <S.SizeLabel>FONT SIZE</S.SizeLabel>
+                <S.SizeValue>{fontSize} px</S.SizeValue>
+              </S.SizeHeader>
+              <S.SizeSlider
+                type="range"
+                min={8}
+                max={100}
+                value={fontSize}
+                onChange={(e) => setFontSize(Number(e.target.value))}
+              />
+            </S.SizeSection>
+          ) : (
+            <S.SizeSection>
+              <S.SizeHeader>
+                <S.SizeLabel>SIZE</S.SizeLabel>
+                <S.SizeValue>{lineWidth} px</S.SizeValue>
+              </S.SizeHeader>
+              <S.SizeSlider
+                type="range"
+                min={1}
+                max={20}
+                value={lineWidth}
+                onChange={(e) => setLineWidth(Number(e.target.value))}
+              />
+            </S.SizeSection>
+          )}
+        </S.ToolGroup>
 
-        <div style={{ flex: 1 }}></div>
+        <S.ToolDivider />
 
         {/* 액션 버튼 */}
+        <input
+          ref={fileInputRef}
+          type="file"
+          accept="image/*"
+          onChange={handleImageLoad}
+          style={{ display: "none" }}
+        />
         <S.ToolGroup>
-          <S.ActionButton
-            onClick={() => fileInputRef.current?.click()}
-            title="이미지 불러오기"
-          >
-            <ImageIcon />
-          </S.ActionButton>
-          <input
-            ref={fileInputRef}
-            type="file"
-            accept="image/*"
-            onChange={handleImageLoad}
-            style={{ display: "none" }}
-          />
-          <S.ActionButton
+          <S.ToolButton
             onClick={handleUndo}
             disabled={!canUndo}
             title={isMac ? "실행 취소 (⌘Z)" : "실행 취소 (Ctrl+Z)"}
           >
-            ↩
-          </S.ActionButton>
-          <S.ActionButton
+            <UndoIcon />
+          </S.ToolButton>
+          <S.ToolButton
             onClick={handleRedo}
             disabled={!canRedo}
             title={isMac ? "다시 실행 (⇧⌘Z)" : "다시 실행 (Ctrl+Y)"}
           >
-            ↪
-          </S.ActionButton>
-          <S.ActionButton onClick={handleClear} title="Clear all">
+            <RedoIcon />
+          </S.ToolButton>
+          <S.ToolButton
+            onClick={() => fileInputRef.current?.click()}
+            title="이미지 불러오기"
+          >
+            <SaveIcon />
+          </S.ToolButton>
+          <S.ToolButton onClick={handleClear} title="Clear all">
             <TrashIcon />
-          </S.ActionButton>
-          <S.ActionButton onClick={handleDownload} title="Download image">
+          </S.ToolButton>
+          <S.ToolButton onClick={handleDownload} title="Download image">
             <DownloadIcon />
-          </S.ActionButton>
+          </S.ToolButton>
         </S.ToolGroup>
       </S.Toolbar>
 
@@ -1770,32 +1825,41 @@ export default function DrawingBoard() {
         />
         {/* 텍스트 입력 오버레이 */}
         {textInput.visible && (
-          <S.TextOverlay
-            ref={textOverlayRef}
-            $x={textInput.x}
-            $y={textInput.y}
-            $fontSize={fontSize}
-            $color={color}
-            $width={textInputWidth}
-            value={textInput.value}
-            onChange={(e) => {
-              const newValue = e.target.value;
-              setTextInput((prev) => ({ ...prev, value: newValue }));
-              setTextInputWidth(measureTextWidth(newValue));
-            }}
-            onKeyDown={(e) => {
-              if (e.key === "Enter") {
-                e.preventDefault();
+          <S.TextOverlayWrap $x={textInput.x} $y={textInput.y}>
+            <S.TextDragHandle
+              onPointerDown={handleTextPointerDown}
+              onPointerMove={handleTextPointerMove}
+              onPointerUp={handleTextPointerUp}
+              onPointerCancel={handleTextPointerUp}
+            />
+            <S.TextOverlay
+              ref={textOverlayRef}
+              $x={textInput.x}
+              $y={textInput.y}
+              $fontSize={fontSize}
+              $color={color}
+              $width={textInputWidth}
+              value={textInput.value}
+              onChange={(e) => {
+                const newValue = e.target.value;
+                setTextInput((prev) => ({ ...prev, value: newValue }));
+                setTextInputWidth(measureTextWidth(newValue));
+              }}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  e.preventDefault();
+                  handleTextConfirm(textInput.value, textInput.x, textInput.y);
+                }
+                if (e.key === "Escape") {
+                  setTextInput({ visible: false, x: 0, y: 0, value: "" });
+                }
+              }}
+              onBlur={() => {
+                if (isDraggingTextRef.current) return;
                 handleTextConfirm(textInput.value, textInput.x, textInput.y);
-              }
-              if (e.key === "Escape") {
-                setTextInput({ visible: false, x: 0, y: 0, value: "" });
-              }
-            }}
-            onBlur={() =>
-              handleTextConfirm(textInput.value, textInput.x, textInput.y)
-            }
-          />
+              }}
+            />
+          </S.TextOverlayWrap>
         )}
       </S.CanvasWrap>
     </S.Page>

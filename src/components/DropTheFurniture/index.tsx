@@ -316,6 +316,7 @@ export default function DropTheFurniture() {
     const data = {
       items,
       camera: cameraState,
+      wallOpacity,
       version: 1,
     };
     const blob = new Blob([JSON.stringify(data, null, 2)], {
@@ -327,7 +328,7 @@ export default function DropTheFurniture() {
     link.download = `drop-the-furniture-${Date.now()}.json`;
     link.click();
     URL.revokeObjectURL(url);
-  }, [items, cameraState]);
+  }, [items, cameraState, wallOpacity]);
 
   const handleLoad = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -370,6 +371,7 @@ export default function DropTheFurniture() {
           });
           pushHistory(migratedItems);
           setCameraState(result.camera);
+          setWallOpacity(result.wallOpacity ?? 1);
           setSelectedId(null);
         } catch {
           window.alert("JSON 파싱에 실패했습니다.");

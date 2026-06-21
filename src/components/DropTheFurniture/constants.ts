@@ -16,7 +16,7 @@ export const FURNITURE_DEFAULT_DIMENSIONS: Record<
   shelf: { width: 1000, depth: 350, height: 1800 },
   washingMachine: { width: 600, depth: 600, height: 850 },
   refrigerator: { width: 900, depth: 700, height: 1800 },
-  door: { width: 900, depth: 100, height: 2000 },
+  door: { width: 900, depth: 200, height: 2000 },
 };
 
 export const TYPE_LABELS: Record<FurnitureType, string> = {

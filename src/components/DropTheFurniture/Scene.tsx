@@ -53,7 +53,7 @@ function SceneContent({
     <>
       <color attach="background" args={["#ffffff"]} />
       {/* 주변광을 낮춰 그림자 부분을 더 어둡게 */}
-      <ambientLight intensity={0.3} />
+      <ambientLight intensity={0.6} />
       <directionalLight
         position={[8000, 30000, 8000]}
         intensity={1.5}
@@ -65,8 +65,8 @@ function SceneContent({
         shadow-camera-bottom={-100000}
         shadow-camera-near={0.5}
         shadow-camera-far={200000}
-        shadow-bias={-0.001}
-        shadow-normalBias={0.02}
+        shadow-bias={-0.0001}
+        shadow-normalBias={5}
       />
 
       {/* 무한 그리드: 칩셀 1m, 섹션 5m, 화면 내에서는 페이드 없이 항상 보임 */}
@@ -138,7 +138,7 @@ function SceneContent({
 export default function Scene(props: SceneProps) {
   return (
     <Canvas
-      shadows
+      shadows="soft"
       camera={{
         position: props.cameraState.position,
         fov: 45,

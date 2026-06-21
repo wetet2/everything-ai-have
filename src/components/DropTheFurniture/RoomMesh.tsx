@@ -1,12 +1,15 @@
 import { DoubleSide } from "three";
 import { WALL_THICKNESS } from "./constants";
 
+type HiddenWalls = { front?: boolean; back?: boolean; left?: boolean; right?: boolean };
+
 type RoomMeshProps = {
   width: number;
   height: number;
   depth: number;
   color: string;
   wallOpacity?: number;
+  hiddenWalls?: HiddenWalls;
 };
 
 export default function RoomMesh({
@@ -15,6 +18,7 @@ export default function RoomMesh({
   depth,
   color,
   wallOpacity = 1,
+  hiddenWalls = {},
 }: RoomMeshProps) {
   const showWalls = wallOpacity > 0;
 
@@ -28,46 +32,30 @@ export default function RoomMesh({
 
       {showWalls && (
         <>
-          {/* 뒷벽: x축으로 벽 두께만큼 늘려 모서리가 면과 면으로 닿게 함 */}
-          <mesh position={[0, height / 2, -depth / 2 - WALL_THICKNESS / 2]}>
-            <boxGeometry args={[width + WALL_THICKNESS * 2, height, WALL_THICKNESS]} />
-            <meshStandardMaterial
-              color={color}
-              transparent
-              opacity={wallOpacity}
-              side={DoubleSide}
-            />
-          </mesh>
-          {/* 앞벽 */}
-          <mesh position={[0, height / 2, depth / 2 + WALL_THICKNESS / 2]}>
-            <boxGeometry args={[width + WALL_THICKNESS * 2, height, WALL_THICKNESS]} />
-            <meshStandardMaterial
-              color={color}
-              transparent
-              opacity={wallOpacity}
-              side={DoubleSide}
-            />
-          </mesh>
-          {/* 좌측벽: z축으로 벽 두께만큼 늘려 모서리가 면과 면으로 닿게 함 */}
-          <mesh position={[-width / 2 - WALL_THICKNESS / 2, height / 2, 0]}>
-            <boxGeometry args={[WALL_THICKNESS, height, depth + WALL_THICKNESS * 2]} />
-            <meshStandardMaterial
-              color={color}
-              transparent
-              opacity={wallOpacity}
-              side={DoubleSide}
-            />
-          </mesh>
-          {/* 우측벽 */}
-          <mesh position={[width / 2 + WALL_THICKNESS / 2, height / 2, 0]}>
-            <boxGeometry args={[WALL_THICKNESS, height, depth + WALL_THICKNESS * 2]} />
-            <meshStandardMaterial
-              color={color}
-              transparent
-              opacity={wallOpacity}
-              side={DoubleSide}
-            />
-          </mesh>
+          {!hiddenWalls.back && (
+            <mesh position={[0, height / 2, -depth / 2 - WALL_THICKNESS / 2]}>
+              <boxGeometry args={[width + WALL_THICKNESS * 2, height, WALL_THICKNESS]} />
+              <meshStandardMaterial color={color} transparent opacity={wallOpacity} side={DoubleSide} polygonOffset polygonOffsetFactor={1} polygonOffsetUnits={1} />
+            </mesh>
+          )}
+          {!hiddenWalls.front && (
+            <mesh position={[0, height / 2, depth / 2 + WALL_THICKNESS / 2]}>
+              <boxGeometry args={[width + WALL_THICKNESS * 2, height, WALL_THICKNESS]} />
+              <meshStandardMaterial color={color} transparent opacity={wallOpacity} side={DoubleSide} polygonOffset polygonOffsetFactor={1} polygonOffsetUnits={1} />
+            </mesh>
+          )}
+          {!hiddenWalls.left && (
+            <mesh position={[-width / 2 - WALL_THICKNESS / 2, height / 2, 0]}>
+              <boxGeometry args={[WALL_THICKNESS, height, depth + WALL_THICKNESS * 2]} />
+              <meshStandardMaterial color={color} transparent opacity={wallOpacity} side={DoubleSide} polygonOffset polygonOffsetFactor={2} polygonOffsetUnits={2} />
+            </mesh>
+          )}
+          {!hiddenWalls.right && (
+            <mesh position={[width / 2 + WALL_THICKNESS / 2, height / 2, 0]}>
+              <boxGeometry args={[WALL_THICKNESS, height, depth + WALL_THICKNESS * 2]} />
+              <meshStandardMaterial color={color} transparent opacity={wallOpacity} side={DoubleSide} polygonOffset polygonOffsetFactor={2} polygonOffsetUnits={2} />
+            </mesh>
+          )}
         </>
       )}
     </group>

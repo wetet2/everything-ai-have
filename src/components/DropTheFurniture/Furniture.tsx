@@ -1,10 +1,10 @@
 import { useRef, useEffect, useMemo } from "react";
-import { Group, Box3, Vector3 } from "three";
+import { Group, Box3, Vector3, Object3D } from "three";
 import { useThree, createPortal } from "@react-three/fiber";
 import { TransformControls } from "@react-three/drei";
 import { FurnitureItem, Room, PlacedItem, TransformMode } from "./types";
 import { resolveCollisions } from "./collision";
-import { FURNITURE_DEFAULT_DIMENSIONS } from "./constants";
+import { FURNITURE_DEFAULT_DIMENSIONS, WALL_THICKNESS } from "./constants";
 
 type FurnitureProps = {
   data: FurnitureItem;
@@ -15,6 +15,15 @@ type FurnitureProps = {
   onSelect: (id: string) => void;
   onChange: (id: string, updates: Partial<PlacedItem>) => void;
 };
+
+function isTransformControlsHandle(obj: Object3D | null): boolean {
+  let cur = obj;
+  while (cur) {
+    if ((cur as any).isTransformControls) return true;
+    cur = cur.parent;
+  }
+  return false;
+}
 
 export default function Furniture({
   data,
@@ -126,7 +135,7 @@ export default function Furniture({
 
       if (room) {
         // 문은 가구가 아니므로 벽 두께만큼 벽을 뚫고 들어갈 수 있음
-        const extra = data.furnitureType === "door" ? dims.depth : 0;
+        const extra = data.furnitureType === "door" ? WALL_THICKNESS + 50 : 0;
 
         // 방 벽을 넘지 않도록 가구 중심 좌표를 제한
         const minX = -room.width / 2 - extra + halfFx;
@@ -217,6 +226,10 @@ export default function Furniture({
         rotation={data.rotation}
         scale={scale}
         onPointerDown={(event) => {
+          const blocked = event.intersections.some(
+            (i) => i.distance < event.distance && isTransformControlsHandle(i.object)
+          );
+          if (blocked) return;
           event.stopPropagation();
           onSelect(data.id);
         }}
@@ -518,9 +531,9 @@ function Refrigerator({ color }: { color: string }) {
 function Door({ color }: { color: string }) {
   const w = 900;
   const h = 2000;
-  const d = 100;
+  const d = 200;
   const frameW = 80;
-  const slabD = 40;
+  const slabD = 80;
   return (
     <group>
       {/* 문틀 - 좌측 */}

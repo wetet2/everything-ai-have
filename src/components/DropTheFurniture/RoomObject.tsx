@@ -1,4 +1,4 @@
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useMemo } from "react";
 import { Group, Vector3 } from "three";
 
 // Shift/Ctrl 키 눌림 상태 추적
@@ -9,6 +9,7 @@ import { Room, FurnitureItem, PlacedItem, TransformMode } from "./types";
 import RoomMesh from "./RoomMesh";
 import Furniture from "./Furniture";
 import { resolveCollisions } from "./collision";
+import { WALL_THICKNESS } from "./constants";
 
 type RoomObjectProps = {
   data: Room;
@@ -34,6 +35,36 @@ export default function RoomObject({
   onChange,
 }: RoomObjectProps) {
   const groupRef = useRef<Group>(null!);
+
+  // 인접한 방과 겹치는 벽 중 한쪽(left·back)만 숨겨 z-파이팅 제거
+  // 규칙: right·front 벽은 항상 유지, left·back 벽은 상대 right·front 벽과 맞닿으면 숨김
+  const hiddenWalls = useMemo(() => {
+    const tol = WALL_THICKNESS * 2; // 약간의 여유 허용
+    const [rx, , rz] = data.position;
+    const hide = { front: false, back: false, left: false, right: false };
+
+    for (const other of rooms) {
+      if (other.id === data.id) continue;
+      const [ox, , oz] = other.position;
+
+      const myZMin = rz - data.depth / 2, myZMax = rz + data.depth / 2;
+      const myXMin = rx - data.width / 2, myXMax = rx + data.width / 2;
+      const otherZMin = oz - other.depth / 2, otherZMax = oz + other.depth / 2;
+      const otherXMin = ox - other.width / 2, otherXMax = ox + other.width / 2;
+      const zOverlap = myZMin < otherZMax && myZMax > otherZMin;
+      const xOverlap = myXMin < otherXMax && myXMax > otherXMin;
+
+      // 내 left 벽이 상대 right 벽과 맞닿으면 숨김 (상대는 유지)
+      if (zOverlap && Math.abs((rx - data.width / 2) - (ox + other.width / 2)) < tol) {
+        hide.left = true;
+      }
+      // 내 back 벽이 상대 front 벽과 맞닿으면 숨김 (상대는 유지)
+      if (xOverlap && Math.abs((rz - data.depth / 2) - (oz + other.depth / 2)) < tol) {
+        hide.back = true;
+      }
+    }
+    return hide;
+  }, [data, rooms]);
 
   // 이동 드래그 시작 시 위치/회전을 기억합니다.
   const isDraggingRef = useRef(false);
@@ -139,6 +170,7 @@ export default function RoomObject({
           depth={data.depth}
           color={data.color}
           wallOpacity={wallOpacity}
+          hiddenWalls={hiddenWalls}
         />
 
         {/* 방의 하위 가구들 - 방이 움직이면 함께 움직임 */}

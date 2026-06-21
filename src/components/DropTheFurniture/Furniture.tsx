@@ -198,20 +198,6 @@ export default function Furniture({
       }
     }
 
-    if (mode === "rotate" && (isShiftPressed.current || isCtrlPressed.current)) {
-      // Shift 또는 Ctrl 누른 채 회전: 90도 단위로 스냅
-      const step = 90;
-      const snap = (rad: number) => {
-        const deg = rad * (180 / Math.PI);
-        const snapped = Math.round(deg / step) * step;
-        return snapped * (Math.PI / 180);
-      };
-      groupObj.rotation.set(
-        snap(groupObj.rotation.x),
-        snap(groupObj.rotation.y),
-        snap(groupObj.rotation.z)
-      );
-    }
 
     // 드래그 중에는 상태를 저장하지 않고, 마우스를 뗄 때 한 번만 저장합니다.
     // 크기 조절(scale)은 onMouseUp에서 처리합니다.
@@ -255,7 +241,10 @@ export default function Furniture({
           <TransformControls
             object={groupRef}
             mode={mode}
+            showX={mode !== "rotate"}
             showY={mode !== "translate"}
+            showZ={mode !== "rotate"}
+            rotationSnap={mode === "rotate" ? Math.PI / 4 : undefined}
             onObjectChange={handleChange}
             onMouseDown={() => {
               isDraggingRef.current = true;
@@ -535,27 +524,27 @@ function Door({ color }: { color: string }) {
   return (
     <group>
       {/* 문틀 - 좌측 */}
-      <mesh castShadow receiveShadow position={[-(w / 2 - frameW / 2), h / 2, 0]}>
+      <mesh position={[-(w / 2 - frameW / 2), h / 2, 0]}>
         <boxGeometry args={[frameW, h, d]} />
         <meshStandardMaterial color={color} />
       </mesh>
       {/* 문틀 - 우측 */}
-      <mesh castShadow receiveShadow position={[w / 2 - frameW / 2, h / 2, 0]}>
+      <mesh position={[w / 2 - frameW / 2, h / 2, 0]}>
         <boxGeometry args={[frameW, h, d]} />
         <meshStandardMaterial color={color} />
       </mesh>
       {/* 문틀 - 상단 */}
-      <mesh castShadow receiveShadow position={[0, h - frameW / 2, 0]}>
+      <mesh position={[0, h - frameW / 2, 0]}>
         <boxGeometry args={[w, frameW, d]} />
         <meshStandardMaterial color={color} />
       </mesh>
       {/* 문짝 */}
-      <mesh castShadow receiveShadow position={[0, h / 2 - frameW / 2, slabD / 2]}>
+      <mesh position={[0, h / 2 - frameW / 2, slabD / 2]}>
         <boxGeometry args={[w - frameW * 2, h - frameW, slabD]} />
         <meshStandardMaterial color="#e5e7eb" />
       </mesh>
       {/* 손잡이 */}
-      <mesh castShadow position={[w / 2 - 120, h / 2, slabD + 15]}>
+      <mesh position={[w / 2 - 120, h / 2, slabD + 15]}>
         <boxGeometry args={[40, 120, 30]} />
         <meshStandardMaterial color="#374151" />
       </mesh>

@@ -112,20 +112,6 @@ export default function RoomObject({
       return;
     }
 
-    if (mode === "rotate" && (isShiftPressed.current || isCtrlPressed.current)) {
-      // Shift 또는 Ctrl 누른 채 회전: 90도 단위로 스냅
-      const step = 90;
-      const snap = (rad: number) => {
-        const deg = rad * (180 / Math.PI);
-        const snapped = Math.round(deg / step) * step;
-        return snapped * (Math.PI / 180);
-      };
-      groupObj.rotation.set(
-        snap(groupObj.rotation.x),
-        snap(groupObj.rotation.y),
-        snap(groupObj.rotation.z)
-      );
-    }
 
     // 드래그 중에는 상태를 저장하지 않고, 마우스를 뗄 때 한 번만 저장합니다.
     if (!isDraggingRef.current) {
@@ -174,7 +160,10 @@ export default function RoomObject({
         <TransformControls
           object={groupRef}
           mode={mode}
+          showX={mode !== "rotate"}
           showY={mode !== "translate"}
+          showZ={mode !== "rotate"}
+          rotationSnap={mode === "rotate" ? Math.PI / 4 : undefined}
           onObjectChange={handleChange}
           onMouseDown={() => {
             isDraggingRef.current = true;

@@ -5,7 +5,6 @@ import {
   Header,
   HeaderButtons,
   LeftPanel,
-  RightPanel,
   SectionTitle,
   ButtonGroup,
   Button,
@@ -13,11 +12,14 @@ import {
   NumberInput,
   TextInput,
   InputRow,
+  DimField,
+  DimLabel,
   Hint,
   List,
   ListItem,
   ListItemType,
   OpacitySlider,
+  Divider,
 } from "./styled";
 import {
   PlacedItem,
@@ -98,6 +100,10 @@ export default function DropTheFurniture() {
 
   // 마지막으로 선택한 방을 기억해서 가구 추가 시 계속 같은 방에 배치
   const lastRoomIdRef = useRef<string | null>(DEFAULT_ROOM.id);
+
+  // 목록에서 드래그 중인 가구 id, 드롭 대상 방 id
+  const draggingFurnitureId = useRef<string | null>(null);
+  const [dragOverRoomId, setDragOverRoomId] = useState<string | null>(null);
 
   // 마운트 후 localStorage에 저장된 상태가 있으면 복원
   useEffect(() => {
@@ -446,7 +452,10 @@ export default function DropTheFurniture() {
         <SectionTitle>방 추가</SectionTitle>
         <ButtonGroup>
           <Button onClick={addRoom}>방 추가</Button>
+          <Button onClick={() => addFurniture("door")}>🚪 문</Button>
         </ButtonGroup>
+
+        <Divider />
 
         <SectionTitle>가구 추가</SectionTitle>
         <ButtonGroup>
@@ -456,15 +465,10 @@ export default function DropTheFurniture() {
             </Button>
           ))}
         </ButtonGroup>
-
-        <SectionTitle>문 추가</SectionTitle>
-        <ButtonGroup>
-          <Button onClick={() => addFurniture("door")}>🚪 문</Button>
-        </ButtonGroup>
         <Hint>버튼을 누르면 방 중앙에 방/가구/문이 생성됩니다.</Hint>
-      </LeftPanel>
 
-      <RightPanel>
+        <Divider />
+
         <SectionTitle>목록 (클릭해서 선택)</SectionTitle>
         <List>
           {rooms.map((room) => {
@@ -477,7 +481,23 @@ export default function DropTheFurniture() {
                 <ListItem
                   $selected={room.id === selectedId}
                   $kind="room"
+                  $dragOver={dragOverRoomId === room.id}
                   onClick={() => setSelectedId(room.id)}
+                  onDragOver={(e) => {
+                    e.preventDefault();
+                    if (draggingFurnitureId.current) setDragOverRoomId(room.id);
+                  }}
+                  onDragLeave={() => setDragOverRoomId(null)}
+                  onDrop={() => {
+                    const furnitureId = draggingFurnitureId.current;
+                    if (!furnitureId) return;
+                    updateItem(furnitureId, {
+                      roomId: room.id,
+                      position: [0, 10, 0],
+                    });
+                    draggingFurnitureId.current = null;
+                    setDragOverRoomId(null);
+                  }}
                 >
                   <span>{room.name}</span>
                   <ListItemType>방</ListItemType>
@@ -488,7 +508,15 @@ export default function DropTheFurniture() {
                     $selected={furniture.id === selectedId}
                     $kind="furniture"
                     $indent={1}
+                    draggable
                     onClick={() => setSelectedId(furniture.id)}
+                    onDragStart={() => {
+                      draggingFurnitureId.current = furniture.id;
+                    }}
+                    onDragEnd={() => {
+                      draggingFurnitureId.current = null;
+                      setDragOverRoomId(null);
+                    }}
                   >
                     <span>{furniture.name}</span>
                     <ListItemType>
@@ -504,7 +532,15 @@ export default function DropTheFurniture() {
               key={furniture.id}
               $selected={furniture.id === selectedId}
               $kind="furniture"
+              draggable
               onClick={() => setSelectedId(furniture.id)}
+              onDragStart={() => {
+                draggingFurnitureId.current = furniture.id;
+              }}
+              onDragEnd={() => {
+                draggingFurnitureId.current = null;
+                setDragOverRoomId(null);
+              }}
             >
               <span>{furniture.name}</span>
               <ListItemType>
@@ -514,10 +550,16 @@ export default function DropTheFurniture() {
           ))}
         </List>
 
+        {!selectedItem && (
+          <Hint>목록에서 항목을 클릭하면 선택해서 편집할 수 있습니다.</Hint>
+        )}
+
         {selectedItem && (
           <>
+            <Divider />
+
             <SectionTitle>편집 도구</SectionTitle>
-            <ButtonGroup>
+            <ButtonGroup $nowrap>
               {(["translate", "rotate", "scale"] as TransformMode[]).map(
                 (m) => (
                   <Button
@@ -531,7 +573,6 @@ export default function DropTheFurniture() {
               )}
             </ButtonGroup>
 
-            <SectionTitle>이름</SectionTitle>
             <TextInput
               type="text"
               value={selectedItem.name}
@@ -540,7 +581,6 @@ export default function DropTheFurniture() {
               }
             />
 
-            <SectionTitle>색상</SectionTitle>
             <ColorInput
               type="color"
               value={selectedItem.color}
@@ -550,9 +590,9 @@ export default function DropTheFurniture() {
             />
 
             {selectedItem.kind === "room" && (
-              <>
-                <SectionTitle>방 크기</SectionTitle>
-                <InputRow>
+              <InputRow>
+                <DimField>
+                  <DimLabel>W</DimLabel>
                   <NumberInput
                     type="number"
                     min={100}
@@ -564,6 +604,9 @@ export default function DropTheFurniture() {
                       })
                     }
                   />
+                </DimField>
+                <DimField>
+                  <DimLabel>D</DimLabel>
                   <NumberInput
                     type="number"
                     min={100}
@@ -575,6 +618,9 @@ export default function DropTheFurniture() {
                       })
                     }
                   />
+                </DimField>
+                <DimField>
+                  <DimLabel>H</DimLabel>
                   <NumberInput
                     type="number"
                     min={100}
@@ -586,14 +632,14 @@ export default function DropTheFurniture() {
                       })
                     }
                   />
-                </InputRow>
-              </>
+                </DimField>
+              </InputRow>
             )}
 
             {selectedItem.kind === "furniture" && (
-              <>
-                <SectionTitle>가구 크기</SectionTitle>
-                <InputRow>
+              <InputRow>
+                <DimField>
+                  <DimLabel>W</DimLabel>
                   <NumberInput
                     type="number"
                     min={100}
@@ -605,6 +651,9 @@ export default function DropTheFurniture() {
                       })
                     }
                   />
+                </DimField>
+                <DimField>
+                  <DimLabel>D</DimLabel>
                   <NumberInput
                     type="number"
                     min={100}
@@ -616,6 +665,9 @@ export default function DropTheFurniture() {
                       })
                     }
                   />
+                </DimField>
+                <DimField>
+                  <DimLabel>H</DimLabel>
                   <NumberInput
                     type="number"
                     min={100}
@@ -627,18 +679,14 @@ export default function DropTheFurniture() {
                       })
                     }
                   />
-                </InputRow>
-              </>
+                </DimField>
+              </InputRow>
             )}
 
-            <Button onClick={deleteSelected}>삭제</Button>
+            <Button $danger onClick={deleteSelected}>삭제</Button>
           </>
         )}
-
-        {!selectedItem && (
-          <Hint>목록에서 항목을 클릭하면 선택해서 편집할 수 있습니다.</Hint>
-        )}
-      </RightPanel>
+      </LeftPanel>
 
       <Scene
         items={items}

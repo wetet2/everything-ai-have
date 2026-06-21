@@ -59,6 +59,12 @@ export const RightPanel = styled(Panel)`
   right: 20px;
 `;
 
+export const Divider = styled.hr`
+  border: none;
+  border-top: 1px solid #3f3f46;
+  margin: 0;
+`;
+
 export const SectionTitle = styled.h2`
   margin: 0 0 8px;
   font-size: 14px;
@@ -66,20 +72,30 @@ export const SectionTitle = styled.h2`
   color: #eeeeee;
 `;
 
-export const ButtonGroup = styled.div`
+export const ButtonGroup = styled.div<{ $nowrap?: boolean }>`
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: ${(props) => (props.$nowrap ? "nowrap" : "wrap")};
   gap: 8px;
 `;
 
-export const Button = styled.button<{ $active?: boolean; $disabled?: boolean }>`
+export const Button = styled.button<{
+  $active?: boolean;
+  $disabled?: boolean;
+  $danger?: boolean;
+}>`
   flex: 1 1 auto;
   min-width: 60px;
   padding: 8px 12px;
   border: none;
   border-radius: 8px;
   background: ${(props) =>
-    props.$disabled ? "#52525b" : props.$active ? "#3b82f6" : "#3f3f46"};
+    props.$disabled
+      ? "#52525b"
+      : props.$danger
+        ? "#dc2626"
+        : props.$active
+          ? "#3b82f6"
+          : "#3f3f46"};
   color: ${(props) => (props.$disabled ? "#a1a1aa" : "#ffffff")};
   font-size: 13px;
   font-weight: 500;
@@ -88,7 +104,13 @@ export const Button = styled.button<{ $active?: boolean; $disabled?: boolean }>`
 
   &:hover {
     background: ${(props) =>
-      props.$disabled ? "#52525b" : props.$active ? "#2563eb" : "#52525b"};
+      props.$disabled
+        ? "#52525b"
+        : props.$danger
+          ? "#b91c1c"
+          : props.$active
+            ? "#2563eb"
+            : "#52525b"};
   }
 
   &:disabled {
@@ -140,6 +162,23 @@ export const TextInput = styled.input`
 export const InputRow = styled.div`
   display: flex;
   gap: 8px;
+  align-items: flex-end;
+`;
+
+export const DimField = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  flex: 1;
+`;
+
+export const DimLabel = styled.span`
+  font-size: 10px;
+  font-weight: 700;
+  color: #71717a;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding-left: 2px;
 `;
 
 export const Hint = styled.div`
@@ -159,6 +198,7 @@ export const ListItem = styled.div<{
   $selected?: boolean;
   $kind?: "room" | "furniture";
   $indent?: number;
+  $dragOver?: boolean;
 }>`
   display: flex;
   align-items: center;
@@ -167,13 +207,13 @@ export const ListItem = styled.div<{
 
   ${(props) => props.$indent && `margin-left: ${10 + props.$indent * 16}px;`}
 
-  /* padding-left: ${(props) => 10 + (props.$indent ?? 0) * 16}px; */
   border-radius: 8px;
   background: ${(props) => (props.$selected ? "#3b82f6" : "#3f3f46")};
   color: #ffffff;
   font-size: 13px;
   cursor: pointer;
   transition: background 0.15s ease;
+  outline: ${(props) => (props.$dragOver ? "2px solid #60a5fa" : "none")};
 
   &:hover {
     background: ${(props) => (props.$selected ? "#2563eb" : "#52525b")};

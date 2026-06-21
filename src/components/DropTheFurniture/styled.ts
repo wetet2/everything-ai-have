@@ -18,13 +18,13 @@ export const Header = styled.header`
   align-items: center;
   justify-content: space-between;
   padding: 8px 16px;
-  background: rgba(0, 0, 0, 0.4);
+  background: #272727;
   backdrop-filter: blur(8px);
   color: #ffffff;
 
   h1 {
     font-size: 18px;
-    font-weight: 600;
+    font-weight: 700;
   }
 
   p {
@@ -34,25 +34,31 @@ export const Header = styled.header`
 `;
 
 export const Panel = styled.div`
-  position: absolute;
-  top: 80px;
-  z-index: 10;
   display: flex;
   flex-direction: column;
+  justify-content: flex-start;
   gap: 12px;
+
+  position: absolute;
+  top: 50px;
+  left: 0;
+  bottom: 0;
+
   width: 240px;
+  /* max-height: calc(100vh - 100px); */
   padding: 16px;
-  border-radius: 12px;
+
+  border-radius: 0px;
   background: rgba(30, 30, 30, 0.88);
   backdrop-filter: blur(10px);
   color: #ffffff;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
-  max-height: calc(100vh - 100px);
   overflow-y: auto;
+  z-index: 10;
 `;
 
 export const LeftPanel = styled(Panel)`
-  left: 20px;
+  /* left: 20px; */
 `;
 
 export const RightPanel = styled(Panel)`
@@ -66,7 +72,7 @@ export const Divider = styled.hr`
 `;
 
 export const SectionTitle = styled.h2`
-  margin: 0 0 8px;
+  margin: 0 0 8px 0;
   font-size: 14px;
   font-weight: 600;
   color: #eeeeee;
@@ -82,9 +88,10 @@ export const Button = styled.button<{
   $active?: boolean;
   $disabled?: boolean;
   $danger?: boolean;
+  $compact?: boolean;
 }>`
-  flex: 1 1 auto;
-  min-width: 60px;
+  flex: ${(props) => (props.$compact ? "0 0 auto" : "1 1 auto")};
+  min-width: ${(props) => (props.$compact ? "0" : "60px")};
   padding: 8px 12px;
   border: none;
   border-radius: 8px;
@@ -119,14 +126,31 @@ export const Button = styled.button<{
   }
 `;
 
+export const ColorInputWrap = styled.div`
+  position: relative;
+  width: 32px; /* 원하는 크기 */
+  height: 32px;
+  border-radius: 50%; /* 원형으로 설정 */
+  overflow: hidden;
+`;
+
 export const ColorInput = styled.input`
-  width: 100%;
+  /* width: 100%;
   height: 36px;
   min-height: 36px;
   border: none;
   border-radius: 8px;
   cursor: pointer;
-  background: transparent;
+  background: transparent; */
+
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200% !important;
+  height: 200% !important;
+  border: none;
+  cursor: pointer;
+  background: none;
 `;
 
 export const NumberInput = styled.input`
@@ -181,6 +205,30 @@ export const DimLabel = styled.span`
   padding-left: 2px;
 `;
 
+export const DimInputWrapper = styled.div`
+  position: relative;
+  flex: 0 0 auto;
+
+  input {
+    padding-right: 24px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+`;
+
+export const DimInlineLabel = styled.span`
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 10px;
+  font-weight: 700;
+  color: #52525b;
+  text-transform: uppercase;
+  pointer-events: none;
+  user-select: none;
+`;
+
 export const Hint = styled.div`
   font-size: 12px;
   color: #a1a1aa;
@@ -199,15 +247,17 @@ export const ListItem = styled.div<{
   $kind?: "room" | "furniture";
   $indent?: number;
   $dragOver?: boolean;
+  $tree?: boolean;
 }>`
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 8px 10px;
+  padding: 6px 10px;
 
   ${(props) => props.$indent && `margin-left: ${10 + props.$indent * 16}px;`}
 
-  border-radius: 8px;
+  border-radius: 6px;
   background: ${(props) => (props.$selected ? "#3b82f6" : "#3f3f46")};
   color: #ffffff;
   font-size: 13px;
@@ -218,6 +268,32 @@ export const ListItem = styled.div<{
   &:hover {
     background: ${(props) => (props.$selected ? "#2563eb" : "#52525b")};
   }
+
+  ${(props) =>
+    props.$tree &&
+    `
+    &::before {
+      content: '';
+      position: absolute;
+      left: -12px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 10px;
+      height: 2px;
+      background: #52525b;
+    }
+  `}
+`;
+
+export const RoomChildren = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-left: 14px;
+  padding-left: 12px;
+  padding-top: 3px;
+  padding-bottom: 3px;
+  border-left: 2px solid #52525b;
 `;
 
 export const ListItemType = styled.span`
@@ -232,7 +308,27 @@ export const HeaderButtons = styled.div`
 `;
 
 export const OpacitySlider = styled.input`
-  width: 120px;
+  width: 100%;
   cursor: pointer;
 `;
 
+export const Toolbar = styled.div`
+  position: absolute;
+  top: 50px;
+  left: 240px;
+  right: 0px;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 14px;
+  color: #ffffff;
+  flex-wrap: wrap;
+`;
+
+export const ToolbarDivider = styled.div`
+  width: 1px;
+  height: 22px;
+  background: #3f3f46;
+  flex-shrink: 0;
+`;

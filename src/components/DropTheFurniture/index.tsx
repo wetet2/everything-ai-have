@@ -1,4 +1,11 @@
-import { useState, useRef, useCallback, useEffect, Fragment } from "react";
+import {
+  useState,
+  useRef,
+  useCallback,
+  useEffect,
+  Fragment,
+  startTransition,
+} from "react";
 import dynamic from "next/dynamic";
 import {
   Container,
@@ -12,14 +19,18 @@ import {
   NumberInput,
   TextInput,
   InputRow,
-  DimField,
-  DimLabel,
+  DimInputWrapper,
+  DimInlineLabel,
   Hint,
   List,
   ListItem,
   ListItemType,
+  RoomChildren,
   OpacitySlider,
   Divider,
+  Toolbar,
+  ToolbarDivider,
+  ColorInputWrap,
 } from "./styled";
 import {
   PlacedItem,
@@ -91,12 +102,13 @@ const DEFAULT_ROOM: PlacedItem = {
 };
 
 export default function DropTheFurniture() {
-  // 서버와 클라이언트의 초기 상태를 동일하게 맞춰 hydration 오류를 방지
+  // SSR과 클라이언트 초기 렌더가 동일하도록 정적 기본값 사용
   const [items, setItems] = useState<PlacedItem[]>([DEFAULT_ROOM]);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [mode, setMode] = useState<TransformMode>("translate");
   const [cameraState, setCameraState] = useState<CameraState>(DEFAULT_CAMERA);
   const [wallOpacity, setWallOpacity] = useState(1);
+  const [autoTransparent, setAutoTransparent] = useState(false);
 
   // 마지막으로 선택한 방을 기억해서 가구 추가 시 계속 같은 방에 배치
   const lastRoomIdRef = useRef<string | null>(DEFAULT_ROOM.id);
@@ -105,21 +117,22 @@ export default function DropTheFurniture() {
   const draggingFurnitureId = useRef<string | null>(null);
   const [dragOverRoomId, setDragOverRoomId] = useState<string | null>(null);
 
-  // 마운트 후 localStorage에 저장된 상태가 있으면 복원
+  // 마운트 후(클라이언트에서만) localStorage 복원 — hydration 완료 후 실행됨
   useEffect(() => {
     const saved = getInitialSavedState();
-    if (!saved) return;
-    if (Array.isArray(saved.items)) {
+    if (!saved || !Array.isArray(saved.items)) return;
+    const firstRoom = saved.items.find(
+      (item: PlacedItem) => item.kind === "room",
+    );
+    lastRoomIdRef.current = firstRoom?.id ?? DEFAULT_ROOM.id;
+    startTransition(() => {
       setItems(saved.items);
       setSelectedId(saved.selectedId ?? null);
       setMode(saved.mode ?? "translate");
       setCameraState(saved.camera ?? DEFAULT_CAMERA);
       setWallOpacity(saved.wallOpacity ?? 1);
-      const firstRoom = saved.items.find(
-        (item: PlacedItem): item is Room => item.kind === "room",
-      );
-      lastRoomIdRef.current = firstRoom?.id ?? DEFAULT_ROOM.id;
-    }
+      setAutoTransparent(saved.autoTransparent ?? false);
+    });
   }, []);
 
   const itemsRef = useRef(items);
@@ -143,10 +156,11 @@ export default function DropTheFurniture() {
       mode,
       camera: cameraState,
       wallOpacity,
+      autoTransparent,
       version: 1,
     };
     localStorage.setItem(STATE_KEY, JSON.stringify(state));
-  }, [items, selectedId, mode, cameraState, wallOpacity]);
+  }, [items, selectedId, mode, cameraState, wallOpacity, autoTransparent]);
 
   const syncHistoryState = useCallback(() => {
     setCanUndo(undoStack.current.length > 0);
@@ -420,24 +434,19 @@ export default function DropTheFurniture() {
           <p>방과 가구를 자유롭게 배치핼보세요.</p>
         </div>
         <HeaderButtons>
-          <Button onClick={handleNew}>🗑️ New</Button>
-          <OpacitySlider
-            type="range"
-            min={0}
-            max={1}
-            step={0.05}
-            value={wallOpacity}
-            onChange={(event) => setWallOpacity(parseFloat(event.target.value))}
-            title="벽 투명도"
-          />
-          <Button onClick={undo} disabled={!canUndo}>
+          <Button $compact onClick={handleNew}>
+            🗑️ New
+          </Button>
+          <Button $compact onClick={undo} disabled={!canUndo}>
             ↩ Undo
           </Button>
-          <Button onClick={redo} disabled={!canRedo}>
+          <Button $compact onClick={redo} disabled={!canRedo}>
             ↪ Redo
           </Button>
-          <Button onClick={handleSave}>💾 저장</Button>
-          <Button onClick={() => fileInputRef.current?.click()}>
+          <Button $compact onClick={handleSave}>
+            💾 저장
+          </Button>
+          <Button $compact onClick={() => fileInputRef.current?.click()}>
             📂 불러오기
           </Button>
           <input
@@ -471,7 +480,27 @@ export default function DropTheFurniture() {
 
         <Divider />
 
-        <SectionTitle>목록 (클릭해서 선택)</SectionTitle>
+        <SectionTitle>설정</SectionTitle>
+        <Hint>벽 투명도</Hint>
+        <OpacitySlider
+          type="range"
+          min={0}
+          max={1}
+          step={0.05}
+          value={wallOpacity}
+          onChange={(event) => setWallOpacity(parseFloat(event.target.value))}
+        />
+        <Button
+          $compact={true}
+          $active={autoTransparent}
+          onClick={() => setAutoTransparent((v) => !v)}
+        >
+          👁 자동 투명
+        </Button>
+
+        <Divider />
+
+        <SectionTitle>목록</SectionTitle>
         <List>
           {rooms.map((room) => {
             const roomFurniture = items.filter(
@@ -504,28 +533,32 @@ export default function DropTheFurniture() {
                   <span>{room.name}</span>
                   <ListItemType>방</ListItemType>
                 </ListItem>
-                {roomFurniture.map((furniture) => (
-                  <ListItem
-                    key={furniture.id}
-                    $selected={furniture.id === selectedId}
-                    $kind="furniture"
-                    $indent={1}
-                    draggable
-                    onClick={() => setSelectedId(furniture.id)}
-                    onDragStart={() => {
-                      draggingFurnitureId.current = furniture.id;
-                    }}
-                    onDragEnd={() => {
-                      draggingFurnitureId.current = null;
-                      setDragOverRoomId(null);
-                    }}
-                  >
-                    <span>{furniture.name}</span>
-                    <ListItemType>
-                      {TYPE_LABELS[furniture.furnitureType]}
-                    </ListItemType>
-                  </ListItem>
-                ))}
+                {roomFurniture.length > 0 && (
+                  <RoomChildren>
+                    {roomFurniture.map((furniture) => (
+                      <ListItem
+                        key={furniture.id}
+                        $selected={furniture.id === selectedId}
+                        $kind="furniture"
+                        $tree
+                        draggable
+                        onClick={() => setSelectedId(furniture.id)}
+                        onDragStart={() => {
+                          draggingFurnitureId.current = furniture.id;
+                        }}
+                        onDragEnd={() => {
+                          draggingFurnitureId.current = null;
+                          setDragOverRoomId(null);
+                        }}
+                      >
+                        <span>{furniture.name}</span>
+                        <ListItemType>
+                          {TYPE_LABELS[furniture.furnitureType]}
+                        </ListItemType>
+                      </ListItem>
+                    ))}
+                  </RoomChildren>
+                )}
               </Fragment>
             );
           })}
@@ -551,144 +584,67 @@ export default function DropTheFurniture() {
             </ListItem>
           ))}
         </List>
-
         {!selectedItem && (
           <Hint>목록에서 항목을 클릭하면 선택해서 편집할 수 있습니다.</Hint>
         )}
+      </LeftPanel>
 
-        {selectedItem && (
-          <>
-            <Divider />
+      {selectedItem && (
+        <Toolbar>
+          <ButtonGroup $nowrap>
+            {(["translate", "rotate", "scale"] as TransformMode[]).map((m) => (
+              <Button key={m} $active={mode === m} onClick={() => setMode(m)}>
+                {MODE_LABELS[m]}
+              </Button>
+            ))}
+          </ButtonGroup>
 
-            <SectionTitle>편집 도구</SectionTitle>
-            <ButtonGroup $nowrap>
-              {(["translate", "rotate", "scale"] as TransformMode[]).map(
-                (m) => (
-                  <Button
-                    key={m}
-                    $active={mode === m}
-                    onClick={() => setMode(m)}
-                  >
-                    {MODE_LABELS[m]}
-                  </Button>
-                ),
-              )}
-            </ButtonGroup>
-
-            <TextInput
-              type="text"
-              value={selectedItem.name}
-              onChange={(event) =>
-                updateItem(selectedItem.id, { name: event.target.value })
-              }
-            />
-
+          <TextInput
+            type="text"
+            value={selectedItem.name}
+            style={{ width: "130px" }}
+            onChange={(event) =>
+              updateItem(selectedItem.id, { name: event.target.value })
+            }
+          />
+          <ColorInputWrap>
             <ColorInput
               type="color"
               value={selectedItem.color}
+              style={{ width: "36px", padding: 0 }}
               onChange={(event) =>
                 updateItem(selectedItem.id, { color: event.target.value })
               }
             />
+          </ColorInputWrap>
 
-            {selectedItem.kind === "room" && (
-              <InputRow>
-                <DimField>
-                  <DimLabel>W</DimLabel>
+          {(selectedItem.kind === "room" ||
+            selectedItem.kind === "furniture") && (
+            <InputRow style={{ gap: "6px" }}>
+              {(["width", "depth", "height"] as const).map((dim, i) => (
+                <DimInputWrapper key={dim} style={{ width: "72px" }}>
                   <NumberInput
                     type="number"
                     min={100}
-                    step={100}
-                    value={selectedItem.width}
+                    step={selectedItem.kind === "room" ? 100 : 10}
+                    value={selectedItem[dim]}
                     onChange={(event) =>
                       updateItem(selectedItem.id, {
-                        width: parseFloat(event.target.value) || 1,
+                        [dim]: parseFloat(event.target.value) || 1,
                       })
                     }
                   />
-                </DimField>
-                <DimField>
-                  <DimLabel>D</DimLabel>
-                  <NumberInput
-                    type="number"
-                    min={100}
-                    step={100}
-                    value={selectedItem.depth}
-                    onChange={(event) =>
-                      updateItem(selectedItem.id, {
-                        depth: parseFloat(event.target.value) || 1,
-                      })
-                    }
-                  />
-                </DimField>
-                <DimField>
-                  <DimLabel>H</DimLabel>
-                  <NumberInput
-                    type="number"
-                    min={100}
-                    step={100}
-                    value={selectedItem.height}
-                    onChange={(event) =>
-                      updateItem(selectedItem.id, {
-                        height: parseFloat(event.target.value) || 1,
-                      })
-                    }
-                  />
-                </DimField>
-              </InputRow>
-            )}
+                  <DimInlineLabel>{["W", "D", "H"][i]}</DimInlineLabel>
+                </DimInputWrapper>
+              ))}
+            </InputRow>
+          )}
 
-            {selectedItem.kind === "furniture" && (
-              <InputRow>
-                <DimField>
-                  <DimLabel>W</DimLabel>
-                  <NumberInput
-                    type="number"
-                    min={100}
-                    step={10}
-                    value={selectedItem.width}
-                    onChange={(event) =>
-                      updateItem(selectedItem.id, {
-                        width: parseFloat(event.target.value) || 1,
-                      })
-                    }
-                  />
-                </DimField>
-                <DimField>
-                  <DimLabel>D</DimLabel>
-                  <NumberInput
-                    type="number"
-                    min={100}
-                    step={10}
-                    value={selectedItem.depth}
-                    onChange={(event) =>
-                      updateItem(selectedItem.id, {
-                        depth: parseFloat(event.target.value) || 1,
-                      })
-                    }
-                  />
-                </DimField>
-                <DimField>
-                  <DimLabel>H</DimLabel>
-                  <NumberInput
-                    type="number"
-                    min={100}
-                    step={10}
-                    value={selectedItem.height}
-                    onChange={(event) =>
-                      updateItem(selectedItem.id, {
-                        height: parseFloat(event.target.value) || 1,
-                      })
-                    }
-                  />
-                </DimField>
-              </InputRow>
-            )}
-
-            <Button $danger onClick={deleteSelected}>삭제</Button>
-          </>
-        )}
-      </LeftPanel>
+          <Button $danger $compact onClick={deleteSelected}>
+            삭제
+          </Button>
+        </Toolbar>
+      )}
 
       <Scene
         items={items}
@@ -696,6 +652,7 @@ export default function DropTheFurniture() {
         mode={mode}
         cameraState={cameraState}
         wallOpacity={wallOpacity}
+        autoTransparent={autoTransparent}
         onSelect={setSelectedId}
         onChange={updateItem}
         onCameraChange={setCameraState}

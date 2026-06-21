@@ -17,6 +17,7 @@ type SceneProps = {
   mode: TransformMode;
   cameraState: CameraState;
   wallOpacity: number;
+  autoTransparent: boolean;
   onSelect: (id: string | null) => void;
   onChange: (id: string, updates: Partial<PlacedItem>) => void;
   onCameraChange: (state: CameraState) => void;
@@ -28,6 +29,7 @@ function SceneContent({
   mode,
   cameraState,
   wallOpacity,
+  autoTransparent,
   onSelect,
   onChange,
   onCameraChange,
@@ -98,6 +100,7 @@ function SceneContent({
           selectedFurnitureId={selectedId}
           mode={mode}
           wallOpacity={wallOpacity}
+          autoTransparent={autoTransparent}
           onSelect={onSelect}
           onChange={onChange}
         />

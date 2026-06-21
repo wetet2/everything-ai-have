@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev -p 8080",
     "build": "rm -rf .next && rm -rf out && next build",
+    "build2": "yarn build && ./deploy.sh",
     "start": "next start",
     "lint": "eslint",
     "serve": "serve ./out -p 8080"

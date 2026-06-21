@@ -1,5 +1,6 @@
-import { useRef, useEffect, useMemo } from "react";
+import { useRef, useEffect, useMemo, useState } from "react";
 import { Group, Vector3 } from "three";
+import { useThree, useFrame } from "@react-three/fiber";
 
 // Shift/Ctrl 키 눌림 상태 추적
 const isShiftPressed = { current: false };
@@ -19,6 +20,7 @@ type RoomObjectProps = {
   selectedFurnitureId: string | null;
   mode: TransformMode;
   wallOpacity: number;
+  autoTransparent?: boolean;
   onSelect: (id: string | null) => void;
   onChange: (id: string, updates: Partial<PlacedItem>) => void;
 };
@@ -31,10 +33,37 @@ export default function RoomObject({
   selectedFurnitureId,
   mode,
   wallOpacity,
+  autoTransparent = false,
   onSelect,
   onChange,
 }: RoomObjectProps) {
   const groupRef = useRef<Group>(null!);
+  const { camera } = useThree();
+  const [autoHiddenWalls, setAutoHiddenWalls] = useState({ front: false, back: false, left: false, right: false });
+  const prevAuto = useRef({ front: false, back: false, left: false, right: false });
+
+  useFrame(() => {
+    const none = { front: false, back: false, left: false, right: false };
+    if (!autoTransparent) {
+      if (prevAuto.current.front || prevAuto.current.back || prevAuto.current.left || prevAuto.current.right) {
+        prevAuto.current = none;
+        setAutoHiddenWalls(none);
+      }
+      return;
+    }
+    const local = groupRef.current.worldToLocal(camera.position.clone());
+    const next = {
+      front: local.z > data.depth / 2,
+      back:  local.z < -data.depth / 2,
+      right: local.x > data.width / 2,
+      left:  local.x < -data.width / 2,
+    };
+    const p = prevAuto.current;
+    if (next.front !== p.front || next.back !== p.back || next.right !== p.right || next.left !== p.left) {
+      prevAuto.current = next;
+      setAutoHiddenWalls(next);
+    }
+  });
 
   // 인접한 방과 겹치는 벽 중 한쪽(left·back)만 숨겨 z-파이팅 제거
   // 규칙: right·front 벽은 항상 유지, left·back 벽은 상대 right·front 벽과 맞닿으면 숨김
@@ -170,7 +199,12 @@ export default function RoomObject({
           depth={data.depth}
           color={data.color}
           wallOpacity={wallOpacity}
-          hiddenWalls={hiddenWalls}
+          hiddenWalls={{
+            front: hiddenWalls.front || autoHiddenWalls.front,
+            back:  hiddenWalls.back  || autoHiddenWalls.back,
+            left:  hiddenWalls.left  || autoHiddenWalls.left,
+            right: hiddenWalls.right || autoHiddenWalls.right,
+          }}
         />
 
         {/* 방의 하위 가구들 - 방이 움직이면 함께 움직임 */}

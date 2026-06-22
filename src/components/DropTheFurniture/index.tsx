@@ -134,6 +134,14 @@ export default function DropTheFurniture() {
     setCanRedo(redoStack.current.length > 0);
   }, []);
 
+  // 선택 해제 시 변환 모드를 이동으로 초기화
+  const handleSelect = useCallback((id: string | null) => {
+    setSelectedId(id);
+    if (id === null) {
+      setMode("translate");
+    }
+  }, []);
+
   const pushHistory = useCallback(
     (nextItems: PlacedItem[]) => {
       undoStack.current.push(itemsRef.current);
@@ -189,8 +197,8 @@ export default function DropTheFurniture() {
       color: "#a8afb3",
     };
     pushHistory([...itemsRef.current, newRoom]);
-    setSelectedId(id);
-  }, [pushHistory]);
+    handleSelect(id);
+  }, [pushHistory, handleSelect]);
 
   const addFurniture = useCallback(
     (type: FurnitureType | "door") => {
@@ -230,9 +238,9 @@ export default function DropTheFurniture() {
         color: DEFAULT_COLORS[type as FurnitureType],
       };
       pushHistory([...itemsRef.current, newItem]);
-      setSelectedId(id);
+      handleSelect(id);
     },
-    [pushHistory, selectedId],
+    [pushHistory, selectedId, handleSelect],
   );
 
   const updateItem = useCallback(
@@ -260,8 +268,44 @@ export default function DropTheFurniture() {
     } else {
       pushHistory(itemsRef.current.filter((item) => item.id !== selectedId));
     }
-    setSelectedId(null);
-  }, [pushHistory, selectedId]);
+    handleSelect(null);
+  }, [pushHistory, selectedId, handleSelect]);
+
+  // 이전 저장 파일 호환: scale 기반 가구라면 크기로 변환
+  const migrateItems = useCallback((rawItems: any[]): PlacedItem[] => {
+    return rawItems.map((item: any) => {
+      if (item.kind !== "furniture") return item;
+      const defaults =
+        FURNITURE_DEFAULT_DIMENSIONS[item.furnitureType as FurnitureType];
+      if (!defaults) return item;
+      const hasDims =
+        typeof item.width === "number" &&
+        typeof item.depth === "number" &&
+        typeof item.height === "number";
+      if (hasDims) return item;
+      if (Array.isArray(item.scale) && item.scale.length === 3) {
+        return {
+          ...item,
+          width: defaults.width * item.scale[0],
+          depth: defaults.depth * item.scale[2],
+          height: defaults.height * item.scale[1],
+        };
+      }
+      return {
+        ...item,
+        width: defaults.width,
+        depth: defaults.depth,
+        height: defaults.height,
+      };
+    });
+  }, []);
+
+  // 방 1개에 가구가 없는 빈 상태인지 판정
+  const isEmptyLayout = useCallback((items: PlacedItem[]): boolean => {
+    const rooms = items.filter((i) => i.kind === "room");
+    const furniture = items.filter((i) => i.kind === "furniture");
+    return rooms.length <= 1 && furniture.length === 0;
+  }, []);
 
   const handleSave = useCallback(() => {
     const data = {
@@ -294,36 +338,11 @@ export default function DropTheFurniture() {
             window.alert("올바르지 않은 파일 형식입니다.");
             return;
           }
-          // 이전 저장 파일 호환: scale 기반 가구라면 크기로 변환
-          const migratedItems = result.items.map((item: any) => {
-            if (item.kind !== "furniture") return item;
-            const defaults =
-              FURNITURE_DEFAULT_DIMENSIONS[item.furnitureType as FurnitureType];
-            if (!defaults) return item;
-            const hasDims =
-              typeof item.width === "number" &&
-              typeof item.depth === "number" &&
-              typeof item.height === "number";
-            if (hasDims) return item;
-            if (Array.isArray(item.scale) && item.scale.length === 3) {
-              return {
-                ...item,
-                width: defaults.width * item.scale[0],
-                depth: defaults.depth * item.scale[2],
-                height: defaults.height * item.scale[1],
-              };
-            }
-            return {
-              ...item,
-              width: defaults.width,
-              depth: defaults.depth,
-              height: defaults.height,
-            };
-          });
+          const migratedItems = migrateItems(result.items);
           pushHistory(migratedItems);
           setCameraState(result.camera);
           setWallOpacity(result.wallOpacity ?? 1);
-          setSelectedId(null);
+          handleSelect(null);
         } catch {
           window.alert("JSON 파싱에 실패했습니다.");
         }
@@ -331,7 +350,7 @@ export default function DropTheFurniture() {
       reader.readAsText(file);
       event.target.value = "";
     },
-    [pushHistory],
+    [pushHistory, handleSelect, migrateItems],
   );
 
   const handleNew = useCallback(() => {
@@ -352,37 +371,72 @@ export default function DropTheFurniture() {
     undoStack.current = [];
     redoStack.current = [];
     setItems([defaultRoom]);
-    setSelectedId(null);
-    setMode("translate");
+    handleSelect(null);
     setCameraState(DEFAULT_CAMERA);
-    setWallOpacity(1);
+    setWallOpacity(0.5);
     lastRoomIdRef.current = defaultRoom.id;
     if (typeof window !== "undefined") {
       localStorage.removeItem(STATE_KEY);
     }
     syncHistoryState();
-  }, [syncHistoryState, handleSave]);
+  }, [syncHistoryState, handleSave, handleSelect]);
 
   // ──────────────────────────────────────────────
   // 3. useEffect (라이프사이클)
   // ──────────────────────────────────────────────
   // 마운트 후(클라이언트에서만) localStorage 복원 — hydration 완료 후 실행됨
+  // 저장된 레이아웃이 없거나 빈 상태(방 1개+가구 없음)면 sample_layout.json을 불러옵니다.
   useEffect(() => {
+    const applyState = (data: {
+      items: PlacedItem[];
+      camera?: CameraState;
+      wallOpacity?: number;
+      autoTransparent?: boolean;
+      selectedId?: string | null;
+      mode?: TransformMode;
+    }) => {
+      const firstRoom = data.items.find(
+        (item: PlacedItem) => item.kind === "room",
+      );
+      lastRoomIdRef.current = firstRoom?.id ?? DEFAULT_ROOM.id;
+      startTransition(() => {
+        setItems(data.items);
+        setSelectedId(data.selectedId ?? null);
+        setMode(data.mode ?? "translate");
+        setCameraState(data.camera ?? DEFAULT_CAMERA);
+        setWallOpacity(data.wallOpacity ?? 1);
+        setAutoTransparent(data.autoTransparent ?? false);
+      });
+    };
+
     const saved = getInitialSavedState();
-    if (!saved || !Array.isArray(saved.items)) return;
-    const firstRoom = saved.items.find(
-      (item: PlacedItem) => item.kind === "room",
-    );
-    lastRoomIdRef.current = firstRoom?.id ?? DEFAULT_ROOM.id;
-    startTransition(() => {
-      setItems(saved.items);
-      setSelectedId(saved.selectedId ?? null);
-      setMode(saved.mode ?? "translate");
-      setCameraState(saved.camera ?? DEFAULT_CAMERA);
-      setWallOpacity(saved.wallOpacity ?? 1);
-      setAutoTransparent(saved.autoTransparent ?? false);
-    });
-  }, []);
+    if (saved && Array.isArray(saved.items) && !isEmptyLayout(saved.items)) {
+      applyState({
+        items: migrateItems(saved.items),
+        camera: saved.camera,
+        wallOpacity: saved.wallOpacity,
+        autoTransparent: saved.autoTransparent,
+        selectedId: saved.selectedId,
+        mode: saved.mode,
+      });
+      return;
+    }
+
+    // 저장된 레이아웃이 없거나 빈 상태면 sample_layout.json 불러오기
+    fetch("/sample_layout.json")
+      .then((res) => res.json())
+      .then((result) => {
+        if (!Array.isArray(result.items)) return;
+        applyState({
+          items: migrateItems(result.items),
+          camera: result.camera,
+          wallOpacity: result.wallOpacity,
+        });
+      })
+      .catch(() => {
+        // sample_layout.json 로드 실패 시 기본 방 유지
+      });
+  }, [isEmptyLayout, migrateItems]);
 
   useEffect(() => {
     itemsRef.current = items;
@@ -551,7 +605,7 @@ export default function DropTheFurniture() {
                   $selected={room.id === selectedId}
                   $kind="room"
                   $dragOver={dragOverRoomId === room.id}
-                  onClick={() => setSelectedId(room.id)}
+                  onClick={() => handleSelect(room.id)}
                   onDragOver={(e) => {
                     e.preventDefault();
                     if (draggingFurnitureId.current) setDragOverRoomId(room.id);
@@ -580,7 +634,7 @@ export default function DropTheFurniture() {
                         $kind="furniture"
                         $tree
                         draggable
-                        onClick={() => setSelectedId(furniture.id)}
+                        onClick={() => handleSelect(furniture.id)}
                         onDragStart={() => {
                           draggingFurnitureId.current = furniture.id;
                         }}
@@ -606,7 +660,7 @@ export default function DropTheFurniture() {
               $selected={furniture.id === selectedId}
               $kind="furniture"
               draggable
-              onClick={() => setSelectedId(furniture.id)}
+              onClick={() => handleSelect(furniture.id)}
               onDragStart={() => {
                 draggingFurnitureId.current = furniture.id;
               }}
@@ -691,7 +745,7 @@ export default function DropTheFurniture() {
         cameraState={cameraState}
         wallOpacity={wallOpacity}
         autoTransparent={autoTransparent}
-        onSelect={setSelectedId}
+        onSelect={handleSelect}
         onChange={updateItem}
         onCameraChange={setCameraState}
       />

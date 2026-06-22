@@ -10,7 +10,7 @@ type Bounds3D = {
   maxZ: number;
 };
 
-const WALL_OVERLAP_ALLOWANCE = WALL_THICKNESS;
+const WALL_OVERLAP_ALLOWANCE = 0;
 
 function rotatePointY(
   x: number,
@@ -78,7 +78,7 @@ export function boxesOverlap3D(
   b: Bounds3D,
   allowance: number = 0
 ): boolean {
-  // 방-방은 벽 두께만큼 x/z축으로 겹쳐도 허용합니다.
+  // 방-방도 겹침을 허용하지 않습니다.
   // y축은 항상 0mm 허용입니다.
   return (
     a.minX < b.maxX - allowance &&
@@ -90,7 +90,7 @@ export function boxesOverlap3D(
   );
 }
 
-// 방끼리는 벽 두께만큼 겹칠 수 있지만, 가구는 절대 겹치면 안 됩니다.
+// 모든 아이템은 절대 겹치면 안 됩니다.
 function getOverlapAllowance(a: PlacedItem, b: PlacedItem): number {
   if (a.kind === "room" && b.kind === "room") return WALL_OVERLAP_ALLOWANCE;
   return 0;
@@ -155,8 +155,8 @@ export function findNonOverlappingRoomPosition(
 ): [number, number, number] {
   if (existingRooms.length === 0) return [0, 0, 0];
 
-  // 같은 크기의 방을 추가할 때 벽 두께만큼 겹치도록 배치합니다.
-  const spacing = WALL_THICKNESS;
+  // 방끼리 벽이 맞닿도록(겹치지 않게) 배치합니다.
+  const spacing = WALL_THICKNESS * 2;
   const step = Math.max(width, depth) + spacing;
   const candidateRoom: PlacedItem = {
     id: "candidate",

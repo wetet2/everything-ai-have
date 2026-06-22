@@ -134,8 +134,8 @@ export default function Furniture({
       groupObj.position.y -= bottomOffset;
 
       if (room) {
-        // 문은 가구가 아니므로 벽 두께만큼 벽을 뚫고 들어갈 수 있음
-        const extra = data.furnitureType === "door" ? WALL_THICKNESS + 50 : 0;
+        // 문은 두 방의 벽(200mm)을 뚫고 이웃 방 내부로 20mm 들어갈 수 있음
+        const extra = data.furnitureType === "door" ? WALL_THICKNESS * 2 + 20 : 0;
 
         // 방 벽을 넘지 않도록 가구 중심 좌표를 제한
         const minX = -room.width / 2 - extra + halfFx;
@@ -531,7 +531,7 @@ function Refrigerator({ color }: { color: string }) {
 function Door({ color }: { color: string }) {
   const w = 900;
   const h = 2000;
-  const d = 200;
+  const d = 240;
   const frameW = 80;
   const slabD = 80;
   return (

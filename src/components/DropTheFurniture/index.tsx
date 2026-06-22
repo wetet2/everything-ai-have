@@ -102,6 +102,9 @@ const DEFAULT_ROOM: PlacedItem = {
 };
 
 export default function DropTheFurniture() {
+  // ──────────────────────────────────────────────
+  // 1. State & Ref 변수
+  // ──────────────────────────────────────────────
   // SSR과 클라이언트 초기 렌더가 동일하도록 정적 기본값 사용
   const [items, setItems] = useState<PlacedItem[]>([DEFAULT_ROOM]);
   const [selectedId, setSelectedId] = useState<string | null>(null);
@@ -109,59 +112,23 @@ export default function DropTheFurniture() {
   const [cameraState, setCameraState] = useState<CameraState>(DEFAULT_CAMERA);
   const [wallOpacity, setWallOpacity] = useState(1);
   const [autoTransparent, setAutoTransparent] = useState(false);
+  const [dragOverRoomId, setDragOverRoomId] = useState<string | null>(null);
+  const [canUndo, setCanUndo] = useState(false);
+  const [canRedo, setCanRedo] = useState(false);
 
   // 마지막으로 선택한 방을 기억해서 가구 추가 시 계속 같은 방에 배치
   const lastRoomIdRef = useRef<string | null>(DEFAULT_ROOM.id);
 
   // 목록에서 드래그 중인 가구 id, 드롭 대상 방 id
   const draggingFurnitureId = useRef<string | null>(null);
-  const [dragOverRoomId, setDragOverRoomId] = useState<string | null>(null);
-
-  // 마운트 후(클라이언트에서만) localStorage 복원 — hydration 완료 후 실행됨
-  useEffect(() => {
-    const saved = getInitialSavedState();
-    if (!saved || !Array.isArray(saved.items)) return;
-    const firstRoom = saved.items.find(
-      (item: PlacedItem) => item.kind === "room",
-    );
-    lastRoomIdRef.current = firstRoom?.id ?? DEFAULT_ROOM.id;
-    startTransition(() => {
-      setItems(saved.items);
-      setSelectedId(saved.selectedId ?? null);
-      setMode(saved.mode ?? "translate");
-      setCameraState(saved.camera ?? DEFAULT_CAMERA);
-      setWallOpacity(saved.wallOpacity ?? 1);
-      setAutoTransparent(saved.autoTransparent ?? false);
-    });
-  }, []);
-
   const itemsRef = useRef(items);
-  useEffect(() => {
-    itemsRef.current = items;
-  }, [items]);
-
   const undoStack = useRef<PlacedItem[][]>([]);
   const redoStack = useRef<PlacedItem[][]>([]);
-  const [canUndo, setCanUndo] = useState(false);
-  const [canRedo, setCanRedo] = useState(false);
-
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  // 상태가 바뀔 때마다 localStorage에 실시간 저장
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    const state = {
-      items,
-      selectedId,
-      mode,
-      camera: cameraState,
-      wallOpacity,
-      autoTransparent,
-      version: 1,
-    };
-    localStorage.setItem(STATE_KEY, JSON.stringify(state));
-  }, [items, selectedId, mode, cameraState, wallOpacity, autoTransparent]);
-
+  // ──────────────────────────────────────────────
+  // 2. Callback / Handler 함수
+  // ──────────────────────────────────────────────
   const syncHistoryState = useCallback(() => {
     setCanUndo(undoStack.current.length > 0);
     setCanRedo(redoStack.current.length > 0);
@@ -195,44 +162,6 @@ export default function DropTheFurniture() {
     syncHistoryState();
   }, [syncHistoryState]);
 
-  // 키보드 단축키: Ctrl/Cmd + Z (Undo), Ctrl/Cmd + Y 또는 Ctrl/Cmd + Shift + Z (Redo)
-  useEffect(() => {
-    const handleKeyDown = (event: KeyboardEvent) => {
-      const isCtrl = event.ctrlKey || event.metaKey;
-      if (!isCtrl) return;
-
-      if (event.key.toLowerCase() === "z" && !event.shiftKey) {
-        event.preventDefault();
-        undo();
-      } else if (
-        event.key.toLowerCase() === "y" ||
-        (event.key.toLowerCase() === "z" && event.shiftKey)
-      ) {
-        event.preventDefault();
-        redo();
-      }
-    };
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [undo, redo]);
-
-  const roomCount = items.filter((item) => item.kind === "room").length;
-  const furnitureCount = items.filter(
-    (item) => item.kind === "furniture",
-  ).length;
-  const rooms = items.filter((item): item is Room => item.kind === "room");
-  const unassignedFurniture = items.filter(
-    (item): item is FurnitureItem => item.kind === "furniture" && !item.roomId,
-  );
-  const selectedItem = items.find((item) => item.id === selectedId);
-  const isRoomSelected = selectedItem?.kind === "room";
-
-  useEffect(() => {
-    if (selectedItem?.kind === "room") {
-      lastRoomIdRef.current = selectedItem.id;
-    }
-  }, [selectedItem]);
-
   const addRoom = useCallback(() => {
     const id = `room-${Date.now()}`;
     const width = 8000;
@@ -245,6 +174,9 @@ export default function DropTheFurniture() {
       width,
       depth,
     );
+    const roomCount = itemsRef.current.filter(
+      (item) => item.kind === "room",
+    ).length;
     const newRoom: PlacedItem = {
       id,
       kind: "room",
@@ -258,11 +190,13 @@ export default function DropTheFurniture() {
     };
     pushHistory([...itemsRef.current, newRoom]);
     setSelectedId(id);
-  }, [pushHistory, roomCount]);
+  }, [pushHistory]);
 
   const addFurniture = useCallback(
     (type: FurnitureType | "door") => {
       const id = `${type}-${Date.now()}`;
+      const selectedItem =
+        itemsRef.current.find((i) => i.id === selectedId) ?? null;
       const targetRoom = (() => {
         if (selectedItem?.kind === "room") return selectedItem;
         if (lastRoomIdRef.current) {
@@ -277,6 +211,9 @@ export default function DropTheFurniture() {
         );
       })();
       const defaults = FURNITURE_DEFAULT_DIMENSIONS[type as FurnitureType];
+      const furnitureCount = itemsRef.current.filter(
+        (item) => item.kind === "furniture",
+      ).length;
       const newItem: PlacedItem = {
         id,
         kind: "furniture",
@@ -295,7 +232,7 @@ export default function DropTheFurniture() {
       pushHistory([...itemsRef.current, newItem]);
       setSelectedId(id);
     },
-    [pushHistory, furnitureCount, selectedItem],
+    [pushHistory, selectedId],
   );
 
   const updateItem = useCallback(
@@ -426,6 +363,107 @@ export default function DropTheFurniture() {
     syncHistoryState();
   }, [syncHistoryState, handleSave]);
 
+  // ──────────────────────────────────────────────
+  // 3. useEffect (라이프사이클)
+  // ──────────────────────────────────────────────
+  // 마운트 후(클라이언트에서만) localStorage 복원 — hydration 완료 후 실행됨
+  useEffect(() => {
+    const saved = getInitialSavedState();
+    if (!saved || !Array.isArray(saved.items)) return;
+    const firstRoom = saved.items.find(
+      (item: PlacedItem) => item.kind === "room",
+    );
+    lastRoomIdRef.current = firstRoom?.id ?? DEFAULT_ROOM.id;
+    startTransition(() => {
+      setItems(saved.items);
+      setSelectedId(saved.selectedId ?? null);
+      setMode(saved.mode ?? "translate");
+      setCameraState(saved.camera ?? DEFAULT_CAMERA);
+      setWallOpacity(saved.wallOpacity ?? 1);
+      setAutoTransparent(saved.autoTransparent ?? false);
+    });
+  }, []);
+
+  useEffect(() => {
+    itemsRef.current = items;
+  }, [items]);
+
+  // 상태가 바뀔 때마다 localStorage에 실시간 저장
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const state = {
+      items,
+      selectedId,
+      mode,
+      camera: cameraState,
+      wallOpacity,
+      autoTransparent,
+      version: 1,
+    };
+    localStorage.setItem(STATE_KEY, JSON.stringify(state));
+  }, [items, selectedId, mode, cameraState, wallOpacity, autoTransparent]);
+
+  useEffect(() => {
+    const item = items.find((i) => i.id === selectedId);
+    if (item?.kind === "room") {
+      lastRoomIdRef.current = item.id;
+    }
+  }, [items, selectedId]);
+
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Delete" || event.key === "Backspace") {
+        if (
+          event.target instanceof HTMLInputElement ||
+          event.target instanceof HTMLTextAreaElement
+        ) {
+          return;
+        }
+
+        if (selectedId) {
+          event.preventDefault();
+          deleteSelected();
+          return;
+        }
+      }
+
+      const isCtrl = event.ctrlKey || event.metaKey;
+      if (!isCtrl) return;
+
+      if (event.key.toLowerCase() === "z" && !event.shiftKey) {
+        event.preventDefault();
+        undo();
+      } else if (
+        event.key.toLowerCase() === "y" ||
+        (event.key.toLowerCase() === "z" && event.shiftKey)
+      ) {
+        event.preventDefault();
+        redo();
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [undo, redo, selectedId, deleteSelected]);
+
+  // ──────────────────────────────────────────────
+  // 4. Render 관련 조건 변수
+  // ──────────────────────────────────────────────
+  const roomCount = items.filter((item) => item.kind === "room").length;
+  const furnitureCount = items.filter(
+    (item) => item.kind === "furniture",
+  ).length;
+  const rooms = items.filter((item): item is Room => item.kind === "room");
+  const unassignedFurniture = items.filter(
+    (item): item is FurnitureItem => item.kind === "furniture" && !item.roomId,
+  );
+  const selectedItem = items.find((item) => item.id === selectedId);
+  const isRoomSelected = selectedItem?.kind === "room";
+
+  // ──────────────────────────────────────────────
+  // 5. Render
+  // ──────────────────────────────────────────────
   return (
     <Container>
       <Header>

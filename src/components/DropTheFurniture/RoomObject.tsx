@@ -6,7 +6,7 @@ import { useThree, useFrame } from "@react-three/fiber";
 const isShiftPressed = { current: false };
 const isCtrlPressed = { current: false };
 import { TransformControls } from "@react-three/drei";
-import { Room, FurnitureItem, PlacedItem, TransformMode } from "./types";
+import { Room, FurnitureItem, ModelItem, PlacedItem, TransformMode } from "./types";
 import RoomMesh from "./RoomMesh";
 import Furniture from "./Furniture";
 import { resolveCollisions } from "./collision";
@@ -16,7 +16,7 @@ import { activeTransformControls } from "./transformControlsRegistry";
 type RoomObjectProps = {
   data: Room;
   rooms: Room[];
-  furniture: FurnitureItem[];
+  furniture: (FurnitureItem | ModelItem)[];
   isSelected: boolean;
   selectedFurnitureId: string | null;
   mode: TransformMode;

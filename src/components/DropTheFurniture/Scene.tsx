@@ -4,7 +4,13 @@ import { OrbitControls, Grid } from "@react-three/drei";
 import { DoubleSide } from "three";
 import RoomObject from "./RoomObject";
 import Furniture from "./Furniture";
-import { PlacedItem, Room, FurnitureItem, TransformMode } from "./types";
+import {
+  PlacedItem,
+  Room,
+  FurnitureItem,
+  ModelItem,
+  TransformMode,
+} from "./types";
 
 export type CameraState = {
   position: [number, number, number];
@@ -47,8 +53,9 @@ function SceneContent({
   }, [camera, cameraState]);
 
   const rooms = items.filter((item): item is Room => item.kind === "room");
-  const unassignedFurniture = items.filter(
-    (item): item is FurnitureItem => item.kind === "furniture" && !item.roomId,
+  const unassignedItems = items.filter(
+    (item): item is FurnitureItem | ModelItem =>
+      (item.kind === "furniture" || item.kind === "model") && !item.roomId,
   );
 
   return (
@@ -93,8 +100,9 @@ function SceneContent({
           data={room}
           rooms={rooms}
           furniture={items.filter(
-            (item): item is FurnitureItem =>
-              item.kind === "furniture" && item.roomId === room.id,
+            (item): item is FurnitureItem | ModelItem =>
+              (item.kind === "furniture" || item.kind === "model") &&
+              item.roomId === room.id,
           )}
           isSelected={room.id === selectedId}
           selectedFurnitureId={selectedId}
@@ -106,13 +114,13 @@ function SceneContent({
         />
       ))}
 
-      {unassignedFurniture.map((furniture) => (
+      {unassignedItems.map((item) => (
         <Furniture
-          key={furniture.id}
-          data={furniture}
+          key={item.id}
+          data={item}
           room={null}
           siblingFurniture={[]}
-          isSelected={furniture.id === selectedId}
+          isSelected={item.id === selectedId}
           mode={mode}
           onSelect={onSelect}
           onChange={(id, updates) =>

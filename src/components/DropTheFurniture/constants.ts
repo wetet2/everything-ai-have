@@ -1,4 +1,4 @@
-import { FurnitureType } from "./types";
+import { FurnitureType, ModelType } from "./types";
 
 // 벽 두께 (mm)
 export const WALL_THICKNESS = 100;
@@ -19,6 +19,17 @@ export const FURNITURE_DEFAULT_DIMENSIONS: Record<
   door: { width: 900, depth: 240, height: 2000 },
 };
 
+// 모델 타입의 기본 크기 (mm)
+export const MODEL_DEFAULT_DIMENSIONS: Record<
+  ModelType,
+  { width: number; depth: number; height: number }
+> = {
+  fountain: { width: 1200, depth: 1200, height: 1500 },
+  donkey: { width: 1200, depth: 600, height: 1200 },
+  couch: { width: 1800, depth: 800, height: 800 },
+  badDouble: { width: 1000, depth: 600, height: 350 },
+};
+
 export const TYPE_LABELS: Record<FurnitureType, string> = {
   bed: "침대",
   chair: "의자",
@@ -29,6 +40,13 @@ export const TYPE_LABELS: Record<FurnitureType, string> = {
   washingMachine: "세탁기",
   refrigerator: "냉장고",
   door: "문",
+};
+
+export const MODEL_LABELS: Record<ModelType, string> = {
+  fountain: "분수대",
+  donkey: "당나귀",
+  couch: "소파(GLB)",
+  badDouble: "침대 더블(GLB)",
 };
 
 export const MODE_LABELS = {

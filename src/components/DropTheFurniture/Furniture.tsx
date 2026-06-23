@@ -1,16 +1,27 @@
-import { useRef, useEffect, useMemo } from "react";
-import { Group, Box3, Vector3 } from "three";
-import { useThree, createPortal } from "@react-three/fiber";
-import { TransformControls } from "@react-three/drei";
-import { FurnitureItem, Room, PlacedItem, TransformMode } from "./types";
+import { useRef, useEffect, useMemo, Suspense } from "react";
+import { Group, Box3, Vector3, AnimationMixer } from "three";
+import * as SkeletonUtils from "three/examples/jsm/utils/SkeletonUtils.js";
+import { useThree, useFrame, createPortal } from "@react-three/fiber";
+import { TransformControls, useGLTF } from "@react-three/drei";
+import {
+  FurnitureItem,
+  ModelItem,
+  Room,
+  PlacedItem,
+  TransformMode,
+} from "./types";
 import { resolveCollisions } from "./collision";
-import { FURNITURE_DEFAULT_DIMENSIONS, WALL_THICKNESS } from "./constants";
+import {
+  FURNITURE_DEFAULT_DIMENSIONS,
+  MODEL_DEFAULT_DIMENSIONS,
+  WALL_THICKNESS,
+} from "./constants";
 import { activeTransformControls } from "./transformControlsRegistry";
 
 type FurnitureProps = {
-  data: FurnitureItem;
+  data: FurnitureItem | ModelItem;
   room: Room | null;
-  siblingFurniture: FurnitureItem[];
+  siblingFurniture: (FurnitureItem | ModelItem)[];
   isSelected: boolean;
   mode: TransformMode;
   onSelect: (id: string) => void;
@@ -43,14 +54,17 @@ export default function Furniture({
   }, [isSelected]);
 
   // 지정된 크기가 없으면 기본 크기로 폭백
+  const defaults =
+    data.kind === "model"
+      ? MODEL_DEFAULT_DIMENSIONS[data.modelType]
+      : FURNITURE_DEFAULT_DIMENSIONS[data.furnitureType];
   const dims = {
-    width: data.width || FURNITURE_DEFAULT_DIMENSIONS[data.furnitureType].width,
-    depth: data.depth || FURNITURE_DEFAULT_DIMENSIONS[data.furnitureType].depth,
-    height:
-      data.height || FURNITURE_DEFAULT_DIMENSIONS[data.furnitureType].height,
+    width: data.width || defaults.width,
+    depth: data.depth || defaults.depth,
+    height: data.height || defaults.height,
   };
 
-  const base = FURNITURE_DEFAULT_DIMENSIONS[data.furnitureType];
+  const base = defaults;
   const scale: [number, number, number] = useMemo(
     () => [
       dims.width / base.width,
@@ -91,14 +105,14 @@ export default function Furniture({
     const group = groupRef.current;
     group.position.set(...data.position);
     // 문은 항상 바닥에 붙어 있어야 함
-    if (data.furnitureType === "door") {
+    if (data.kind === "furniture" && data.furnitureType === "door") {
       group.position.y = 0;
     }
     group.rotation.set(...data.rotation);
     group.scale.set(...scale);
     group.updateMatrix();
     group.updateMatrixWorld();
-  }, [data.position, data.rotation, scale, data.furnitureType]);
+  }, [data.position, data.rotation, scale, data]);
 
   const handleChange = () => {
     const groupObj = groupRef.current;
@@ -122,7 +136,7 @@ export default function Furniture({
       }
 
       // 문은 항상 바닥에 붙어 있도록 y만 고정합니다.
-      if (data.furnitureType === "door") {
+      if (data.kind === "furniture" && data.furnitureType === "door") {
         groupObj.position.y = 0;
       }
 
@@ -140,7 +154,10 @@ export default function Furniture({
 
       if (room) {
         // 문은 두 방의 벽(200mm)을 뚫고 이웃 방 내부로 20mm 들어갈 수 있음
-        const extra = data.furnitureType === "door" ? WALL_THICKNESS * 2 + 20 : 0;
+        const extra =
+          data.kind === "furniture" && data.furnitureType === "door"
+            ? WALL_THICKNESS * 2 + 20
+            : 0;
 
         // 방 벽을 넘지 않도록 가구 중심 좌표를 제한
         const minX = -room.width / 2 - extra + halfFx;
@@ -239,19 +256,51 @@ export default function Furniture({
           onSelect(data.id);
         }}
       >
-        {data.furnitureType === "bed" && <Bed color={data.color} />}
-        {data.furnitureType === "chair" && <Chair color={data.color} />}
-        {data.furnitureType === "table" && <Table color={data.color} />}
-        {data.furnitureType === "sofa" && <Sofa color={data.color} />}
-        {data.furnitureType === "bookshelf" && <Bookshelf color={data.color} />}
-        {data.furnitureType === "shelf" && <Shelf color={data.color} />}
-        {data.furnitureType === "washingMachine" && (
+        {data.kind === "furniture" && data.furnitureType === "bed" && (
+          <Bed color={data.color} />
+        )}
+        {data.kind === "furniture" && data.furnitureType === "chair" && (
+          <Chair color={data.color} />
+        )}
+        {data.kind === "furniture" && data.furnitureType === "table" && (
+          <Table color={data.color} />
+        )}
+        {data.kind === "furniture" && data.furnitureType === "sofa" && (
+          <Sofa color={data.color} />
+        )}
+        {data.kind === "furniture" && data.furnitureType === "bookshelf" && (
+          <Bookshelf color={data.color} />
+        )}
+        {data.kind === "furniture" && data.furnitureType === "shelf" && (
+          <Shelf color={data.color} />
+        )}
+        {data.kind === "furniture" && data.furnitureType === "washingMachine" && (
           <WashingMachine color={data.color} />
         )}
-        {data.furnitureType === "refrigerator" && (
+        {data.kind === "furniture" && data.furnitureType === "refrigerator" && (
           <Refrigerator color={data.color} />
         )}
-        {data.furnitureType === "door" && <Door color={data.color} />}
+        {data.kind === "furniture" && data.furnitureType === "door" && (
+          <Door color={data.color} />
+        )}
+        {data.kind === "model" && data.modelType === "fountain" && (
+          <Fountain color={data.color} />
+        )}
+        {data.kind === "model" && data.modelType === "donkey" && (
+          <Suspense fallback={null}>
+            <GLBModel path={DONKEY_MODEL_PATH} targetHeight={MODEL_TARGET_HEIGHT} />
+          </Suspense>
+        )}
+        {data.kind === "model" && data.modelType === "couch" && (
+          <Suspense fallback={null}>
+            <GLBModel path={COUCH_MODEL_PATH} targetHeight={MODEL_TARGET_HEIGHT} />
+          </Suspense>
+        )}
+        {data.kind === "model" && data.modelType === "badDouble" && (
+          <Suspense fallback={null}>
+            <GLBModel path={BAD_DOUBLE_MODEL_PATH} targetHeight={MODEL_TARGET_HEIGHT} />
+          </Suspense>
+        )}
       </group>
 
       {isSelected &&
@@ -570,3 +619,138 @@ function Door({ color }: { color: string }) {
     </group>
   );
 }
+
+function Fountain({ color }: { color: string }) {
+  const waterColor = "#60a5fa";
+  return (
+    <group>
+      {/* 하단 웅덩이 */}
+      <mesh castShadow receiveShadow position={[0, 150, 0]}>
+        <cylinderGeometry args={[600, 600, 300, 32]} />
+        <meshStandardMaterial color={color} />
+      </mesh>
+      {/* 웅덩이 물 */}
+      <mesh position={[0, 295, 0]}>
+        <cylinderGeometry args={[580, 580, 20, 32]} />
+        <meshStandardMaterial
+          color={waterColor}
+          transparent
+          opacity={0.7}
+        />
+      </mesh>
+      {/* 중앙 기둥 */}
+      <mesh castShadow receiveShadow position={[0, 650, 0]}>
+        <cylinderGeometry args={[120, 150, 700, 24]} />
+        <meshStandardMaterial color={color} />
+      </mesh>
+      {/* 상단 대야 (위가 넓은 절두 원뿔) */}
+      <mesh castShadow receiveShadow position={[0, 1100, 0]}>
+        <cylinderGeometry args={[300, 120, 200, 32]} />
+        <meshStandardMaterial color={color} />
+      </mesh>
+      {/* 상단 대야 물 */}
+      <mesh position={[0, 1195, 0]}>
+        <cylinderGeometry args={[280, 280, 20, 32]} />
+        <meshStandardMaterial
+          color={waterColor}
+          transparent
+          opacity={0.7}
+        />
+      </mesh>
+      {/* 꼭대기 노즐 */}
+      <mesh castShadow receiveShadow position={[0, 1300, 0]}>
+        <cylinderGeometry args={[40, 60, 200, 16]} />
+        <meshStandardMaterial color={color} />
+      </mesh>
+      {/* 꼭대기 장식 구 */}
+      <mesh castShadow position={[0, 1420, 0]}>
+        <sphereGeometry args={[60, 24, 24]} />
+        <meshStandardMaterial color={color} />
+      </mesh>
+    </group>
+  );
+}
+
+// GLB 모델을 로드해 바닥에 정렬하고 기준 높이로 정규화.
+// 스키닝(뼈대) 모델은 SkeletonUtils.clone, 일반 모델은 scene.clone 사용.
+// 애니메이션이 있으면 첫 번째(또는 Idle) 클립을 무한 재생.
+function GLBModel({
+  path,
+  targetHeight,
+  idleName = "Idle",
+}: {
+  path: string;
+  targetHeight: number;
+  idleName?: string;
+}) {
+  const { scene, animations } = useGLTF(path);
+  const mixerRef = useRef<AnimationMixer | null>(null);
+  const cloned = useMemo(() => {
+    // 스키닝 모델(뼈대/스킨 포함) 여부로 복제 방식 선택
+    const hasSkinnedMesh = scene.getObjectByProperty("isSkinnedMesh", true);
+    const clone = hasSkinnedMesh
+      ? SkeletonUtils.clone(scene)
+      : scene.clone(true);
+    // world matrix를 먼저 갱신해야 Box3가 정확한 크기를 측정함
+    clone.updateMatrixWorld(true);
+    const box = new Box3().setFromObject(clone);
+    const size = new Vector3();
+    box.getSize(size);
+    // 측정 실패(0등) 방지
+    const safeSizeY = Math.max(size.y, 0.001);
+    const scaleFactor = targetHeight / safeSizeY;
+    const center = new Vector3();
+    box.getCenter(center);
+    const group = new Group();
+    group.add(clone);
+    group.scale.setScalar(scaleFactor);
+    // 원본 중심을 원점으로, 바닥을 y=0으로 정렬
+    group.position.set(
+      -center.x * scaleFactor,
+      -box.min.y * scaleFactor,
+      -center.z * scaleFactor,
+    );
+    group.traverse((child) => {
+      if ((child as any).isMesh) {
+        (child as any).castShadow = true;
+        (child as any).receiveShadow = true;
+      }
+    });
+    return group;
+  }, [scene]);
+
+  // 애니메이션 믹서 설정 - Idle 클립을 우선, 없으면 첫 번째를 무한 재생
+  useEffect(() => {
+    if (!animations || animations.length === 0) return;
+    const clone = cloned.children[0];
+    const mixer = new AnimationMixer(clone);
+    mixerRef.current = mixer;
+    const clip =
+      animations.find((a) => a.name === idleName) ?? animations[0];
+    const action = mixer.clipAction(clip);
+    action.play();
+    return () => {
+      mixer.stopAllAction();
+      mixer.uncacheRoot(clone);
+      mixerRef.current = null;
+    };
+  }, [cloned, animations, idleName]);
+
+  // 매 프레임 믹서 업데이트 (애니메이션 재생)
+  useFrame((_, delta) => {
+    if (mixerRef.current) {
+      mixerRef.current.update(delta);
+    }
+  });
+
+  return <primitive object={cloned} />;
+}
+
+const DONKEY_MODEL_PATH = "/models/Donkey.glb";
+const COUCH_MODEL_PATH = "/models/couch.glb";
+const BAD_DOUBLE_MODEL_PATH = "/models/bad_double.glb";
+const MODEL_TARGET_HEIGHT = 1200;
+
+useGLTF.preload(DONKEY_MODEL_PATH);
+useGLTF.preload(COUCH_MODEL_PATH);
+useGLTF.preload(BAD_DOUBLE_MODEL_PATH);

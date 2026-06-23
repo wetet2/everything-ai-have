@@ -1,5 +1,9 @@
 import { PlacedItem, Room } from "./types";
-import { FURNITURE_DEFAULT_DIMENSIONS, WALL_THICKNESS } from "./constants";
+import {
+  FURNITURE_DEFAULT_DIMENSIONS,
+  MODEL_DEFAULT_DIMENSIONS,
+  WALL_THICKNESS,
+} from "./constants";
 
 type Bounds3D = {
   minX: number;
@@ -28,6 +32,14 @@ function getHalfSize(item: PlacedItem) {
       halfW: item.width / 2 + WALL_THICKNESS,
       halfH: item.height / 2,
       halfD: item.depth / 2 + WALL_THICKNESS,
+    };
+  }
+  if (item.kind === "model") {
+    const defaults = MODEL_DEFAULT_DIMENSIONS[item.modelType];
+    return {
+      halfW: (item.width || defaults.width) / 2,
+      halfH: (item.height || defaults.height) / 2,
+      halfD: (item.depth || defaults.depth) / 2,
     };
   }
   const defaults = FURNITURE_DEFAULT_DIMENSIONS[item.furnitureType];

@@ -39,13 +39,17 @@ import {
   PlacedItem,
   Room,
   FurnitureItem,
+  ModelItem,
   FurnitureType,
+  ModelType,
   TransformMode,
 } from "./types";
 import { findNonOverlappingRoomPosition } from "./collision";
 import {
   FURNITURE_DEFAULT_DIMENSIONS,
+  MODEL_DEFAULT_DIMENSIONS,
   TYPE_LABELS,
+  MODEL_LABELS,
   MODE_LABELS,
 } from "./constants";
 import type { CameraState } from "./Scene";
@@ -64,6 +68,8 @@ const FURNITURE_TYPES: FurnitureType[] = [
   "refrigerator",
 ];
 
+const MODEL_TYPES: ModelType[] = ["fountain", "donkey", "couch", "badDouble"];
+
 const DEFAULT_COLORS: Record<FurnitureType, string> = {
   bed: "#8b5cf6",
   chair: "#f59e0b",
@@ -74,6 +80,13 @@ const DEFAULT_COLORS: Record<FurnitureType, string> = {
   washingMachine: "#94a3b8",
   refrigerator: "#64748b",
   door: "#92400e",
+};
+
+const DEFAULT_MODEL_COLORS: Record<ModelType, string> = {
+  fountain: "#06b6d4",
+  donkey: "#a78bfa",
+  couch: "#f59e0b",
+  badDouble: "#ef4444",
 };
 
 const DEFAULT_CAMERA: CameraState = {
@@ -249,6 +262,47 @@ export default function DropTheFurniture() {
     [pushHistory, selectedId, handleSelect],
   );
 
+  const addModel = useCallback(
+    (type: ModelType) => {
+      const id = `${type}-${Date.now()}`;
+      const selectedItem =
+        itemsRef.current.find((i) => i.id === selectedId) ?? null;
+      const targetRoom = (() => {
+        if (selectedItem?.kind === "room") return selectedItem;
+        if (lastRoomIdRef.current) {
+          const found = itemsRef.current.find(
+            (item): item is Room =>
+              item.kind === "room" && item.id === lastRoomIdRef.current,
+          );
+          if (found) return found;
+        }
+        return itemsRef.current.find(
+          (item): item is Room => item.kind === "room",
+        );
+      })();
+      const defaults = MODEL_DEFAULT_DIMENSIONS[type];
+      const modelCount = itemsRef.current.filter(
+        (item) => item.kind === "model",
+      ).length;
+      const newItem: PlacedItem = {
+        id,
+        kind: "model",
+        modelType: type,
+        roomId: targetRoom?.id ?? null,
+        name: `${MODEL_LABELS[type]} ${modelCount + 1}`,
+        width: defaults.width,
+        depth: defaults.depth,
+        height: defaults.height,
+        position: [0, 10, 0],
+        rotation: [0, 0, 0],
+        color: DEFAULT_MODEL_COLORS[type],
+      };
+      pushHistory([...itemsRef.current, newItem]);
+      handleSelect(id);
+    },
+    [pushHistory, selectedId, handleSelect],
+  );
+
   const updateItem = useCallback(
     (id: string, updates: Partial<PlacedItem>) => {
       const next = itemsRef.current.map((item) =>
@@ -263,12 +317,14 @@ export default function DropTheFurniture() {
     if (!selectedId) return;
     const selected = itemsRef.current.find((item) => item.id === selectedId);
     if (selected?.kind === "room") {
-      // 방을 삭제하면 소속 가구도 함께 삭제
+      // 방을 삭제하면 소속 가구/모델도 함께 삭제
       pushHistory(
         itemsRef.current.filter(
           (item) =>
-            !(item.kind === "furniture" && item.roomId === selectedId) &&
-            item.id !== selectedId,
+            !(
+              (item.kind === "furniture" || item.kind === "model") &&
+              item.roomId === selectedId
+            ) && item.id !== selectedId,
         ),
       );
     } else {
@@ -280,6 +336,30 @@ export default function DropTheFurniture() {
   // 이전 저장 파일 호환: scale 기반 가구라면 크기로 변환
   const migrateItems = useCallback((rawItems: any[]): PlacedItem[] => {
     return rawItems.map((item: any) => {
+      if (item.kind === "model") {
+        const defaults =
+          MODEL_DEFAULT_DIMENSIONS[item.modelType as ModelType];
+        if (!defaults) return item;
+        const hasDims =
+          typeof item.width === "number" &&
+          typeof item.depth === "number" &&
+          typeof item.height === "number";
+        if (hasDims) return item;
+        if (Array.isArray(item.scale) && item.scale.length === 3) {
+          return {
+            ...item,
+            width: defaults.width * item.scale[0],
+            depth: defaults.depth * item.scale[2],
+            height: defaults.height * item.scale[1],
+          };
+        }
+        return {
+          ...item,
+          width: defaults.width,
+          depth: defaults.depth,
+          height: defaults.height,
+        };
+      }
       if (item.kind !== "furniture") return item;
       const defaults =
         FURNITURE_DEFAULT_DIMENSIONS[item.furnitureType as FurnitureType];
@@ -306,11 +386,11 @@ export default function DropTheFurniture() {
     });
   }, []);
 
-  // 방 1개에 가구가 없는 빈 상태인지 판정
+  // 방 1개에 가구/모델이 없는 빈 상태인지 판정
   const isEmptyLayout = useCallback((items: PlacedItem[]): boolean => {
     const rooms = items.filter((i) => i.kind === "room");
-    const furniture = items.filter((i) => i.kind === "furniture");
-    return rooms.length <= 1 && furniture.length === 0;
+    const others = items.filter((i) => i.kind !== "room");
+    return rooms.length <= 1 && others.length === 0;
   }, []);
 
   const handleSave = useCallback(() => {
@@ -546,6 +626,9 @@ export default function DropTheFurniture() {
   const unassignedFurniture = items.filter(
     (item): item is FurnitureItem => item.kind === "furniture" && !item.roomId,
   );
+  const unassignedModels = items.filter(
+    (item): item is ModelItem => item.kind === "model" && !item.roomId,
+  );
   const selectedItem = items.find((item) => item.id === selectedId);
   const isRoomSelected = selectedItem?.kind === "room";
 
@@ -645,6 +728,17 @@ export default function DropTheFurniture() {
 
         <Divider />
 
+        <SectionTitle>모델 추가</SectionTitle>
+        <ButtonGroup>
+          {MODEL_TYPES.map((type) => (
+            <Button key={type} onClick={() => addModel(type)}>
+              {MODEL_LABELS[type]}
+            </Button>
+          ))}
+        </ButtonGroup>
+
+        <Divider />
+
         <SectionTitle>설정</SectionTitle>
         <Hint>벽 투명도</Hint>
         <OpacitySlider
@@ -672,6 +766,11 @@ export default function DropTheFurniture() {
               (item): item is FurnitureItem =>
                 item.kind === "furniture" && item.roomId === room.id,
             );
+            const roomModels = items.filter(
+              (item): item is ModelItem =>
+                item.kind === "model" && item.roomId === room.id,
+            );
+            const roomChildren = [...roomFurniture, ...roomModels];
             return (
               <Fragment key={room.id}>
                 <ListItem
@@ -698,30 +797,34 @@ export default function DropTheFurniture() {
                   <span>{room.name}</span>
                   <ListItemType>방</ListItemType>
                 </ListItem>
-                {roomFurniture.length > 0 && (
+                {roomChildren.length > 0 && (
                   <RoomChildren>
-                    {roomFurniture.map((furniture) => (
-                      <ListItem
-                        key={furniture.id}
-                        $selected={furniture.id === selectedId}
-                        $kind="furniture"
-                        $tree
-                        draggable
-                        onClick={() => handleSelect(furniture.id)}
-                        onDragStart={() => {
-                          draggingFurnitureId.current = furniture.id;
-                        }}
-                        onDragEnd={() => {
-                          draggingFurnitureId.current = null;
-                          setDragOverRoomId(null);
-                        }}
-                      >
-                        <span>{furniture.name}</span>
-                        <ListItemType>
-                          {TYPE_LABELS[furniture.furnitureType]}
-                        </ListItemType>
-                      </ListItem>
-                    ))}
+                    {roomChildren.map((child) => {
+                      const isModel = child.kind === "model";
+                      const label = isModel
+                        ? MODEL_LABELS[child.modelType]
+                        : TYPE_LABELS[child.furnitureType];
+                      return (
+                        <ListItem
+                          key={child.id}
+                          $selected={child.id === selectedId}
+                          $kind="furniture"
+                          $tree
+                          draggable
+                          onClick={() => handleSelect(child.id)}
+                          onDragStart={() => {
+                            draggingFurnitureId.current = child.id;
+                          }}
+                          onDragEnd={() => {
+                            draggingFurnitureId.current = null;
+                            setDragOverRoomId(null);
+                          }}
+                        >
+                          <span>{child.name}</span>
+                          <ListItemType>{label}</ListItemType>
+                        </ListItem>
+                      );
+                    })}
                   </RoomChildren>
                 )}
               </Fragment>
@@ -746,6 +849,25 @@ export default function DropTheFurniture() {
               <ListItemType>
                 {TYPE_LABELS[furniture.furnitureType]}
               </ListItemType>
+            </ListItem>
+          ))}
+          {unassignedModels.map((model) => (
+            <ListItem
+              key={model.id}
+              $selected={model.id === selectedId}
+              $kind="furniture"
+              draggable
+              onClick={() => handleSelect(model.id)}
+              onDragStart={() => {
+                draggingFurnitureId.current = model.id;
+              }}
+              onDragEnd={() => {
+                draggingFurnitureId.current = null;
+                setDragOverRoomId(null);
+              }}
+            >
+              <span>{model.name}</span>
+              <ListItemType>{MODEL_LABELS[model.modelType]}</ListItemType>
             </ListItem>
           ))}
         </List>
@@ -784,7 +906,8 @@ export default function DropTheFurniture() {
           </ColorInputWrap>
 
           {(selectedItem.kind === "room" ||
-            selectedItem.kind === "furniture") && (
+            selectedItem.kind === "furniture" ||
+            selectedItem.kind === "model") && (
             <InputRow style={{ gap: "6px" }}>
               {(["width", "depth", "height"] as const).map((dim, i) => (
                 <DimInputWrapper key={dim} style={{ width: "72px" }}>

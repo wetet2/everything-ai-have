@@ -9,6 +9,8 @@ export type FurnitureType =
   | "refrigerator"
   | "door";
 
+export type ModelType = "fountain" | "donkey" | "couch" | "badDouble";
+
 export type TransformMode = "translate" | "rotate" | "scale";
 
 export type Room = {
@@ -38,4 +40,18 @@ export type FurnitureItem = {
   color: string;
 };
 
-export type PlacedItem = Room | FurnitureItem;
+export type ModelItem = {
+  id: string;
+  kind: "model";
+  modelType: ModelType;
+  roomId: string | null;
+  name: string;
+  width: number;
+  depth: number;
+  height: number;
+  position: [number, number, number];
+  rotation: [number, number, number];
+  color: string;
+};
+
+export type PlacedItem = Room | FurnitureItem | ModelItem;

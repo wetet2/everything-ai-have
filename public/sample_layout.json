@@ -45,19 +45,6 @@
       "color": "#d9f2e0"
     },
     {
-      "id": "sofa-1",
-      "kind": "furniture",
-      "furnitureType": "sofa",
-      "roomId": "room-1",
-      "name": "소파 1",
-      "width": 1900,
-      "depth": 800,
-      "height": 750,
-      "position": [0, 10, -3400],
-      "rotation": [0, 0, 0],
-      "color": "#3b82f6"
-    },
-    {
       "id": "table-1",
       "kind": "furniture",
       "furnitureType": "table",
@@ -66,7 +53,7 @@
       "width": 1400,
       "depth": 800,
       "height": 750,
-      "position": [0, 10, -2200],
+      "position": [-2423.936053025629, 0, -1705.0735331837932],
       "rotation": [0, 0, 0],
       "color": "#10b981"
     },
@@ -79,7 +66,7 @@
       "width": 600,
       "depth": 600,
       "height": 850,
-      "position": [2800, 10, -3000],
+      "position": [2581.6363666559473, 0, -2120.8985607436553],
       "rotation": [0, -1.5707963267948966, 0],
       "color": "#f59e0b"
     },
@@ -92,7 +79,7 @@
       "width": 900,
       "depth": 300,
       "height": 1800,
-      "position": [0, 10, 3650],
+      "position": [3550, 0, 3850],
       "rotation": [0, 3.141592653589793, 0],
       "color": "#ec4899"
     },
@@ -316,13 +303,69 @@
       "position": [2725, 0, 0],
       "rotation": [0, -1.5707963267948966, 0],
       "color": "#14b8a6"
+    },
+    {
+      "id": "couch-1782230353657",
+      "kind": "model",
+      "modelType": "couch",
+      "roomId": "room-1",
+      "name": "소파(GLB) 1",
+      "width": 1800,
+      "depth": 800,
+      "height": 800,
+      "position": [
+        -2440.356795873172, -6.776263578034403e-21, -3432.515007460721
+      ],
+      "rotation": [0, 0, 0],
+      "color": "#f59e0b"
+    },
+    {
+      "id": "badDouble-1782230355414",
+      "kind": "model",
+      "modelType": "badDouble",
+      "roomId": "room-1",
+      "name": "침대 더블(GLB) 2",
+      "width": 1000,
+      "depth": 600,
+      "height": 350,
+      "position": [-2470.3998431563377, 0, 2200],
+      "rotation": [0, 0, 0],
+      "color": "#ef4444"
+    },
+    {
+      "id": "donkey-1782230372363",
+      "kind": "model",
+      "modelType": "donkey",
+      "roomId": "room-1",
+      "name": "당나귀 3",
+      "width": 2201.6985662708894,
+      "depth": 1100.8492831354447,
+      "height": 2201.6985662708894,
+      "position": [
+        861.7801085427955, -4.440892098500626e-16, -550.7316228914724
+      ],
+      "rotation": [0, 0, 0],
+      "color": "#a78bfa"
+    },
+    {
+      "id": "fountain-1782230392144",
+      "kind": "model",
+      "modelType": "fountain",
+      "roomId": "room-2",
+      "name": "분수대 4",
+      "width": 1200,
+      "depth": 1200,
+      "height": 1500,
+      "position": [0, 10, 0],
+      "rotation": [0, 0, 0],
+      "color": "#06b6d4"
     }
   ],
   "camera": {
-    "position": [-14735.029747088967, 16390.37864752235, 15645.624775656685],
-    "target": [1369.815659677019, 37.606260919731085, 486.7729162274154]
+    "position": [17912.548233913785, 16284.635256202238, 17695.155652405356],
+    "target": [1142.415821189217, -558.430499885644, 3851.6086070927918]
   },
-  "wallOpacity": 1,
+  "wallOpacity": 0,
   "autoTransparent": true,
   "version": 1
 }

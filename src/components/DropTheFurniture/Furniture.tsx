@@ -71,7 +71,7 @@ export default function Furniture({
       dims.height / base.height,
       dims.depth / base.depth,
     ],
-    [dims.width, dims.height, dims.depth, base]
+    [dims.width, dims.height, dims.depth, base],
   );
 
   // Shift/Ctrl 키 눌림 상태 추적
@@ -129,7 +129,7 @@ export default function Furniture({
         groupObj.rotation.set(
           dragStartRotRef.current[0],
           dragStartRotRef.current[1] - snap,
-          dragStartRotRef.current[2]
+          dragStartRotRef.current[2],
         );
 
         return;
@@ -168,11 +168,11 @@ export default function Furniture({
         const clampPosition = () => {
           groupObj.position.x = Math.max(
             minX,
-            Math.min(maxX, groupObj.position.x)
+            Math.min(maxX, groupObj.position.x),
           );
           groupObj.position.z = Math.max(
             minZ,
-            Math.min(maxZ, groupObj.position.z)
+            Math.min(maxZ, groupObj.position.z),
           );
         };
 
@@ -194,7 +194,7 @@ export default function Furniture({
             tempItem,
             siblingFurniture,
             groupObj.position.x,
-            groupObj.position.z
+            groupObj.position.z,
           );
         };
 
@@ -220,22 +220,29 @@ export default function Furniture({
         // 소속 방이 없으면 전체 그리드(60m x 60m) 안으로 제한
         groupObj.position.x = Math.max(
           -30000 + halfFx,
-          Math.min(30000 - halfFx, groupObj.position.x)
+          Math.min(30000 - halfFx, groupObj.position.x),
         );
         groupObj.position.z = Math.max(
           -30000 + halfFz,
-          Math.min(30000 - halfFz, groupObj.position.z)
+          Math.min(30000 - halfFz, groupObj.position.z),
         );
       }
     }
-
 
     // 드래그 중에는 상태를 저장하지 않고, 마우스를 뗄 때 한 번만 저장합니다.
     // 크기 조절(scale)은 onMouseUp에서 처리합니다.
     if (!isDraggingRef.current && mode !== "scale") {
       onChange(data.id, {
-        position: [groupObj.position.x, groupObj.position.y, groupObj.position.z],
-        rotation: [groupObj.rotation.x, groupObj.rotation.y, groupObj.rotation.z],
+        position: [
+          groupObj.position.x,
+          groupObj.position.y,
+          groupObj.position.z,
+        ],
+        rotation: [
+          groupObj.rotation.x,
+          groupObj.rotation.y,
+          groupObj.rotation.z,
+        ],
       });
     }
   };
@@ -274,9 +281,10 @@ export default function Furniture({
         {data.kind === "furniture" && data.furnitureType === "shelf" && (
           <Shelf color={data.color} />
         )}
-        {data.kind === "furniture" && data.furnitureType === "washingMachine" && (
-          <WashingMachine color={data.color} />
-        )}
+        {data.kind === "furniture" &&
+          data.furnitureType === "washingMachine" && (
+            <WashingMachine color={data.color} />
+          )}
         {data.kind === "furniture" && data.furnitureType === "refrigerator" && (
           <Refrigerator color={data.color} />
         )}
@@ -288,17 +296,26 @@ export default function Furniture({
         )}
         {data.kind === "model" && data.modelType === "donkey" && (
           <Suspense fallback={null}>
-            <GLBModel path={DONKEY_MODEL_PATH} targetHeight={MODEL_TARGET_HEIGHT} />
+            <GLBModel
+              path={DONKEY_MODEL_PATH}
+              targetHeight={MODEL_TARGET_HEIGHT}
+            />
           </Suspense>
         )}
         {data.kind === "model" && data.modelType === "couch" && (
           <Suspense fallback={null}>
-            <GLBModel path={COUCH_MODEL_PATH} targetHeight={MODEL_TARGET_HEIGHT} />
+            <GLBModel
+              path={COUCH_MODEL_PATH}
+              targetHeight={MODEL_TARGET_HEIGHT}
+            />
           </Suspense>
         )}
         {data.kind === "model" && data.modelType === "badDouble" && (
           <Suspense fallback={null}>
-            <GLBModel path={BAD_DOUBLE_MODEL_PATH} targetHeight={MODEL_TARGET_HEIGHT} />
+            <GLBModel
+              path={BAD_DOUBLE_MODEL_PATH}
+              targetHeight={MODEL_TARGET_HEIGHT}
+            />
           </Suspense>
         )}
       </group>
@@ -349,7 +366,7 @@ export default function Furniture({
               }
             }}
           />,
-          scene
+          scene,
         )}
     </>
   );
@@ -472,16 +489,28 @@ function Bookshelf({ color }: { color: string }) {
   return (
     <group>
       {/* 옆판 */}
-      <mesh castShadow receiveShadow position={[-(w / 2 - thickness / 2), h / 2, 0]}>
+      <mesh
+        castShadow
+        receiveShadow
+        position={[-(w / 2 - thickness / 2), h / 2, 0]}
+      >
         <boxGeometry args={[thickness, h, d]} />
         <meshStandardMaterial color={color} />
       </mesh>
-      <mesh castShadow receiveShadow position={[w / 2 - thickness / 2, h / 2, 0]}>
+      <mesh
+        castShadow
+        receiveShadow
+        position={[w / 2 - thickness / 2, h / 2, 0]}
+      >
         <boxGeometry args={[thickness, h, d]} />
         <meshStandardMaterial color={color} />
       </mesh>
       {/* 뒷판 */}
-      <mesh castShadow receiveShadow position={[0, h / 2, -d / 2 + thickness / 2]}>
+      <mesh
+        castShadow
+        receiveShadow
+        position={[0, h / 2, -d / 2 + thickness / 2]}
+      >
         <boxGeometry args={[w, h, thickness]} />
         <meshStandardMaterial color={color} />
       </mesh>
@@ -505,11 +534,19 @@ function Shelf({ color }: { color: string }) {
   return (
     <group>
       {/* 옆판 */}
-      <mesh castShadow receiveShadow position={[-(w / 2 - thickness / 2), h / 2, 0]}>
+      <mesh
+        castShadow
+        receiveShadow
+        position={[-(w / 2 - thickness / 2), h / 2, 0]}
+      >
         <boxGeometry args={[thickness, h, d]} />
         <meshStandardMaterial color={color} />
       </mesh>
-      <mesh castShadow receiveShadow position={[w / 2 - thickness / 2, h / 2, 0]}>
+      <mesh
+        castShadow
+        receiveShadow
+        position={[w / 2 - thickness / 2, h / 2, 0]}
+      >
         <boxGeometry args={[thickness, h, d]} />
         <meshStandardMaterial color={color} />
       </mesh>
@@ -571,11 +608,19 @@ function Refrigerator({ color }: { color: string }) {
         <meshStandardMaterial color={color} />
       </mesh>
       {/* 손잡이 */}
-      <mesh castShadow receiveShadow position={[w * 0.15, h * 0.72, d / 2 + 12]}>
+      <mesh
+        castShadow
+        receiveShadow
+        position={[w * 0.15, h * 0.72, d / 2 + 12]}
+      >
         <boxGeometry args={[20, h * 0.4, 10]} />
         <meshStandardMaterial color="#e5e7eb" />
       </mesh>
-      <mesh castShadow receiveShadow position={[w * 0.15, h * 0.24, d / 2 + 12]}>
+      <mesh
+        castShadow
+        receiveShadow
+        position={[w * 0.15, h * 0.24, d / 2 + 12]}
+      >
         <boxGeometry args={[20, h * 0.32, 10]} />
         <meshStandardMaterial color="#e5e7eb" />
       </mesh>
@@ -632,11 +677,7 @@ function Fountain({ color }: { color: string }) {
       {/* 웅덩이 물 */}
       <mesh position={[0, 295, 0]}>
         <cylinderGeometry args={[580, 580, 20, 32]} />
-        <meshStandardMaterial
-          color={waterColor}
-          transparent
-          opacity={0.7}
-        />
+        <meshStandardMaterial color={waterColor} transparent opacity={0.7} />
       </mesh>
       {/* 중앙 기둥 */}
       <mesh castShadow receiveShadow position={[0, 650, 0]}>
@@ -651,11 +692,7 @@ function Fountain({ color }: { color: string }) {
       {/* 상단 대야 물 */}
       <mesh position={[0, 1195, 0]}>
         <cylinderGeometry args={[280, 280, 20, 32]} />
-        <meshStandardMaterial
-          color={waterColor}
-          transparent
-          opacity={0.7}
-        />
+        <meshStandardMaterial color={waterColor} transparent opacity={0.7} />
       </mesh>
       {/* 꼭대기 노즐 */}
       <mesh castShadow receiveShadow position={[0, 1300, 0]}>
@@ -717,7 +754,7 @@ function GLBModel({
       }
     });
     return group;
-  }, [scene]);
+  }, [targetHeight, scene]);
 
   // 애니메이션 믹서 설정 - Idle 클립을 우선, 없으면 첫 번째를 무한 재생
   useEffect(() => {
@@ -725,8 +762,7 @@ function GLBModel({
     const clone = cloned.children[0];
     const mixer = new AnimationMixer(clone);
     mixerRef.current = mixer;
-    const clip =
-      animations.find((a) => a.name === idleName) ?? animations[0];
+    const clip = animations.find((a) => a.name === idleName) ?? animations[0];
     const action = mixer.clipAction(clip);
     action.play();
     return () => {

@@ -10,6 +10,7 @@ export const Page = styled.div`
 
 export const Toolbar = styled.div`
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: center;
   gap: 10px;
@@ -20,12 +21,24 @@ export const Toolbar = styled.div`
   padding: 8px;
   background: linear-gradient(180deg, #3a3f47 0%, #2a2e35 100%);
   border: 1px solid rgba(255, 255, 255, 0.06);
+
+  @media (max-width: 768px) {
+    gap: 8px;
+  }
+
+  @media (max-width: 600px) {
+    gap: 6px;
+  }
 `;
 
 export const ToolGroup = styled.div`
   display: flex;
   align-items: center;
   gap: 6px;
+
+  @media (max-width: 768px) {
+    gap: 4px;
+  }
 `;
 
 interface ToolButtonProps {
@@ -71,6 +84,26 @@ export const ToolButton = styled.button<ToolButtonProps>`
     width: 18px;
     height: 18px;
   }
+
+  @media (max-width: 768px) {
+    min-width: 28px;
+    height: 28px;
+
+    svg {
+      width: 16px;
+      height: 16px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    min-width: 26px;
+    height: 26px;
+
+    svg {
+      width: 15px;
+      height: 15px;
+    }
+  }
 `;
 
 export const ToolButtonLabel = styled.span`
@@ -85,6 +118,10 @@ export const ToolDivider = styled.div`
   height: 20px;
   background: rgba(255, 255, 255, 0.12);
   margin: 0 4px;
+
+  @media (max-width: 768px) {
+    margin: 0 2px;
+  }
 `;
 
 export const ColorPalette = styled.div`
@@ -92,6 +129,16 @@ export const ColorPalette = styled.div`
   /* grid-template-columns: repeat(4, 22px);
   grid-template-rows: repeat(2, 22px); */
   gap: 5px;
+
+  @media (max-width: 600px) {
+    flex-wrap: wrap;
+    max-width: 120px;
+    gap: 4px;
+  }
+
+  @media (max-width: 480px) {
+    max-width: 110px;
+  }
 `;
 
 interface ColorSwatchProps {
@@ -117,6 +164,16 @@ export const ColorSwatch = styled.button<ColorSwatchProps>`
 
   &:hover {
     transform: scale(1.12);
+  }
+
+  @media (max-width: 768px) {
+    width: 20px;
+    height: 20px;
+  }
+
+  @media (max-width: 480px) {
+    width: 18px;
+    height: 18px;
   }
 `;
 
@@ -177,6 +234,20 @@ export const SizeSection = styled.div`
   gap: 7px;
   padding: 0 4px;
   min-width: 140px;
+
+  @media (max-width: 768px) {
+    min-width: 110px;
+    gap: 5px;
+  }
+
+  @media (max-width: 600px) {
+    min-width: 90px;
+  }
+
+  @media (max-width: 480px) {
+    min-width: 70px;
+    padding: 0 2px;
+  }
 `;
 
 export const SizeHeader = styled.div`

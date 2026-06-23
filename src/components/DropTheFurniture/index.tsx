@@ -7,6 +7,7 @@ import {
   startTransition,
 } from "react";
 import dynamic from "next/dynamic";
+import Head from "next/head";
 import {
   Container,
   Header,
@@ -31,6 +32,8 @@ import {
   Toolbar,
   ToolbarDivider,
   ColorInputWrap,
+  MenuButton,
+  HeaderToggleButton,
 } from "./styled";
 import {
   PlacedItem,
@@ -115,6 +118,9 @@ export default function DropTheFurniture() {
   const [dragOverRoomId, setDragOverRoomId] = useState<string | null>(null);
   const [canUndo, setCanUndo] = useState(false);
   const [canRedo, setCanRedo] = useState(false);
+  const [panelOpen, setPanelOpen] = useState(false);
+  const [headerOpen, setHeaderOpen] = useState(false);
+  const panelRef = useRef<HTMLDivElement>(null);
 
   // 마지막으로 선택한 방을 기억해서 가구 추가 시 계속 같은 방에 배치
   const lastRoomIdRef = useRef<string | null>(DEFAULT_ROOM.id);
@@ -312,6 +318,7 @@ export default function DropTheFurniture() {
       items,
       camera: cameraState,
       wallOpacity,
+      autoTransparent,
       version: 1,
     };
     const blob = new Blob([JSON.stringify(data, null, 2)], {
@@ -323,7 +330,7 @@ export default function DropTheFurniture() {
     link.download = `drop-the-furniture-${Date.now()}.json`;
     link.click();
     URL.revokeObjectURL(url);
-  }, [items, cameraState, wallOpacity]);
+  }, [items, cameraState, wallOpacity, autoTransparent]);
 
   const handleLoad = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -342,6 +349,7 @@ export default function DropTheFurniture() {
           pushHistory(migratedItems);
           setCameraState(result.camera);
           setWallOpacity(result.wallOpacity ?? 1);
+          setAutoTransparent(result.autoTransparent ?? false);
           handleSelect(null);
         } catch {
           window.alert("JSON 파싱에 실패했습니다.");
@@ -431,6 +439,7 @@ export default function DropTheFurniture() {
           items: migrateItems(result.items),
           camera: result.camera,
           wallOpacity: result.wallOpacity,
+          autoTransparent: result.autoTransparent,
         });
       })
       .catch(() => {
@@ -466,6 +475,14 @@ export default function DropTheFurniture() {
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        if (selectedId) {
+          event.preventDefault();
+          handleSelect(null);
+        }
+        return;
+      }
+
       if (event.key === "Delete" || event.key === "Backspace") {
         if (
           event.target instanceof HTMLInputElement ||
@@ -499,7 +516,24 @@ export default function DropTheFurniture() {
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, [undo, redo, selectedId, deleteSelected]);
+  }, [undo, redo, selectedId, deleteSelected, handleSelect]);
+
+  // 모바일에서 패널이 열려 있을 때 외부 영역 클릭/터치 시 닫기
+  useEffect(() => {
+    if (!panelOpen) return;
+    const handlePointerDown = (event: PointerEvent) => {
+      if (
+        panelRef.current &&
+        !panelRef.current.contains(event.target as Node)
+      ) {
+        setPanelOpen(false);
+      }
+    };
+    window.addEventListener("pointerdown", handlePointerDown);
+    return () => {
+      window.removeEventListener("pointerdown", handlePointerDown);
+    };
+  }, [panelOpen]);
 
   // ──────────────────────────────────────────────
   // 4. Render 관련 조건 변수
@@ -520,12 +554,51 @@ export default function DropTheFurniture() {
   // ──────────────────────────────────────────────
   return (
     <Container>
+      <Head>
+        <title>Drop the Furniture - 3D 방 &amp; 가구 배치</title>
+        <meta
+          name="description"
+          content="3D 공간에서 방과 가구를 자유롭게 배치하고 편집할 수 있는 Next.js 기반 웹 앱입니다. 방 추가, 가구 배치, 이동/회전/크기 조절, 저장/불러오기 기능을 제공합니다."
+        />
+        <meta
+          name="keywords"
+          content="3D 가구 배치, 방 꾸미기, 인테리어 시뮬레이터, Drop the Furniture, Three.js, Next.js, 가구 배치 도구"
+        />
+        <meta name="author" content="Drop the Furniture" />
+        <meta name="theme-color" content="#ffffff" />
+        <meta name="robots" content="index, follow" />
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content="Drop the Furniture - 3D 방 &amp; 가구 배치" />
+        <meta
+          property="og:description"
+          content="3D 공간에서 방과 가구를 자유롭게 배치하고 편집할 수 있는 웹 앱입니다."
+        />
+        <meta name="twitter:card" content="summary" />
+        <meta name="twitter:title" content="Drop the Furniture - 3D 방 &amp; 가구 배치" />
+        <meta
+          name="twitter:description"
+          content="3D 공간에서 방과 가구를 자유롭게 배치하고 편집할 수 있는 웹 앱입니다."
+        />
+      </Head>
       <Header>
+        <MenuButton
+          onPointerDown={(e) => {
+            e.stopPropagation();
+          }}
+          onClick={(e) => {
+            setPanelOpen((v) => !v);
+          }}
+        >
+          ☰
+        </MenuButton>
         <div>
           <h1>Drop the Furniture</h1>
-          <p>방과 가구를 자유롭게 배치핼보세요.</p>
+          <p>방과 가구를 자유롭게 배치해보세요.</p>
         </div>
-        <HeaderButtons>
+        <HeaderToggleButton onClick={() => setHeaderOpen((v) => !v)}>
+          ⋮
+        </HeaderToggleButton>
+        <HeaderButtons $open={headerOpen}>
           <Button $compact onClick={handleNew}>
             🗑️ New
           </Button>
@@ -551,7 +624,7 @@ export default function DropTheFurniture() {
         </HeaderButtons>
       </Header>
 
-      <LeftPanel>
+      <LeftPanel ref={panelRef} $open={panelOpen}>
         <SectionTitle>방 추가</SectionTitle>
         <ButtonGroup>
           <Button onClick={addRoom}>방 추가</Button>

@@ -1,10 +1,11 @@
 import { useRef, useEffect, useMemo } from "react";
-import { Group, Box3, Vector3, Object3D } from "three";
+import { Group, Box3, Vector3 } from "three";
 import { useThree, createPortal } from "@react-three/fiber";
 import { TransformControls } from "@react-three/drei";
 import { FurnitureItem, Room, PlacedItem, TransformMode } from "./types";
 import { resolveCollisions } from "./collision";
 import { FURNITURE_DEFAULT_DIMENSIONS, WALL_THICKNESS } from "./constants";
+import { activeTransformControls } from "./transformControlsRegistry";
 
 type FurnitureProps = {
   data: FurnitureItem;
@@ -15,15 +16,6 @@ type FurnitureProps = {
   onSelect: (id: string) => void;
   onChange: (id: string, updates: Partial<PlacedItem>) => void;
 };
-
-function isTransformControlsHandle(obj: Object3D | null): boolean {
-  let cur = obj;
-  while (cur) {
-    if ((cur as any).isTransformControls) return true;
-    cur = cur.parent;
-  }
-  return false;
-}
 
 export default function Furniture({
   data,
@@ -36,6 +28,19 @@ export default function Furniture({
 }: FurnitureProps) {
   const groupRef = useRef<Group>(null!);
   const scene = useThree((state) => state.scene);
+  // 이 가구가 선택되어 TransformControls가 마운트되면
+  // 전역 레지스트리에 컨트롤 인스턴스를 등록/해제한다.
+  const controlsRef = useRef<any>(null);
+
+  useEffect(() => {
+    if (!isSelected) return;
+    activeTransformControls.current = controlsRef.current;
+    return () => {
+      if (activeTransformControls.current === controlsRef.current) {
+        activeTransformControls.current = null;
+      }
+    };
+  }, [isSelected]);
 
   // 지정된 크기가 없으면 기본 크기로 폭백
   const dims = {
@@ -226,10 +231,10 @@ export default function Furniture({
         rotation={data.rotation}
         scale={scale}
         onPointerDown={(event) => {
-          const blocked = event.intersections.some(
-            (i) => i.distance < event.distance && isTransformControlsHandle(i.object)
-          );
-          if (blocked) return;
+          // 회전/크기 모드에서 활성 TransformControls의 핸들이 마우스 아래에 있거나
+          // 드래그(변형) 중이면 핸들 조작이 우선되도록 다른 가구 선택을 막는다.
+          const controls = activeTransformControls.current;
+          if (controls && (controls.dragging || controls.axis !== null)) return;
           event.stopPropagation();
           onSelect(data.id);
         }}
@@ -252,6 +257,7 @@ export default function Furniture({
       {isSelected &&
         createPortal(
           <TransformControls
+            ref={controlsRef}
             object={groupRef}
             mode={mode}
             showX={mode !== "rotate"}

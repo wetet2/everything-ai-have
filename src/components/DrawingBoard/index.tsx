@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
+import Head from "next/head";
 import { CompactPicker } from "react-color";
 import DownloadIcon from "../../../resources/icons/DownloadIcon";
 import PenIcon from "../../../resources/icons/PenIcon";
@@ -1644,10 +1645,6 @@ export default function DrawingBoard() {
     };
   }, [showColorPicker]);
 
-  useEffect(() => {
-    document.title = "아주 쉬운 그림판";
-  }, []);
-
   const effectiveCanvasCursor = (() => {
     if (mode === "image") {
       if (resizingImageIndex !== null && activeResizeHandle) {
@@ -1666,6 +1663,38 @@ export default function DrawingBoard() {
 
   return (
     <S.Page>
+      <Head>
+        <title>아주 쉬운 그림판 - 온라인 드로잉 도구</title>
+        <meta
+          name="description"
+          content="브라우저에서 바로 사용하는 무료 온라인 그림판. 펜, 사각형, 원, 텍스트, 이미지 삽입으로 자유롭게 그리고 편집하세요. Undo/Redo, PNG 다운로드, 모바일 터치 지원."
+        />
+        <meta
+          name="keywords"
+          content="그림판, 온라인 그림판, 드로잉, 캔버스, 스케치, 그리기, 펜, 도형, 사각형, 원, 텍스트, 이미지 편집, PNG 다운로드, 실행 취소"
+        />
+        <meta name="robots" content="index, follow" />
+        <meta name="theme-color" content="#ffffff" />
+        <meta property="og:type" content="website" />
+        <meta
+          property="og:title"
+          content="아주 쉬운 그림판 - 온라인 드로잉 도구"
+        />
+        <meta
+          property="og:description"
+          content="브라우저에서 바로 사용하는 무료 온라인 그림판. 펜, 사각형, 원, 텍스트, 이미지 삽입으로 자유롭게 그리고 편집하세요. Undo/Redo, PNG 다운로드, 모바일 터치 지원."
+        />
+        <meta property="og:site_name" content="아주 쉬운 그림판" />
+        <meta name="twitter:card" content="summary" />
+        <meta
+          name="twitter:title"
+          content="아주 쉬운 그림판 - 온라인 드로잉 도구"
+        />
+        <meta
+          name="twitter:description"
+          content="브라우저에서 바로 사용하는 무료 온라인 그림판. 펜, 도형, 텍스트, 이미지로 자유롭게 그리고 편집하세요."
+        />
+      </Head>
       <S.Toolbar>
         {/* 모드 선택 */}
         <S.ToolGroup>
@@ -1760,7 +1789,7 @@ export default function DrawingBoard() {
               <S.SizeSlider
                 type="range"
                 min={1}
-                max={20}
+                max={100}
                 value={lineWidth}
                 onChange={(e) => setLineWidth(Number(e.target.value))}
               />

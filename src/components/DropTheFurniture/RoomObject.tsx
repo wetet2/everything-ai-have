@@ -11,6 +11,7 @@ import RoomMesh from "./RoomMesh";
 import Furniture from "./Furniture";
 import { resolveCollisions } from "./collision";
 import { WALL_THICKNESS } from "./constants";
+import { activeTransformControls } from "./transformControlsRegistry";
 
 type RoomObjectProps = {
   data: Room;
@@ -39,6 +40,18 @@ export default function RoomObject({
 }: RoomObjectProps) {
   const groupRef = useRef<Group>(null!);
   const { camera } = useThree();
+  // 방이 선택되어 TransformControls가 마운트되면 전역 레지스트리에 등록.
+  const controlsRef = useRef<any>(null);
+
+  useEffect(() => {
+    if (!isSelected) return;
+    activeTransformControls.current = controlsRef.current;
+    return () => {
+      if (activeTransformControls.current === controlsRef.current) {
+        activeTransformControls.current = null;
+      }
+    };
+  }, [isSelected]);
   const [autoHiddenWalls, setAutoHiddenWalls] = useState({ front: false, back: false, left: false, right: false });
   const prevAuto = useRef({ front: false, back: false, left: false, right: false });
 
@@ -224,6 +237,7 @@ export default function RoomObject({
 
       {isSelected && (
         <TransformControls
+          ref={controlsRef}
           object={groupRef}
           mode={mode}
           showX={mode !== "rotate"}

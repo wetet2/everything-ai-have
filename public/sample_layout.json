@@ -7,55 +7,42 @@
       "width": 8000,
       "depth": 8000,
       "height": 3000,
-      "position": [
-        1799.99,
-        0,
-        -4365.821011302926
-      ],
-      "rotation": [
-        0,
-        0,
-        0
-      ],
+      "position": [-400.01, 0, -400.00999999999976],
+      "rotation": [0, 0, 0],
       "color": "#f5e6d3"
     },
     {
       "id": "room-2",
       "kind": "room",
       "name": "침실",
-      "width": 8000,
+      "width": 6000,
       "depth": 8000,
       "height": 3000,
-      "position": [
-        10000,
-        0,
-        -4316.168913507377
-      ],
-      "rotation": [
-        0,
-        0,
-        0
-      ],
+      "position": [6800, 0, -400.01],
+      "rotation": [0, 0, 0],
       "color": "#d4e6f1"
     },
     {
       "id": "room-3",
       "kind": "room",
       "name": "서재",
-      "width": 4000,
+      "width": 8000,
       "depth": 5000,
       "height": 3000,
-      "position": [
-        3525.9601548933406,
-        0,
-        2334.188988697074
-      ],
-      "rotation": [
-        0,
-        0,
-        0
-      ],
+      "position": [-437.87937913995984, 0, 6300],
+      "rotation": [0, 0, 0],
       "color": "#e8dff5"
+    },
+    {
+      "id": "room-4",
+      "kind": "room",
+      "name": "주방",
+      "width": 6000,
+      "depth": 5000,
+      "height": 3000,
+      "position": [6762.13062086004, 0, 6300],
+      "rotation": [0, 0, 0],
+      "color": "#d9f2e0"
     },
     {
       "id": "sofa-1",
@@ -66,16 +53,8 @@
       "width": 1900,
       "depth": 800,
       "height": 750,
-      "position": [
-        0,
-        10,
-        -3400
-      ],
-      "rotation": [
-        0,
-        0,
-        0
-      ],
+      "position": [0, 10, -3400],
+      "rotation": [0, 0, 0],
       "color": "#3b82f6"
     },
     {
@@ -87,16 +66,8 @@
       "width": 1400,
       "depth": 800,
       "height": 750,
-      "position": [
-        0,
-        10,
-        -2200
-      ],
-      "rotation": [
-        0,
-        0,
-        0
-      ],
+      "position": [0, 10, -2200],
+      "rotation": [0, 0, 0],
       "color": "#10b981"
     },
     {
@@ -108,16 +79,8 @@
       "width": 600,
       "depth": 600,
       "height": 850,
-      "position": [
-        1400,
-        10,
-        -3400
-      ],
-      "rotation": [
-        0,
-        0,
-        0
-      ],
+      "position": [2800, 10, -3000],
+      "rotation": [0, -1.5707963267948966, 0],
       "color": "#f59e0b"
     },
     {
@@ -129,59 +92,9 @@
       "width": 900,
       "depth": 300,
       "height": 1800,
-      "position": [
-        -3300,
-        10,
-        3850
-      ],
-      "rotation": [
-        0,
-        0,
-        0
-      ],
+      "position": [0, 10, 3650],
+      "rotation": [0, 3.141592653589793, 0],
       "color": "#ec4899"
-    },
-    {
-      "id": "refrigerator-1",
-      "kind": "furniture",
-      "furnitureType": "refrigerator",
-      "roomId": "room-1",
-      "name": "냉장고 1",
-      "width": 900,
-      "depth": 700,
-      "height": 1800,
-      "position": [
-        -3550,
-        0,
-        -3641.5
-      ],
-      "rotation": [
-        0,
-        0,
-        0
-      ],
-      "color": "#64748b"
-    },
-    {
-      "id": "washingMachine-1",
-      "kind": "furniture",
-      "furnitureType": "washingMachine",
-      "roomId": "room-1",
-      "name": "세탁기 1",
-      "width": 600,
-      "depth": 600,
-      "height": 850,
-      "position": [
-        3400,
-        10,
-        -2200
-      ],
-      "rotation": [
-        0,
-        0,
-        0
-      ],
-      "color": "#94a3b8"
     },
     {
       "id": "door-1",
@@ -192,16 +105,8 @@
       "width": 900,
       "depth": 240,
       "height": 2000,
-      "position": [
-        4000,
-        0,
-        0
-      ],
-      "rotation": [
-        0,
-        -1.5707963267948966,
-        0
-      ],
+      "position": [4100, 0, -1207.311308289618],
+      "rotation": [0, -1.5707963267948966, 0],
       "color": "#92400e"
     },
     {
@@ -213,16 +118,8 @@
       "width": 900,
       "depth": 240,
       "height": 2000,
-      "position": [
-        198.32029490830246,
-        0,
-        4100
-      ],
-      "rotation": [
-        0,
-        0,
-        0
-      ],
+      "position": [1511.1197615240162, 0, 4100],
+      "rotation": [0, 3.141592653589793, 0],
       "color": "#92400e"
     },
     {
@@ -234,16 +131,8 @@
       "width": 2000,
       "depth": 1400,
       "height": 700,
-      "position": [
-        -1500,
-        10,
-        -2800
-      ],
-      "rotation": [
-        0,
-        0,
-        0
-      ],
+      "position": [0, 10, -3300],
+      "rotation": [0, 0, 0],
       "color": "#8b5cf6"
     },
     {
@@ -255,16 +144,8 @@
       "width": 600,
       "depth": 600,
       "height": 850,
-      "position": [
-        2800,
-        10,
-        -3000
-      ],
-      "rotation": [
-        0,
-        0,
-        0
-      ],
+      "position": [2200, 10, -3000],
+      "rotation": [0, -1.5707963267948966, 0],
       "color": "#f59e0b"
     },
     {
@@ -276,16 +157,8 @@
       "width": 900,
       "depth": 300,
       "height": 1800,
-      "position": [
-        -3850,
-        0,
-        1636.0369414572942
-      ],
-      "rotation": [
-        0,
-        1.5707963267948966,
-        0
-      ],
+      "position": [-2850, 0, 688.6233774113607],
+      "rotation": [0, 1.5707963267948966, 0],
       "color": "#ec4899"
     },
     {
@@ -297,59 +170,9 @@
       "width": 1000,
       "depth": 350,
       "height": 1800,
-      "position": [
-        3800,
-        10,
-        0
-      ],
-      "rotation": [
-        0,
-        1.5707963267948966,
-        0
-      ],
+      "position": [2725, 0, 1000],
+      "rotation": [0, -1.5707963267948966, 0],
       "color": "#14b8a6"
-    },
-    {
-      "id": "bookshelf-3",
-      "kind": "furniture",
-      "furnitureType": "bookshelf",
-      "roomId": "room-3",
-      "name": "책장 3",
-      "width": 900,
-      "depth": 300,
-      "height": 1800,
-      "position": [
-        -649.99,
-        0,
-        2350
-      ],
-      "rotation": [
-        0,
-        -3.141592653589793,
-        0
-      ],
-      "color": "#ec4899"
-    },
-    {
-      "id": "bookshelf-4",
-      "kind": "furniture",
-      "furnitureType": "bookshelf",
-      "roomId": "room-3",
-      "name": "책장 4",
-      "width": 900,
-      "depth": 300,
-      "height": 1800,
-      "position": [
-        -1550,
-        0,
-        2350
-      ],
-      "rotation": [
-        0,
-        -3.141592653589793,
-        0
-      ],
-      "color": "#ec4899"
     },
     {
       "id": "table-2",
@@ -360,16 +183,8 @@
       "width": 1400,
       "depth": 800,
       "height": 750,
-      "position": [
-        -1600,
-        0,
-        -341.34478182084877
-      ],
-      "rotation": [
-        0,
-        1.5707963267948966,
-        0
-      ],
+      "position": [-1500, 0, -2050],
+      "rotation": [0, 0, 0],
       "color": "#10b981"
     },
     {
@@ -381,17 +196,35 @@
       "width": 600,
       "depth": 600,
       "height": 850,
-      "position": [
-        -709.0186778040545,
-        0,
-        -333.0460096995412
-      ],
-      "rotation": [
-        0,
-        -1.5707963267948966,
-        0
-      ],
+      "position": [-1500, 10, -1150],
+      "rotation": [0, 3.141592653589793, 0],
       "color": "#f59e0b"
+    },
+    {
+      "id": "bookshelf-3",
+      "kind": "furniture",
+      "furnitureType": "bookshelf",
+      "roomId": "room-3",
+      "name": "책장 3",
+      "width": 900,
+      "depth": 300,
+      "height": 1800,
+      "position": [-2000, 0, 2250],
+      "rotation": [0, 3.141592653589793, 0],
+      "color": "#ec4899"
+    },
+    {
+      "id": "bookshelf-4",
+      "kind": "furniture",
+      "furnitureType": "bookshelf",
+      "roomId": "room-3",
+      "name": "책장 4",
+      "width": 900,
+      "depth": 300,
+      "height": 1800,
+      "position": [-500, 0, 2250],
+      "rotation": [0, 3.141592653589793, 0],
+      "color": "#ec4899"
     },
     {
       "id": "shelf-2",
@@ -402,94 +235,94 @@
       "width": 1000,
       "depth": 350,
       "height": 1800,
-      "position": [
-        1200.03,
-        0,
-        2325
-      ],
-      "rotation": [
-        0,
-        3.141592653589793,
-        0
-      ],
+      "position": [3725, 0, 0],
+      "rotation": [0, -1.5707963267948966, 0],
       "color": "#14b8a6"
     },
     {
-      "id": "bookshelf-1782137021915",
+      "id": "door-3",
       "kind": "furniture",
-      "furnitureType": "bookshelf",
+      "furnitureType": "door",
       "roomId": "room-3",
-      "name": "책장 18",
+      "name": "문 3 (주방)",
       "width": 900,
-      "depth": 300,
-      "height": 1800,
-      "position": [
-        250.01999999999998,
-        0,
-        2350
-      ],
-      "rotation": [
-        0,
-        3.141592653589793,
-        0
-      ],
-      "color": "#ec4899"
+      "depth": 240,
+      "height": 2000,
+      "position": [4100, 0, 1513.874231359373],
+      "rotation": [0, -1.5707963267948966, 0],
+      "color": "#92400e"
     },
     {
-      "id": "bed-1782137033557",
+      "id": "refrigerator-1",
       "kind": "furniture",
-      "furnitureType": "bed",
-      "roomId": "room-3",
-      "name": "침대 19",
-      "width": 2000,
-      "depth": 1400,
-      "height": 700,
-      "position": [
-        1300,
-        0,
-        670.1867150029784
-      ],
-      "rotation": [
-        0,
-        -1.5707963267948966,
-        0
-      ],
-      "color": "#8b5cf6"
+      "furnitureType": "refrigerator",
+      "roomId": "room-4",
+      "name": "냉장고 1",
+      "width": 900,
+      "depth": 700,
+      "height": 1800,
+      "position": [-2350, 0, -2050],
+      "rotation": [0, 0, 0],
+      "color": "#64748b"
     },
     {
-      "id": "washingMachine-1782137393765",
+      "id": "washingMachine-1",
       "kind": "furniture",
       "furnitureType": "washingMachine",
-      "roomId": "room-1",
-      "name": "세탁기 20",
+      "roomId": "room-4",
+      "name": "세탁기 1",
       "width": 600,
       "depth": 600,
       "height": 850,
-      "position": [
-        0,
-        10,
-        0
-      ],
-      "rotation": [
-        0,
-        0,
-        0
-      ],
+      "position": [-1400, 10, -2100],
+      "rotation": [0, 0, 0],
       "color": "#94a3b8"
+    },
+    {
+      "id": "table-3",
+      "kind": "furniture",
+      "furnitureType": "table",
+      "roomId": "room-4",
+      "name": "식탁 1",
+      "width": 1400,
+      "depth": 800,
+      "height": 750,
+      "position": [800, 0, 500],
+      "rotation": [0, 0, 0],
+      "color": "#10b981"
+    },
+    {
+      "id": "chair-4",
+      "kind": "furniture",
+      "furnitureType": "chair",
+      "roomId": "room-4",
+      "name": "의자 4",
+      "width": 600,
+      "depth": 600,
+      "height": 850,
+      "position": [1800, 10, 500],
+      "rotation": [0, -1.5707963267948966, 0],
+      "color": "#f59e0b"
+    },
+    {
+      "id": "shelf-3",
+      "kind": "furniture",
+      "furnitureType": "shelf",
+      "roomId": "room-4",
+      "name": "선반 3",
+      "width": 1000,
+      "depth": 350,
+      "height": 1800,
+      "position": [2725, 0, 0],
+      "rotation": [0, -1.5707963267948966, 0],
+      "color": "#14b8a6"
     }
   ],
   "camera": {
-    "position": [
-      -20968.343180655676,
-      22985.137102472014,
-      -22572.941032752708
-    ],
-    "target": [
-      5090.803874413308,
-      -1197.8706126131178,
-      -5979.085080800279
-    ]
+    "position": [-14735.029747088967, 16390.37864752235, 15645.624775656685],
+    "target": [1369.815659677019, 37.606260919731085, 486.7729162274154]
   },
-  "wallOpacity": 0,
+  "wallOpacity": 1,
+  "autoTransparent": true,
   "version": 1
 }

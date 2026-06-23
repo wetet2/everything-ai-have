@@ -17,6 +17,7 @@ export const Header = styled.header`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 12px;
   padding: 8px 16px;
   background: #272727;
   backdrop-filter: blur(8px);
@@ -30,6 +31,61 @@ export const Header = styled.header`
   p {
     font-size: 12px;
     color: #cccccc;
+  }
+
+  @media (max-width: 768px) {
+    padding: 8px 12px;
+
+    h1 {
+      font-size: 15px;
+    }
+
+    p {
+      display: none;
+    }
+
+    & > div {
+      flex: 1 1 auto;
+      min-width: 0;
+    }
+  }
+`;
+
+export const MenuButton = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #3f3f46;
+  border: none;
+  border-radius: 8px;
+  color: #ffffff;
+  font-size: 18px;
+  width: 36px;
+  height: 36px;
+  cursor: pointer;
+  flex-shrink: 0;
+
+  @media (min-width: 769px) {
+    display: none;
+  }
+`;
+
+export const HeaderToggleButton = styled.button`
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: #3f3f46;
+  border: none;
+  border-radius: 8px;
+  color: #ffffff;
+  font-size: 18px;
+  width: 36px;
+  height: 36px;
+  cursor: pointer;
+  flex-shrink: 0;
+
+  @media (max-width: 768px) {
+    display: flex;
   }
 `;
 
@@ -57,8 +113,13 @@ export const Panel = styled.div`
   z-index: 10;
 `;
 
-export const LeftPanel = styled(Panel)`
-  /* left: 20px; */
+export const LeftPanel = styled(Panel)<{ $open?: boolean }>`
+  @media (max-width: 768px) {
+    width: 80vw;
+    max-width: 280px;
+    transition: transform 0.2s ease;
+    transform: translateX(${(props) => (props.$open ? "0" : "-100%")});
+  }
 `;
 
 export const RightPanel = styled(Panel)`
@@ -301,10 +362,38 @@ export const ListItemType = styled.span`
   color: #d4d4d8;
 `;
 
-export const HeaderButtons = styled.div`
+export const HeaderButtons = styled.div<{ $open?: boolean }>`
   display: flex;
   gap: 8px;
   align-items: center;
+  flex-wrap: wrap;
+
+  @media (max-width: 768px) {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-items: stretch;
+    min-width: 160px;
+    padding: 12px;
+    gap: 10px;
+    background: #272727;
+    border-radius: 0 0 0 8px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+    transform-origin: top right;
+    transform: scaleY(${(props) => (props.$open ? "1" : "0")});
+    opacity: ${(props) => (props.$open ? "1" : "0")};
+    pointer-events: ${(props) => (props.$open ? "auto" : "none")};
+    transition:
+      transform 0.2s ease,
+      opacity 0.2s ease;
+    z-index: 20;
+
+    & > button {
+      width: 100%;
+    }
+  }
 `;
 
 export const OpacitySlider = styled.input`
@@ -317,13 +406,19 @@ export const Toolbar = styled.div`
   top: 50px;
   left: 240px;
   right: 0px;
-  z-index: 10;
+  z-index: 5;
   display: flex;
   align-items: center;
   gap: 10px;
   padding: 8px 14px;
   color: #ffffff;
   flex-wrap: wrap;
+
+  @media (max-width: 768px) {
+    left: 0;
+    top: 52px;
+    padding: 8px 10px;
+  }
 `;
 
 export const ToolbarDivider = styled.div`

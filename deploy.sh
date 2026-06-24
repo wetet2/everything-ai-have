@@ -12,7 +12,7 @@ COMMIT_MESSAGE="$1"
 ORIGINAL_DIR=$(pwd)
 
 # 원본 및 대상 폴터 경로
-SOURCE_DIR="/e/node/nextjs/out"
+SOURCE_DIR="/e/node/everything-ai-have/out"
 TARGET_DIR="/e/node/wetet2.github.io"
 
 # 원본 폴터 존재 여부 확인

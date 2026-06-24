@@ -1,40 +1,84 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/pages/api-reference/create-next-app).
+# everything-ai-have
 
-## Getting Started
+AI 기반 도구들을 모아둔 Next.js 프로젝트입니다.
+채팅, 드로잉 보드, 3D 가구 배치 세 가지 기능을 제공합니다.
 
-First, run the development server:
+## 기술 스택
+
+- Next.js 16 (Pages Router, 정적 내보내기)
+- React 19
+- TypeScript
+- styled-components
+- @google/genai (Gemini), @anthropic-ai/sdk (Claude)
+- @react-three/fiber + @react-three/drei (3D 렌더링)
+- react-markdown, rehype-highlight, remark-gfm (마크다운 렌더링)
+
+## 시작하기
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+yarn        # 의존성 설치
+yarn dev    # 개발 서버 실행 (http://localhost:8080)
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 빌드 및 배포
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+```bash
+yarn build        # 정적 내보내기 (./out 디렉터리 생성)
+yarn serve        # 정적 파일 서빙 (http://localhost:8080)
+yarn build2       # 빌드 후 deploy.sh 실행
+```
 
-[API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+> `next.config.ts`에서 `output: "export"`로 정적 내보내기 설정이 되어 있습니다.
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) instead of React pages.
+## 페이지
 
-This project uses [`next/font`](https://nextjs.org/docs/pages/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| 경로 | 컴포넌트 | 설명 |
+| --- | --- | --- |
+| `/` | `pages/index.tsx` | 기본 시작 페이지 |
+| `/g` | `components/AiChat` | Gemini / Claude 멀티 세션 AI 채팅 (스트리밍, 이미지 첨부, 마크다운 렌더링) |
+| `/d` | `components/DrawingBoard` | 캔버스 기반 드로잉 보드 (펜/사각형/원/텍스트/이미지, 색상 팔레트, 언두/리두, 저장) |
+| `/c` | `components/DropTheFurniture` | react-three-fiber 기반 3D 방/가구 배치 에디터 |
 
-## Learn More
+## 프로젝트 구조
 
-To learn more about Next.js, take a look at the following resources:
+```
+src/
+├── components/
+│   ├── AiChat/            # AI 채팅 (Gemini, Claude)
+│   ├── DrawingBoard/      # 드로잉 보드
+│   └── DropTheFurniture/  # 3D 가구 배치
+├── pages/
+│   ├── index.tsx          # 홈
+│   ├── g/index.tsx        # /g → AiChat
+│   ├── d/index.tsx        # /d → DrawingBoard
+│   └── c/index.tsx        # /c → DropTheFurniture
+├── styles/
+├── types/
+└── utils/
+resources/                  # 아이콘 등 정적 리소스
+public/                      # 정적 파일
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn-pages-router) - an interactive Next.js tutorial.
+## AI 채팅 API 키 ( `/g` )
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+`/g` 페이지는 API 키를 URL 쿼리 파라미터로 전달합니다. 별도의 `.env` 설정 없이 접속 시 키를 넘겨주면 됩니다.
 
-## Deploy on Vercel
+```
+http://localhost:8080/g?gkey=<GEMINI_API_KEY>&ckey=<CLAUDE_API_KEY>
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- `gkey`: Google Gemini API 키
+- `ckey`: Anthropic Claude API 키
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/pages/building-your-application/deploying) for more details.
+두 키 중 하나만 전달해도 해당 모델로 채팅이 가능합니다.
+
+## 스크립트
+
+| 명령 | 설명 |
+| --- | --- |
+| `yarn dev` | 개발 서버 실행 (포트 8080) |
+| `yarn build` | 정적 빌드 (`./out` 생성) |
+| `yarn start` | Next.js 프로덕션 서버 실행 |
+| `yarn serve` | `./out` 정적 서빙 (포트 8080) |
+| `yarn build2` | 빌드 후 `deploy.sh` 실행 |
+| `yarn lint` | ESLint 실행 |

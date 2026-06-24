@@ -10,7 +10,7 @@ import {
   PlacedItem,
   TransformMode,
 } from "./types";
-import { resolveCollisions } from "./collision";
+import { resolveCollisions, rotatePointY } from "./collision";
 import {
   FURNITURE_DEFAULT_DIMENSIONS,
   MODEL_DEFAULT_DIMENSIONS,
@@ -22,6 +22,7 @@ type FurnitureProps = {
   data: FurnitureItem | ModelItem;
   room: Room | null;
   siblingFurniture: (FurnitureItem | ModelItem)[];
+  allRooms: Room[];
   isSelected: boolean;
   mode: TransformMode;
   onSelect: (id: string) => void;
@@ -32,6 +33,7 @@ export default function Furniture({
   data,
   room,
   siblingFurniture,
+  allRooms,
   isSelected,
   mode,
   onSelect,
@@ -152,7 +154,17 @@ export default function Furniture({
       const bottomOffset = box.min.y;
       groupObj.position.y -= bottomOffset;
 
-      if (room) {
+      // Ctrl을 누른 채 이동하면 벽/충돌을 무시하고 자유롭게 이동 (방 간 이동)
+      if (isCtrlPressed.current) {
+        groupObj.position.x = Math.max(
+          -30000 + halfFx,
+          Math.min(30000 - halfFx, groupObj.position.x),
+        );
+        groupObj.position.z = Math.max(
+          -30000 + halfFz,
+          Math.min(30000 - halfFz, groupObj.position.z),
+        );
+      } else if (room) {
         // 문은 두 방의 벽(200mm)을 뚫고 이웃 방 내부로 20mm 들어갈 수 있음
         const extra =
           data.kind === "furniture" && data.furnitureType === "door"
@@ -318,6 +330,30 @@ export default function Furniture({
             />
           </Suspense>
         )}
+        {data.kind === "model" && data.modelType === "bookcase2" && (
+          <Suspense fallback={null}>
+            <GLBModel
+              path={BOOKCASE2_MODEL_PATH}
+              targetHeight={MODEL_TARGET_HEIGHT}
+            />
+          </Suspense>
+        )}
+        {data.kind === "model" && data.modelType === "chair2" && (
+          <Suspense fallback={null}>
+            <GLBModel
+              path={CHAIR2_MODEL_PATH}
+              targetHeight={MODEL_TARGET_HEIGHT}
+            />
+          </Suspense>
+        )}
+        {data.kind === "model" && data.modelType === "door2" && (
+          <Suspense fallback={null}>
+            <GLBModel
+              path={DOOR2_MODEL_PATH}
+              targetHeight={MODEL_TARGET_HEIGHT}
+            />
+          </Suspense>
+        )}
       </group>
 
       {isSelected &&
@@ -351,6 +387,40 @@ export default function Furniture({
                   depth: groupObj.scale.z * base.depth,
                 });
               } else {
+                // Ctrl 드래그: 월드 좌표로 어떤 방 안인지 판정해 roomId 이동
+                if (isCtrlPressed.current && allRooms.length > 0) {
+                  groupObj.updateMatrixWorld();
+                  const worldPos = new Vector3();
+                  groupObj.getWorldPosition(worldPos);
+                  const targetRoom = allRooms.find((r) => {
+                    const [lx, lz] = rotatePointY(
+                      worldPos.x - r.position[0],
+                      worldPos.z - r.position[2],
+                      -r.rotation[1],
+                    );
+                    return (
+                      Math.abs(lx) <= r.width / 2 &&
+                      Math.abs(lz) <= r.depth / 2
+                    );
+                  });
+                  if (targetRoom && targetRoom.id !== data.roomId) {
+                    const [lx, lz] = rotatePointY(
+                      worldPos.x - targetRoom.position[0],
+                      worldPos.z - targetRoom.position[2],
+                      -targetRoom.rotation[1],
+                    );
+                    onChange(data.id, {
+                      roomId: targetRoom.id,
+                      position: [lx, groupObj.position.y, lz],
+                      rotation: [
+                        groupObj.rotation.x,
+                        groupObj.rotation.y,
+                        groupObj.rotation.z,
+                      ],
+                    });
+                    return;
+                  }
+                }
                 onChange(data.id, {
                   position: [
                     groupObj.position.x,
@@ -785,8 +855,14 @@ function GLBModel({
 const DONKEY_MODEL_PATH = "/models/Donkey.glb";
 const COUCH_MODEL_PATH = "/models/couch.glb";
 const BAD_DOUBLE_MODEL_PATH = "/models/bad_double.glb";
+const BOOKCASE2_MODEL_PATH = "/models/bookcase.glb";
+const CHAIR2_MODEL_PATH = "/models/chair.glb";
+const DOOR2_MODEL_PATH = "/models/door.glb";
 const MODEL_TARGET_HEIGHT = 1200;
 
 useGLTF.preload(DONKEY_MODEL_PATH);
 useGLTF.preload(COUCH_MODEL_PATH);
 useGLTF.preload(BAD_DOUBLE_MODEL_PATH);
+useGLTF.preload(BOOKCASE2_MODEL_PATH);
+useGLTF.preload(CHAIR2_MODEL_PATH);
+useGLTF.preload(DOOR2_MODEL_PATH);

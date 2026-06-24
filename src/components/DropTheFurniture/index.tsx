@@ -34,6 +34,10 @@ import {
   ColorInputWrap,
   MenuButton,
   HeaderToggleButton,
+  CollapseToggle,
+  RoomName,
+  CollapseAllButton,
+  CollapseAllGroup,
 } from "./styled";
 import {
   PlacedItem,
@@ -68,7 +72,15 @@ const FURNITURE_TYPES: FurnitureType[] = [
   "refrigerator",
 ];
 
-const MODEL_TYPES: ModelType[] = ["fountain", "donkey", "couch", "badDouble"];
+const MODEL_TYPES: ModelType[] = [
+  "fountain",
+  "donkey",
+  "couch",
+  "badDouble",
+  "bookcase2",
+  "chair2",
+  "door2",
+];
 
 const DEFAULT_COLORS: Record<FurnitureType, string> = {
   bed: "#8b5cf6",
@@ -87,6 +99,9 @@ const DEFAULT_MODEL_COLORS: Record<ModelType, string> = {
   donkey: "#a78bfa",
   couch: "#f59e0b",
   badDouble: "#ef4444",
+  bookcase2: "#ec4899",
+  chair2: "#f59e0b",
+  door2: "#92400e",
 };
 
 const DEFAULT_CAMERA: CameraState = {
@@ -133,6 +148,10 @@ export default function DropTheFurniture() {
   const [canRedo, setCanRedo] = useState(false);
   const [panelOpen, setPanelOpen] = useState(false);
   const [headerOpen, setHeaderOpen] = useState(false);
+  // 목록에서 접힌 방 id 집합
+  const [collapsedRooms, setCollapsedRooms] = useState<Set<string>>(
+    () => new Set(),
+  );
   const panelRef = useRef<HTMLDivElement>(null);
 
   // 마지막으로 선택한 방을 기억해서 가구 추가 시 계속 같은 방에 배치
@@ -159,6 +178,16 @@ export default function DropTheFurniture() {
     if (id === null) {
       setMode("translate");
     }
+  }, []);
+
+  // 목록에서 방 하위 항목 펼치기/접기
+  const toggleRoomCollapse = useCallback((roomId: string) => {
+    setCollapsedRooms((prev) => {
+      const next = new Set(prev);
+      if (next.has(roomId)) next.delete(roomId);
+      else next.add(roomId);
+      return next;
+    });
   }, []);
 
   const pushHistory = useCallback(
@@ -200,6 +229,8 @@ export default function DropTheFurniture() {
       existingRooms,
       width,
       depth,
+      cameraState.target,
+      cameraState.position,
     );
     const roomCount = itemsRef.current.filter(
       (item) => item.kind === "room",
@@ -217,7 +248,41 @@ export default function DropTheFurniture() {
     };
     pushHistory([...itemsRef.current, newRoom]);
     handleSelect(id);
-  }, [pushHistory, handleSelect]);
+  }, [pushHistory, handleSelect, cameraState]);
+
+  const addSpace = useCallback(() => {
+    const id = `room-${Date.now()}`;
+    // 복도용 기본 크기: 좁고 길게
+    const width = 2400;
+    const depth = 8000;
+    const existingRooms = itemsRef.current.filter(
+      (item): item is Room => item.kind === "room",
+    );
+    const position = findNonOverlappingRoomPosition(
+      existingRooms,
+      width,
+      depth,
+      cameraState.target,
+      cameraState.position,
+    );
+    const spaceCount = itemsRef.current.filter(
+      (item) => item.kind === "room" && item.hasWalls === false,
+    ).length;
+    const newSpace: PlacedItem = {
+      id,
+      kind: "room",
+      name: `공간 ${spaceCount + 1}`,
+      width,
+      depth,
+      height: 3000,
+      position,
+      rotation: [0, 0, 0],
+      color: "#a8afb3",
+      hasWalls: false,
+    };
+    pushHistory([...itemsRef.current, newSpace]);
+    handleSelect(id);
+  }, [pushHistory, handleSelect, cameraState]);
 
   const addFurniture = useCallback(
     (type: FurnitureType | "door") => {
@@ -337,8 +402,7 @@ export default function DropTheFurniture() {
   const migrateItems = useCallback((rawItems: any[]): PlacedItem[] => {
     return rawItems.map((item: any) => {
       if (item.kind === "model") {
-        const defaults =
-          MODEL_DEFAULT_DIMENSIONS[item.modelType as ModelType];
+        const defaults = MODEL_DEFAULT_DIMENSIONS[item.modelType as ModelType];
         if (!defaults) return item;
         const hasDims =
           typeof item.width === "number" &&
@@ -651,13 +715,19 @@ export default function DropTheFurniture() {
         <meta name="theme-color" content="#ffffff" />
         <meta name="robots" content="index, follow" />
         <meta property="og:type" content="website" />
-        <meta property="og:title" content="Drop the Furniture - 3D 방 &amp; 가구 배치" />
+        <meta
+          property="og:title"
+          content="Drop the Furniture - 3D 방 &amp; 가구 배치"
+        />
         <meta
           property="og:description"
           content="3D 공간에서 방과 가구를 자유롭게 배치하고 편집할 수 있는 웹 앱입니다."
         />
         <meta name="twitter:card" content="summary" />
-        <meta name="twitter:title" content="Drop the Furniture - 3D 방 &amp; 가구 배치" />
+        <meta
+          name="twitter:title"
+          content="Drop the Furniture - 3D 방 &amp; 가구 배치"
+        />
         <meta
           name="twitter:description"
           content="3D 공간에서 방과 가구를 자유롭게 배치하고 편집할 수 있는 웹 앱입니다."
@@ -710,7 +780,8 @@ export default function DropTheFurniture() {
       <LeftPanel ref={panelRef} $open={panelOpen}>
         <SectionTitle>방 추가</SectionTitle>
         <ButtonGroup>
-          <Button onClick={addRoom}>방 추가</Button>
+          <Button onClick={addRoom}>방</Button>
+          <Button onClick={addSpace}>공간</Button>
           <Button onClick={() => addFurniture("door")}>🚪 문</Button>
         </ButtonGroup>
 
@@ -759,7 +830,27 @@ export default function DropTheFurniture() {
 
         <Divider />
 
-        <SectionTitle>목록</SectionTitle>
+        <SectionTitle>
+          목록
+          {rooms.length > 0 && (
+            <CollapseAllGroup>
+              <CollapseAllButton
+                title="모두 펼치기"
+                onClick={() => setCollapsedRooms(new Set())}
+              >
+                ⊞
+              </CollapseAllButton>
+              <CollapseAllButton
+                title="모두 접기"
+                onClick={() =>
+                  setCollapsedRooms(new Set(rooms.map((r) => r.id)))
+                }
+              >
+                ⊟
+              </CollapseAllButton>
+            </CollapseAllGroup>
+          )}
+        </SectionTitle>
         <List>
           {rooms.map((room) => {
             const roomFurniture = items.filter(
@@ -794,37 +885,70 @@ export default function DropTheFurniture() {
                     setDragOverRoomId(null);
                   }}
                 >
-                  <span>{room.name}</span>
-                  <ListItemType>방</ListItemType>
+                  <RoomName>
+                    <CollapseToggle
+                      onPointerDown={(e) => e.stopPropagation()}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        toggleRoomCollapse(room.id);
+                      }}
+                    >
+                      {collapsedRooms.has(room.id) ? "▸" : "▾"}
+                    </CollapseToggle>
+                    {room.name}
+                  </RoomName>
+                  <ListItemType>{room.hasWalls === false ? "공간" : "방"}</ListItemType>
                 </ListItem>
-                {roomChildren.length > 0 && (
-                  <RoomChildren>
-                    {roomChildren.map((child) => {
-                      const isModel = child.kind === "model";
-                      const label = isModel
-                        ? MODEL_LABELS[child.modelType]
-                        : TYPE_LABELS[child.furnitureType];
-                      return (
-                        <ListItem
-                          key={child.id}
-                          $selected={child.id === selectedId}
-                          $kind="furniture"
-                          $tree
-                          draggable
-                          onClick={() => handleSelect(child.id)}
-                          onDragStart={() => {
-                            draggingFurnitureId.current = child.id;
-                          }}
-                          onDragEnd={() => {
-                            draggingFurnitureId.current = null;
-                            setDragOverRoomId(null);
-                          }}
-                        >
-                          <span>{child.name}</span>
-                          <ListItemType>{label}</ListItemType>
-                        </ListItem>
-                      );
-                    })}
+                {!collapsedRooms.has(room.id) && (
+                  <RoomChildren
+                    $dragOver={dragOverRoomId === room.id}
+                    $empty={roomChildren.length === 0}
+                    onDragOver={(e) => {
+                      e.preventDefault();
+                      if (draggingFurnitureId.current) setDragOverRoomId(room.id);
+                    }}
+                    onDragLeave={() => setDragOverRoomId(null)}
+                    onDrop={() => {
+                      const furnitureId = draggingFurnitureId.current;
+                      if (!furnitureId) return;
+                      updateItem(furnitureId, {
+                        roomId: room.id,
+                        position: [0, 10, 0],
+                      });
+                      draggingFurnitureId.current = null;
+                      setDragOverRoomId(null);
+                    }}
+                  >
+                    {roomChildren.length > 0 ? (
+                      roomChildren.map((child) => {
+                        const isModel = child.kind === "model";
+                        const label = isModel
+                          ? MODEL_LABELS[child.modelType]
+                          : TYPE_LABELS[child.furnitureType];
+                        return (
+                          <ListItem
+                            key={child.id}
+                            $selected={child.id === selectedId}
+                            $kind="furniture"
+                            $tree
+                            draggable
+                            onClick={() => handleSelect(child.id)}
+                            onDragStart={() => {
+                              draggingFurnitureId.current = child.id;
+                            }}
+                            onDragEnd={() => {
+                              draggingFurnitureId.current = null;
+                              setDragOverRoomId(null);
+                            }}
+                          >
+                            <span>{child.name}</span>
+                            <ListItemType>{label}</ListItemType>
+                          </ListItem>
+                        );
+                      })
+                    ) : (
+                      <Hint>여기로 드래그</Hint>
+                    )}
                   </RoomChildren>
                 )}
               </Fragment>

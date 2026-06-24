@@ -16,6 +16,7 @@ import { activeTransformControls } from "./transformControlsRegistry";
 type RoomObjectProps = {
   data: Room;
   rooms: Room[];
+  allRooms: Room[];
   furniture: (FurnitureItem | ModelItem)[];
   isSelected: boolean;
   selectedFurnitureId: string | null;
@@ -29,6 +30,7 @@ type RoomObjectProps = {
 export default function RoomObject({
   data,
   rooms,
+  allRooms,
   furniture,
   isSelected,
   selectedFurnitureId,
@@ -57,7 +59,7 @@ export default function RoomObject({
 
   useFrame(() => {
     const none = { front: false, back: false, left: false, right: false };
-    if (!autoTransparent) {
+    if (!autoTransparent || !data.hasWalls) {
       if (prevAuto.current.front || prevAuto.current.back || prevAuto.current.left || prevAuto.current.right) {
         prevAuto.current = none;
         setAutoHiddenWalls(none);
@@ -81,6 +83,9 @@ export default function RoomObject({
   // 인접한 방과 겹치는 벽 중 한쪽(left·back)만 숨겨 z-파이팅 제거
   // 규칙: right·front 벽은 항상 유지, left·back 벽은 상대 right·front 벽과 맞닿으면 숨김
   const hiddenWalls = useMemo(() => {
+    if (!data.hasWalls) {
+      return { front: false, back: false, left: false, right: false };
+    }
     const tol = WALL_THICKNESS * 2; // 약간의 여유 허용
     const [rx, , rz] = data.position;
     const hide = { front: false, back: false, left: false, right: false };
@@ -212,6 +217,7 @@ export default function RoomObject({
           depth={data.depth}
           color={data.color}
           wallOpacity={wallOpacity}
+          hasWalls={data.hasWalls}
           hiddenWalls={{
             front: hiddenWalls.front || autoHiddenWalls.front,
             back:  hiddenWalls.back  || autoHiddenWalls.back,
@@ -226,6 +232,7 @@ export default function RoomObject({
             key={item.id}
             data={item}
             room={data}
+            allRooms={allRooms}
             siblingFurniture={furniture.filter((f) => f.id !== item.id)}
             isSelected={item.id === selectedFurnitureId}
             mode={mode}

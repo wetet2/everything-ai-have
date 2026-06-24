@@ -10,6 +10,7 @@ type RoomMeshProps = {
   color: string;
   wallOpacity?: number;
   hiddenWalls?: HiddenWalls;
+  hasWalls?: boolean;
 };
 
 export default function RoomMesh({
@@ -19,8 +20,9 @@ export default function RoomMesh({
   color,
   wallOpacity = 1,
   hiddenWalls = {},
+  hasWalls = true,
 }: RoomMeshProps) {
-  const showWalls = wallOpacity > 0;
+  const showWalls = hasWalls && wallOpacity > 0;
 
   return (
     <group>

@@ -28,6 +28,9 @@ export const MODEL_DEFAULT_DIMENSIONS: Record<
   donkey: { width: 1200, depth: 600, height: 1200 },
   couch: { width: 1800, depth: 800, height: 800 },
   badDouble: { width: 1000, depth: 600, height: 350 },
+  bookcase2: { width: 900, depth: 350, height: 1800 },
+  chair2: { width: 600, depth: 600, height: 850 },
+  door2: { width: 900, depth: 240, height: 2000 },
 };
 
 export const TYPE_LABELS: Record<FurnitureType, string> = {
@@ -47,6 +50,9 @@ export const MODEL_LABELS: Record<ModelType, string> = {
   donkey: "당나귀",
   couch: "소파(GLB)",
   badDouble: "침대 더블(GLB)",
+  bookcase2: "책장2",
+  chair2: "의자2",
+  door2: "문2",
 };
 
 export const MODE_LABELS = {

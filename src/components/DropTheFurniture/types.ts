@@ -9,7 +9,14 @@ export type FurnitureType =
   | "refrigerator"
   | "door";
 
-export type ModelType = "fountain" | "donkey" | "couch" | "badDouble";
+export type ModelType =
+  | "fountain"
+  | "donkey"
+  | "couch"
+  | "badDouble"
+  | "bookcase2"
+  | "chair2"
+  | "door2";
 
 export type TransformMode = "translate" | "rotate" | "scale";
 
@@ -23,6 +30,8 @@ export type Room = {
   position: [number, number, number];
   rotation: [number, number, number];
   color: string;
+  // 벽 유무. false면 바닥만 있는 "공간"(복도 등)으로 취급
+  hasWalls?: boolean;
 };
 
 export type FurnitureItem = {

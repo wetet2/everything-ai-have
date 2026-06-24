@@ -99,6 +99,7 @@ function SceneContent({
           key={room.id}
           data={room}
           rooms={rooms}
+          allRooms={rooms}
           furniture={items.filter(
             (item): item is FurnitureItem | ModelItem =>
               (item.kind === "furniture" || item.kind === "model") &&
@@ -119,6 +120,7 @@ function SceneContent({
           key={item.id}
           data={item}
           room={null}
+          allRooms={rooms}
           siblingFurniture={[]}
           isSelected={item.id === selectedId}
           mode={mode}

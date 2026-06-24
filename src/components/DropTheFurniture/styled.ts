@@ -137,6 +137,36 @@ export const SectionTitle = styled.h2`
   font-size: 14px;
   font-weight: 600;
   color: #eeeeee;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+`;
+
+export const CollapseAllGroup = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  margin-left: auto;
+`;
+
+export const CollapseAllButton = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  background: none;
+  border: none;
+  color: #a1a1aa;
+  font-size: 13px;
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+
+  &:hover {
+    color: #ffffff;
+  }
 `;
 
 export const ButtonGroup = styled.div<{ $nowrap?: boolean }>`
@@ -346,7 +376,7 @@ export const ListItem = styled.div<{
   `}
 `;
 
-export const RoomChildren = styled.div`
+export const RoomChildren = styled.div<{ $dragOver?: boolean; $empty?: boolean }>`
   display: flex;
   flex-direction: column;
   gap: 4px;
@@ -355,11 +385,52 @@ export const RoomChildren = styled.div`
   padding-top: 3px;
   padding-bottom: 3px;
   border-left: 2px solid #52525b;
+  outline: ${(props) => (props.$dragOver ? "2px dashed #60a5fa" : "none")};
+  outline-offset: 2px;
+  border-radius: 4px;
+
+  ${(props) =>
+    props.$empty &&
+    `
+    min-height: 28px;
+    align-items: center;
+    justify-content: center;
+  `}
 `;
 
 export const ListItemType = styled.span`
   font-size: 11px;
   color: #d4d4d8;
+`;
+
+export const CollapseToggle = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  background: none;
+  border: none;
+  color: #a1a1aa;
+  font-size: 10px;
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+
+  &:hover {
+    color: #ffffff;
+  }
+`;
+
+export const RoomName = styled.span`
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 `;
 
 export const HeaderButtons = styled.div<{ $open?: boolean }>`

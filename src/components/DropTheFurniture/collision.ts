@@ -16,7 +16,7 @@ type Bounds3D = {
 
 const WALL_OVERLAP_ALLOWANCE = 0;
 
-function rotatePointY(
+export function rotatePointY(
   x: number,
   z: number,
   angleY: number
@@ -28,10 +28,12 @@ function rotatePointY(
 
 function getHalfSize(item: PlacedItem) {
   if (item.kind === "room") {
+    // 벽이 없는 "공간"은 벽 두께를 포함하지 않음
+    const wallExtra = item.hasWalls === false ? 0 : WALL_THICKNESS;
     return {
-      halfW: item.width / 2 + WALL_THICKNESS,
+      halfW: item.width / 2 + wallExtra,
       halfH: item.height / 2,
-      halfD: item.depth / 2 + WALL_THICKNESS,
+      halfD: item.depth / 2 + wallExtra,
     };
   }
   if (item.kind === "model") {
@@ -159,55 +161,112 @@ export function resolveCollisions(
   return { x, z };
 }
 
-// 새 방을 기존 방들과 겹치지 않는 인접 위치에 배치
-export function findNonOverlappingRoomPosition(
-  existingRooms: Room[],
+// 특정 위치가 기존 방들과 겹치지 않는지 검사
+function isPositionFree(
+  x: number,
+  z: number,
   width: number,
-  depth: number
-): [number, number, number] {
-  if (existingRooms.length === 0) return [0, 0, 0];
-
-  // 방끼리 벽이 맞닿도록(겹치지 않게) 배치합니다.
-  const spacing = WALL_THICKNESS * 2;
-  const step = Math.max(width, depth) + spacing;
-  const candidateRoom: PlacedItem = {
+  depth: number,
+  existingRooms: Room[]
+): boolean {
+  const candidate: PlacedItem = {
     id: "candidate",
     kind: "room",
     name: "",
     width,
     depth,
     height: 3,
-    position: [0, 0, 0],
+    position: [x, 0, z],
     rotation: [0, 0, 0],
     color: "",
   };
+  const b1 = getBounds3D(candidate);
+  return !existingRooms.some((room) =>
+    boxesOverlap3D(b1, getBounds3D(room), WALL_OVERLAP_ALLOWANCE)
+  );
+}
 
-  // 원점에서 시작해 사각형 나선을 그리며 비어있는 자리를 찾습니다.
-  // 이렇게 하면 방 100개도 10x10 그리드 형태로 촘촘히 배치됩니다.
+// 기준점에서 시작해 사각형 나선을 그리며 비어있는 자리를 찾습니다.
+function findFreeSpotSpiral(
+  center: [number, number, number],
+  existingRooms: Room[],
+  width: number,
+  depth: number
+): [number, number, number] {
+  const spacing = WALL_THICKNESS * 2;
+  const step = Math.max(width, depth) + spacing;
+
   const spiral = function* (): Generator<[number, number]> {
-    yield [0, 0];
+    yield [center[0], center[2]];
     let r = 1;
     while (r <= 100) {
-      for (let i = -r + 1; i <= r; i++) yield [i * step, -r * step];
-      for (let i = -r + 1; i <= r; i++) yield [r * step, i * step];
-      for (let i = r - 1; i >= -r; i--) yield [i * step, r * step];
-      for (let i = r - 1; i >= -r; i--) yield [-r * step, i * step];
+      for (let i = -r + 1; i <= r; i++) yield [center[0] + i * step, center[2] - r * step];
+      for (let i = -r + 1; i <= r; i++) yield [center[0] + r * step, center[2] + i * step];
+      for (let i = r - 1; i >= -r; i--) yield [center[0] + i * step, center[2] + r * step];
+      for (let i = r - 1; i >= -r; i--) yield [center[0] - r * step, center[2] + i * step];
       r++;
     }
   };
 
   for (const [x, z] of spiral()) {
-    const candidate: PlacedItem = {
-      ...candidateRoom,
-      position: [x, 0, z],
-    };
-    const b1 = getBounds3D(candidate);
-    const overlaps = existingRooms.some((room) =>
-      boxesOverlap3D(b1, getBounds3D(room), WALL_OVERLAP_ALLOWANCE)
-    );
-    if (!overlaps) return [x, 0, z];
+    if (isPositionFree(x, z, width, depth, existingRooms)) {
+      return [x, 0, z];
+    }
   }
 
-  // 안전장치: 혹시 못 찾으면 x축으로 나열
-  return [existingRooms.length * step, 0, 0];
+  return [center[0], 0, center[2]];
+}
+
+// 새 방/공간을 배치할 위치를 찾습니다.
+// - 방이 없으면 카메라가 바라보는 위치(target) 한가운데
+// - 방이 1개면 카메라와 그 방 사이(중간점)
+// - 방이 여러 개면 (0,0)과 가장 가까운 방 옆에 인접하게
+export function findNonOverlappingRoomPosition(
+  existingRooms: Room[],
+  width: number,
+  depth: number,
+  cameraTarget: [number, number, number] = [0, 0, 0],
+  cameraPosition: [number, number, number] = [0, 0, 0]
+): [number, number, number] {
+  // 방이 없으면 카메라가 바라보는 위치 한가운데
+  if (existingRooms.length === 0) {
+    return [cameraTarget[0], 0, cameraTarget[2]];
+  }
+
+  // 방이 1개면 카메라와 그 방 사이(중간점)에서 비어있는 자리 탐색
+  if (existingRooms.length === 1) {
+    const room = existingRooms[0];
+    const mid: [number, number, number] = [
+      (cameraPosition[0] + room.position[0]) / 2,
+      0,
+      (cameraPosition[2] + room.position[2]) / 2,
+    ];
+    return findFreeSpotSpiral(mid, existingRooms, width, depth);
+  }
+
+  // 방이 여러 개면 (0,0)과 가장 가까운 방 찾기
+  const nearest = existingRooms.reduce((closest, room) => {
+    const dist = room.position[0] ** 2 + room.position[2] ** 2;
+    const closestDist = closest.position[0] ** 2 + closest.position[2] ** 2;
+    return dist < closestDist ? room : closest;
+  }, existingRooms[0]);
+
+  // 그 방 옆(동/서/남/북)에 인접하게 붙임
+  const [bx, , bz] = nearest.position;
+  const spacing = WALL_THICKNESS * 2;
+  const candidates: [number, number][] = [
+    [bx + nearest.width / 2 + width / 2 + spacing, bz],
+    [bx - nearest.width / 2 - width / 2 - spacing, bz],
+    [bx, bz + nearest.depth / 2 + depth / 2 + spacing],
+    [bx, bz - nearest.depth / 2 - depth / 2 - spacing],
+  ];
+
+  for (const [x, z] of candidates) {
+    if (isPositionFree(x, z, width, depth, existingRooms)) {
+      return [x, 0, z];
+    }
+  }
+
+  // 4방향 모두 막혀있으면 가장 가까운 방 주변에서 나선 탐색
+  return findFreeSpotSpiral([bx, 0, bz], existingRooms, width, depth);
 }

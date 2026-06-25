@@ -3123,6 +3123,40 @@ __metadata:
   languageName: node
   linkType: hard
 
+"everything-ai-have@workspace:.":
+  version: 0.0.0-use.local
+  resolution: "everything-ai-have@workspace:."
+  dependencies:
+    "@anthropic-ai/sdk": "npm:^0.93.0"
+    "@google/genai": "npm:^2.5.0"
+    "@react-three/drei": "npm:^10.7.7"
+    "@react-three/fiber": "npm:^9.6.1"
+    "@types/lodash-es": "npm:^4"
+    "@types/node": "npm:^20"
+    "@types/react": "npm:^19"
+    "@types/react-color": "npm:^2"
+    "@types/react-dom": "npm:^19"
+    "@types/styled-components": "npm:^5.1.36"
+    "@types/three": "npm:^0.184.1"
+    eslint: "npm:^9"
+    eslint-config-next: "npm:16.2.1"
+    lodash-es: "npm:^4.18.1"
+    next: "npm:16.2.1"
+    raw-loader: "npm:^4.0.2"
+    react: "npm:19.2.4"
+    react-color: "npm:^2.19.3"
+    react-dom: "npm:19.2.4"
+    react-markdown: "npm:^10.1.0"
+    react-select: "npm:^5.10.2"
+    rehype-highlight: "npm:^7.0.2"
+    remark-gfm: "npm:^4.0.1"
+    serve: "npm:^14.2.6"
+    styled-components: "npm:^6.3.12"
+    three: "npm:^0.184.0"
+    typescript: "npm:^5"
+  languageName: unknown
+  linkType: soft
+
 "execa@npm:^5.1.1":
   version: 5.1.1
   resolution: "execa@npm:5.1.1"
@@ -5165,40 +5199,6 @@ __metadata:
   checksum: 10c0/902c936546f64e2dbbdeacc6599a3d6f9beae334b0aa8f2a439439b573369f1d49530fafc817f7ac1dcbcc0b5a42c44287ee293c5c91590773e190c416b48db9
   languageName: node
   linkType: hard
-
-"nextjs@workspace:.":
-  version: 0.0.0-use.local
-  resolution: "nextjs@workspace:."
-  dependencies:
-    "@anthropic-ai/sdk": "npm:^0.93.0"
-    "@google/genai": "npm:^2.5.0"
-    "@react-three/drei": "npm:^10.7.7"
-    "@react-three/fiber": "npm:^9.6.1"
-    "@types/lodash-es": "npm:^4"
-    "@types/node": "npm:^20"
-    "@types/react": "npm:^19"
-    "@types/react-color": "npm:^2"
-    "@types/react-dom": "npm:^19"
-    "@types/styled-components": "npm:^5.1.36"
-    "@types/three": "npm:^0.184.1"
-    eslint: "npm:^9"
-    eslint-config-next: "npm:16.2.1"
-    lodash-es: "npm:^4.18.1"
-    next: "npm:16.2.1"
-    raw-loader: "npm:^4.0.2"
-    react: "npm:19.2.4"
-    react-color: "npm:^2.19.3"
-    react-dom: "npm:19.2.4"
-    react-markdown: "npm:^10.1.0"
-    react-select: "npm:^5.10.2"
-    rehype-highlight: "npm:^7.0.2"
-    remark-gfm: "npm:^4.0.1"
-    serve: "npm:^14.2.6"
-    styled-components: "npm:^6.3.12"
-    three: "npm:^0.184.0"
-    typescript: "npm:^5"
-  languageName: unknown
-  linkType: soft
 
 "node-domexception@npm:^1.0.0":
   version: 1.0.0

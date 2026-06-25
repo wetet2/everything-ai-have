@@ -16,7 +16,7 @@ import {
   MODEL_DEFAULT_DIMENSIONS,
   WALL_THICKNESS,
 } from "./constants";
-import { activeTransformControls } from "./transformControlsRegistry";
+import { activeTransformControls, orbitControlsRef } from "./transformControlsRegistry";
 
 type FurnitureProps = {
   data: FurnitureItem | ModelItem;
@@ -48,8 +48,19 @@ export default function Furniture({
   useEffect(() => {
     if (!isSelected) return;
     activeTransformControls.current = controlsRef.current;
+    // TransformControls(이동/회전/크기 핸들) 드래그 중에는 OrbitControls를 비활성화하여
+    // 가구 이동과 카메라 회전이 동시에 일어나지 않도록 방어한다.
+    const controls = controlsRef.current;
+    const handleDraggingChanged = (event: any) => {
+      const orbit = orbitControlsRef.current;
+      if (orbit) {
+        orbit.enabled = !event.value;
+      }
+    };
+    controls?.addEventListener("dragging-changed", handleDraggingChanged);
     return () => {
-      if (activeTransformControls.current === controlsRef.current) {
+      controls?.removeEventListener("dragging-changed", handleDraggingChanged);
+      if (activeTransformControls.current === controls) {
         activeTransformControls.current = null;
       }
     };
@@ -311,6 +322,7 @@ export default function Furniture({
             <GLBModel
               path={DONKEY_MODEL_PATH}
               targetHeight={MODEL_TARGET_HEIGHT}
+              animationName={data.animationName}
             />
           </Suspense>
         )}
@@ -785,10 +797,12 @@ function GLBModel({
   path,
   targetHeight,
   idleName = "Idle",
+  animationName,
 }: {
   path: string;
   targetHeight: number;
   idleName?: string;
+  animationName?: string;
 }) {
   const { scene, animations } = useGLTF(path);
   const mixerRef = useRef<AnimationMixer | null>(null);
@@ -826,13 +840,17 @@ function GLBModel({
     return group;
   }, [targetHeight, scene]);
 
-  // 애니메이션 믹서 설정 - Idle 클립을 우선, 없으면 첫 번째를 무한 재생
+  // 애니메이션 믹서 설정 - 선택된 클립을 우선, Idle/첫 번째를 무한 재생
   useEffect(() => {
     if (!animations || animations.length === 0) return;
     const clone = cloned.children[0];
     const mixer = new AnimationMixer(clone);
     mixerRef.current = mixer;
-    const clip = animations.find((a) => a.name === idleName) ?? animations[0];
+    const desired = animationName ?? idleName;
+    const clip =
+      animations.find((a) => a.name === desired) ??
+      animations.find((a) => a.name === idleName) ??
+      animations[0];
     const action = mixer.clipAction(clip);
     action.play();
     return () => {
@@ -840,7 +858,7 @@ function GLBModel({
       mixer.uncacheRoot(clone);
       mixerRef.current = null;
     };
-  }, [cloned, animations, idleName]);
+  }, [cloned, animations, idleName, animationName]);
 
   // 매 프레임 믹서 업데이트 (애니메이션 재생)
   useFrame((_, delta) => {

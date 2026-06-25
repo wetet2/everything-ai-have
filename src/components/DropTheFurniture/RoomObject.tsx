@@ -11,7 +11,7 @@ import RoomMesh from "./RoomMesh";
 import Furniture from "./Furniture";
 import { resolveCollisions } from "./collision";
 import { WALL_THICKNESS } from "./constants";
-import { activeTransformControls } from "./transformControlsRegistry";
+import { activeTransformControls, orbitControlsRef } from "./transformControlsRegistry";
 
 type RoomObjectProps = {
   data: Room;
@@ -48,8 +48,19 @@ export default function RoomObject({
   useEffect(() => {
     if (!isSelected) return;
     activeTransformControls.current = controlsRef.current;
+    // TransformControls(이동/회전/크기 핸들) 드래그 중에는 OrbitControls를 비활성화하여
+    // 방 이동과 카메라 회전이 동시에 일어나지 않도록 방어한다.
+    const controls = controlsRef.current;
+    const handleDraggingChanged = (event: any) => {
+      const orbit = orbitControlsRef.current;
+      if (orbit) {
+        orbit.enabled = !event.value;
+      }
+    };
+    controls?.addEventListener("dragging-changed", handleDraggingChanged);
     return () => {
-      if (activeTransformControls.current === controlsRef.current) {
+      controls?.removeEventListener("dragging-changed", handleDraggingChanged);
+      if (activeTransformControls.current === controls) {
         activeTransformControls.current = null;
       }
     };

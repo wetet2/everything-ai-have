@@ -61,6 +61,8 @@ export type ModelItem = {
   position: [number, number, number];
   rotation: [number, number, number];
   color: string;
+  // 실행 중인 GLB 애니메이션 클립 이름
+  animationName?: string;
 };
 
 export type PlacedItem = Room | FurnitureItem | ModelItem;

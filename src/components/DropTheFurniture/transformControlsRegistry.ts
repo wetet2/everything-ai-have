@@ -11,3 +11,10 @@ export type ActiveTransformControls = {
 export const activeTransformControls: { current: ActiveTransformControls } = {
   current: null,
 };
+
+// OrbitControls 인스턴스를 전역에서 참조.
+// TransformControls(이동/회전/크기 핸들) 드래그 중 카메라가 함께 움직이지 않도록
+// 비활성화하기 위해 사용한다.
+export const orbitControlsRef: { current: any } = {
+  current: null,
+};

@@ -11,6 +11,7 @@ import {
   ModelItem,
   TransformMode,
 } from "./types";
+import { orbitControlsRef } from "./transformControlsRegistry";
 
 export type CameraState = {
   position: [number, number, number];
@@ -42,6 +43,18 @@ function SceneContent({
 }: SceneProps) {
   const { camera } = useThree();
   const controlsRef = useRef<any>(null);
+
+  // OrbitControls 인스턴스를 전역 레지스트리에 등록.
+  // TransformControls 드래그 중 카메라 입력을 차단하기 위해 참조한다.
+  useEffect(() => {
+    const controls = controlsRef.current;
+    orbitControlsRef.current = controls;
+    return () => {
+      if (orbitControlsRef.current === controls) {
+        orbitControlsRef.current = null;
+      }
+    };
+  }, []);
 
   useEffect(() => {
     camera.position.set(...cameraState.position);
@@ -82,9 +95,9 @@ function SceneContent({
       <Grid
         position={[0, 5, 0]}
         cellSize={1000}
-        sectionSize={5000}
-        cellThickness={0.8}
-        sectionThickness={1}
+        sectionSize={1000}
+        cellThickness={1}
+        sectionThickness={0}
         cellColor="#9ca3af"
         sectionColor="#9ca3af"
         fadeDistance={200000}

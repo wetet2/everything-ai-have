@@ -60,3 +60,40 @@ export const MODE_LABELS = {
   rotate: "회전",
   scale: "크기",
 } as const;
+
+// 애니메이션 클립 영문 이름 -> 한국어 라벨
+export const ANIMATION_LABELS: Record<string, string> = {
+  Idle: "대기",
+  Idle_2: "대기2",
+  Idle_Headlow: "대기(고개 숙임)",
+  Walk: "걷기",
+  Gallop: "질주",
+  Gallop_Jump: "질주 점프",
+  Jump_toIdle: "점프 후 대기",
+  Eating: "먹기",
+  Attack_Headbutt: "공격(박치기)",
+  Attack_Kick: "공격(차기)",
+  Death: "죽음",
+  Idle_HitReact_Left: "피격 반응(좌)",
+  Idle_HitReact_Right: "피격 반응(우)",
+};
+
+// 각 GLB 모델에 포함된 애니메이션 클립 이름 목록.
+// 비어 있으면 애니메이션이 없는 정적 모델.
+export const MODEL_ANIMATIONS: Partial<Record<ModelType, string[]>> = {
+  donkey: [
+    "Idle",
+    "Idle_2",
+    "Idle_Headlow",
+    "Walk",
+    "Gallop",
+    "Gallop_Jump",
+    "Jump_toIdle",
+    "Eating",
+    "Attack_Headbutt",
+    "Attack_Kick",
+    "Death",
+    "Idle_HitReact_Left",
+    "Idle_HitReact_Right",
+  ],
+};

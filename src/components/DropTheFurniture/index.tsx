@@ -8,6 +8,7 @@ import {
 } from "react";
 import dynamic from "next/dynamic";
 import Head from "next/head";
+import Select, { StylesConfig } from "react-select";
 import {
   Container,
   Header,
@@ -54,6 +55,8 @@ import {
   MODEL_DEFAULT_DIMENSIONS,
   TYPE_LABELS,
   MODEL_LABELS,
+  MODEL_ANIMATIONS,
+  ANIMATION_LABELS,
   MODE_LABELS,
 } from "./constants";
 import type { CameraState } from "./Scene";
@@ -110,6 +113,48 @@ const DEFAULT_CAMERA: CameraState = {
 };
 
 const STATE_KEY = "dtf-state";
+
+// react-select 다크 테마 스타일 (Toolbar의 다른 입력 요소와 통일)
+const selectStyles: StylesConfig<{ value: string; label: string }, false> = {
+  container: (base) => ({
+    ...base,
+    width: "150px",
+  }),
+  control: (base) => ({
+    ...base,
+    background: "#27272a",
+    borderColor: "#52525b",
+    borderRadius: "8px",
+    minHeight: "34px",
+    boxShadow: "none",
+    cursor: "pointer",
+    fontSize: "13px",
+    ":hover": { borderColor: "#71717a" },
+  }),
+  singleValue: (base) => ({ ...base, color: "#ffffff" }),
+  input: (base) => ({ ...base, color: "#ffffff" }),
+  menu: (base) => ({
+    ...base,
+    background: "#27272a",
+    border: "1px solid #52525b",
+    borderRadius: "8px",
+    overflow: "hidden",
+    zIndex: 30,
+  }),
+  option: (base, state) => ({
+    ...base,
+    background: state.isSelected
+      ? "#3b82f6"
+      : state.isFocused
+        ? "#3f3f46"
+        : "#27272a",
+    color: "#ffffff",
+    cursor: "pointer",
+    fontSize: "13px",
+  }),
+  indicatorSeparator: (base) => ({ ...base, background: "#52525b" }),
+  dropdownIndicator: (base) => ({ ...base, color: "#a1a1aa" }),
+};
 
 function getInitialSavedState() {
   if (typeof window === "undefined") return null;
@@ -897,7 +942,9 @@ export default function DropTheFurniture() {
                     </CollapseToggle>
                     {room.name}
                   </RoomName>
-                  <ListItemType>{room.hasWalls === false ? "공간" : "방"}</ListItemType>
+                  <ListItemType>
+                    {room.hasWalls === false ? "공간" : "방"}
+                  </ListItemType>
                 </ListItem>
                 {!collapsedRooms.has(room.id) && (
                   <RoomChildren
@@ -905,7 +952,8 @@ export default function DropTheFurniture() {
                     $empty={roomChildren.length === 0}
                     onDragOver={(e) => {
                       e.preventDefault();
-                      if (draggingFurnitureId.current) setDragOverRoomId(room.id);
+                      if (draggingFurnitureId.current)
+                        setDragOverRoomId(room.id);
                     }}
                     onDragLeave={() => setDragOverRoomId(null)}
                     onDrop={() => {
@@ -1028,6 +1076,41 @@ export default function DropTheFurniture() {
               }
             />
           </ColorInputWrap>
+
+          {selectedItem.kind === "model" &&
+            MODEL_ANIMATIONS[selectedItem.modelType] && (
+              <Select<{ value: string; label: string }, false>
+                styles={selectStyles}
+                value={
+                  (
+                    selectedItem.animationName
+                      ? MODEL_ANIMATIONS[selectedItem.modelType]!.includes(
+                          selectedItem.animationName,
+                        )
+                      : false
+                  )
+                    ? {
+                        value: selectedItem.animationName!,
+                        label:
+                          ANIMATION_LABELS[selectedItem.animationName!] ??
+                          selectedItem.animationName!,
+                      }
+                    : null
+                }
+                onChange={(option) =>
+                  updateItem(selectedItem.id, {
+                    animationName: option?.value || undefined,
+                  })
+                }
+                options={MODEL_ANIMATIONS[selectedItem.modelType]!.map(
+                  (name) => ({
+                    value: name,
+                    label: ANIMATION_LABELS[name] ?? name,
+                  }),
+                )}
+                placeholder="애니메이션"
+              />
+            )}
 
           {(selectedItem.kind === "room" ||
             selectedItem.kind === "furniture" ||

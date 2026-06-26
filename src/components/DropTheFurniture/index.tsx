@@ -78,6 +78,7 @@ const FURNITURE_TYPES: FurnitureType[] = [
 const MODEL_TYPES: ModelType[] = [
   "fountain",
   "donkey",
+  "dog",
   "couch",
   "badDouble",
   "bookcase2",
@@ -100,6 +101,7 @@ const DEFAULT_COLORS: Record<FurnitureType, string> = {
 const DEFAULT_MODEL_COLORS: Record<ModelType, string> = {
   fountain: "#06b6d4",
   donkey: "#a78bfa",
+  dog: "#fbbf24",
   couch: "#f59e0b",
   badDouble: "#ef4444",
   bookcase2: "#ec4899",

@@ -326,6 +326,15 @@ export default function Furniture({
             />
           </Suspense>
         )}
+        {data.kind === "model" && data.modelType === "dog" && (
+          <Suspense fallback={null}>
+            <GLBModel
+              path={DOG_MODEL_PATH}
+              targetHeight={MODEL_TARGET_HEIGHT}
+              animationName={data.animationName}
+            />
+          </Suspense>
+        )}
         {data.kind === "model" && data.modelType === "couch" && (
           <Suspense fallback={null}>
             <GLBModel
@@ -871,6 +880,7 @@ function GLBModel({
 }
 
 const DONKEY_MODEL_PATH = "/models/Donkey.glb";
+const DOG_MODEL_PATH = "/models/dog.glb";
 const COUCH_MODEL_PATH = "/models/couch.glb";
 const BAD_DOUBLE_MODEL_PATH = "/models/bad_double.glb";
 const BOOKCASE2_MODEL_PATH = "/models/bookcase.glb";

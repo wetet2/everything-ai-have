@@ -12,6 +12,7 @@ export type FurnitureType =
 export type ModelType =
   | "fountain"
   | "donkey"
+  | "dog"
   | "couch"
   | "badDouble"
   | "bookcase2"

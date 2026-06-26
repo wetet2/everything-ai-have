@@ -105,6 +105,8 @@ export const MessageItem = styled.li<{ $isUser: boolean }>`
   display: flex;
   justify-content: ${({ $isUser }) => ($isUser ? "flex-end" : "flex-start")};
   margin-bottom: 14px;
+  margin-left: ${({ $isUser }) => ($isUser ? "25%" : "0")};
+  margin-right: ${({ $isUser }) => ($isUser ? "0" : "25%")};
 `;
 
 export const ChatBody = styled.div<{ $isUser: boolean }>`
@@ -409,6 +411,87 @@ export const DeleteAllSessionsButton = styled.button`
   &:hover:not(:disabled) {
     background: #fee2e2;
     border-color: #f87171;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+`;
+
+export const AttachButton = styled.button`
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 42px;
+  height: 42px;
+  border: 1px solid #e4e7ec;
+  border-radius: 50%;
+  background: #f1f3f6;
+  color: #6f54ff;
+  cursor: pointer;
+  transition: all 0.2s;
+
+  &:hover:not(:disabled) {
+    background: #ede9ff;
+    border-color: #c7bdff;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+`;
+
+export const AttachmentPreviewWrap = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 8px;
+  padding: 8px;
+  background: #f1f3f6;
+  border-radius: 12px;
+`;
+
+export const AttachmentPreview = styled.div`
+  position: relative;
+  width: 64px;
+  height: 64px;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid #e4e7ec;
+  background: #fff;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+`;
+
+export const AttachmentRemoveButton = styled.button`
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  width: 18px;
+  height: 18px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: rgba(15, 23, 42, 0.6);
+  color: #fff;
+  font-size: 14px;
+  line-height: 1;
+  cursor: pointer;
+  transition: background 0.18s;
+
+  &:hover:not(:disabled) {
+    background: rgba(15, 23, 42, 0.85);
   }
 
   &:disabled {

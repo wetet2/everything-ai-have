@@ -1,5 +1,6 @@
 import Anthropic from "@anthropic-ai/sdk";
-import { GoogleGenAI } from "@google/genai";
+import { GoogleGenAI, Modality } from "@google/genai";
+import OpenAI from "openai";
 import { useRouter } from "next/router";
 import { useEffect, useMemo, useRef, useState } from "react";
 import Markdown from "react-markdown";
@@ -7,13 +8,13 @@ import Select from "react-select";
 import rehypeHighlight from "rehype-highlight";
 import remarkGfm from "remark-gfm";
 
+import ImageIcon from "../../../resources/icons/ImageIcon";
 import SendIcon from "../../../resources/icons/SendIcon";
 import TrashIcon from "../../../resources/icons/TrashIcon";
 import TrashXIcon from "../../../resources/icons/TrashXIcon";
 import CopyablePre from "./CopyablePre";
 
 import * as S from "./styled";
-import Image from "next/image";
 import { isEmpty } from "lodash-es";
 
 type ChatMessage = {
@@ -21,6 +22,12 @@ type ChatMessage = {
   role: "user" | "assistant";
   text: string;
   images?: string[]; // base64 또는 URL
+};
+
+type AttachedImage = {
+  dataUrl: string; // 미리보기/메시지 표시용 (data:image/png;base64,...)
+  base64: string; // API 호출용 (접두사 제거된 순수 base64)
+  mimeType: string;
 };
 
 type StreamStatus = "idle" | "requesting" | "thinking" | "streaming" | "error";
@@ -40,7 +47,7 @@ type SessionOption = {
   label: string;
 };
 
-type AiProvider = "gemini" | "claude";
+type AiProvider = "gemini" | "claude" | "chatgpt";
 
 const AI_MAX_CONTEXT = 5;
 const CHAT_STORAGE_KEY = "wetet-chat-messages";
@@ -54,7 +61,9 @@ const FAVORITE_MODELS_GEMINI = [
   "gemini-3.1-pro-preview",
   "imagen-4.0-ultra-generate-001",
   "imagen-4.0-generate-001",
-  "models/imagen-4.0-fast-generate-001",
+  "imagen-4.0-fast-generate-001",
+  "gemini-3-pro-image-preview",
+  "gemini-3.1-flash-image-preview",
 ];
 
 const FAVORITE_MODELS_CLAUDE = [
@@ -65,10 +74,24 @@ const FAVORITE_MODELS_CLAUDE = [
   "claude-opus-4-7",
 ];
 
+const FAVORITE_MODELS_CHATGPT = [
+  "gpt-5.5",
+  "gpt-5.3-codex",
+  "gpt-5",
+  "gpt-5-mini",
+  "gpt-5-nano",
+  "gpt-4.1",
+  "gpt-4.1-mini",
+  "gpt-4o",
+  "gpt-4o-mini",
+  "chatgpt-image-latest",
+];
+
 const AiChatComponent = () => {
   const router = useRouter();
   const gkey = router.query.gkey as string | undefined;
   const ckey = router.query.ckey as string | undefined;
+  const tkey = router.query.tkey as string | undefined;
 
   const [provider, setProvider] = useState<AiProvider>("gemini");
 
@@ -83,6 +106,16 @@ const AiChatComponent = () => {
         dangerouslyAllowBrowser: true,
       }),
     [ckey],
+  );
+  const openaiAi = useMemo(
+    () =>
+      tkey
+        ? new OpenAI({
+            apiKey: tkey ?? "",
+            dangerouslyAllowBrowser: true,
+          })
+        : (null as any),
+    [tkey],
   );
 
   // 모델 리스트 출력
@@ -105,11 +138,26 @@ const AiChatComponent = () => {
   //
   const [modelsOfGemini, setModelsOfGemini] = useState<any[]>([]);
   const [modelsOfAnthropic, setModelsOfAnthropic] = useState<any[]>([]);
+  const [modelsOfOpenAI, setModelsOfOpenAI] = useState<any[]>([]);
   //
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
   const messagesAreaRef = useRef<HTMLDivElement | null>(null);
   const isUserScrolledUpRef = useRef(false);
   const textAreaRef = useRef<any>(null);
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
+
+  const [attachedImages, setAttachedImages] = useState<AttachedImage[]>([]);
+
+  // 입력 history (직전 전송 순, 최신이 index 0)
+  const inputHistory = useMemo(
+    () =>
+      messages
+        .filter((m) => m.role === "user" && m.text.trim().length > 0)
+        .map((m) => m.text)
+        .reverse(),
+    [messages],
+  );
+  const historyIndexRef = useRef<number | null>(null);
 
   const modelOptions = useMemo(() => {
     const _gemini1 = modelsOfGemini
@@ -124,13 +172,22 @@ const AiChatComponent = () => {
     const _claude2 = modelsOfAnthropic?.filter(
       (e) => !FAVORITE_MODELS_CLAUDE.includes(e.value),
     );
+    const _chatgpt1 = modelsOfOpenAI
+      ?.filter((e) => FAVORITE_MODELS_CHATGPT.includes(e.value))
+      .map((e) => ({ ...e, isFavorite: true }));
+    const _chatgpt2 = modelsOfOpenAI?.filter(
+      (e) => !FAVORITE_MODELS_CHATGPT.includes(e.value),
+    );
+    console.log(123, _gemini2);
     const _models =
       provider === "gemini"
         ? [..._gemini1, ..._gemini2]
-        : [..._claude1, ..._claude2];
+        : provider === "claude"
+          ? [..._claude1, ..._claude2]
+          : [..._chatgpt1, ..._chatgpt2];
 
     return _models;
-  }, [provider, modelsOfGemini, modelsOfAnthropic]);
+  }, [provider, modelsOfGemini, modelsOfAnthropic, modelsOfOpenAI]);
 
   useEffect(() => {
     if (modelOptions?.length > 0) {
@@ -150,7 +207,11 @@ const AiChatComponent = () => {
   const handleProviderChange = (next: AiProvider) => {
     if (isLoading) return;
     const nextModel =
-      next === "gemini" ? modelsOfGemini[0].value : modelsOfAnthropic[0].value;
+      next === "gemini"
+        ? modelsOfGemini[0].value
+        : next === "claude"
+          ? modelsOfAnthropic[0].value
+          : modelsOfOpenAI[0].value;
     setProvider(next);
     setSelectedModel(nextModel);
     saveSettings(next, nextModel);
@@ -169,6 +230,116 @@ const AiChatComponent = () => {
     const textarea = textAreaRef.current;
     textarea.style.height = "auto";
     textarea.style.height = `${textarea.scrollHeight}px`;
+  };
+
+  const downloadDataUrl = (dataUrl: string) => {
+    const a = document.createElement("a");
+    a.href = dataUrl;
+    a.download = `ai-image-${Date.now()}.png`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  };
+
+  const handleTextInput = () => {
+    handleAutoResizeTextarea();
+    // 사용자가 직접 타이핑하면 history 탐색 위치 초기화
+    historyIndexRef.current = null;
+  };
+
+  const setTextareaValue = (value: string) => {
+    const textarea = textAreaRef.current;
+    textarea.value = value;
+    handleAutoResizeTextarea();
+    requestAnimationFrame(() => {
+      const len = textarea.value.length;
+      textarea.setSelectionRange(len, len);
+    });
+  };
+
+  const handleHistoryNavigation = (e: React.KeyboardEvent) => {
+    if (e.shiftKey) return;
+    const textarea = textAreaRef.current;
+
+    if (e.key === "ArrowUp") {
+      // 커서가 맨 앞이거나 입력이 비어있을 때만 history 동작
+      const atTop =
+        textarea.selectionStart === 0 && textarea.selectionEnd === 0;
+      if (!atTop) return;
+      if (inputHistory.length === 0) return;
+      e.preventDefault();
+      const next =
+        historyIndexRef.current === null
+          ? 0
+          : Math.min(historyIndexRef.current + 1, inputHistory.length - 1);
+      historyIndexRef.current = next;
+      setTextareaValue(inputHistory[next]);
+      return;
+    }
+
+    if (e.key === "ArrowDown") {
+      // 커서가 맨 끝일 때만 history 동작
+      const len = textarea.value.length;
+      const atBottom =
+        textarea.selectionStart === len && textarea.selectionEnd === len;
+      if (!atBottom) return;
+      if (historyIndexRef.current === null) return;
+      e.preventDefault();
+      const next = historyIndexRef.current - 1;
+      if (next < 0) {
+        historyIndexRef.current = null;
+        setTextareaValue("");
+      } else {
+        historyIndexRef.current = next;
+        setTextareaValue(inputHistory[next]);
+      }
+      return;
+    }
+  };
+
+  const handleAddImageFiles = (files: File[]) => {
+    files.forEach((file) => {
+      if (!file.type.startsWith("image/")) return;
+      const reader = new FileReader();
+      reader.onload = () => {
+        const dataUrl = reader.result as string;
+        const base64 = dataUrl.split(",")[1] ?? "";
+        if (!base64) return;
+        setAttachedImages((prev) => [
+          ...prev,
+          { dataUrl, base64, mimeType: file.type },
+        ]);
+      };
+      reader.readAsDataURL(file);
+    });
+  };
+
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (!files || files.length === 0) return;
+    handleAddImageFiles(Array.from(files));
+    e.target.value = "";
+  };
+
+  const handlePasteImage = (e: React.ClipboardEvent) => {
+    const items = e.clipboardData?.items;
+    if (!items) return;
+    const imageFiles: File[] = [];
+    for (let i = 0; i < items.length; i++) {
+      const item = items[i];
+      if (item.kind === "file" && item.type.startsWith("image/")) {
+        const file = item.getAsFile();
+        if (file) imageFiles.push(file);
+      }
+    }
+    if (imageFiles.length > 0) {
+      e.preventDefault();
+      handleAddImageFiles(imageFiles);
+    }
+  };
+
+  const handleRemoveAttachedImage = (index: number) => {
+    setAttachedImages((prev) => prev.filter((_, i) => i !== index));
   };
 
   const getSessionOptionLabel = (session: ChatSession) => {
@@ -283,6 +454,7 @@ const AiChatComponent = () => {
   const handleRequestGemini = async (
     input: string,
     assistantMessageId: number,
+    images: AttachedImage[],
   ) => {
     // 이미지 생성 모델인 경우
     if (selectedModel?.startsWith("imagen-")) {
@@ -301,6 +473,7 @@ const AiChatComponent = () => {
 
         if (base64Image) {
           const imageUrl = `data:image/png;base64,${base64Image}`;
+          downloadDataUrl(imageUrl);
           setMessages((prev) =>
             prev.map((message) =>
               message.id === assistantMessageId
@@ -340,24 +513,73 @@ const AiChatComponent = () => {
       return;
     }
 
-    const history = messages.slice(-1 * AI_MAX_CONTEXT).map((m) => ({
-      role: m.role === "user" ? "user" : "model",
-      parts: [{ text: m.text }],
-    }));
+    // Gemini 메시지 parts 변환 (이미지 + 텍스트)
+    const toGeminiParts = (m: ChatMessage): any[] => {
+      const parts: any[] = [];
+      if (m.images && m.images.length > 0) {
+        m.images.forEach((url) => {
+          const isDataUrl = url.startsWith("data:");
+          const b64 = isDataUrl ? (url.split(",")[1] ?? "") : "";
+          const mime = isDataUrl
+            ? (url.match(/data:(.*?);/)?.[1] ?? "image/png")
+            : "image/png";
+          if (b64) parts.push({ inlineData: { data: b64, mimeType: mime } });
+        });
+      }
+      if (m.text) parts.push({ text: m.text });
+      return parts;
+    };
+
+    // 이미지 출력 지원 모델은 responseModalities 명시 필요
+    const isImageOutputModel = /image/i.test(selectedModel ?? "");
+
+    // 이미지 출력 모델은 history를 컨텍스트에서 제외
+    const history = isImageOutputModel
+      ? []
+      : messages.slice(-1 * AI_MAX_CONTEXT).map((m) => ({
+          role: m.role === "user" ? "user" : "model",
+          parts: toGeminiParts(m),
+        }));
+
+    const currentParts: any[] = [];
+    images.forEach((img) => {
+      currentParts.push({
+        inlineData: { data: img.base64, mimeType: img.mimeType },
+      });
+    });
+    if (input) currentParts.push({ text: input });
+
+    const config = isImageOutputModel
+      ? { responseModalities: [Modality.TEXT, Modality.IMAGE] }
+      : {};
 
     const responseStream = await geminiAi.models.generateContentStream({
       model: selectedModel,
-      contents: [...history, { role: "user", parts: [{ text: input }] }],
-      config: {},
+      contents: [...history, { role: "user", parts: currentParts }],
+      config,
     });
 
     setStreamStatus("thinking");
-    let hasReceivedTextChunk = false;
+    let hasReceivedChunk = false;
 
     for await (const chunk of responseStream) {
-      if (!hasReceivedTextChunk) {
-        hasReceivedTextChunk = true;
+      if (!hasReceivedChunk) {
+        hasReceivedChunk = true;
         setStreamStatus("streaming");
+      }
+
+      // chunk.text는 text 파트만 읽고 inlineData(이미지)는 무시하므로
+      // parts에서 inlineData를 직접 추출
+      const parts = chunk.candidates?.[0]?.content?.parts ?? [];
+      const chunkImages: string[] = [];
+      for (const part of parts) {
+        const inline = (part as any).inlineData;
+        if (inline?.data) {
+          const mimeType = inline.mimeType ?? "image/png";
+          const dataUrl = `data:${mimeType};base64,${inline.data}`;
+          chunkImages.push(dataUrl);
+          downloadDataUrl(dataUrl);
+        }
       }
 
       setMessages((prev) =>
@@ -366,6 +588,10 @@ const AiChatComponent = () => {
             ? {
                 ...message,
                 text: message.text + (chunk.text ?? ""),
+                images:
+                  chunkImages.length > 0
+                    ? [...(message.images ?? []), ...chunkImages]
+                    : message.images,
               }
             : message,
         ),
@@ -376,15 +602,44 @@ const AiChatComponent = () => {
   const handleRequestClaude = async (
     input: string,
     assistantMessageId: number,
+    images: AttachedImage[],
   ) => {
+    // Claude 메시지 content 변환 (이미지 + 텍스트 블록 배열)
+    const toClaudeContent = (m: ChatMessage): any[] => {
+      const content: any[] = [];
+      if (m.images && m.images.length > 0) {
+        m.images.forEach((url) => {
+          if (!url.startsWith("data:")) return;
+          const b64 = url.split(",")[1] ?? "";
+          const mediaType = url.match(/data:(.*?);/)?.[1] ?? "image/png";
+          if (!b64) return;
+          content.push({
+            type: "image",
+            source: { type: "base64", media_type: mediaType, data: b64 },
+          });
+        });
+      }
+      if (m.text) content.push({ type: "text", text: m.text });
+      return content;
+    };
+
     const history = messages.slice(-1 * AI_MAX_CONTEXT).map((m) => ({
       role: m.role as "user" | "assistant",
-      content: m.text,
+      content: toClaudeContent(m),
     }));
+
+    const currentContent: any[] = [];
+    images.forEach((img) => {
+      currentContent.push({
+        type: "image",
+        source: { type: "base64", media_type: img.mimeType, data: img.base64 },
+      });
+    });
+    if (input) currentContent.push({ type: "text", text: input });
 
     const claudeMessages = [
       ...history,
-      { role: "user" as const, content: input },
+      { role: "user" as const, content: currentContent },
     ];
 
     const stream = claudeAi.messages.stream({
@@ -420,15 +675,166 @@ const AiChatComponent = () => {
     }
   };
 
+  const handleRequestOpenAI = async (
+    input: string,
+    assistantMessageId: number,
+    images: AttachedImage[],
+  ) => {
+    // 이미지 생성 모델인 경우 (모델명에 image 포함)
+    if (/image/i.test(selectedModel ?? "")) {
+      setStreamStatus("thinking");
+      try {
+        const response = await openaiAi.images.generate({
+          model: selectedModel,
+          prompt: input,
+          n: 1,
+        });
+
+        // gpt-image-* 는 b64_json 로 응답, dall-e-* 는 url 또는 b64_json
+        const item = response.data?.[0] as any;
+        const b64 = item?.b64_json;
+        const url = item?.url;
+        const revisedPrompt = item?.revised_prompt;
+        const successText = revisedPrompt
+          ? `이미지가 생성되었습니다.\n\n${revisedPrompt}`
+          : "이미지가 생성되었습니다.";
+
+        if (b64) {
+          const imageUrl = `data:image/png;base64,${b64}`;
+          downloadDataUrl(imageUrl);
+          setMessages((prev) =>
+            prev.map((message) =>
+              message.id === assistantMessageId
+                ? { ...message, text: successText, images: [imageUrl] }
+                : message,
+            ),
+          );
+        } else if (url) {
+          setMessages((prev) =>
+            prev.map((message) =>
+              message.id === assistantMessageId
+                ? { ...message, text: successText, images: [url] }
+                : message,
+            ),
+          );
+        } else {
+          setMessages((prev) =>
+            prev.map((message) =>
+              message.id === assistantMessageId
+                ? {
+                    ...message,
+                    text: "이미지 생성에 실패했습니다. (응답 데이터 없음)",
+                  }
+                : message,
+            ),
+          );
+        }
+      } catch (e: any) {
+        setMessages((prev) =>
+          prev.map((message) =>
+            message.id === assistantMessageId
+              ? {
+                  ...message,
+                  text: `이미지 생성 중 오류가 발생했습니다: ${e.message}`,
+                }
+              : message,
+          ),
+        );
+      }
+      setStreamStatus("idle");
+      return;
+    }
+
+    // OpenAI 메시지 content 변환 (이미지 + 텍스트)
+    const toOpenAIContent = (m: ChatMessage): any[] => {
+      const content: any[] = [];
+      if (m.images && m.images.length > 0) {
+        m.images.forEach((url) => {
+          if (!url.startsWith("data:")) return;
+          content.push({
+            type: "image_url",
+            image_url: { url },
+          });
+        });
+      }
+      if (m.text) content.push({ type: "text", text: m.text });
+      return content;
+    };
+
+    const hasImage = images.length > 0;
+
+    const history = messages.slice(-1 * AI_MAX_CONTEXT).map((m) => {
+      const hasMessageImage = !!(m.images && m.images.length > 0);
+      // 이미지가 포함된 메시지거나 현재 요청에 이미지가 있으면 멀티모달 content 배열 사용
+      if (hasMessageImage || hasImage) {
+        return {
+          role: m.role as "user" | "assistant",
+          content: toOpenAIContent(m),
+        };
+      }
+      return { role: m.role as "user" | "assistant", content: m.text };
+    });
+
+    const currentContent: any[] = [];
+    images.forEach((img) => {
+      currentContent.push({
+        type: "image_url",
+        image_url: { url: img.dataUrl },
+      });
+    });
+    if (input) currentContent.push({ type: "text", text: input });
+
+    const openaiMessages: any[] = [
+      ...history,
+      {
+        role: "user" as const,
+        content: hasImage ? currentContent : input,
+      },
+    ];
+
+    const stream = await openaiAi.chat.completions.create({
+      model: selectedModel,
+      stream: true,
+      messages: openaiMessages,
+    });
+
+    setStreamStatus("thinking");
+    let hasReceivedTextChunk = false;
+
+    for await (const chunk of stream) {
+      const textDelta = chunk.choices?.[0]?.delta?.content ?? "";
+      if (!textDelta) continue;
+      if (!hasReceivedTextChunk) {
+        hasReceivedTextChunk = true;
+        setStreamStatus("streaming");
+      }
+      setMessages((prev) =>
+        prev.map((message) =>
+          message.id === assistantMessageId
+            ? {
+                ...message,
+                text: message.text + textDelta,
+              }
+            : message,
+        ),
+      );
+    }
+  };
+
   const handleRequestAi = async (rawInput: string) => {
     const input = rawInput.trim();
-    if (!input || isLoading) return;
+    if (isLoading) return;
+    if (!input && attachedImages.length === 0) return;
     let hasError = false;
 
     const userMessage: ChatMessage = {
       id: Date.now(),
       role: "user",
       text: input,
+      images:
+        attachedImages.length > 0
+          ? attachedImages.map((img) => img.dataUrl)
+          : undefined,
     };
     const assistantMessageId = Date.now() + 1;
 
@@ -446,11 +852,17 @@ const AiChatComponent = () => {
     setStreamStatus("requesting");
     setActiveAssistantId(assistantMessageId);
 
+    // 전송할 이미지 스냅샷 (비동기 중 attachedImages 변경 영향 방지)
+    const imagesToSend = attachedImages;
+    setAttachedImages([]);
+
     try {
       if (provider === "gemini") {
-        await handleRequestGemini(input, assistantMessageId);
+        await handleRequestGemini(input, assistantMessageId, imagesToSend);
+      } else if (provider === "claude") {
+        await handleRequestClaude(input, assistantMessageId, imagesToSend);
       } else {
-        await handleRequestClaude(input, assistantMessageId);
+        await handleRequestOpenAI(input, assistantMessageId, imagesToSend);
       }
     } catch (error) {
       hasError = true;
@@ -500,6 +912,16 @@ const AiChatComponent = () => {
   }, [sessionOptions, sessionId]);
 
   useEffect(() => {
+    historyIndexRef.current = null;
+  }, [sessionId]);
+
+  useEffect(() => {
+    if (!isLoading) {
+      textAreaRef.current?.focus();
+    }
+  }, [isLoading]);
+
+  useEffect(() => {
     if (!isUserScrolledUpRef.current) {
       messagesEndRef.current?.scrollIntoView({
         behavior: "smooth",
@@ -509,7 +931,12 @@ const AiChatComponent = () => {
   }, [messages, isLoading]);
 
   useEffect(() => {
-    if (isEmpty(modelsOfGemini) || isEmpty(modelsOfAnthropic)) return;
+    if (
+      isEmpty(modelsOfGemini) ||
+      isEmpty(modelsOfAnthropic) ||
+      isEmpty(modelsOfOpenAI)
+    )
+      return;
 
     try {
       const rawStorage = window.localStorage.getItem(CHAT_STORAGE_KEY);
@@ -566,10 +993,16 @@ const AiChatComponent = () => {
         };
         const savedProvider = parsed.provider;
         const savedModel = parsed.model;
-        const allModels = [...modelsOfGemini, ...modelsOfAnthropic];
+        const allModels = [
+          ...modelsOfGemini,
+          ...modelsOfAnthropic,
+          ...modelsOfOpenAI,
+        ];
         if (
           savedProvider &&
-          (savedProvider === "gemini" || savedProvider === "claude")
+          (savedProvider === "gemini" ||
+            savedProvider === "claude" ||
+            savedProvider === "chatgpt")
         ) {
           setProvider(savedProvider);
           if (savedModel && allModels.some((m) => m.value === savedModel)) {
@@ -663,7 +1096,8 @@ const AiChatComponent = () => {
         setModelsOfGemini(
           modelList?.pageInternal?.map((model: any) => ({
             value: model.name.replace("models/", ""),
-            label: model.displayName,
+            label:
+              model.displayName + ` (${model.name.replace("models/", "")})`,
           })) ?? [],
         );
       }
@@ -675,7 +1109,7 @@ const AiChatComponent = () => {
         console.log("==============================================");
         const response = await claudeAi.models.list();
         response.data.forEach((model: any) => {
-          console.log(`모델 ID: ${model.id}`);
+          console.log(`Claude 모델 ID: ${model.id}`);
         });
         setModelsOfAnthropic(
           response.data.map((model: any) => ({
@@ -684,8 +1118,26 @@ const AiChatComponent = () => {
           })) ?? [],
         );
       }
+
+      if (tkey && openaiAi) {
+        console.log();
+        console.log("==============================================");
+        console.log("============ ChatGPT 모델 목록 ===============");
+        console.log("==============================================");
+        const response = await openaiAi.models.list();
+        response.data.forEach((model: any) => {
+          // console.log(`ChatGPT 모델 ID: ${model.id}`);
+          console.log("ChatGPT 모델 ID: ", model);
+        });
+        setModelsOfOpenAI(
+          response.data.map((model: any) => ({
+            value: model.id,
+            label: model.id,
+          })) ?? [],
+        );
+      }
     })();
-  }, [geminiAi, claudeAi, ckey, gkey]);
+  }, [geminiAi, claudeAi, openaiAi, ckey, gkey, tkey]);
 
   if (!isMounted) return null;
 
@@ -827,7 +1279,8 @@ const AiChatComponent = () => {
                         }}
                       >
                         {message.images.map((imgUrl, i) => (
-                          <Image
+                          /* eslint-disable-next-line @next/next/no-img-element */
+                          <img
                             key={i}
                             src={imgUrl}
                             alt="Generated content"
@@ -864,6 +1317,13 @@ const AiChatComponent = () => {
                 disabled={isLoading}
               >
                 Claude
+              </S.ProviderToggleButton>
+              <S.ProviderToggleButton
+                $active={provider === "chatgpt"}
+                onClick={() => handleProviderChange("chatgpt")}
+                disabled={isLoading}
+              >
+                ChatGPT
               </S.ProviderToggleButton>
             </S.ProviderToggleWrap>
             <Select
@@ -934,20 +1394,50 @@ const AiChatComponent = () => {
               }}
             />
           </S.ModelSelectWrap>
+          {attachedImages.length > 0 && (
+            <S.AttachmentPreviewWrap>
+              {attachedImages.map((img, i) => (
+                <S.AttachmentPreview key={i}>
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={img.dataUrl} alt="첨부 이미지" />
+                  <S.AttachmentRemoveButton
+                    type="button"
+                    title="첨부 삭제"
+                    onClick={() => handleRemoveAttachedImage(i)}
+                    disabled={isLoading}
+                  >
+                    ×
+                  </S.AttachmentRemoveButton>
+                </S.AttachmentPreview>
+              ))}
+            </S.AttachmentPreviewWrap>
+          )}
           <S.InputRow>
             <S.TextInput
               ref={textAreaRef}
-              onInput={handleAutoResizeTextarea}
+              onInput={handleTextInput}
+              onPaste={handlePasteImage}
               onKeyDown={(e) => {
                 if (e.key === "Enter" && !e.shiftKey) {
                   e.preventDefault();
                   handleRequestAi(textAreaRef.current.value);
+                  return;
                 }
+                handleHistoryNavigation(e);
               }}
               disabled={isLoading}
               placeholder="AI에게 물어보세요"
               rows={1}
             />
+            <S.InputSpacer />
+            <S.AttachButton
+              type="button"
+              title="이미지 첨부"
+              onClick={() => fileInputRef.current?.click()}
+              disabled={isLoading}
+            >
+              <ImageIcon />
+            </S.AttachButton>
             <S.InputSpacer />
             <S.SendButton
               disabled={isLoading}
@@ -956,6 +1446,14 @@ const AiChatComponent = () => {
               {isLoading ? <S.SpinnerIcon /> : <SendIcon />}
             </S.SendButton>
           </S.InputRow>
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept="image/*"
+            multiple
+            onChange={handleFileSelect}
+            style={{ display: "none" }}
+          />
         </S.InputArea>
       </S.ChatContainer>
     </S.Page>

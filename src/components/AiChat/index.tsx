@@ -62,6 +62,7 @@ const FAVORITE_MODELS_GEMINI = [
   "imagen-4.0-ultra-generate-001",
   "imagen-4.0-generate-001",
   "imagen-4.0-fast-generate-001",
+  "gemini-2.5-flash-image",
   "gemini-3-pro-image-preview",
   "gemini-3.1-flash-image-preview",
 ];
@@ -145,6 +146,8 @@ const AiChatComponent = () => {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   const [attachedImages, setAttachedImages] = useState<AttachedImage[]>([]);
+
+  const [lightboxImage, setLightboxImage] = useState<string | null>(null);
 
   // 입력 history (직전 전송 순, 최신이 index 0)
   const inputHistory = useMemo(
@@ -680,12 +683,33 @@ const AiChatComponent = () => {
     // 이미지 생성 모델인 경우 (모델명에 image 포함)
     if (/image/i.test(selectedModel ?? "")) {
       setStreamStatus("thinking");
+
+      // 첨부 이미지가 있으면 편집(edit) API 사용, 없으면 생성(generate) API 사용
+      // multipart 업로드를 위해 Blob 대신 File(name 포함) 사용
+      const dataUrlToFile = (dataUrl: string, index: number): File => {
+        const [meta, b64] = dataUrl.split(",");
+        const mime = meta.match(/data:(.*?);/)?.[1] ?? "image/png";
+        const ext = mime.split("/")[1]?.split("+")[0] ?? "png";
+        const binary = atob(b64 ?? "");
+        const bytes = new Uint8Array(binary.length);
+        for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+        return new File([bytes], `image-${index}.${ext}`, { type: mime });
+      };
+
       try {
-        const response = await openaiAi.images.generate({
-          model: selectedModel,
-          prompt: input,
-          n: 1,
-        });
+        const response =
+          images.length > 0
+            ? await openaiAi.images.edit({
+                model: selectedModel,
+                prompt: input,
+                image: images.map((img, i) => dataUrlToFile(img.dataUrl, i)),
+                n: 1,
+              })
+            : await openaiAi.images.generate({
+                model: selectedModel,
+                prompt: input,
+                n: 1,
+              });
 
         // gpt-image-* 는 b64_json 로 응답, dall-e-* 는 url 또는 b64_json
         const item = response.data?.[0] as any;
@@ -917,6 +941,15 @@ const AiChatComponent = () => {
       textAreaRef.current?.focus();
     }
   }, [isLoading]);
+
+  useEffect(() => {
+    if (lightboxImage === null) return;
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setLightboxImage(null);
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [lightboxImage]);
 
   useEffect(() => {
     if (!isUserScrolledUpRef.current) {
@@ -1273,6 +1306,13 @@ const AiChatComponent = () => {
                           marginTop: "8px",
                           padding: 0,
                           overflow: "hidden",
+                          background: "none",
+                          border: 0,
+                          display: "flex",
+                          flexWrap: "wrap",
+                          gap: "6px",
+                          justifyContent:
+                            message.role === "user" ? "flex-end" : "flex-start",
                         }}
                       >
                         {message.images.map((imgUrl, i) => (
@@ -1281,10 +1321,14 @@ const AiChatComponent = () => {
                             key={i}
                             src={imgUrl}
                             alt="Generated content"
+                            onClick={() => setLightboxImage(imgUrl)}
                             style={{
                               display: "block",
                               maxWidth: "100%",
+                              maxHeight:
+                                message.role === "user" ? "200px" : "none",
                               borderRadius: "8px",
+                              cursor: "zoom-in",
                             }}
                           />
                         ))}
@@ -1453,6 +1497,13 @@ const AiChatComponent = () => {
           />
         </S.InputArea>
       </S.ChatContainer>
+
+      {lightboxImage && (
+        <S.LightboxOverlay onClick={() => setLightboxImage(null)}>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={lightboxImage} alt="확대 이미지" />
+        </S.LightboxOverlay>
+      )}
     </S.Page>
   );
 };

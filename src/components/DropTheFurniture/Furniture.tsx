@@ -375,6 +375,38 @@ export default function Furniture({
             />
           </Suspense>
         )}
+        {data.kind === "model" && data.modelType === "clothesDryer" && (
+          <Suspense fallback={null}>
+            <GLBModel
+              path={CLOTHES_DRYER_MODEL_PATH}
+              targetHeight={MODEL_TARGET_HEIGHT}
+            />
+          </Suspense>
+        )}
+        {data.kind === "model" && data.modelType === "fridge" && (
+          <Suspense fallback={null}>
+            <GLBModel
+              path={FRIDGE_MODEL_PATH}
+              targetHeight={MODEL_TARGET_HEIGHT}
+            />
+          </Suspense>
+        )}
+        {data.kind === "model" && data.modelType === "sink" && (
+          <Suspense fallback={null}>
+            <GLBModel
+              path={SINK_MODEL_PATH}
+              targetHeight={MODEL_TARGET_HEIGHT}
+            />
+          </Suspense>
+        )}
+        {data.kind === "model" && data.modelType === "stove" && (
+          <Suspense fallback={null}>
+            <GLBModel
+              path={STOVE_MODEL_PATH}
+              targetHeight={MODEL_TARGET_HEIGHT}
+            />
+          </Suspense>
+        )}
       </group>
 
       {isSelected &&
@@ -886,6 +918,10 @@ const BAD_DOUBLE_MODEL_PATH = "/models/bad_double.glb";
 const BOOKCASE2_MODEL_PATH = "/models/bookcase.glb";
 const CHAIR2_MODEL_PATH = "/models/chair.glb";
 const DOOR2_MODEL_PATH = "/models/door.glb";
+const CLOTHES_DRYER_MODEL_PATH = "/models/clothes-dryer.glb";
+const FRIDGE_MODEL_PATH = "/models/fridge.glb";
+const SINK_MODEL_PATH = "/models/sink.glb";
+const STOVE_MODEL_PATH = "/models/stove.glb";
 const MODEL_TARGET_HEIGHT = 1200;
 
 useGLTF.preload(DONKEY_MODEL_PATH);
@@ -894,3 +930,7 @@ useGLTF.preload(BAD_DOUBLE_MODEL_PATH);
 useGLTF.preload(BOOKCASE2_MODEL_PATH);
 useGLTF.preload(CHAIR2_MODEL_PATH);
 useGLTF.preload(DOOR2_MODEL_PATH);
+useGLTF.preload(CLOTHES_DRYER_MODEL_PATH);
+useGLTF.preload(FRIDGE_MODEL_PATH);
+useGLTF.preload(SINK_MODEL_PATH);
+useGLTF.preload(STOVE_MODEL_PATH);

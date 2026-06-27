@@ -471,6 +471,26 @@ export const AttachmentPreview = styled.div`
   }
 `;
 
+export const LightboxOverlay = styled.div`
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: rgba(0, 0, 0, 0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  cursor: zoom-out;
+
+  img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    border-radius: 8px;
+    user-select: none;
+  }
+`;
+
 export const AttachmentRemoveButton = styled.button`
   position: absolute;
   top: 2px;

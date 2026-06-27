@@ -17,7 +17,11 @@ export type ModelType =
   | "badDouble"
   | "bookcase2"
   | "chair2"
-  | "door2";
+  | "door2"
+  | "clothesDryer"
+  | "fridge"
+  | "sink"
+  | "stove";
 
 export type TransformMode = "translate" | "rotate" | "scale";
 

@@ -84,6 +84,10 @@ const MODEL_TYPES: ModelType[] = [
   "bookcase2",
   "chair2",
   "door2",
+  "clothesDryer",
+  "fridge",
+  "sink",
+  "stove",
 ];
 
 const DEFAULT_COLORS: Record<FurnitureType, string> = {
@@ -107,6 +111,10 @@ const DEFAULT_MODEL_COLORS: Record<ModelType, string> = {
   bookcase2: "#ec4899",
   chair2: "#f59e0b",
   door2: "#92400e",
+  clothesDryer: "#94a3b8",
+  fridge: "#64748b",
+  sink: "#9ca3af",
+  stove: "#4b5563",
 };
 
 const DEFAULT_CAMERA: CameraState = {

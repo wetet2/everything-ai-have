@@ -32,6 +32,10 @@ export const MODEL_DEFAULT_DIMENSIONS: Record<
   bookcase2: { width: 900, depth: 350, height: 1800 },
   chair2: { width: 600, depth: 600, height: 850 },
   door2: { width: 900, depth: 240, height: 2000 },
+  clothesDryer: { width: 600, depth: 600, height: 850 },
+  fridge: { width: 900, depth: 700, height: 1800 },
+  sink: { width: 800, depth: 600, height: 850 },
+  stove: { width: 750, depth: 600, height: 850 },
 };
 
 export const TYPE_LABELS: Record<FurnitureType, string> = {
@@ -55,6 +59,10 @@ export const MODEL_LABELS: Record<ModelType, string> = {
   bookcase2: "책장2",
   chair2: "의자2",
   door2: "문2",
+  clothesDryer: "건조기",
+  fridge: "냉장고(GLB)",
+  sink: "싱크대",
+  stove: "난로",
 };
 
 export const MODE_LABELS = {

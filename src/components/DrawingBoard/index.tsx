@@ -1645,6 +1645,26 @@ export default function DrawingBoard() {
     };
   }, [showColorPicker]);
 
+  // 클립보드에서 이미지 붙여넣기 시 이미지 불러오기와 동일하게 동작
+  useEffect(() => {
+    const onPaste = (e: ClipboardEvent) => {
+      const items = e.clipboardData?.items;
+      if (!items) return;
+      for (const item of items) {
+        if (item.type.startsWith("image/")) {
+          const file = item.getAsFile();
+          if (file) {
+            e.preventDefault();
+            loadImageFromFile(file);
+            return;
+          }
+        }
+      }
+    };
+    window.addEventListener("paste", onPaste);
+    return () => window.removeEventListener("paste", onPaste);
+  }, [loadImageFromFile]);
+
   const effectiveCanvasCursor = (() => {
     if (mode === "image") {
       if (resizingImageIndex !== null && activeResizeHandle) {

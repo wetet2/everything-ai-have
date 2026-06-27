@@ -68,10 +68,11 @@ const FAVORITE_MODELS_GEMINI = [
 
 const FAVORITE_MODELS_CLAUDE = [
   "claude-haiku-4-5-20251001",
-  "claude-sonnet-4-5",
+  "claude-sonnet-4-5-20250929",
   "claude-sonnet-4-6",
   "claude-opus-4-6",
   "claude-opus-4-7",
+  "claude-opus-4-8",
 ];
 
 const FAVORITE_MODELS_CHATGPT = [
@@ -80,11 +81,8 @@ const FAVORITE_MODELS_CHATGPT = [
   "gpt-5",
   "gpt-5-mini",
   "gpt-5-nano",
-  "gpt-4.1",
-  "gpt-4.1-mini",
-  "gpt-4o",
-  "gpt-4o-mini",
-  "chatgpt-image-latest",
+  "gpt-image-2-2026-04-21",
+  "gpt-image-1.5",
 ];
 
 const AiChatComponent = () => {

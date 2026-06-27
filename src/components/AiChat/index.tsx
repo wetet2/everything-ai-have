@@ -176,7 +176,6 @@ const AiChatComponent = () => {
     const _chatgpt2 = modelsOfOpenAI?.filter(
       (e) => !FAVORITE_MODELS_CHATGPT.includes(e.value),
     );
-    console.log(123, _gemini2);
     const _models =
       provider === "gemini"
         ? [..._gemini1, ..._gemini2]

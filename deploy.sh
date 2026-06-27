@@ -26,7 +26,14 @@ if [ ! -d "$TARGET_DIR" ]; then
   mkdir -p "$TARGET_DIR"
 fi
 
-echo "파일 및 폴터 복사 중... ($SOURCE_DIR -> $TARGET_DIR, index.html 제외)"
+# _next 폴더 삭제 (빌드 결과가 바뀌어 남은 stale 파일이 없도록)
+NEXT_DIR="$TARGET_DIR/_next"
+if [ -d "$NEXT_DIR" ]; then
+  echo "_next 폴더 삭제 중... ($NEXT_DIR)"
+  rm -rf "$NEXT_DIR"
+fi
+
+echo "파일 및 폴터 복사 중... ($SOURCE_DIR -> $TARGET_DIR)"
 
 # 원본 폴터로 이동
 cd "$SOURCE_DIR" || exit 1
@@ -35,9 +42,9 @@ cd "$SOURCE_DIR" || exit 1
 echo "폴터 구조 복사 중..."
 find . -type d -exec mkdir -p "$TARGET_DIR/{}" \;
 
-# 2. index.html을 제외한 모든 파일을 폴터 구조를 유지하며 복사
+# 2. 모든 파일을 폴터 구조를 유지하며 복사
 echo "파일 복사 중..."
-find . -type f ! -name 'index.html' -exec cp --parents -f {} "$TARGET_DIR/" \;
+find . -type f -exec cp --parents -f {} "$TARGET_DIR/" \;
 
 # 대상 폴터로 이동하여 git add, commit 수행
 cd "$TARGET_DIR" || exit 1

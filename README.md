@@ -32,12 +32,12 @@ yarn build2       # 빌드 후 deploy.sh 실행
 
 ## 페이지
 
-| 경로 | 컴포넌트 | 설명 |
-| --- | --- | --- |
-| `/` | `pages/index.tsx` | 기본 시작 페이지 |
-| `/g` | `components/AiChat` | Gemini / Claude 멀티 세션 AI 채팅 (스트리밍, 이미지 첨부, 마크다운 렌더링) |
-| `/d` | `components/DrawingBoard` | 캔버스 기반 드로잉 보드 (펜/사각형/원/텍스트/이미지, 색상 팔레트, 언두/리두, 저장) |
-| `/c` | `components/DropTheFurniture` | react-three-fiber 기반 3D 방/가구 배치 에디터 |
+| 경로 | 컴포넌트                      | 설명                                                                               |
+| ---- | ----------------------------- | ---------------------------------------------------------------------------------- |
+| `/`  | `pages/index.tsx`             | 기본 시작 페이지                                                                   |
+| `/g` | `components/AiChat`           | Gemini / Claude 멀티 세션 AI 채팅 (스트리밍, 이미지 첨부, 마크다운 렌더링)         |
+| `/d` | `components/DrawingBoard`     | 캔버스 기반 드로잉 보드 (펜/사각형/원/텍스트/이미지, 색상 팔레트, 언두/리두, 저장) |
+| `/c` | `components/DropTheFurniture` | react-three-fiber 기반 3D 방/가구 배치 에디터                                      |
 
 ## 프로젝트 구조
 
@@ -74,11 +74,15 @@ http://localhost:8080/g?gkey=<GEMINI_API_KEY>&ckey=<CLAUDE_API_KEY>
 
 ## 스크립트
 
-| 명령 | 설명 |
-| --- | --- |
-| `yarn dev` | 개발 서버 실행 (포트 8080) |
-| `yarn build` | 정적 빌드 (`./out` 생성) |
-| `yarn start` | Next.js 프로덕션 서버 실행 |
-| `yarn serve` | `./out` 정적 서빙 (포트 8080) |
-| `yarn build2` | 빌드 후 `deploy.sh` 실행 |
-| `yarn lint` | ESLint 실행 |
+| 명령          | 설명                          |
+| ------------- | ----------------------------- |
+| `yarn dev`    | 개발 서버 실행 (포트 8080)    |
+| `yarn build`  | 정적 빌드 (`./out` 생성)      |
+| `yarn start`  | Next.js 프로덕션 서버 실행    |
+| `yarn serve`  | `./out` 정적 서빙 (포트 8080) |
+| `yarn build2` | 빌드 후 `deploy.sh` 실행      |
+| `yarn lint`   | ESLint 실행                   |
+
+# favicon
+
+- [뇌 아이콘 제작자: Freepik - Flaticon](https://www.flaticon.com/kr/free-icons/)

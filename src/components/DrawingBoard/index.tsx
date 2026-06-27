@@ -1693,6 +1693,7 @@ export default function DrawingBoard() {
           name="keywords"
           content="그림판, 온라인 그림판, 드로잉, 캔버스, 스케치, 그리기, 펜, 도형, 사각형, 원, 텍스트, 이미지 편집, PNG 다운로드, 실행 취소"
         />
+        <meta name="author" content="아주 쉬운 그림판" />
         <meta name="robots" content="index, follow" />
         <meta name="theme-color" content="#ffffff" />
         <meta property="og:type" content="website" />

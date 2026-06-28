@@ -4,6 +4,13 @@ import * as S from "./styled";
 
 const pages = [
   {
+    href: "/t",
+    short: "Typing",
+    icon: "⌨️",
+    title: "타자연습",
+    desc: "영문 타자 실력 향상 트레이닝",
+  },
+  {
     href: "/c",
     short: "Furniture",
     icon: "🪑",

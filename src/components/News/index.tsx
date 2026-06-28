@@ -3,7 +3,7 @@ import {
   Container,
   Grid,
   Scanline,
-  GlowOrb,
+  GlowBar,
   Content,
   Badge,
   Title,
@@ -60,12 +60,11 @@ export default function NewsPage({ news }: Props) {
       </Head>
       <Grid />
       <Scanline />
-      <GlowOrb $x={15} $y={20} $color="#00ffff" $delay={0} />
-      <GlowOrb $x={70} $y={60} $color="#ff00ff" $delay={1.5} />
-      <GlowOrb $x={80} $y={10} $color="#00ffff" $delay={3} />
+      <GlowBar $top="15%" $left="10%" $color="#ffdd00" />
+      <GlowBar $top="60%" $left="75%" $color="#2266ff" />
 
       <Content>
-        <Badge>✦ AI 뉴스 다이제스트</Badge>
+        <Badge>AI 뉴스 다이제스트</Badge>
         <Title>
           인공지능,<br />
           <span>오늘의 프론티어</span>
@@ -84,7 +83,7 @@ export default function NewsPage({ news }: Props) {
           ))}
         </List>
 
-        <Footer>Neural Interface v2.4.1 // everything-ai-have</Footer>
+        <Footer>neural feed // everything-ai-have</Footer>
       </Content>
     </Container>
   );

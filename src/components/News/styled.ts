@@ -1,31 +1,18 @@
 import styled, { keyframes } from "styled-components";
 
-export const scanline = keyframes`
+const scanMove = keyframes`
   0% { transform: translateY(-100%); }
   100% { transform: translateY(100vh); }
 `;
 
-const glitch = keyframes`
-  0%, 90%, 100% { transform: translate(0); }
-  92% { transform: translate(-2px, 1px); }
-  94% { transform: translate(2px, -1px); }
-  96% { transform: translate(-1px, 2px); }
-  98% { transform: translate(1px, -2px); }
-`;
-
-const pulse = keyframes`
-  0%, 100% { opacity: 0.4; }
-  50% { opacity: 1; }
-`;
-
-const flicker = keyframes`
-  0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% { opacity: 1; }
-  20%, 22%, 24%, 55% { opacity: 0.6; }
+const blink = keyframes`
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
 `;
 
 export const Container = styled.div`
   min-height: 100vh;
-  background: #0a0a0f;
+  background: #ffdd00;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -40,9 +27,9 @@ export const Grid = styled.div`
   position: absolute;
   inset: 0;
   background-image:
-    linear-gradient(rgba(0, 255, 255, 0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0, 255, 255, 0.03) 1px, transparent 1px);
-  background-size: 40px 40px;
+    linear-gradient(rgba(0, 0, 0, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 0, 0, 0.06) 1px, transparent 1px);
+  background-size: 48px 48px;
   pointer-events: none;
 `;
 
@@ -52,24 +39,22 @@ export const Scanline = styled.div`
   background: linear-gradient(
     to bottom,
     transparent 50%,
-    rgba(0, 255, 255, 0.015) 50%
+    rgba(0, 0, 0, 0.02) 50%
   );
   background-size: 100% 4px;
   pointer-events: none;
-  animation: ${scanline} 8s linear infinite;
+  animation: ${scanMove} 10s linear infinite;
 `;
 
-export const GlowOrb = styled.div<{ $x: number; $y: number; $color: string; $delay: number }>`
+export const GlowBar = styled.div<{ $top: string; $left: string; $color: string }>`
   position: absolute;
   width: 300px;
   height: 300px;
   border-radius: 50%;
-  background: radial-gradient(circle, ${({ $color }) => $color}40 0%, transparent 70%);
-  top: ${({ $y }) => $y}%;
-  left: ${({ $x }) => $x}%;
-  filter: blur(60px);
-  animation: ${pulse} 4s ease-in-out infinite;
-  animation-delay: ${({ $delay }) => $delay}s;
+  background: radial-gradient(circle, ${({ $color }) => $color}25 0%, transparent 70%);
+  top: ${({ $top }) => $top};
+  left: ${({ $left }) => $left};
+  filter: blur(80px);
   pointer-events: none;
 `;
 
@@ -79,30 +64,41 @@ export const Content = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 48px;
+  gap: 40px;
+  width: 100%;
+  max-width: 560px;
 `;
 
 export const Badge = styled.div`
-  font-size: 11px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 10px;
   letter-spacing: 4px;
   text-transform: uppercase;
-  color: #00ffff;
-  opacity: 0.6;
-  animation: ${flicker} 3s linear infinite;
-  text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+  color: rgba(0, 0, 0, 0.5);
+  font-weight: 700;
+
+  &::after {
+    content: "";
+    width: 4px;
+    height: 4px;
+    background: #2266ff;
+    border-radius: 50%;
+    animation: ${blink} 1s step-end infinite;
+  }
 `;
 
 export const Title = styled.h1`
-  font-size: clamp(36px, 8vw, 72px);
+  font-size: clamp(28px, 6vw, 48px);
   font-weight: 800;
-  color: #fff;
+  color: #0a0a0f;
   text-align: center;
-  line-height: 1.1;
+  line-height: 1.15;
   margin: 0;
-  animation: ${glitch} 5s infinite;
 
   span {
-    background: linear-gradient(135deg, #00ffff, #ff00ff);
+    background: linear-gradient(135deg, #0a0a0f, #2266ff);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -112,7 +108,7 @@ export const Title = styled.h1`
 export const List = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 10px;
   width: 100%;
   max-width: 520px;
 `;
@@ -120,68 +116,74 @@ export const List = styled.div`
 export const Card = styled.a`
   display: flex;
   align-items: center;
-  gap: 20px;
-  padding: 20px 28px;
-  border: 1px solid rgba(0, 255, 255, 0.15);
-  border-radius: 10px;
-  background: rgba(0, 255, 255, 0.02);
-  backdrop-filter: blur(12px);
+  gap: 16px;
+  padding: 16px 20px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(8px);
   text-decoration: none;
-  transition: all 0.3s ease;
+  transition: all 0.25s ease;
   cursor: pointer;
 
   &:hover {
-    border-color: rgba(0, 255, 255, 0.5);
-    background: rgba(0, 255, 255, 0.06);
-    box-shadow: 0 0 30px rgba(0, 255, 255, 0.15), 0 0 60px rgba(0, 255, 255, 0.05);
-    transform: translateY(-1px);
+    background: rgba(255, 255, 255, 0.95);
+    border-color: rgba(0, 0, 0, 0.15);
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+    transform: translateY(-2px);
   }
 
   &:hover .arrow {
     transform: translateX(4px);
+    color: #2266ff;
   }
 `;
 
 export const CardIcon = styled.div`
-  width: 40px;
-  height: 40px;
-  border-radius: 8px;
-  background: linear-gradient(135deg, rgba(0, 255, 255, 0.15), rgba(255, 0, 255, 0.15));
+  width: 36px;
+  height: 36px;
+  border-radius: 6px;
+  background: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.06);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 18px;
+  font-size: 16px;
   flex-shrink: 0;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
 `;
 
 export const CardText = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 3px;
+  flex: 1;
+  min-width: 0;
 `;
 
 export const CardTitle = styled.div`
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 600;
-  color: #fff;
+  color: #0a0a0f;
 `;
 
 export const CardDesc = styled.div`
-  font-size: 13px;
-  color: rgba(255, 255, 255, 0.4);
+  font-size: 12px;
+  color: rgba(0, 0, 0, 0.4);
 `;
 
 export const Arrow = styled.span`
-  font-size: 20px;
-  color: #00ffff;
-  transition: transform 0.3s ease;
+  font-size: 16px;
+  color: rgba(0, 0, 0, 0.15);
+  transition: all 0.25s ease;
   margin-left: auto;
+  flex-shrink: 0;
 `;
 
 export const Footer = styled.div`
-  font-size: 11px;
-  color: rgba(255, 255, 255, 0.15);
+  font-size: 10px;
+  color: rgba(0, 0, 0, 0.2);
   letter-spacing: 2px;
   text-transform: uppercase;
-  margin-top: 8px;
+  font-weight: 600;
 `;

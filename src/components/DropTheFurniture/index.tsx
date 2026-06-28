@@ -132,21 +132,21 @@ const selectStyles: StylesConfig<{ value: string; label: string }, false> = {
   }),
   control: (base) => ({
     ...base,
-    background: "#27272a",
-    borderColor: "#52525b",
+    background: "rgba(0, 255, 255, 0.03)",
+    borderColor: "rgba(0, 255, 255, 0.15)",
     borderRadius: "8px",
     minHeight: "34px",
     boxShadow: "none",
     cursor: "pointer",
     fontSize: "13px",
-    ":hover": { borderColor: "#71717a" },
+    ":hover": { borderColor: "rgba(0, 255, 255, 0.3)" },
   }),
   singleValue: (base) => ({ ...base, color: "#ffffff" }),
   input: (base) => ({ ...base, color: "#ffffff" }),
   menu: (base) => ({
     ...base,
-    background: "#27272a",
-    border: "1px solid #52525b",
+    background: "rgba(10, 10, 15, 0.95)",
+    border: "1px solid rgba(0, 255, 255, 0.15)",
     borderRadius: "8px",
     overflow: "hidden",
     zIndex: 30,
@@ -154,16 +154,22 @@ const selectStyles: StylesConfig<{ value: string; label: string }, false> = {
   option: (base, state) => ({
     ...base,
     background: state.isSelected
-      ? "#3b82f6"
+      ? "rgba(0, 255, 255, 0.15)"
       : state.isFocused
-        ? "#3f3f46"
-        : "#27272a",
-    color: "#ffffff",
+        ? "rgba(0, 255, 255, 0.06)"
+        : "transparent",
+    color: state.isSelected ? "#00ffff" : "#ffffff",
     cursor: "pointer",
     fontSize: "13px",
   }),
-  indicatorSeparator: (base) => ({ ...base, background: "#52525b" }),
-  dropdownIndicator: (base) => ({ ...base, color: "#a1a1aa" }),
+  indicatorSeparator: (base) => ({
+    ...base,
+    background: "rgba(0, 255, 255, 0.1)",
+  }),
+  dropdownIndicator: (base) => ({
+    ...base,
+    color: "rgba(0, 255, 255, 0.4)",
+  }),
 };
 
 function getInitialSavedState() {
@@ -800,8 +806,9 @@ export default function DropTheFurniture() {
           ☰
         </MenuButton>
         <div>
-          <h1>Drop the Furniture</h1>
-          <p>방과 가구를 자유롭게 배치해보세요.</p>
+          <h1>
+            Drop the <span>Furniture</span>
+          </h1>
         </div>
         <HeaderToggleButton onClick={() => setHeaderOpen((v) => !v)}>
           ⋮

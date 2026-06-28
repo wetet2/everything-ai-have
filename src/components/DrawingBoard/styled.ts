@@ -5,22 +5,34 @@ export const Page = styled.div`
   inset: 0;
   display: flex;
   flex-direction: column;
-  background: #f0f2f5;
+  background: #0a0a0f;
+`;
+
+export const ToolDivider = styled.div`
+  width: 1px;
+  height: 20px;
+  background: rgba(0, 255, 255, 0.15);
+  margin: 0 4px;
+
+  @media (max-width: 768px) {
+    display: none;
+  }
 `;
 
 export const Toolbar = styled.div`
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  justify-content: center;
   gap: 10px;
 
   width: 100%;
   z-index: 20;
 
   padding: 8px;
-  background: linear-gradient(180deg, #3a3f47 0%, #2a2e35 100%);
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: rgba(10, 10, 15, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(0, 255, 255, 0.1);
 
   @media (max-width: 768px) {
     gap: 8px;
@@ -31,6 +43,24 @@ export const Toolbar = styled.div`
   }
 `;
 
+export const ToolbarTitle = styled.div`
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: #fff;
+  padding-left: 8px;
+
+  span {
+    color: #00ffff;
+    text-shadow: 0 0 6px rgba(0, 255, 255, 0.3);
+  }
+
+  @media (max-width: 768px) {
+    width: 100%;
+  }
+`;
+
 export const ToolGroup = styled.div`
   display: flex;
   align-items: center;
@@ -38,6 +68,7 @@ export const ToolGroup = styled.div`
 
   @media (max-width: 768px) {
     gap: 4px;
+    flex: 1 1 auto;
   }
 `;
 
@@ -55,28 +86,29 @@ export const ToolButton = styled.button<ToolButtonProps>`
   min-width: 32px;
   height: 32px;
   padding: 2px;
-  border-radius: 4px;
+  border-radius: 6px;
   border: 1.5px solid
     ${({ $active, $primary }) =>
-      $active || $primary ? "#3b82f6" : "transparent"};
+      $active || $primary ? "rgba(0, 255, 255, 0.5)" : "transparent"};
   background: ${({ $active, $primary }) =>
     $primary
-      ? "#2563eb"
+      ? "rgba(0, 255, 255, 0.15)"
       : $active
-        ? "rgba(59, 130, 246, 0.18)"
+        ? "rgba(0, 255, 255, 0.08)"
         : "transparent"};
-  color: ${({ $primary }) => ($primary ? "#ffffff" : "#d1d5db")};
+  color: ${({ $primary }) =>
+    $primary ? "#00ffff" : "rgba(255, 255, 255, 0.6)"};
   cursor: pointer;
   transition: all 0.15s ease;
 
   &:hover:not(:disabled) {
     background: ${({ $primary }) =>
-      $primary ? "#1d4ed8" : "rgba(255, 255, 255, 0.08)"};
-    color: ${({ $primary }) => ($primary ? "#ffffff" : "#ffffff")};
+      $primary ? "rgba(0, 255, 255, 0.2)" : "rgba(0, 255, 255, 0.05)"};
+    color: #00ffff;
   }
 
   &:disabled {
-    opacity: 0.35;
+    opacity: 0.25;
     cursor: default;
   }
 
@@ -111,17 +143,7 @@ export const ToolButtonLabel = styled.span`
   font-weight: 600;
   letter-spacing: 0.4px;
   line-height: 1;
-`;
-
-export const ToolDivider = styled.div`
-  width: 1px;
-  height: 20px;
-  background: rgba(255, 255, 255, 0.12);
-  margin: 0 4px;
-
-  @media (max-width: 768px) {
-    margin: 0 2px;
-  }
+  color: rgba(255, 255, 255, 0.4);
 `;
 
 export const ColorPalette = styled.div`
@@ -154,10 +176,12 @@ export const ColorSwatch = styled.button<ColorSwatchProps>`
   background: ${({ $color }) => $color};
   border: ${({ $selected, $color }) =>
     $selected
-      ? "2px solid #3b82f6"
+      ? "2px solid #00ffff"
       : $color === "#ffffff"
-        ? "1px solid #4b5563"
+        ? "1px solid rgba(0, 255, 255, 0.2)"
         : "1px solid transparent"};
+  box-shadow: ${({ $selected }) =>
+    $selected ? "0 0 8px rgba(0, 255, 255, 0.3)" : "none"};
   cursor: pointer;
   outline: none;
   transition: transform 0.1s;
@@ -260,21 +284,21 @@ export const SizeHeader = styled.div`
 export const SizeLabel = styled.span`
   font-size: 11px;
   font-weight: 700;
-  color: #e5e7eb;
+  color: rgba(255, 255, 255, 0.6);
   letter-spacing: 0.4px;
 `;
 
 export const SizeValue = styled.span`
   font-size: 11px;
   font-weight: 600;
-  color: #9ca3af;
+  color: rgba(0, 255, 255, 0.5);
 `;
 
 export const SizeSlider = styled.input`
   width: 100%;
   height: 4px;
   border-radius: 2px;
-  background: #4b5563;
+  background: rgba(255, 255, 255, 0.1);
   outline: none;
   -webkit-appearance: none;
   cursor: pointer;
@@ -282,7 +306,7 @@ export const SizeSlider = styled.input`
   &::-webkit-slider-runnable-track {
     height: 4px;
     border-radius: 2px;
-    background: #4b5563;
+    background: rgba(255, 255, 255, 0.1);
   }
 
   &::-webkit-slider-thumb {
@@ -290,25 +314,25 @@ export const SizeSlider = styled.input`
     width: 14px;
     height: 14px;
     border-radius: 50%;
-    background: #3b82f6;
-    border: 2px solid #ffffff;
+    background: #00ffff;
+    border: 2px solid #0a0a0f;
     margin-top: -5px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
+    box-shadow: 0 0 8px rgba(0, 255, 255, 0.3);
   }
 
   &::-moz-range-track {
     height: 4px;
     border-radius: 2px;
-    background: #4b5563;
+    background: rgba(255, 255, 255, 0.1);
   }
 
   &::-moz-range-thumb {
     width: 14px;
     height: 14px;
     border-radius: 50%;
-    background: #3b82f6;
-    border: 2px solid #ffffff;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
+    background: #00ffff;
+    border: 2px solid #0a0a0f;
+    box-shadow: 0 0 8px rgba(0, 255, 255, 0.3);
   }
 `;
 

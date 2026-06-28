@@ -1181,7 +1181,7 @@ export default function DrawingBoard() {
         return;
       }
 
-      if (mode !== "pen") return;
+      if (mode !== "pen" && mode !== "rect" && mode !== "circle") return;
 
       e.preventDefault();
 
@@ -1198,8 +1198,17 @@ export default function DrawingBoard() {
       const drawingCtx = drawingLayer?.getContext("2d");
       if (!drawingLayer || !drawingCtx) return;
 
-      drawingCtx.beginPath();
-      drawingCtx.moveTo(pos.x, pos.y);
+      if (mode === "pen") {
+        drawingCtx.beginPath();
+        drawingCtx.moveTo(pos.x, pos.y);
+      } else {
+        rectSnapshot.current = drawingCtx.getImageData(
+          0,
+          0,
+          drawingLayer.width,
+          drawingLayer.height,
+        );
+      }
     },
     [
       mode,
@@ -1354,7 +1363,8 @@ export default function DrawingBoard() {
         return;
       }
 
-      if (mode !== "pen" || !isDrawing.current) return;
+      if (mode !== "pen" && mode !== "rect" && mode !== "circle") return;
+      if (!isDrawing.current) return;
 
       e.preventDefault();
 
@@ -1362,15 +1372,54 @@ export default function DrawingBoard() {
       const drawingCtx = drawingLayer?.getContext("2d");
       if (!drawingLayer || !drawingCtx) return;
 
-      drawingCtx.strokeStyle = getDrawColor();
-      drawingCtx.lineWidth = lineWidth;
-      drawingCtx.lineCap = "round";
-      drawingCtx.lineJoin = "round";
-      drawingCtx.lineTo(pos.x, pos.y);
-      drawingCtx.stroke();
-      drawingCtx.beginPath();
-      drawingCtx.moveTo(pos.x, pos.y);
-      renderScene();
+      if (mode === "pen") {
+        drawingCtx.strokeStyle = getDrawColor();
+        drawingCtx.lineWidth = lineWidth;
+        drawingCtx.lineCap = "round";
+        drawingCtx.lineJoin = "round";
+        drawingCtx.lineTo(pos.x, pos.y);
+        drawingCtx.stroke();
+        drawingCtx.beginPath();
+        drawingCtx.moveTo(pos.x, pos.y);
+        renderScene();
+      } else if (mode === "rect") {
+        if (rectSnapshot.current) {
+          drawingCtx.putImageData(rectSnapshot.current, 0, 0);
+        }
+        const x = Math.min(startPos.current.x, pos.x);
+        const y = Math.min(startPos.current.y, pos.y);
+        let w = Math.abs(pos.x - startPos.current.x);
+        let h = Math.abs(pos.y - startPos.current.y);
+        if (isShiftPressed.current) {
+          const size = Math.min(w, h);
+          w = size;
+          h = size;
+        }
+        drawingCtx.strokeStyle = getDrawColor();
+        drawingCtx.lineWidth = lineWidth;
+        drawingCtx.lineJoin = "miter";
+        drawingCtx.strokeRect(x, y, w, h);
+        renderScene();
+      } else if (mode === "circle") {
+        if (rectSnapshot.current) {
+          drawingCtx.putImageData(rectSnapshot.current, 0, 0);
+        }
+        let rx = Math.abs(pos.x - startPos.current.x) / 2;
+        let ry = Math.abs(pos.y - startPos.current.y) / 2;
+        if (isShiftPressed.current) {
+          const r = Math.min(rx, ry);
+          rx = r;
+          ry = r;
+        }
+        const centerX = Math.min(startPos.current.x, pos.x) + rx;
+        const centerY = Math.min(startPos.current.y, pos.y) + ry;
+        drawingCtx.strokeStyle = getDrawColor();
+        drawingCtx.lineWidth = lineWidth;
+        drawingCtx.beginPath();
+        drawingCtx.ellipse(centerX, centerY, rx, ry, 0, 0, Math.PI * 2);
+        drawingCtx.stroke();
+        renderScene();
+      }
     },
     [
       mode,
@@ -1384,39 +1433,103 @@ export default function DrawingBoard() {
     ],
   );
 
-  const handleTouchEnd = useCallback(() => {
-    if (mode === "image") {
-      const tappedImageIndex = touchStartImageIndexRef.current;
+  const handleTouchEnd = useCallback(
+    (e: React.TouchEvent<HTMLCanvasElement>) => {
+      if (mode === "image") {
+        const tappedImageIndex = touchStartImageIndexRef.current;
 
-      if (
-        !touchMovedRef.current &&
-        tappedImageIndex !== null &&
-        loadedImagesRef.current.length > 0
-      ) {
-        const now = Date.now();
-        const isDoubleTap =
-          lastTouchTapRef.current.imageIndex === tappedImageIndex &&
-          now - lastTouchTapRef.current.time < 300;
+        if (
+          !touchMovedRef.current &&
+          tappedImageIndex !== null &&
+          loadedImagesRef.current.length > 0
+        ) {
+          const now = Date.now();
+          const isDoubleTap =
+            lastTouchTapRef.current.imageIndex === tappedImageIndex &&
+            now - lastTouchTapRef.current.time < 300;
 
-        if (isDoubleTap) {
-          commitFloatingImagesToDrawingLayer(true);
-          lastTouchTapRef.current = { time: 0, imageIndex: null };
-        } else {
-          lastTouchTapRef.current = { time: now, imageIndex: tappedImageIndex };
+          if (isDoubleTap) {
+            commitFloatingImagesToDrawingLayer(true);
+            lastTouchTapRef.current = { time: 0, imageIndex: null };
+          } else {
+            lastTouchTapRef.current = {
+              time: now,
+              imageIndex: tappedImageIndex,
+            };
+          }
         }
+
+        setDraggingImageIndex(null);
+        setResizingImageIndex(null);
+        setActiveResizeHandle(null);
+        touchMovedRef.current = false;
+        touchStartImageIndexRef.current = null;
+        return;
       }
 
-      setDraggingImageIndex(null);
-      setResizingImageIndex(null);
-      setActiveResizeHandle(null);
-      touchMovedRef.current = false;
-      touchStartImageIndexRef.current = null;
-      return;
-    }
+      if (mode !== "pen" && mode !== "rect" && mode !== "circle") return;
+      isDrawing.current = false;
 
-    if (mode !== "pen") return;
-    isDrawing.current = false;
-  }, [mode, commitFloatingImagesToDrawingLayer]);
+      if (mode === "rect" || mode === "circle") {
+        const touch = e.changedTouches[0];
+        if (!touch) return;
+        const pos = getPosFromClient(touch.clientX, touch.clientY);
+
+        const drawingLayer = drawingLayerRef.current;
+        const drawingCtx = drawingLayer?.getContext("2d");
+        if (!drawingLayer || !drawingCtx) return;
+
+        if (mode === "rect") {
+          if (rectSnapshot.current) {
+            drawingCtx.putImageData(rectSnapshot.current, 0, 0);
+          }
+          const x = Math.min(startPos.current.x, pos.x);
+          const y = Math.min(startPos.current.y, pos.y);
+          let w = Math.abs(pos.x - startPos.current.x);
+          let h = Math.abs(pos.y - startPos.current.y);
+          if (isShiftPressed.current) {
+            const size = Math.min(w, h);
+            w = size;
+            h = size;
+          }
+          drawingCtx.strokeStyle = getDrawColor();
+          drawingCtx.lineWidth = lineWidth;
+          drawingCtx.lineJoin = "miter";
+          drawingCtx.strokeRect(x, y, w, h);
+          rectSnapshot.current = null;
+          renderScene();
+        } else if (mode === "circle") {
+          if (rectSnapshot.current) {
+            drawingCtx.putImageData(rectSnapshot.current, 0, 0);
+          }
+          let rx = Math.abs(pos.x - startPos.current.x) / 2;
+          let ry = Math.abs(pos.y - startPos.current.y) / 2;
+          if (isShiftPressed.current) {
+            const r = Math.min(rx, ry);
+            rx = r;
+            ry = r;
+          }
+          const centerX = Math.min(startPos.current.x, pos.x) + rx;
+          const centerY = Math.min(startPos.current.y, pos.y) + ry;
+          drawingCtx.strokeStyle = getDrawColor();
+          drawingCtx.lineWidth = lineWidth;
+          drawingCtx.beginPath();
+          drawingCtx.ellipse(centerX, centerY, rx, ry, 0, 0, Math.PI * 2);
+          drawingCtx.stroke();
+          rectSnapshot.current = null;
+          renderScene();
+        }
+      }
+    },
+    [
+      mode,
+      commitFloatingImagesToDrawingLayer,
+      getDrawColor,
+      lineWidth,
+      getPosFromClient,
+      renderScene,
+    ],
+  );
 
   const handleTouchCancel = useCallback(() => {
     if (mode === "image") {
@@ -1717,6 +1830,9 @@ export default function DrawingBoard() {
         />
       </Head>
       <S.Toolbar>
+        <S.ToolbarTitle>
+          Drawing <span>Board</span>
+        </S.ToolbarTitle>
         {/* 모드 선택 */}
         <S.ToolGroup>
           <S.ToolButton
@@ -1828,7 +1944,7 @@ export default function DrawingBoard() {
           onChange={handleImageLoad}
           style={{ display: "none" }}
         />
-        <S.ToolGroup>
+        <S.ToolGroup style={{ marginLeft: "auto" }}>
           <S.ToolButton
             onClick={handleUndo}
             disabled={!canUndo}

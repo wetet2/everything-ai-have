@@ -5,7 +5,19 @@ export const Container = styled.div`
   height: 100vh;
   position: relative;
   overflow: hidden;
-  background: #1a1a1a;
+  background: #0a0a0f;
+
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(0, 255, 255, 0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0, 255, 255, 0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
 `;
 
 export const Header = styled.header`
@@ -19,18 +31,26 @@ export const Header = styled.header`
   justify-content: space-between;
   gap: 12px;
   padding: 8px 16px;
-  background: #272727;
-  backdrop-filter: blur(8px);
+  background: rgba(10, 10, 15, 0.9);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(0, 255, 255, 0.1);
   color: #ffffff;
 
   h1 {
-    font-size: 18px;
-    font-weight: 700;
-  }
+    font-size: 14px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin: 0;
+    color: #fff;
 
-  p {
-    font-size: 12px;
-    color: #cccccc;
+    span {
+      background: linear-gradient(135deg, #00ffff, #ff00ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
   }
 
   @media (max-width: 768px) {
@@ -55,15 +75,22 @@ export const MenuButton = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #3f3f46;
-  border: none;
+  background: rgba(0, 255, 255, 0.06);
+  border: 1px solid rgba(0, 255, 255, 0.15);
   border-radius: 8px;
-  color: #ffffff;
+  color: #00ffff;
   font-size: 18px;
   width: 36px;
   height: 36px;
   cursor: pointer;
   flex-shrink: 0;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: rgba(0, 255, 255, 0.12);
+    border-color: rgba(0, 255, 255, 0.3);
+    box-shadow: 0 0 12px rgba(0, 255, 255, 0.15);
+  }
 
   @media (min-width: 769px) {
     display: none;
@@ -74,15 +101,22 @@ export const HeaderToggleButton = styled.button`
   display: none;
   align-items: center;
   justify-content: center;
-  background: #3f3f46;
-  border: none;
+  background: rgba(0, 255, 255, 0.06);
+  border: 1px solid rgba(0, 255, 255, 0.15);
   border-radius: 8px;
-  color: #ffffff;
+  color: #00ffff;
   font-size: 18px;
   width: 36px;
   height: 36px;
   cursor: pointer;
   flex-shrink: 0;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: rgba(0, 255, 255, 0.12);
+    border-color: rgba(0, 255, 255, 0.3);
+    box-shadow: 0 0 12px rgba(0, 255, 255, 0.15);
+  }
 
   @media (max-width: 768px) {
     display: flex;
@@ -101,14 +135,15 @@ export const Panel = styled.div`
   bottom: 0;
 
   width: 240px;
-  /* max-height: calc(100vh - 100px); */
   padding: 16px;
 
-  border-radius: 0px;
-  background: rgba(30, 30, 30, 0.88);
-  backdrop-filter: blur(10px);
+  border-radius: 0;
+  border-right: 1px solid rgba(0, 255, 255, 0.08);
+  background: rgba(10, 10, 15, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   color: #ffffff;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
   overflow-y: auto;
   z-index: 10;
 `;
@@ -128,7 +163,7 @@ export const RightPanel = styled(Panel)`
 
 export const Divider = styled.hr`
   border: none;
-  border-top: 1px solid #3f3f46;
+  border-top: 1px solid rgba(0, 255, 255, 0.08);
   margin: 0;
 `;
 
@@ -136,10 +171,13 @@ export const SectionTitle = styled.h2`
   margin: 0 0 8px 0;
   font-size: 14px;
   font-weight: 600;
-  color: #eeeeee;
+  color: rgba(0, 255, 255, 0.7);
+  text-shadow: 0 0 10px rgba(0, 255, 255, 0.2);
   display: flex;
   align-items: center;
   gap: 8px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
 `;
 
 export const CollapseAllGroup = styled.div`
@@ -157,15 +195,19 @@ export const CollapseAllButton = styled.button`
   height: 20px;
   flex-shrink: 0;
   background: none;
-  border: none;
-  color: #a1a1aa;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  color: rgba(0, 255, 255, 0.4);
   font-size: 13px;
   cursor: pointer;
   padding: 0;
   line-height: 1;
+  transition: all 0.15s ease;
 
   &:hover {
-    color: #ffffff;
+    color: #00ffff;
+    border-color: rgba(0, 255, 255, 0.2);
+    background: rgba(0, 255, 255, 0.05);
   }
 `;
 
@@ -184,31 +226,56 @@ export const Button = styled.button<{
   flex: ${(props) => (props.$compact ? "0 0 auto" : "1 1 auto")};
   min-width: ${(props) => (props.$compact ? "0" : "60px")};
   padding: 8px 12px;
-  border: none;
+  border: 1px solid
+    ${(props) =>
+      props.$active
+        ? "rgba(0, 255, 255, 0.5)"
+        : props.$danger
+          ? "rgba(255, 0, 0, 0.3)"
+          : "rgba(0, 255, 255, 0.1)"};
   border-radius: 8px;
   background: ${(props) =>
     props.$disabled
-      ? "#52525b"
+      ? "rgba(255, 255, 255, 0.03)"
       : props.$danger
-        ? "#dc2626"
+        ? "rgba(255, 0, 0, 0.1)"
         : props.$active
-          ? "#3b82f6"
-          : "#3f3f46"};
-  color: ${(props) => (props.$disabled ? "#a1a1aa" : "#ffffff")};
+          ? "rgba(0, 255, 255, 0.12)"
+          : "rgba(0, 255, 255, 0.03)"};
+  color: ${(props) =>
+    props.$disabled
+      ? "rgba(255, 255, 255, 0.2)"
+      : props.$danger
+        ? "#ff4444"
+        : props.$active
+          ? "#00ffff"
+          : "rgba(255, 255, 255, 0.7)"};
   font-size: 13px;
   font-weight: 500;
   cursor: ${(props) => (props.$disabled ? "not-allowed" : "pointer")};
-  transition: background 0.15s ease;
+  transition: all 0.2s ease;
+  text-shadow: ${(props) =>
+    props.$active ? "0 0 8px rgba(0, 255, 255, 0.4)" : "none"};
 
   &:hover {
+    border-color: ${(props) =>
+      props.$disabled
+        ? "rgba(0, 255, 255, 0.1)"
+        : props.$danger
+          ? "rgba(255, 0, 0, 0.5)"
+          : props.$active
+            ? "rgba(0, 255, 255, 0.7)"
+            : "rgba(0, 255, 255, 0.3)"};
     background: ${(props) =>
       props.$disabled
-        ? "#52525b"
+        ? "rgba(255, 255, 255, 0.03)"
         : props.$danger
-          ? "#b91c1c"
+          ? "rgba(255, 0, 0, 0.15)"
           : props.$active
-            ? "#2563eb"
-            : "#52525b"};
+            ? "rgba(0, 255, 255, 0.18)"
+            : "rgba(0, 255, 255, 0.06)"};
+    box-shadow: ${(props) =>
+      props.$active ? "0 0 16px rgba(0, 255, 255, 0.15)" : "none"};
   }
 
   &:disabled {
@@ -247,30 +314,32 @@ export const ColorInput = styled.input`
 export const NumberInput = styled.input`
   width: 100%;
   padding: 8px 10px;
-  border: 1px solid #52525b;
+  border: 1px solid rgba(0, 255, 255, 0.15);
   border-radius: 8px;
-  background: #27272a;
+  background: rgba(0, 255, 255, 0.03);
   color: #ffffff;
   font-size: 13px;
   outline: none;
 
   &:focus {
-    border-color: #3b82f6;
+    border-color: rgba(0, 255, 255, 0.4);
+    box-shadow: 0 0 8px rgba(0, 255, 255, 0.1);
   }
 `;
 
 export const TextInput = styled.input`
   width: 100%;
   padding: 8px 10px;
-  border: 1px solid #52525b;
+  border: 1px solid rgba(0, 255, 255, 0.15);
   border-radius: 8px;
-  background: #27272a;
+  background: rgba(0, 255, 255, 0.03);
   color: #ffffff;
   font-size: 13px;
   outline: none;
 
   &:focus {
-    border-color: #3b82f6;
+    border-color: rgba(0, 255, 255, 0.4);
+    box-shadow: 0 0 8px rgba(0, 255, 255, 0.1);
   }
 `;
 
@@ -322,7 +391,7 @@ export const DimInlineLabel = styled.span`
 
 export const Hint = styled.div`
   font-size: 12px;
-  color: #a1a1aa;
+  color: rgba(255, 255, 255, 0.25);
   line-height: 1.5;
 `;
 
@@ -349,15 +418,21 @@ export const ListItem = styled.div<{
   ${(props) => props.$indent && `margin-left: ${10 + props.$indent * 16}px;`}
 
   border-radius: 6px;
-  background: ${(props) => (props.$selected ? "#3b82f6" : "#3f3f46")};
-  color: #ffffff;
+  background: ${(props) =>
+    props.$selected ? "rgba(0, 255, 255, 0.12)" : "rgba(0, 255, 255, 0.02)"};
+  color: ${(props) =>
+    props.$selected ? "#00ffff" : "rgba(255, 255, 255, 0.7)"};
   font-size: 13px;
   cursor: pointer;
-  transition: background 0.15s ease;
-  outline: ${(props) => (props.$dragOver ? "2px solid #60a5fa" : "none")};
+  transition: all 0.2s ease;
+  outline: ${(props) =>
+    props.$dragOver ? "1px solid rgba(0, 255, 255, 0.5)" : "none"};
+  text-shadow: ${(props) =>
+    props.$selected ? "0 0 8px rgba(0, 255, 255, 0.3)" : "none"};
 
   &:hover {
-    background: ${(props) => (props.$selected ? "#2563eb" : "#52525b")};
+    background: ${(props) =>
+      props.$selected ? "rgba(0, 255, 255, 0.18)" : "rgba(0, 255, 255, 0.06)"};
   }
 
   ${(props) =>
@@ -371,12 +446,15 @@ export const ListItem = styled.div<{
       transform: translateY(-50%);
       width: 10px;
       height: 2px;
-      background: #52525b;
+      background: rgba(0, 255, 255, 0.15);
     }
   `}
 `;
 
-export const RoomChildren = styled.div<{ $dragOver?: boolean; $empty?: boolean }>`
+export const RoomChildren = styled.div<{
+  $dragOver?: boolean;
+  $empty?: boolean;
+}>`
   display: flex;
   flex-direction: column;
   gap: 4px;
@@ -384,8 +462,9 @@ export const RoomChildren = styled.div<{ $dragOver?: boolean; $empty?: boolean }
   padding-left: 12px;
   padding-top: 3px;
   padding-bottom: 3px;
-  border-left: 2px solid #52525b;
-  outline: ${(props) => (props.$dragOver ? "2px dashed #60a5fa" : "none")};
+  border-left: 2px solid rgba(0, 255, 255, 0.12);
+  outline: ${(props) =>
+    props.$dragOver ? "1px dashed rgba(0, 255, 255, 0.4)" : "none"};
   outline-offset: 2px;
   border-radius: 4px;
 
@@ -400,7 +479,7 @@ export const RoomChildren = styled.div<{ $dragOver?: boolean; $empty?: boolean }
 
 export const ListItemType = styled.span`
   font-size: 11px;
-  color: #d4d4d8;
+  color: rgba(0, 255, 255, 0.4);
 `;
 
 export const CollapseToggle = styled.button`
@@ -412,14 +491,14 @@ export const CollapseToggle = styled.button`
   flex-shrink: 0;
   background: none;
   border: none;
-  color: #a1a1aa;
+  color: rgba(0, 255, 255, 0.4);
   font-size: 10px;
   cursor: pointer;
   padding: 0;
   line-height: 1;
 
   &:hover {
-    color: #ffffff;
+    color: #00ffff;
   }
 `;
 
@@ -449,9 +528,10 @@ export const HeaderButtons = styled.div<{ $open?: boolean }>`
     min-width: 160px;
     padding: 12px;
     gap: 10px;
-    background: #272727;
+    background: rgba(10, 10, 15, 0.95);
+    border: 1px solid rgba(0, 255, 255, 0.1);
     border-radius: 0 0 0 8px;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
     transform-origin: top right;
     transform: scaleY(${(props) => (props.$open ? "1" : "0")});
     opacity: ${(props) => (props.$open ? "1" : "0")};
@@ -484,6 +564,8 @@ export const Toolbar = styled.div`
   padding: 8px 14px;
   color: #ffffff;
   flex-wrap: wrap;
+  background: rgba(10, 10, 15, 0.5);
+  border-bottom: 1px solid rgba(0, 255, 255, 0.06);
 
   @media (max-width: 768px) {
     left: 0;
@@ -495,6 +577,6 @@ export const Toolbar = styled.div`
 export const ToolbarDivider = styled.div`
   width: 1px;
   height: 22px;
-  background: #3f3f46;
+  background: rgba(0, 255, 255, 0.1);
   flex-shrink: 0;
 `;

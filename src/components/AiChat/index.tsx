@@ -92,6 +92,15 @@ const AiChatComponent = () => {
   const ckey = router.query.ckey as string | undefined;
   const tkey = router.query.tkey as string | undefined;
 
+  const hasGemini = router.isReady && !!gkey;
+  const hasClaude = router.isReady && !!ckey;
+  const hasChatGPT = router.isReady && !!tkey;
+  const needsSetup = router.isReady && !gkey && !ckey && !tkey;
+
+  const [setupGKey, setSetupGKey] = useState("");
+  const [setupCKey, setSetupCKey] = useState("");
+  const [setupTKey, setSetupTKey] = useState("");
+
   const [provider, setProvider] = useState<AiProvider>("gemini");
 
   const geminiAi = useMemo(
@@ -144,6 +153,7 @@ const AiChatComponent = () => {
   const isUserScrolledUpRef = useRef(false);
   const textAreaRef = useRef<any>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const settingsLoadedRef = useRef(false);
 
   const [attachedImages, setAttachedImages] = useState<AttachedImage[]>([]);
 
@@ -961,12 +971,9 @@ const AiChatComponent = () => {
   }, [messages, isLoading]);
 
   useEffect(() => {
-    if (
-      isEmpty(modelsOfGemini) ||
-      isEmpty(modelsOfAnthropic) ||
-      isEmpty(modelsOfOpenAI)
-    )
-      return;
+    if (hasGemini && isEmpty(modelsOfGemini)) return;
+    if (hasClaude && isEmpty(modelsOfAnthropic)) return;
+    if (hasChatGPT && isEmpty(modelsOfOpenAI)) return;
 
     try {
       const rawStorage = window.localStorage.getItem(CHAT_STORAGE_KEY);
@@ -1013,39 +1020,65 @@ const AiChatComponent = () => {
       setIsMessagesHydrated(true);
     }
 
-    // settings 로드
-    try {
-      const rawSettings = window.localStorage.getItem(SETTINGS_STORAGE_KEY);
-      if (rawSettings) {
-        const parsed = JSON.parse(rawSettings) as {
-          provider?: AiProvider;
-          model?: string;
-        };
-        const savedProvider = parsed.provider;
-        const savedModel = parsed.model;
-        const allModels = [
-          ...modelsOfGemini,
-          ...modelsOfAnthropic,
-          ...modelsOfOpenAI,
-        ];
-        if (
-          savedProvider &&
-          (savedProvider === "gemini" ||
-            savedProvider === "claude" ||
-            savedProvider === "chatgpt")
-        ) {
-          setProvider(savedProvider);
-          if (savedModel && allModels.some((m) => m.value === savedModel)) {
-            setSelectedModel(savedModel);
-          } else {
-            setSelectedModel(modelOptions[0].value);
+    // settings 로드 (최초 1회만)
+    if (!settingsLoadedRef.current) {
+      try {
+        const rawSettings = window.localStorage.getItem(SETTINGS_STORAGE_KEY);
+        if (rawSettings) {
+          const parsed = JSON.parse(rawSettings) as {
+            provider?: AiProvider;
+            model?: string;
+          };
+          const savedProvider = parsed.provider;
+          const savedModel = parsed.model;
+          const allModels = [
+            ...modelsOfGemini,
+            ...modelsOfAnthropic,
+            ...modelsOfOpenAI,
+          ];
+          if (
+            savedProvider &&
+            (savedProvider === "gemini" ||
+              savedProvider === "claude" ||
+              savedProvider === "chatgpt")
+          ) {
+            setProvider(savedProvider);
+            if (savedModel && allModels.some((m) => m.value === savedModel)) {
+              setSelectedModel(savedModel);
+            } else if (modelOptions.length > 0) {
+              setSelectedModel(modelOptions[0].value);
+            }
           }
         }
-      }
-    } catch {}
+      } catch {}
+      settingsLoadedRef.current = true;
+    }
 
     setIsMounted(true);
   }, [modelOptions]);
+
+  useEffect(() => {
+    if (!router.isReady) return;
+    let nextProvider: AiProvider | null = null;
+    if (provider === "gemini" && !hasGemini) {
+      nextProvider = hasClaude ? "claude" : hasChatGPT ? "chatgpt" : "gemini";
+    } else if (provider === "claude" && !hasClaude) {
+      nextProvider = hasGemini ? "gemini" : hasChatGPT ? "chatgpt" : "claude";
+    } else if (provider === "chatgpt" && !hasChatGPT) {
+      nextProvider = hasGemini ? "gemini" : hasClaude ? "claude" : "chatgpt";
+    }
+    if (nextProvider && nextProvider !== provider) {
+      const nextModel =
+        nextProvider === "gemini"
+          ? (modelsOfGemini[0]?.value ?? "")
+          : nextProvider === "claude"
+            ? (modelsOfAnthropic[0]?.value ?? "")
+            : (modelsOfOpenAI[0]?.value ?? "");
+      setProvider(nextProvider);
+      setSelectedModel(nextModel);
+      saveSettings(nextProvider, nextModel);
+    }
+  }, [router.isReady, provider, hasGemini, hasClaude, hasChatGPT]);
 
   useEffect(() => {
     if (typeof window === "undefined" || !isMessagesHydrated || !sessionId)
@@ -1120,9 +1153,11 @@ const AiChatComponent = () => {
         console.log("============ Gemini 모델 목록 =================");
         console.log("==============================================");
         const modelList = (await geminiAi.models.list()) as any;
+        const models: string[] = [];
         modelList?.pageInternal?.forEach((model: any) =>
-          console.log(model.name + ` (${model.displayName})`),
+          models.push(model.name + ` (${model.displayName})`),
         );
+        console.log("Gemini 모델 목록:", models);
         setModelsOfGemini(
           modelList?.pageInternal?.map((model: any) => ({
             value: model.name.replace("models/", ""),
@@ -1138,9 +1173,11 @@ const AiChatComponent = () => {
         console.log("============ Claude 모델 목록 =================");
         console.log("==============================================");
         const response = await claudeAi.models.list();
+        const models: string[] = [];
         response.data.forEach((model: any) => {
-          console.log(`Claude 모델 ID: ${model.id}`);
+          models.push(model.id);
         });
+        console.log(`Claude 모델 ID:`, models);
         setModelsOfAnthropic(
           response.data.map((model: any) => ({
             value: model.id,
@@ -1155,10 +1192,11 @@ const AiChatComponent = () => {
         console.log("============ ChatGPT 모델 목록 ===============");
         console.log("==============================================");
         const response = await openaiAi.models.list();
+        const models: string[] = [];
         response.data.forEach((model: any) => {
-          // console.log(`ChatGPT 모델 ID: ${model.id}`);
-          console.log("ChatGPT 모델 ID: ", model);
+          models.push(model.id);
         });
+        console.log("ChatGPT 모델 ID: ", models);
         setModelsOfOpenAI(
           response.data.map((model: any) => ({
             value: model.id,
@@ -1170,6 +1208,60 @@ const AiChatComponent = () => {
   }, [geminiAi, claudeAi, openaiAi, ckey, gkey, tkey]);
 
   if (!isMounted) return null;
+
+  if (needsSetup) {
+    return (
+      <S.SetupPage>
+        <S.SetupGrid />
+        <S.SetupCard>
+          <S.SetupTitle>
+            AI <span>Chat</span>
+          </S.SetupTitle>
+          <S.SetupField>
+            <S.SetupLabel>Gemini API Key (gkey)</S.SetupLabel>
+            <S.SetupInput
+              type="password"
+              placeholder="AIza..."
+              value={setupGKey}
+              onChange={(e) => setSetupGKey(e.target.value)}
+            />
+          </S.SetupField>
+          <S.SetupField>
+            <S.SetupLabel>Claude API Key (ckey)</S.SetupLabel>
+            <S.SetupInput
+              type="password"
+              placeholder="sk-ant-..."
+              value={setupCKey}
+              onChange={(e) => setSetupCKey(e.target.value)}
+            />
+          </S.SetupField>
+          <S.SetupField>
+            <S.SetupLabel>ChatGPT API Key (tkey)</S.SetupLabel>
+            <S.SetupInput
+              type="password"
+              placeholder="sk-proj-..."
+              value={setupTKey}
+              onChange={(e) => setSetupTKey(e.target.value)}
+            />
+          </S.SetupField>
+          <S.SetupButton
+            onClick={() => {
+              const params = new URLSearchParams();
+              if (setupGKey) params.set("gkey", setupGKey);
+              if (setupCKey) params.set("ckey", setupCKey);
+              if (setupTKey) params.set("tkey", setupTKey);
+              router.push(`/g?${params.toString()}`);
+            }}
+          >
+            들어가기
+          </S.SetupButton>
+          <S.SetupHint>
+            API 키는 URL 쿼리로 전달되며 서버에 저장되지 않습니다.
+          </S.SetupHint>
+        </S.SetupCard>
+      </S.SetupPage>
+    );
+  }
 
   return (
     <S.Page>
@@ -1345,27 +1437,33 @@ const AiChatComponent = () => {
         <S.InputArea>
           <S.ModelSelectWrap>
             <S.ProviderToggleWrap>
-              <S.ProviderToggleButton
-                $active={provider === "gemini"}
-                onClick={() => handleProviderChange("gemini")}
-                disabled={isLoading}
-              >
-                Gemini
-              </S.ProviderToggleButton>
-              <S.ProviderToggleButton
-                $active={provider === "claude"}
-                onClick={() => handleProviderChange("claude")}
-                disabled={isLoading}
-              >
-                Claude
-              </S.ProviderToggleButton>
-              <S.ProviderToggleButton
-                $active={provider === "chatgpt"}
-                onClick={() => handleProviderChange("chatgpt")}
-                disabled={isLoading}
-              >
-                ChatGPT
-              </S.ProviderToggleButton>
+              {hasGemini && (
+                <S.ProviderToggleButton
+                  $active={provider === "gemini"}
+                  onClick={() => handleProviderChange("gemini")}
+                  disabled={isLoading}
+                >
+                  Gemini
+                </S.ProviderToggleButton>
+              )}
+              {hasClaude && (
+                <S.ProviderToggleButton
+                  $active={provider === "claude"}
+                  onClick={() => handleProviderChange("claude")}
+                  disabled={isLoading}
+                >
+                  Claude
+                </S.ProviderToggleButton>
+              )}
+              {hasChatGPT && (
+                <S.ProviderToggleButton
+                  $active={provider === "chatgpt"}
+                  onClick={() => handleProviderChange("chatgpt")}
+                  disabled={isLoading}
+                >
+                  ChatGPT
+                </S.ProviderToggleButton>
+              )}
             </S.ProviderToggleWrap>
             <Select
               options={modelOptions}

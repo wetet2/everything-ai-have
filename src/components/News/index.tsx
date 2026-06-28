@@ -46,13 +46,19 @@ export default function NewsPage({ news }: Props) {
         <meta name="theme-color" content="#0a0a0f" />
         <meta name="robots" content="index, follow" />
         <meta property="og:type" content="website" />
-        <meta property="og:title" content="AI 뉴스 다이제스트 — everything-ai-have" />
+        <meta
+          property="og:title"
+          content="AI 뉴스 다이제스트 — everything-ai-have"
+        />
         <meta
           property="og:description"
           content="최신 AI 뉴스를 한눈에 모아보는 AI 뉴스 다이제스트입니다."
         />
         <meta name="twitter:card" content="summary" />
-        <meta name="twitter:title" content="AI 뉴스 다이제스트 — everything-ai-have" />
+        <meta
+          name="twitter:title"
+          content="AI 뉴스 다이제스트 — everything-ai-have"
+        />
         <meta
           name="twitter:description"
           content="최신 AI 뉴스를 한눈에 모아보는 AI 뉴스 다이제스트입니다."
@@ -65,14 +71,19 @@ export default function NewsPage({ news }: Props) {
 
       <Content>
         <Badge>AI 뉴스 다이제스트</Badge>
-        <Title>
+        {/* <Title>
           인공지능,<br />
           <span>오늘의 프론티어</span>
-        </Title>
+        </Title> */}
 
         <List>
           {news.map((item) => (
-            <Card key={item.href} href={item.href} target="_blank" rel="noopener noreferrer">
+            <Card
+              key={item.href}
+              href={item.href}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               <CardIcon>📡</CardIcon>
               <CardText>
                 <CardTitle>{item.title}</CardTitle>

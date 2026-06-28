@@ -519,3 +519,122 @@ export const AttachmentRemoveButton = styled.button`
     cursor: not-allowed;
   }
 `;
+
+export const SetupPage = styled.div`
+  min-height: 100vh;
+  background: #0a0a0f;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+`;
+
+export const SetupCard = styled.div`
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 28px;
+  width: 100%;
+  max-width: 400px;
+  padding: 40px 32px;
+  border: 1px solid rgba(0, 255, 255, 0.12);
+  border-radius: 12px;
+  background: rgba(0, 255, 255, 0.02);
+  backdrop-filter: blur(12px);
+`;
+
+export const SetupTitle = styled.h1`
+  font-size: 20px;
+  font-weight: 700;
+  color: #fff;
+  text-align: center;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+
+  span {
+    background: linear-gradient(135deg, #00ffff, #ff00ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+`;
+
+export const SetupField = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 100%;
+`;
+
+export const SetupLabel = styled.label`
+  font-size: 11px;
+  font-weight: 600;
+  color: rgba(0, 255, 255, 0.5);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+`;
+
+export const SetupInput = styled.input`
+  width: 100%;
+  padding: 10px 14px;
+  border: 1px solid rgba(0, 255, 255, 0.15);
+  border-radius: 8px;
+  background: rgba(0, 255, 255, 0.03);
+  color: #fff;
+  font-size: 14px;
+  font-family: monospace;
+  outline: none;
+  box-sizing: border-box;
+  transition: border-color 0.2s;
+
+  &:focus {
+    border-color: rgba(0, 255, 255, 0.5);
+    box-shadow: 0 0 10px rgba(0, 255, 255, 0.08);
+  }
+
+  &::placeholder {
+    color: rgba(255, 255, 255, 0.15);
+  }
+`;
+
+export const SetupButton = styled.button`
+  width: 100%;
+  padding: 12px;
+  border: 1px solid rgba(0, 255, 255, 0.3);
+  border-radius: 8px;
+  background: rgba(0, 255, 255, 0.08);
+  color: #00ffff;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: rgba(0, 255, 255, 0.15);
+    border-color: rgba(0, 255, 255, 0.5);
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.12);
+  }
+`;
+
+export const SetupHint = styled.p`
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.2);
+  text-align: center;
+  line-height: 1.5;
+  margin: 0;
+`;
+
+export const SetupGrid = styled.div`
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(0, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 255, 255, 0.03) 1px, transparent 1px);
+  background-size: 40px 40px;
+  pointer-events: none;
+`;

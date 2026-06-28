@@ -170,8 +170,11 @@ export default function TypingGame() {
   return (
     <S.Page>
       <Head>
-        <title>타자연습 - everything-ai-have</title>
+        <title>손은 눈보다 빠르다 - everything-ai-have</title>
       </Head>
+      <S.Header>
+        <S.HeaderAccent>손</S.HeaderAccent>은 <S.HeaderAccent>눈</S.HeaderAccent>보다 빠르다
+      </S.Header>
       <S.StatsBar>
         <S.StatItem>
           <S.StatValue>{cpm}</S.StatValue>

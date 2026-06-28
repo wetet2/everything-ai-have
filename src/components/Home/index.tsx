@@ -7,8 +7,8 @@ const pages = [
     href: "/t",
     short: "Typing",
     icon: "⌨️",
-    title: "타자연습",
-    desc: "영문 타자 실력 향상 트레이닝",
+    title: "손은 눈보다 빠르다",
+    desc: "타이핑으로 실력을 연습하자",
   },
   {
     href: "/c",

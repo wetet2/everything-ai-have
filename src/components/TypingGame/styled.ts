@@ -8,14 +8,39 @@ export const Page = styled.div`
   align-items: center;
   justify-content: center;
   background: #0a0a0f;
-  font-family: "Fira Code", "Cascadia Code", "JetBrains Mono", "Consolas",
-    monospace;
+  font-family:
+    "Fira Code", "Cascadia Code", "JetBrains Mono", "Consolas", monospace;
+`;
+
+export const Header = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  height: 48px;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  padding: 0 24px;
+  color: rgba(255, 255, 255, 0.5);
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+`;
+
+export const HeaderAccent = styled.span`
+  color: #00ffff;
+  text-shadow:
+    0 0 8px rgba(0, 255, 255, 0.5),
+    0 0 20px rgba(0, 255, 255, 0.2);
 `;
 
 export const StatsBar = styled.div`
   display: flex;
   gap: 40px;
-  margin-bottom: 48px;
+  margin-bottom: 32px;
 `;
 
 export const StatItem = styled.div`
@@ -76,7 +101,9 @@ export const Char = styled.span<{
     $state === "current" ? "rgba(0, 255, 255, 0.12)" : "transparent"};
   border-bottom: ${({ $state }) =>
     $state === "current" ? "2px solid #00ffff" : "2px solid transparent"};
-  transition: color 0.1s, background 0.1s;
+  transition:
+    color 0.1s,
+    background 0.1s;
   white-space: pre;
 `;
 
@@ -86,7 +113,7 @@ export const TextInput = styled.textarea`
   height: 100px;
   padding: 16px 20px;
   font-size: 20px;
-  font-family: inherit;
+  /* font-family: inherit; */
   line-height: 1.5;
   color: #ffffff;
   background: rgba(255, 255, 255, 0.04);
@@ -125,13 +152,11 @@ export const LangBtn = styled.button<{ $active: boolean }>`
   cursor: pointer;
   transition: all 0.15s;
 
-  color: ${({ $active }) =>
-    $active ? "#0a0a0f" : "rgba(255, 255, 255, 0.4)"};
+  color: ${({ $active }) => ($active ? "#0a0a0f" : "rgba(255, 255, 255, 0.4)")};
   background: ${({ $active }) =>
     $active ? "#00ffff" : "rgba(255, 255, 255, 0.04)"};
   border: 1px solid
-    ${({ $active }) =>
-      $active ? "#00ffff" : "rgba(255, 255, 255, 0.08)"};
+    ${({ $active }) => ($active ? "#00ffff" : "rgba(255, 255, 255, 0.08)")};
 
   &:hover {
     color: ${({ $active }) => ($active ? "#0a0a0f" : "#00ffff")};

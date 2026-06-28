@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI NEWS // 2026.06.25-06.27</title>
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&display=swap');
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+
+  :root {
+    --neon-cyan: #00f0ff;
+    --neon-pink: #ff2a6d;
+    --neon-purple: #b026ff;
+    --neon-yellow: #f0e442;
+    --bg-dark: #0a0a14;
+    --bg-panel: #0d0820;
+    --grid-line: rgba(0,240,255,0.08);
+  }
+
+  body {
+    background: var(--bg-dark);
+    color: #d1f9ff;
+    font-family: 'Share Tech Mono', 'Pretendard', monospace;
+    overflow-x: hidden;
+    position: relative;
+    min-height: 100vh;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(var(--grid-line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+    animation: gridMove 20s linear infinite;
+  }
+  @keyframes gridMove {
+    0% { background-position: 0 0; }
+    100% { background-position: 40px 40px; }
+  }
+
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(circle at 20% 30%, rgba(176,38,255,0.15), transparent 40%),
+      radial-gradient(circle at 80% 70%, rgba(0,240,255,0.12), transparent 40%),
+      radial-gradient(circle at 50% 90%, rgba(255,42,109,0.1), transparent 40%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .wrap {
+    position: relative;
+    z-index: 1;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 40px 24px;
+  }
+
+  header {
+    text-align: center;
+    padding: 60px 20px 40px;
+    position: relative;
+    border-bottom: 2px solid var(--neon-cyan);
+    margin-bottom: 60px;
+  }
+  header::before {
+    content: '';
+    position: absolute;
+    bottom: -2px; left: 50%;
+    transform: translateX(-50%);
+    width: 200px; height: 4px;
+    background: var(--neon-cyan);
+    box-shadow: 0 0 20px var(--neon-cyan);
+  }
+  h1 {
+    font-family: 'Orbitron', 'Pretendard', sans-serif;
+    font-weight: 900;
+    font-size: clamp(28px, 6vw, 64px);
+    letter-spacing: 4px;
+    color: var(--neon-cyan);
+    text-shadow: 0 0 10px var(--neon-cyan), 0 0 30px rgba(0,240,255,0.5);
+    line-height: 1.1;
+  }
+  h1 .accent { color: var(--neon-pink); text-shadow: 0 0 10px var(--neon-pink), 0 0 30px rgba(255,42,109,0.5); }
+  .subtitle {
+    margin-top: 16px;
+    font-size: 14px;
+    color: var(--neon-purple);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+  }
+  .date-stamp {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 6px 16px;
+    border: 1px solid var(--neon-pink);
+    color: var(--neon-pink);
+    font-size: 12px;
+    letter-spacing: 2px;
+    box-shadow: inset 0 0 10px rgba(255,42,109,0.2), 0 0 10px rgba(255,42,109,0.3);
+  }
+
+  .summary {
+    margin-bottom: 60px;
+    padding: 32px;
+    background: linear-gradient(135deg, rgba(176,38,255,0.08), rgba(0,240,255,0.05));
+    border: 1px solid var(--neon-purple);
+    box-shadow: 0 0 30px rgba(176,38,255,0.15), inset 0 0 30px rgba(176,38,255,0.05);
+    clip-path: polygon(0 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%);
+  }
+  .summary h2 {
+    font-family: 'Orbitron', 'Pretendard', sans-serif;
+    color: var(--neon-purple);
+    font-size: 20px;
+    letter-spacing: 3px;
+    margin-bottom: 16px;
+    text-shadow: 0 0 8px var(--neon-purple);
+  }
+  .summary p { line-height: 1.8; font-size: 15px; color: #e0d4ff; }
+  .summary .hl { color: var(--neon-yellow); text-shadow: 0 0 6px var(--neon-yellow); }
+
+  .section-title {
+    font-family: 'Orbitron', 'Pretendard', sans-serif;
+    font-size: clamp(20px,3vw,32px);
+    letter-spacing: 3px;
+    color: var(--neon-cyan);
+    text-shadow: 0 0 10px var(--neon-cyan);
+    margin: 60px 0 30px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid rgba(0,240,255,0.3);
+    position: relative;
+  }
+  .section-title::after {
+    content: '▌';
+    color: var(--neon-pink);
+    margin-right: 10px;
+    animation: blink 1s infinite;
+  }
+  @keyframes blink { 50% { opacity: 0; } }
+
+  .trends {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 20px;
+    margin-bottom: 60px;
+  }
+  .trend-card {
+    padding: 24px;
+    background: var(--bg-panel);
+    border: 1px solid;
+    position: relative;
+    transition: transform .3s, box-shadow .3s;
+  }
+  .trend-card:hover { transform: translateY(-6px); }
+  .trend-card:nth-child(1) { border-color: var(--neon-cyan); box-shadow: 0 0 15px rgba(0,240,255,0.2); }
+  .trend-card:nth-child(2) { border-color: var(--neon-pink); box-shadow: 0 0 15px rgba(255,42,109,0.2); }
+  .trend-card:nth-child(3) { border-color: var(--neon-yellow); box-shadow: 0 0 15px rgba(240,228,66,0.2); }
+  .trend-card:nth-child(4) { border-color: var(--neon-purple); box-shadow: 0 0 15px rgba(176,38,255,0.2); }
+  .trend-card:nth-child(5) { border-color: var(--neon-cyan); box-shadow: 0 0 15px rgba(0,240,255,0.2); }
+  .trend-card .num {
+    font-family: 'Orbitron', 'Pretendard', sans-serif;
+    font-size: 36px;
+    font-weight: 900;
+    opacity: 0.4;
+  }
+  .trend-card h3 {
+    font-family: 'Orbitron', 'Pretendard', sans-serif;
+    font-size: 15px;
+    letter-spacing: 1px;
+    margin: 8px 0 12px;
+  }
+  .trend-card p { font-size: 13px; line-height: 1.7; color: #9fd8e8; }
+  .trend-card:nth-child(1) .num, .trend-card:nth-child(1) h3 { color: var(--neon-cyan); }
+  .trend-card:nth-child(2) .num, .trend-card:nth-child(2) h3 { color: var(--neon-pink); }
+  .trend-card:nth-child(3) .num, .trend-card:nth-child(3) h3 { color: var(--neon-yellow); }
+  .trend-card:nth-child(4) .num, .trend-card:nth-child(4) h3 { color: var(--neon-purple); }
+  .trend-card:nth-child(5) .num, .trend-card:nth-child(5) h3 { color: var(--neon-cyan); }
+
+  .timeline {
+    margin-bottom: 60px;
+    position: relative;
+    padding-left: 40px;
+  }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 10px; top: 0; bottom: 0;
+    width: 2px;
+    background: linear-gradient(var(--neon-cyan), var(--neon-purple), var(--neon-pink));
+    box-shadow: 0 0 10px var(--neon-cyan);
+  }
+  .day {
+    position: relative;
+    margin-bottom: 50px;
+  }
+  .day::before {
+    content: '';
+    position: absolute;
+    left: -36px; top: 6px;
+    width: 14px; height: 14px;
+    background: var(--bg-dark);
+    border: 2px solid var(--neon-cyan);
+    border-radius: 50%;
+    box-shadow: 0 0 12px var(--neon-cyan);
+  }
+  .day-label {
+    font-family: 'Orbitron', 'Pretendard', sans-serif;
+    font-size: 18px;
+    letter-spacing: 2px;
+    color: var(--neon-cyan);
+    margin-bottom: 18px;
+    text-shadow: 0 0 8px var(--neon-cyan);
+  }
+
+  .article {
+    background: var(--bg-panel);
+    border-left: 3px solid var(--neon-pink);
+    padding: 22px 24px;
+    margin-bottom: 18px;
+    position: relative;
+    transition: all .3s;
+  }
+  .article:hover {
+    border-left-color: var(--neon-cyan);
+    background: rgba(0,240,255,0.04);
+    transform: translateX(4px);
+  }
+  .article .tag {
+    display: inline-block;
+    font-size: 10px;
+    letter-spacing: 2px;
+    padding: 3px 10px;
+    border: 1px solid;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+  }
+  .tag.openai { color: var(--neon-cyan); border-color: var(--neon-cyan); }
+  .tag.anthropic { color: var(--neon-yellow); border-color: var(--neon-yellow); }
+  .tag.google { color: #4285f4; border-color: #4285f4; }
+  .tag.nvidia { color: #76b900; border-color: #76b900; }
+  .tag.hn { color: #ff6a00; border-color: #ff6a00; }
+  .tag.aitimes { color: var(--neon-pink); border-color: var(--neon-pink); }
+  .tag.arxiv { color: var(--neon-purple); border-color: var(--neon-purple); }
+  .tag.venturebeat { color: #00ff9d; border-color: #00ff9d; }
+  .tag.techcrunch { color: #ff8800; border-color: #ff8800; }
+  .tag.verge { color: #ff4488; border-color: #ff4488; }
+  .tag.edge { color: #88ddff; border-color: #88ddff; }
+  .tag.eval { color: #ffcc00; border-color: #ffcc00; }
+
+  .article h4 {
+    font-family: 'Orbitron', 'Pretendard', sans-serif;
+    font-size: 16px;
+    letter-spacing: 0.5px;
+    margin-bottom: 12px;
+    color: #fff;
+    line-height: 1.4;
+  }
+  .article h4 a {
+    color: inherit;
+    text-decoration: none;
+    border-bottom: 1px dashed rgba(255,255,255,0.3);
+  }
+  .article h4 a:hover { color: var(--neon-cyan); border-color: var(--neon-cyan); }
+  .article .summary-text {
+    font-size: 13px;
+    line-height: 1.7;
+    color: #b8c8d8;
+  }
+  .article .summary-text::before {
+    content: '▶ ';
+    color: var(--neon-pink);
+  }
+  .headlines {
+    margin-top: 14px;
+    padding-left: 8px;
+  }
+  .headlines li {
+    list-style: none;
+    font-size: 12px;
+    line-height: 1.6;
+    padding: 6px 0;
+    border-bottom: 1px dotted rgba(0,240,255,0.1);
+  }
+  .headlines li::before { content: '◇ '; color: var(--neon-purple); }
+  .headlines a {
+    color: #8fd6e8;
+    text-decoration: none;
+    transition: color .2s;
+  }
+  .headlines a:hover { color: var(--neon-cyan); text-shadow: 0 0 6px var(--neon-cyan); }
+  .headlines .hl-link { color: var(--neon-yellow); }
+
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 16px;
+    margin-bottom: 60px;
+  }
+  .stat {
+    text-align: center;
+    padding: 24px 12px;
+    background: var(--bg-panel);
+    border: 1px solid rgba(0,240,255,0.3);
+    position: relative;
+    overflow: hidden;
+  }
+  .stat::before {
+    content: '';
+    position: absolute;
+    top: 0; left: -100%;
+    width: 100%; height: 2px;
+    background: var(--neon-cyan);
+    animation: scan 3s linear infinite;
+  }
+  @keyframes scan { to { left: 100%; } }
+  .stat .big {
+    font-family: 'Orbitron', 'Pretendard', sans-serif;
+    font-size: 32px;
+    font-weight: 900;
+    color: var(--neon-cyan);
+    text-shadow: 0 0 10px var(--neon-cyan);
+  }
+  .stat .lbl { font-size: 11px; letter-spacing: 2px; color: #88a; margin-top: 6px; text-transform: uppercase; }
+
+  footer {
+    text-align: center;
+    padding: 40px 20px;
+    border-top: 1px solid rgba(0,240,255,0.3);
+    margin-top: 40px;
+    font-size: 12px;
+    color: #667;
+    letter-spacing: 2px;
+  }
+  footer .src { color: var(--neon-purple); }
+
+  @keyframes glitch {
+    0%,100% { transform: translate(0); }
+    20% { transform: translate(-2px, 1px); }
+    40% { transform: translate(2px, -1px); }
+    60% { transform: translate(-1px, -1px); }
+    80% { transform: translate(1px, 1px); }
+  }
+  h1:hover { animation: glitch 0.3s infinite; }
+
+  @media (max-width: 700px) {
+    .wrap { padding: 20px 12px; }
+    .timeline { padding-left: 28px; }
+    .day::before { left: -24px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <h1>AI <span class="accent">NEWS</span> // 2026</h1>
+    <div class="subtitle">Cyber Intelligence Briefing · 규제와 에이전트의 교차점</div>
+    <div class="date-stamp">2026.06.25 — 06.27 // 수집 06.28</div>
+  </header>
+
+  <!-- 핵심 요약 -->
+  <section class="summary">
+    <h2>◆ MISSION BRIEFING</h2>
+    <p>이번 주 가장 주목받은 이슈는 <span class="hl">OpenAI GPT-5.6 Sol/Terra/Luna 출시와 동시에 트럼프 행정부 요청으로 제한적 미리보기</span>,
+    <span class="hl">Anthropic Mythos 5가 2주 교착 끝에 100+ 美 조직에 부분 복귀</span>,
+    <span class="hl">아시아 AI 스타트업들의 Mythos급 대체 모델 부상</span>,
+    <span class="hl">Claude Code가 엔지니어 생산성을 3배로 — 병목이 '무엇을 만들까'로 이동</span>입니다.
+    AI 규제 비대칭성·소형 모델 경쟁·에이전트 인프라 시장 폭발이 3일간의 핵심 흐름입니다.</p>
+  </section>
+
+  <!-- 통계 -->
+  <div class="stats">
+    <div class="stat"><div class="big">3</div><div class="lbl">GPT-5.6 모델군 (Sol/Terra/Luna)</div></div>
+    <div class="stat"><div class="big">27×</div><div class="lbl">MRAgent 토큰 효율 (vs LangMem)</div></div>
+    <div class="stat"><div class="big">$50M</div><div class="lbl">Patronus AI Series B</div></div>
+    <div class="stat"><div class="big">3×</div><div class="lbl">Claude Code 출하량 증가</div></div>
+    <div class="stat"><div class="big">745</div><div class="lbl">DSpark HN 추천</div></div>
+  </div>
+
+  <!-- 트렌드 -->
+  <h2 class="section-title">주요 흐름 // TRENDS</h2>
+  <div class="trends">
+    <div class="trend-card"><div class="num">01</div><h3>AI 모델 출시 = 규제 통제</h3><p>GPT-5.6·Mythos 5 모두 정부 case-by-case 승인 필요. OpenAI "이런 접근이 기본값이 돼선 안 된다" 공식 비판. 사실상 de facto 비자발적 허가제 가시화.</p></div>
+    <div class="trend-card"><div class="num">02</div><h3>아시아 대체 모델 부상</h3><p>중국 360 '투룽펑', Sakana AI 'Fugu' — 수출 금지 장기화로 美AI 빈자리를 현지 경쟁자가 채움. David Ha "집단 지성이 권력 집중의 실용적 헤지".</p></div>
+    <div class="trend-card"><div class="num">03</div><h3>엔지니어링 병목 이동</h3><p>Claude Code 출하량 3배 → PM:엔지니어 1:20. 병목이 '코드 작성'에서 '무엇을 만들지 결정'으로. "review가 새로운 writing". 기본 원리는 더 중요해진 레버리지 스킬로.</p></div>
+    <div class="trend-card"><div class="num">04</div><h3>에이전트 인프라 폭발</h3><p>MRAgent(토큰 27배 절감)·Patronus AI($50M, 매출 15배 성장). AI 에이전트의 '지름길'·'노이즈' 문제가 평가·메모리 인프라 수요 폭증.</p></div>
+    <div class="trend-card"><div class="num">05</div><h3>소형·엣지 모델 경쟁</h3><p>Liquid AI 230M 파라미터로 4배 큰 모델 능가. NVIDIA GLM-5.2 4비트 양자화(용량 70%↓). IBM 1nm 미만 반도체. Apple M7 온디바이스 AI 조기 전환.</p></div>
+  </div>
+
+  <!-- 타임라인 -->
+  <h2 class="section-title">타임라인 // CHRONOLOGY</h2>
+  <div class="timeline">
+
+    <!-- 06.25 -->
+    <div class="day">
+      <div class="day-label">⏵ 2026.06.25 (목)</div>
+
+      <div class="article">
+        <span class="tag openai">OpenAI</span>
+        <h4><a href="https://www.theverge.com/ai-artificial-intelligence/957372/openai-will-delay-gpt-5-6-after-tradmin-administration-request" target="_blank">GPT-5.6, 트럼프 행정부 요청으로 출시 연기 — 제한적 미리보기만 허용</a></h4>
+        <p class="summary-text">트럼프 행정부가 잠재적 보안 우려로 OpenAI에 GPT-5.6의 '단계적 분할 출시' 요청. 소규모 엔터프라이즈 고객에게만 제한적 미리보기. 정부가 고객 접근을 사례별로 승인. 이는 Anthropic Mythos·Fable 5 전면 중단보다는 유리하나, 행정부의 '속도 승리' 공약과 정면 충돌.</p>
+      </div>
+
+      <div class="article">
+        <span class="tag venturebeat">VentureBeat</span>
+        <h4><a href="https://venturebeat.com/technology/liquid-ais-smallest-model-yet-lfm2-5-230m-beats-models-4x-its-size-at-data-extraction-can-run-anywhere/" target="_blank">Liquid AI LFM2.5-230M — 4배 큰 모델 추월, 400MB 이하 메모리</a></h4>
+        <p class="summary-text">전 MIT 교수진 창업. 2.3억 파라미터로 Qwen3.5-0.8B·Gemma 3 1B 능가. 온디바이스 에이전틱 워크플로우 특화. Galaxy S25 Ultra 213 tok/s, Raspberry Pi 5 42 tok/s. 유니트리 G1 휴머노이드 로봇 Jetson Orin 온디바이스 구동. LFM Open License v1.0 (연 $10M 이하 무료).</p>
+      </div>
+
+      <div class="article">
+        <span class="tag openai">OpenAI</span>
+        <h4><a href="https://venturebeat.com/technology/openais-updated-gpt-5-5-instant-is-better-at-shopping-complex-constraints-and-understanding-user-intent-and-its-already-in-the-api/" target="_blank">GPT-5.5 Instant 대폭 업데이트 — 쇼핑·제약 조건·사용자 의도 이해 개선</a></h4>
+        <p class="summary-text">무료 ChatGPT 기본 모델 GPT-5.5 Instant가 2개월 만에 업데이트. 사용자 의도 인식·복수 제약 준수·위치 컨텍스트 활용 강화. API chat-latest 별칭(400K 컨텍스트, 최대 128K 출력). 프론티어는 규제에 묶이고 기본 모델은 빠르게 진화하는 역설.</p>
+      </div>
+
+      <div class="article">
+        <span class="tag techcrunch">TechCrunch</span>
+        <h4><a href="https://techcrunch.com/2026/06/25/patronus-ai-lands-50m-to-build-digital-worlds-that-stress-test-ai-agents/" target="_blank">Patronus AI, $50M Series B — AI 에이전트 스트레스 테스트 '디지털 월드'</a></h4>
+        <p class="summary-text">전 Meta AI 연구원 창업. '디지털 월드 모델'로 에이전트 성능 평가. 최근 1년 매출 15배 성장, 누적 $70M. 주요 프론티어 AI 연구소·스타트업 모두 고객. Waymo의 자율주행 합성 세계와 유사한 접근. SW 엔지니어링·금융 도메인 제공, 장기 실행 에이전트로 확장 예정.</p>
+      </div>
+
+      <div class="article">
+        <span class="tag verge">The Verge</span>
+        <h4><a href="https://www.theverge.com/transportation/956316/ford-quality-jd-power-ranking-ai-automated-mistakes" target="_blank">Ford, AI 자동화 실수 바로잡기 위해 전 엔지니어 350명 재고용</a></h4>
+        <p class="summary-text">JD Power 16년 만에 1위 달성했지만, AI 도입 과정에서 품질 저하 경험. "단순히 AI 도입하면 고품질 나올 것이라 착각". 350+명 노련한 엔지니어 재고용·신규 채용. '찾아서 고치기' → '발생 전 예방' 철학 전환. 40인 전담 SW QA팀, 10만+ AI 자동화 테스트 추가.</p>
+      </div>
+
+      <div class="article">
+        <span class="tag techcrunch">TechCrunch · 정책</span>
+        <h4><a href="https://techcrunch.com/2026/06/25/trump-admin-proposes-axing-brake-pedal-requirement-for-avs-in-a-boost-for-tesla/" target="_blank">NHTSA, 자율주행차 브레이크 페달 요건 폐지 제안 — 테슬라에 유리</a></h4>
+        <p class="summary-text">완전 자율주행차 설계 시 인간 운전자 전통 장치 의무 해제. 테슬라 사이버캡(스티어링 휠·페달 없는 로보택시)에 규제적 길. 같은날 폴스타 미국 판매 금지 — 규제의 비대칭성 부각.</p>
+      </div>
+
+      <div class="article">
+        <span class="tag hn">Hacker News · 헤드라인</span>
+        <h4>기타 주요 기사</h4>
+        <ul class="headlines">
+          <li>DSpark: DeepSeek 추측적 디코딩 — LLM 추론 가속 <a class="hl-link" href="https://github.com/deepseek-ai/DeepSpec/blob/main/DSpark_paper.pdf">[739↑]</a></li>
+          <li>AI, RFIC 설계의 '다크 아트'를 학습하다 (IEEE Spectrum) <a href="https://spectrum.ieee.org/ai-radio-chip-design">[205↑]</a></li>
+          <li>익명 GitHub 계정, 미공개 0-day 취약점 대량 공개 <a href="https://github.com/bikini/exploitarium">[713↑]</a></li>
+          <li>Adobe, 이미지·비디오 향상 Topaz Labs 인수 (TechCrunch) <a href="https://techcrunch.com/2026/06/25/adobe-acquires-image-and-video-enhancement-tool-maker-topaz-labs/">[link]</a></li>
+          <li>Notion Mail, 에이전트 인수 물결 속 셧다운 (TechCrunch) <a href="https://techcrunch.com/2026/06/25/notion-mail-shuts-down-amid-agent-takeover/">[link]</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 06.26 -->
+    <div class="day">
+      <div class="day-label">⏵ 2026.06.26 (금)</div>
+
+      <div class="article">
+        <span class="tag openai">OpenAI</span>
+        <h4><a href="https://openai.com/index/previewing-gpt-5-6-sol/" target="_blank">GPT-5.6 Sol / Terra / Luna 정식 발표 — 정부 요청으로 20개 조직만 접근</a></h4>
+        <p class="summary-text">GPT-5.6 시리즈 3종: <strong>Sol</strong>(플래그십, $5/$30), <strong>Terra</strong>(균형형, $2.50/$15), <strong>Luna</strong>(고속·저가, $1/$6) per 1M 토큰. 새 이름 체계 — 번호=세대, 이름=durable capability tier. Sol ultra reasoning 모드(subagent 협업) TerminalBench 91.91% — GPT-5.5(83.4%)·Mythos 5(88%) 능가. 7월 Cerebras 하드웨어 출시 예정(최대 750 tok/s). OpenAI "정부 접근이 장기 기본값 돼선 안 된다" 공식 비판.</p>
+      </div>
+
+      <div class="article">
+        <span class="tag anthropic">Anthropic · 정책</span>
+        <h4><a href="https://techcrunch.com/2026/06/26/trump-admin-releases-anthropic-mythos-to-be-used-by-more-than-100-us-companies-agencies/" target="_blank">Mythos 5, 100+ 美 조직 제한적 재배포 — Fable 5는 여전히 중단</a></h4>
+        <p class="summary-text">2주 전 전면 중단 이후 첫 부분 완화. 100개 이상 美 정부 기관·기업 사용 승인, 비미국인 직원 포함. 상무장관 Howard Lutnick 서한: "신뢰 파트너 접근 위한 안전장치 마련됐다". Fable 5 언급 없음 — 여전히 limbo. NSA 접근 상실 압박 + 경쟁사 벤치마크 추월이 정부를 움직임.</p>
+      </div>
+
+      <div class="article">
+        <span class="tag venturebeat">VentureBeat · 연구</span>
+        <h4><a href="https://venturebeat.com/orchestration/new-agentic-memory-framework-uses-118k-tokens-per-query-langmem-burns-through-3-26m" target="_blank">MRAgent: 쿼리당 118K 토큰 — LangMem 3.26M 대비 27배 절감</a></h4>
+        <p class="summary-text">싱가포르 국립대(NUS). 인지신경과학 영감 '능동·연상 재구성' 패러다임. Cue-Tag-Content 3계층 구조. LongMemEval에서 A-MEM 632K·LangMem 3.26M 대비 118K 토큰. 런타임도 절반(1,122초→586초). 자동 distillation 파이프라인. GitHub 공개.</p>
+      </div>
+
+      <div class="article">
+        <span class="tag verge">The Verge</span>
+        <h4><a href="https://www.theverge.com/ai-artificial-intelligence/957327/anthropic-mythos-fable-ai-trump-administration-negotiations" target="_blank">Anthropic Mythos 사태 심층 — 2주 교착, 협상, 그리고 freefable.org</a></h4>
+        <p class="summary-text">14일째 교착. 수출통제 적용 프레임워크 부재 — 대부분 이중용도 제품은 체크리스트로 평가하지만 AI는 '첫 원리부터' 규칙 적용. Amazon CEO Andy Jassy가 Fable 5 가드레일 우회 방법 알린 후 수일 내 전면 중단. 'freefable.org' 옹호 연합 결성. Alex Stamos "중국과 경쟁 중인 美 챔피언이 美 정부에 무릎 꿇고 있다".</p>
+      </div>
+
+      <div class="article">
+        <span class="tag verge">The Verge</span>
+        <h4><a href="https://www.theverge.com/ai-artificial-intelligence/957510/elevenlabs-rolls-out-synthid-support" target="_blank">ElevenLabs, Google SynthID 워터마크 도입</a></h4>
+        <p class="summary-text">Google DeepMind의 보이지 않는 워터마크 기술 채택. 무료 사용자 text-to-speech에 SynthID 포함, 향후 모든 오디오로 확대. ElevenLabs Audio Detector로 검출 가능.</p>
+      </div>
+
+      <div class="article">
+        <span class="tag hn">Hacker News · 헤드라인</span>
+        <h4>기타 주요 기사</h4>
+        <ul class="headlines">
+          <li>Asian AI startups launch Mythos-like models <a class="hl-link" href="https://techcrunch.com/2026/06/27/asian-ai-startups-launch-mythos-like-models-as-anthropics-export-ban-drags-on/">[190↑]</a></li>
+          <li>Post-Mythos 사이버보안: 침착하게 계속하라 (CephaloSec) <a href="https://cephalosec.com/blog/cybersecurity-in-the-post-mythos-era-keep-calm-and-carry-on/">[140↑]</a></li>
+          <li>Wayfinder Router: 로컬·호스팅 LLM 간 결정론적 라우팅 <a href="https://github.com/itsthelore/wayfinder-router">[link]</a></li>
+          <li>대부분 기업은 소프트웨어 공장을 짓는다 생각하지만 더 빨리 버그를 출하할 뿐 (VentureBeat) <a href="https://venturebeat.com/orchestration/most-companies-think-theyre-building-a-software-factory-theyre-actually-just-shipping-bugs-faster">[link]</a></li>
+          <li>테슬라 FSD 충돌 소송 합의, 연방 조사 진행 (TechCrunch) <a href="https://techcrunch.com/2026/06/26/tesla-settles-fsd-crash-lawsuit-as-federal-investigations-continue/">[link]</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 06.27 -->
+    <div class="day">
+      <div class="day-label">⏵ 2026.06.27 (토)</div>
+
+      <div class="article">
+        <span class="tag techcrunch">TechCrunch · 지정학</span>
+        <h4><a href="https://techcrunch.com/2026/06/27/asian-ai-startups-launch-mythos-like-models-as-anthropics-export-ban-drags-on/" target="_blank">아시아 AI 스타트업, Mythos급 모델 출시 — 美 수출 금지 장기화 속 대체</a></h4>
+        <p class="summary-text">Anthropic 수출 금지 2주째, 아시아 현지 경쟁자 급부상: <strong>중국 360</strong> '투룽펑'(자동 취약점 발견) + '이티엔전'(방어 자동화). <strong>도쿄 Sakana AI</strong> 'Fugu' — API로 타 모델 오케스트레이션하는 에이전트 설계. Sakana David Ha "집단 지성이 단일 제공자 리스크의 실용적 헤지". 美 금지 종료 후에도 현지 언어·뉘앙스에 최적화된 대안에 신뢰 빼앗길 위험.</p>
+      </div>
+
+      <div class="article">
+        <span class="tag venturebeat">VentureBeat · 게스트</span>
+        <h4><a href="https://venturebeat.com/infrastructure/claude-code-turned-every-engineer-into-three-now-companies-need-more-product-thinkers" target="_blank">Claude Code가 모든 엔지니어를 3명으로 만들었다 — 이제 필요한 것은 프로덕트 사고</a></h4>
+        <p class="summary-text">Amazon 엔지니어 Ishan Gupta 분석. Claude Code로 출하량 3배 — 병목이 IDE에서 '무엇을 만들지 결정하는 사람'으로 이동. 전통 PM:엔지니어 1:8 → 실제 1:20. 5단계 진화: Stack Overflow → 브라우저 탭 → IDE 내장 → 스펙 주도 → 루틴 시대. "review가 새로운 writing". "2026년 위대한 엔지니어는 가장 많은 코드를 짜는 사람이 아니라 무엇을 만들지 알고 가치 증명할 수 있는 사람". Anthropic "PM을 줄이지 말고 더 뽑아라" 지시.</p>
+      </div>
+
+      <div class="article">
+        <span class="tag verge">The Verge · 문화</span>
+        <h4><a href="https://www.theverge.com/ai-artificial-intelligence/958715/margaret-atwood-ai-problem-garbage-in-garbage-out" target="_blank">Margaret Atwood "AI의 문제는 garbage in, garbage out"</a></h4>
+        <p class="summary-text">'시녀 이야기' 작가. Claude 딱 한 번 사용, 감명받지 못했다. AI 문화·정책 반발 흐름. The Verge 애플 기사 "왜 Apple은 Big Tech AI 집착 비용을 소비자에게 전가하는가" — 소비자가 요청하지 않은 AI 인프라 비용 인상에 반발.</p>
+      </div>
+
+      <div class="article">
+        <span class="tag aitimes">AI타임즈 · 헤드라인</span>
+        <h4>한국·아시아 주요 기사</h4>
+        <ul class="headlines">
+          <li>애플, M6 건너뛰고 온디바이스 AI 특화 M7 칩 조기 전환 <a href="https://www.aitimes.com/news/articleView.html?idxno=212132">[link]</a></li>
+          <li>IBM, 세계 최초 '1나노 미만' AI 반도체 기술 공개 <a href="https://www.aitimes.com/news/articleView.html?idxno=212143">[link]</a></li>
+          <li>오픈AI, IPO 내년 연기 검토 — SpaceX 변동성에 신중론 <a href="https://www.aitimes.com/news/articleView.html?idxno=212167">[link]</a></li>
+          <li>네이버, 대화형 검색 'AI탭' 정식 출시 — 실행형 에이전트 확대 <a href="https://www.aitimes.com/news/articleView.html?idxno=212164">[link]</a></li>
+          <li>앤트로픽, 아태 데이터센터 확보 — 호주·일본 채용 본격화 <a href="https://www.aitimes.com/news/articleView.html?idxno=212181">[link]</a></li>
+          <li>중국, AI 에이전트 '디지털 신분증' 도입 <a href="https://www.aitimes.com/news/articleView.html?idxno=212180">[link]</a></li>
+          <li>에이전트 장기 프로젝트 벤치마크 'AA-브리프케이스' — 1위 Fable 5 <a href="https://www.aitimes.com/news/articleView.html?idxno=212179">[link]</a></li>
+          <li>딥시크, 전 부서 인력 2배 증원 공격적 확장 <a href="https://www.aitimes.com/news/articleView.html?idxno=212153">[link]</a></li>
+          <li>메타, 'AI 강제 징집' 논란 철회 — 엔지니어 자율 복귀 허용 <a href="https://www.aitimes.com/news/articleView.html?idxno=212147">[link]</a></li>
+          <li>KAIST, '뇌' 신호로 로봇 제어하는 플랫폼 개발 <a href="https://www.aitimes.com/news/articleView.html?idxno=212174">[link]</a></li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ArXiv -->
+  <h2 class="section-title">ArXiv // 연구 선별</h2>
+  <div class="article">
+    <span class="tag arxiv">ArXiv · cs.AI</span>
+    <h4><a href="https://arxiv.org/abs/2606.26686" target="_blank">LeanGuard: 안전 가드레일은 추론해야 하는가 — 견고한 moderation을 위한 경량 접근</a> (6/26)</h4>
+    <p class="summary-text">안전 가드레일 경량화 연구. LLM 정렬을 추론 시간에 효율적으로 적용하는 LeanGuard 프레임워크. 빠르고 견고한 moderation 성능.</p>
+    <ul class="headlines">
+      <li>능력 한계 — 벤치마크는 모델 성능의 82%를 놓친다 <a href="https://arxiv.org/abs/2606.26836">[link]</a></li>
+      <li>TOPS: MLLM 추론 효율화를 위한 시각 토큰 최적 보존 집합 구성 <a href="https://arxiv.org/abs/2606.27161">[link]</a></li>
+      <li>LLM 에이전트를 위한 경험적 규칙과 정책의 공동 학습 <a href="https://arxiv.org/abs/2606.27136">[link]</a></li>
+      <li>SKILL-DISCO: 에이전트 트레이스를 재사용 가능한 절차적 스킬로 증류·컴파일 <a href="https://arxiv.org/abs/2606.26669">[link]</a></li>
+      <li>장기 실행 언어 에이전트를 위한 선택적 파라미터 통합 <a href="https://arxiv.org/abs/2606.26806">[link]</a></li>
+      <li>AI 에이전트 명령어를 Policy-as-Code로 자동 형식화 (AIWILD@ICML 2026) <a href="https://arxiv.org/abs/2606.26649">[link]</a></li>
+      <li>자연어 분류기의 진화 생성적 적대 텍스트에 대한 취약성 <a href="https://arxiv.org/abs/2606.27215">[link]</a></li>
+      <li>반복적 LLM 에이전트 루프를 위한 의미론적 조기 종료 <a href="https://arxiv.org/abs/2606.27009">[link]</a></li>
+      <li>DSpark: 추측적 디코딩이 LLM 추론 가속 (DeepSeek-AI) <a class="hl-link" href="https://github.com/deepseek-ai/DeepSpec/blob/main/DSpark_paper.pdf">[745↑]</a></li>
+    </ul>
+  </div>
+
+  <footer>
+    <div>◈ END OF TRANSMISSION ◈</div>
+    <div style="margin-top:10px">출처: <span class="src">OpenAI · Anthropic · The Verge · VentureBeat · TechCrunch · Hacker News · ArXiv · AI타임즈 · Reuters · NVIDIA</span></div>
+    <div style="margin-top:10px; opacity:0.5">// Cyber Infographic v2.0 — 2026.06.25-06.27 //</div>
+  </footer>
+
+</div>
+</body>
+</html>

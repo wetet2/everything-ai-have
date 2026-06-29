@@ -65,6 +65,7 @@ export default function DrawingBoard() {
 
   // 현재 설정
   const [color, setColor] = useState("#000000");
+  const [customColor, setCustomColor] = useState("#ffffff");
   const [lineWidth, setLineWidth] = useState(5);
   const [fontSize, setFontSize] = useState(24);
   const [mode, setMode] = useState<DrawMode>("pen");
@@ -1884,6 +1885,7 @@ export default function DrawingBoard() {
             ))}
 
             <S.ColorSwatch
+              $color={customColor}
               onClick={() => setShowColorPicker(!showColorPicker)}
               title="직접 선택"
             >
@@ -1895,7 +1897,10 @@ export default function DrawingBoard() {
               <S.ColorPickerPopover ref={colorPickerRef}>
                 <CompactPicker
                   color={color}
-                  onChange={(newColor) => setColor(newColor.hex)}
+                  onChange={(newColor) => {
+                    setColor(newColor.hex);
+                    setCustomColor(newColor.hex);
+                  }}
                 />
               </S.ColorPickerPopover>
             )}

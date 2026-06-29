@@ -50,17 +50,14 @@ export default function Home() {
           content="Everything AI Have — 여러 AI 도구를 한곳에 모은 프로젝트입니다."
         />
       </Head>
-      <S.Toolbar>
-        <S.ToolbarBrand>
-          everything<span>ai</span>have
-        </S.ToolbarBrand>
-      </S.Toolbar>
       <S.Grid />
       <S.Scanline />
       <S.Orb $top="10%" $left="5%" $size="400px" $delay={0} />
       <S.Orb $top="60%" $left="70%" $size="350px" $delay={2.5} />
       <S.Content>
-        <S.Badge>master & guest</S.Badge>
+        <S.ToolbarBrand>
+          everything <span>ai</span> have
+        </S.ToolbarBrand>
         <S.Title>
           나의 <span>AI</span>저씨
         </S.Title>

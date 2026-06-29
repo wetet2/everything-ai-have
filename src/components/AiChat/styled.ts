@@ -6,6 +6,25 @@ const spin = keyframes`
   to { transform: rotate(360deg); }
 `;
 
+const scanlineMove = keyframes`
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(100vh); }
+`;
+
+const glitch = keyframes`
+  0% { transform: translate(0); }
+  20% { transform: translate(-1px, 1px); }
+  40% { transform: translate(1px, -1px); }
+  60% { transform: translate(-1px, 1px); }
+  80% { transform: translate(1px, -1px); }
+  100% { transform: translate(0); }
+`;
+
+const neonPulse = keyframes`
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+`;
+
 export const Page = styled.div`
   position: fixed;
   inset: 0;
@@ -15,8 +34,30 @@ export const Page = styled.div`
   align-items: center;
   flex-direction: column;
 
-  padding: 24px;
-  background: #d9dde6;
+  padding: 60px 24px 24px;
+  background: #050508;
+  background-image:
+    linear-gradient(rgba(0, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 255, 255, 0.03) 1px, transparent 1px);
+  background-size: 40px 40px;
+
+  &::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 4px;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0, 255, 255, 0.03) 2px,
+      rgba(0, 255, 255, 0.03) 4px
+    );
+    pointer-events: none;
+    z-index: 999;
+    animation: ${scanlineMove} 8s linear infinite;
+  }
 
   @media screen and (max-width: 720px) {
     padding: 16px;
@@ -28,44 +69,52 @@ export const ChatContainer = styled.div`
   min-height: 0;
 
   width: min(1000px, 100%);
-  border: 1px solid #e5e7eb;
-  border-radius: 18px;
+  border: 1px solid rgba(0, 255, 255, 0.15);
+  border-radius: 4px;
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  background: #f9fafb;
-  box-shadow: 0 10px 28px rgba(15, 23, 42, 0.12);
+  background: #0a0a14;
+  box-shadow:
+    0 0 20px rgba(0, 255, 255, 0.05),
+    inset 0 0 60px rgba(0, 255, 255, 0.02);
+  position: relative;
 `;
 
 export const SessionSelectWrap = styled.div`
-  width: min(1000px, 100%);
-  margin-bottom: 12px;
   display: flex;
   gap: 8px;
+  align-items: center;
 `;
 
 export const SessionSelect = styled.select`
   width: 100%;
   height: 36px;
-  border: 1px solid #d1d5db;
-  border-radius: 8px;
-  background: #fff;
+  border: 1px solid rgba(0, 255, 255, 0.2);
+  border-radius: 4px;
+  background: #0d0d1a;
   padding: 0 36px 0 10px;
-  color: #111827;
+  color: #00ffff;
   appearance: none;
   -webkit-appearance: none;
   -moz-appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 20 20' fill='none'%3E%3Cpath d='M5.5 7.5L10 12L14.5 7.5' stroke='%2364748b' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 20 20' fill='none'%3E%3Cpath d='M5.5 7.5L10 12L14.5 7.5' stroke='%2300ffff' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right 10px center;
   background-size: 18px 18px;
+  outline: none;
+
+  &:focus {
+    border-color: rgba(0, 255, 255, 0.5);
+    box-shadow: 0 0 8px rgba(0, 255, 255, 0.1);
+  }
 `;
 
 export const MessagesArea = styled.div`
   flex: 1;
   padding: 18px 16px;
   overflow-y: auto;
-  background: #f9fafb;
+  background: #0a0a14;
 
   &::-webkit-scrollbar {
     width: 5px;
@@ -76,12 +125,12 @@ export const MessagesArea = styled.div`
   }
 
   &::-webkit-scrollbar-thumb {
-    background: #e5e7eb;
+    background: rgba(0, 255, 255, 0.2);
     border-radius: 10px;
   }
 
   &::-webkit-scrollbar-thumb:hover {
-    background: #d1d5db;
+    background: rgba(0, 255, 255, 0.4);
   }
 
   @media screen and (max-width: 720px) {
@@ -90,9 +139,12 @@ export const MessagesArea = styled.div`
 `;
 
 export const EmptyMessage = styled.div`
-  color: #666;
+  color: rgba(0, 255, 255, 0.3);
   text-align: center;
   margin-top: 24px;
+  font-size: 14px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
 `;
 
 export const MessageList = styled.ul`
@@ -116,24 +168,26 @@ export const ChatBody = styled.div<{ $isUser: boolean }>`
 
 export const MarkdownContainer = styled.div`
   max-width: 100%;
-  border-radius: 18px;
+  border-radius: 4px;
   padding: 10px 14px;
   line-height: 1.5;
-  border: 1px solid #e6e8ee;
+  border: 1px solid rgba(0, 255, 255, 0.08);
   font-size: 14px;
-  color: #1f2937;
+  color: #c0c0e0;
   line-height: 1.7;
 
   h1,
   h2,
   h3 {
     margin: 12px 0 0 0;
+    color: #00ffff;
   }
 
   h4,
   h5,
   h6 {
     margin: 8px 0 0 0;
+    color: rgba(0, 255, 255, 0.7);
   }
 
   ul,
@@ -144,13 +198,15 @@ export const MarkdownContainer = styled.div`
 
   hr {
     margin: 8px 0;
+    border-color: rgba(0, 255, 255, 0.1);
   }
 
   pre {
     margin: 8px 0;
     padding: 10px 12px;
-    border-radius: 8px;
-    background: #0f172a;
+    border-radius: 4px;
+    background: #050510;
+    border: 1px solid rgba(0, 255, 255, 0.08);
     overflow-x: auto;
   }
 
@@ -162,59 +218,82 @@ export const MarkdownContainer = styled.div`
   }
 
   pre code {
-    color: #e2e8f0;
-    /* display: block; */
+    color: #c0c0e0;
     line-height: 1.55;
   }
 
   :not(pre) > code {
     padding: 2px 6px;
-    border-radius: 6px;
-    background: #c7e1ff;
-    color: #1f2937;
+    border-radius: 4px;
+    background: rgba(0, 255, 255, 0.1);
+    color: #00ffff;
     word-break: break-word;
   }
 
   .hljs-keyword,
   .hljs-selector-tag,
   .hljs-literal {
-    color: #c4b5fd;
+    color: #ff00ff;
   }
 
   .hljs-title,
   .hljs-section,
   .hljs-name,
   .hljs-function .hljs-title {
-    color: #93c5fd;
+    color: #00ffff;
   }
 
   .hljs-string,
   .hljs-attr,
   .hljs-template-tag,
   .hljs-template-variable {
-    color: #86efac;
+    color: #00ff88;
   }
 
   .hljs-number,
   .hljs-symbol,
   .hljs-bullet {
-    color: #fca5a5;
+    color: #ff4444;
   }
 
   .hljs-comment,
   .hljs-quote {
-    color: #94a3b8;
+    color: rgba(0, 255, 255, 0.3);
     font-style: italic;
+  }
+
+  strong {
+    color: #ffff00;
+  }
+
+  a {
+    color: #00ffff;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+
+    &:hover {
+      color: #ff00ff;
+    }
   }
 `;
 
 export const ChatBubble = styled(MarkdownContainer)<{ $isUser: boolean }>`
-  color: ${({ $isUser }) => ($isUser ? "#ffffff" : "#1f2937")};
-  background: ${({ $isUser }) => ($isUser ? "#6f54ff" : "#eff2f6")};
-  border-color: ${({ $isUser }) => ($isUser ? "#6f54ff" : "#e6e8ee")};
+  color: ${({ $isUser }) => ($isUser ? "#e0e0ff" : "#c0c0e0")};
+  background: ${({ $isUser }) =>
+    $isUser
+      ? "linear-gradient(135deg, rgba(255, 0, 255, 0.15), rgba(255, 0, 255, 0.05))"
+      : "linear-gradient(135deg, rgba(0, 255, 255, 0.08), rgba(0, 255, 255, 0.02))"};
+  border-color: ${({ $isUser }) =>
+    $isUser
+      ? "rgba(255, 0, 255, 0.2)"
+      : "rgba(0, 255, 255, 0.12)"};
   border-radius: ${({ $isUser }) =>
-    $isUser ? "16px 16px 4px 16px" : "16px 16px 16px 4px"};
+    $isUser ? "4px 4px 2px 4px" : "4px 4px 4px 2px"};
   white-space: ${({ $isUser }) => ($isUser ? "pre-wrap" : "")};
+  box-shadow: ${({ $isUser }) =>
+    $isUser
+      ? "0 0 12px rgba(255, 0, 255, 0.08)"
+      : "0 0 12px rgba(0, 255, 255, 0.05)"};
 `;
 
 export const CodeBlockWrap = styled.div`
@@ -234,10 +313,10 @@ export const CopyButton = styled.button`
   top: 10px;
   right: 12px;
   z-index: 1;
-  border: 1px solid #334155;
-  background: #1e293b;
-  color: #e2e8f0;
-  border-radius: 6px;
+  border: 1px solid rgba(0, 255, 255, 0.2);
+  background: rgba(0, 255, 255, 0.05);
+  color: #00ffff;
+  border-radius: 4px;
   padding: 2px 8px;
   font-size: 12px;
   cursor: pointer;
@@ -247,8 +326,8 @@ export const CopyButton = styled.button`
     transform 0.12s ease;
 
   &:hover {
-    background: #334155;
-    border-color: #475569;
+    background: rgba(0, 255, 255, 0.12);
+    border-color: rgba(0, 255, 255, 0.4);
   }
 
   &:active {
@@ -258,14 +337,15 @@ export const CopyButton = styled.button`
 
 export const StatusText = styled.div`
   font-size: 12px;
-  color: #6b7280;
+  color: rgba(0, 255, 255, 0.5);
   margin-bottom: 4px;
+  animation: ${neonPulse} 1.5s ease-in-out infinite;
 `;
 
 export const InputArea = styled.div`
-  border-top: 1px solid #e5e7eb;
+  border-top: 1px solid rgba(0, 255, 255, 0.1);
   padding: 10px 12px;
-  background: #f9fafb;
+  background: #0a0a14;
 `;
 
 export const InputRow = styled.div`
@@ -283,11 +363,23 @@ export const TextInput = styled.textarea`
   font-size: 14px;
   line-height: 1.5;
   padding: 10px 14px;
-  border: 1px solid #e4e7ec;
-  border-radius: 20px;
-  background: #f1f3f6;
+  border: 1px solid rgba(0, 255, 255, 0.15);
+  border-radius: 4px;
+  background: rgba(0, 255, 255, 0.03);
+  color: #c0c0e0;
   scrollbar-width: none;
   -ms-overflow-style: none;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+
+  &:focus {
+    border-color: rgba(0, 255, 255, 0.4);
+    box-shadow: 0 0 8px rgba(0, 255, 255, 0.06);
+  }
+
+  &::placeholder {
+    color: rgba(0, 255, 255, 0.2);
+  }
 
   &::-webkit-scrollbar {
     display: none;
@@ -306,16 +398,29 @@ export const SendButton = styled.button`
   flex-shrink: 0;
   width: 42px;
   height: 42px;
-  border: none;
-  border-radius: 50%;
+  border: 1px solid rgba(0, 255, 255, 0.3);
+  border-radius: 4px;
   font-size: 16px;
-  color: #fff;
-  background: #6f54ff;
+  color: #00ffff;
+  background: rgba(0, 255, 255, 0.06);
   cursor: pointer;
+  transition: all 0.2s;
+
+  &:hover:not(:disabled) {
+    background: rgba(0, 255, 255, 0.12);
+    border-color: rgba(0, 255, 255, 0.5);
+    box-shadow: 0 0 12px rgba(0, 255, 255, 0.1);
+  }
+
+  &:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+  }
 `;
 
 export const SpinnerIcon = styled(SpinnerIconBase)`
   animation: ${spin} 0.8s linear infinite;
+  color: #00ffff;
 `;
 
 export const ModelSelectWrap = styled.div`
@@ -323,10 +428,7 @@ export const ModelSelectWrap = styled.div`
   align-items: center;
   gap: 6px;
   margin-bottom: 8px;
-
   white-space: nowrap;
-  /* overflow-x: auto;
-  overflow-y: hidden; */
 `;
 
 export const DeleteSessionButton = styled.button`
@@ -336,20 +438,21 @@ export const DeleteSessionButton = styled.button`
   flex-shrink: 0;
   width: 36px;
   height: 36px;
-  border: 1px solid #fee2e2;
-  border-radius: 8px;
-  background: #fff;
-  color: #ef4444;
+  border: 1px solid rgba(255, 0, 0, 0.2);
+  border-radius: 4px;
+  background: rgba(255, 0, 0, 0.04);
+  color: #ff4444;
   cursor: pointer;
   transition: all 0.2s;
 
   &:hover:not(:disabled) {
-    background: #fef2f2;
-    border-color: #fca5a5;
+    background: rgba(255, 0, 0, 0.1);
+    border-color: rgba(255, 0, 0, 0.4);
+    box-shadow: 0 0 8px rgba(255, 0, 0, 0.08);
   }
 
   &:disabled {
-    opacity: 0.5;
+    opacity: 0.3;
     cursor: not-allowed;
   }
 `;
@@ -359,38 +462,42 @@ export const ProviderToggleWrap = styled.div`
   align-items: center;
   gap: 0;
 
-  background: #e5e7eb;
-  border-radius: 20px;
-  padding: 3px;
+  background: rgba(0, 255, 255, 0.06);
+  border: 1px solid rgba(0, 255, 255, 0.12);
+  border-radius: 4px;
+  padding: 2px;
   flex-shrink: 0;
 `;
 
 export const ProviderToggleButton = styled.button<{ $active: boolean }>`
   padding: 5px 18px;
-  border-radius: 16px;
+  border-radius: 2px;
   font-size: 13px;
   border: none;
-  background: ${({ $active }) => ($active ? "#fff" : "transparent")};
-  color: ${({ $active }) => ($active ? "#111827" : "#6b7280")};
+  background: ${({ $active }) =>
+    $active ? "rgba(0, 255, 255, 0.12)" : "transparent"};
+  color: ${({ $active }) => ($active ? "#00ffff" : "rgba(0, 255, 255, 0.3)")};
   box-shadow: ${({ $active }) =>
-    $active ? "0 1px 4px rgba(0,0,0,0.10)" : "none"};
+    $active ? "0 0 8px rgba(0, 255, 255, 0.08)" : "none"};
   cursor: pointer;
   transition: all 0.18s;
-
-  text-shadow: ${({ $active }) =>
-    $active ? "0 0 0.5px #111827, 0 0 0.5px #111827" : "none"};
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: ${({ $active }) => ($active ? 700 : 400)};
 
   &:hover:not(:disabled) {
-    color: #111827;
+    color: #00ffff;
+    background: rgba(0, 255, 255, 0.08);
   }
 
   &:disabled {
-    opacity: 0.5;
+    opacity: 0.3;
     cursor: not-allowed;
   }
 
   @media screen and (max-width: 720px) {
     padding: 5px 8px;
+    font-size: 12px;
   }
 `;
 
@@ -401,20 +508,21 @@ export const DeleteAllSessionsButton = styled.button`
   flex-shrink: 0;
   width: 36px;
   height: 36px;
-  border: 1px solid #fecaca;
-  border-radius: 8px;
-  background: #fff1f2;
-  color: #dc2626;
+  border: 1px solid rgba(255, 0, 0, 0.15);
+  border-radius: 4px;
+  background: rgba(255, 0, 0, 0.03);
+  color: #ff4444;
   cursor: pointer;
   transition: all 0.2s;
 
   &:hover:not(:disabled) {
-    background: #fee2e2;
-    border-color: #f87171;
+    background: rgba(255, 0, 0, 0.08);
+    border-color: rgba(255, 0, 0, 0.3);
+    box-shadow: 0 0 8px rgba(255, 0, 0, 0.06);
   }
 
   &:disabled {
-    opacity: 0.5;
+    opacity: 0.3;
     cursor: not-allowed;
   }
 `;
@@ -426,20 +534,21 @@ export const AttachButton = styled.button`
   flex-shrink: 0;
   width: 42px;
   height: 42px;
-  border: 1px solid #e4e7ec;
-  border-radius: 50%;
-  background: #f1f3f6;
-  color: #6f54ff;
+  border: 1px solid rgba(0, 255, 255, 0.15);
+  border-radius: 4px;
+  background: rgba(0, 255, 255, 0.03);
+  color: rgba(0, 255, 255, 0.5);
   cursor: pointer;
   transition: all 0.2s;
 
   &:hover:not(:disabled) {
-    background: #ede9ff;
-    border-color: #c7bdff;
+    background: rgba(0, 255, 255, 0.08);
+    border-color: rgba(0, 255, 255, 0.3);
+    color: #00ffff;
   }
 
   &:disabled {
-    opacity: 0.5;
+    opacity: 0.3;
     cursor: not-allowed;
   }
 `;
@@ -450,18 +559,19 @@ export const AttachmentPreviewWrap = styled.div`
   gap: 8px;
   margin-bottom: 8px;
   padding: 8px;
-  background: #f1f3f6;
-  border-radius: 12px;
+  background: rgba(0, 255, 255, 0.03);
+  border: 1px solid rgba(0, 255, 255, 0.08);
+  border-radius: 4px;
 `;
 
 export const AttachmentPreview = styled.div`
   position: relative;
   width: 64px;
   height: 64px;
-  border-radius: 8px;
+  border-radius: 4px;
   overflow: hidden;
-  border: 1px solid #e4e7ec;
-  background: #fff;
+  border: 1px solid rgba(0, 255, 255, 0.15);
+  background: #050508;
 
   img {
     width: 100%;
@@ -475,7 +585,7 @@ export const LightboxOverlay = styled.div`
   position: fixed;
   inset: 0;
   z-index: 9999;
-  background: rgba(0, 0, 0, 0.85);
+  background: rgba(0, 0, 0, 0.9);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -486,8 +596,9 @@ export const LightboxOverlay = styled.div`
     max-width: 100%;
     max-height: 100%;
     object-fit: contain;
-    border-radius: 8px;
+    border-radius: 4px;
     user-select: none;
+    box-shadow: 0 0 30px rgba(0, 255, 255, 0.08);
   }
 `;
 
@@ -501,17 +612,17 @@ export const AttachmentRemoveButton = styled.button`
   align-items: center;
   justify-content: center;
   padding: 0;
-  border: none;
-  border-radius: 50%;
-  background: rgba(15, 23, 42, 0.6);
-  color: #fff;
+  border: 1px solid rgba(255, 0, 0, 0.3);
+  border-radius: 2px;
+  background: rgba(255, 0, 0, 0.2);
+  color: #ff4444;
   font-size: 14px;
   line-height: 1;
   cursor: pointer;
   transition: background 0.18s;
 
   &:hover:not(:disabled) {
-    background: rgba(15, 23, 42, 0.85);
+    background: rgba(255, 0, 0, 0.4);
   }
 
   &:disabled {
@@ -522,7 +633,7 @@ export const AttachmentRemoveButton = styled.button`
 
 export const SetupPage = styled.div`
   min-height: 100vh;
-  background: #0a0a0f;
+  background: #050508;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -541,7 +652,7 @@ export const SetupCard = styled.div`
   max-width: 400px;
   padding: 40px 32px;
   border: 1px solid rgba(0, 255, 255, 0.12);
-  border-radius: 12px;
+  border-radius: 4px;
   background: rgba(0, 255, 255, 0.02);
   backdrop-filter: blur(12px);
 `;
@@ -549,9 +660,9 @@ export const SetupCard = styled.div`
 export const SetupTitle = styled.h1`
   font-size: 20px;
   font-weight: 700;
-  color: #fff;
+  color: #e0e0ff;
   text-align: center;
-  letter-spacing: 2px;
+  letter-spacing: 4px;
   text-transform: uppercase;
 
   span {
@@ -574,16 +685,16 @@ export const SetupLabel = styled.label`
   font-weight: 600;
   color: rgba(0, 255, 255, 0.5);
   text-transform: uppercase;
-  letter-spacing: 1px;
+  letter-spacing: 2px;
 `;
 
 export const SetupInput = styled.input`
   width: 100%;
   padding: 10px 14px;
   border: 1px solid rgba(0, 255, 255, 0.15);
-  border-radius: 8px;
+  border-radius: 4px;
   background: rgba(0, 255, 255, 0.03);
-  color: #fff;
+  color: #c0c0e0;
   font-size: 14px;
   font-family: monospace;
   outline: none;
@@ -604,13 +715,13 @@ export const SetupButton = styled.button`
   width: 100%;
   padding: 12px;
   border: 1px solid rgba(0, 255, 255, 0.3);
-  border-radius: 8px;
+  border-radius: 4px;
   background: rgba(0, 255, 255, 0.08);
   color: #00ffff;
   font-size: 15px;
   font-weight: 700;
   cursor: pointer;
-  letter-spacing: 2px;
+  letter-spacing: 4px;
   text-transform: uppercase;
   transition: all 0.2s ease;
 
@@ -637,4 +748,39 @@ export const SetupGrid = styled.div`
     linear-gradient(90deg, rgba(0, 255, 255, 0.03) 1px, transparent 1px);
   background-size: 40px 40px;
   pointer-events: none;
+`;
+
+export const Header = styled.header`
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  height: 48px;
+  padding: 0 24px;
+  background: rgba(10, 10, 15, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(0, 255, 255, 0.1);
+  box-sizing: border-box;
+`;
+
+export const BrandTitle = styled.div`
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  flex-shrink: 0;
+  color: #e0e0ff;
+
+  span {
+    background: linear-gradient(135deg, #00ffff, #ff00ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
 `;

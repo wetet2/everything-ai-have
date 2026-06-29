@@ -1,6 +1,7 @@
 import Anthropic from "@anthropic-ai/sdk";
 import { GoogleGenAI, Modality } from "@google/genai";
 import OpenAI from "openai";
+import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect, useMemo, useRef, useState } from "react";
 import Markdown from "react-markdown";
@@ -1265,89 +1266,117 @@ const AiChatComponent = () => {
 
   return (
     <S.Page>
-      <S.SessionSelectWrap>
-        <div style={{ flex: 1, minWidth: 0 }}>
-          <Select<SessionOption, false>
-            options={sessionOptions}
-            value={selectedSessionOption}
-            onChange={(option) => {
-              if (!option) return;
-              handleSelectSession(option.value);
-            }}
-            isSearchable={false}
-            placeholder="세션 선택"
-            isDisabled={isLoading}
-            styles={{
-              control: (base, state) => ({
-                ...base,
-                minHeight: 36,
-                borderRadius: 8,
-                fontSize: 14,
-                borderColor: state.isFocused ? "#94a3b8" : "#d1d5db",
-                boxShadow: "none",
-                "&:hover": {
-                  borderColor: "#94a3b8",
-                },
-              }),
-              valueContainer: (base) => ({
-                ...base,
-                padding: "0 10px",
-              }),
-              indicatorsContainer: (base) => ({
-                ...base,
-                paddingRight: 6,
-              }),
-              indicatorSeparator: () => ({
-                display: "none",
-              }),
-              menu: (base) => ({
-                ...base,
-                zIndex: 10,
-              }),
-              option: (base, state) => {
-                const isCreateOption =
-                  state.data.value === CREATE_SESSION_OPTION_VALUE;
-                return {
+      <Head>
+        <title>AI Chat — Everything AI Have</title>
+      </Head>
+      <S.Header>
+        <S.BrandTitle>
+          <Link href="/" style={{ textDecoration: "none", color: "inherit" }}>
+            AI <span>Chat</span>
+          </Link>
+        </S.BrandTitle>
+        <S.SessionSelectWrap>
+          <div style={{ flex: 1, minWidth: 0, maxWidth: 340 }}>
+            <Select<SessionOption, false>
+              options={sessionOptions}
+              value={selectedSessionOption}
+              onChange={(option) => {
+                if (!option) return;
+                handleSelectSession(option.value);
+              }}
+              isSearchable={false}
+              placeholder="세션 선택"
+              isDisabled={isLoading}
+              styles={{
+                control: (base, state) => ({
                   ...base,
+                  minHeight: 32,
+                  borderRadius: 4,
                   fontSize: 13,
-                  backgroundColor: state.isFocused
-                    ? isCreateOption
-                      ? "#ecfeff"
-                      : "#f3f4f6"
-                    : "#fff",
-                  color: isCreateOption ? "#0f766e" : "#111827",
-                  fontWeight: isCreateOption ? 700 : 500,
-                  cursor: "pointer",
-                  borderBottom: isCreateOption ? "1px solid #cffafe" : "none",
-                };
-              },
-              singleValue: (base, state) => ({
-                ...base,
-                color:
-                  state.data.value === CREATE_SESSION_OPTION_VALUE
-                    ? "#0f766e"
-                    : "#111827",
-                fontWeight:
-                  state.data.value === CREATE_SESSION_OPTION_VALUE ? 700 : 400,
-              }),
-            }}
-          />
-        </div>
-        <S.DeleteSessionButton
-          title="현재 대화 삭제"
-          onClick={handleDeleteSession}
-          disabled={isLoading}
-        >
-          <TrashIcon />
-        </S.DeleteSessionButton>
-        <S.DeleteAllSessionsButton
-          title="전체 대화 삭제"
-          onClick={handleDeleteAllSessions}
-          disabled={isLoading}
-        >
-          <TrashXIcon />
-        </S.DeleteAllSessionsButton>
-      </S.SessionSelectWrap>
+                  borderColor: state.isFocused
+                    ? "rgba(0, 255, 255, 0.5)"
+                    : "rgba(0, 255, 255, 0.15)",
+                  boxShadow: state.isFocused
+                    ? "0 0 8px rgba(0, 255, 255, 0.08)"
+                    : "none",
+                  background: "rgba(0, 255, 255, 0.03)",
+                  "&:hover": {
+                    borderColor: "rgba(0, 255, 255, 0.3)",
+                  },
+                }),
+                valueContainer: (base) => ({
+                  ...base,
+                  padding: "0 8px",
+                }),
+                indicatorsContainer: (base) => ({
+                  ...base,
+                  paddingRight: 4,
+                }),
+                indicatorSeparator: () => ({
+                  display: "none",
+                }),
+                menu: (base) => ({
+                  ...base,
+                  zIndex: 10,
+                  background: "#0d0d1a",
+                  border: "1px solid rgba(0, 255, 255, 0.15)",
+                  borderRadius: 4,
+                }),
+                option: (base, state) => {
+                  const isCreateOption =
+                    state.data.value === CREATE_SESSION_OPTION_VALUE;
+                  return {
+                    ...base,
+                    fontSize: 13,
+                    backgroundColor: state.isFocused
+                      ? "rgba(0, 255, 255, 0.1)"
+                      : "transparent",
+                    color: isCreateOption
+                      ? "#00ffff"
+                      : "#c0c0e0",
+                    fontWeight: isCreateOption ? 700 : 400,
+                    cursor: "pointer",
+                    borderBottom: isCreateOption
+                      ? "1px solid rgba(0, 255, 255, 0.1)"
+                      : "none",
+                  };
+                },
+                singleValue: (base, state) => ({
+                  ...base,
+                  color:
+                    state.data.value === CREATE_SESSION_OPTION_VALUE
+                      ? "#00ffff"
+                      : "#c0c0e0",
+                  fontWeight:
+                    state.data.value === CREATE_SESSION_OPTION_VALUE ? 700 : 400,
+                }),
+                dropdownIndicator: (base) => ({
+                  ...base,
+                  color: "rgba(0, 255, 255, 0.3)",
+                }),
+                placeholder: (base) => ({
+                  ...base,
+                  color: "rgba(0, 255, 255, 0.2)",
+                }),
+              }}
+            />
+          </div>
+          <S.DeleteSessionButton
+            title="현재 대화 삭제"
+            onClick={handleDeleteSession}
+            disabled={isLoading}
+          >
+            <TrashIcon />
+          </S.DeleteSessionButton>
+          <S.DeleteAllSessionsButton
+            title="전체 대화 삭제"
+            onClick={handleDeleteAllSessions}
+            disabled={isLoading}
+          >
+            <TrashXIcon />
+          </S.DeleteAllSessionsButton>
+        </S.SessionSelectWrap>
+      </S.Header>
 
       <S.ChatContainer>
         <S.MessagesArea
@@ -1488,13 +1517,18 @@ const AiChatComponent = () => {
                   ...base,
                   minHeight: 32,
                   height: 32,
-                  borderRadius: 8,
+                  borderRadius: 4,
                   fontSize: 13,
-                  borderColor: state.isFocused ? "#94a3b8" : "#d1d5db",
-                  boxShadow: "none",
+                  borderColor: state.isFocused
+                    ? "rgba(0, 255, 255, 0.5)"
+                    : "rgba(0, 255, 255, 0.12)",
+                  boxShadow: state.isFocused
+                    ? "0 0 6px rgba(0, 255, 255, 0.06)"
+                    : "none",
+                  background: "rgba(0, 255, 255, 0.03)",
                   cursor: "pointer",
                   "&:hover": {
-                    borderColor: "#94a3b8",
+                    borderColor: "rgba(0, 255, 255, 0.3)",
                   },
                 }),
                 valueContainer: (base) => ({
@@ -1514,21 +1548,34 @@ const AiChatComponent = () => {
                   zIndex: 10,
                   minWidth: 160,
                   right: 0,
+                  background: "#0d0d1a",
+                  border: "1px solid rgba(0, 255, 255, 0.15)",
+                  borderRadius: 4,
                 }),
                 option: (base, state) => {
                   return {
                     ...base,
                     fontSize: 13,
-                    backgroundColor: state.isFocused ? "#f3f4f6" : "#fff",
+                    backgroundColor: state.isFocused
+                      ? "rgba(0, 255, 255, 0.1)"
+                      : "transparent",
                     fontWeight: state.data.isFavorite ? "700" : "400",
-                    color: "#111827",
+                    color: state.isFocused ? "#00ffff" : "#c0c0e0",
                     cursor: "pointer",
                   };
                 },
                 singleValue: (base) => ({
                   ...base,
-                  color: "#111827",
+                  color: "#c0c0e0",
                   fontSize: 13,
+                }),
+                dropdownIndicator: (base) => ({
+                  ...base,
+                  color: "rgba(0, 255, 255, 0.3)",
+                }),
+                placeholder: (base) => ({
+                  ...base,
+                  color: "rgba(0, 255, 255, 0.2)",
                 }),
               }}
             />

@@ -30,7 +30,8 @@ export default function TypingGame() {
   const usedRef = useRef(new Set<string>());
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const nextBtnRef = useRef<HTMLButtonElement>(null);
-  const sentenceStartRef = useRef<number | null>(null);
+
+  const [startedAt, setStartedAt] = useState<number | null>(null);
   const localKeystrokesRef = useRef(0);
   const [localKeystrokes, setLocalKeystrokes] = useState(0);
 
@@ -46,9 +47,8 @@ export default function TypingGame() {
   const finishSentence = useCallback(
     (correctCount: number) => {
       const now = Date.now();
-      const sElapsed = sentenceStartRef.current
-        ? (now - sentenceStartRef.current) / 1000
-        : 0;
+      const sElapsed = startedAt ? (now - startedAt) / 1000 : 0;
+      setElapsed(sElapsed);
       sessionCorrectRef.current += correctCount;
       sessionKeystrokesRef.current += localKeystrokesRef.current;
       sessionElapsedRef.current += sElapsed;
@@ -58,7 +58,7 @@ export default function TypingGame() {
       setTotalElapsed(sessionElapsedRef.current);
       setTotalChars(sessionCharsRef.current);
     },
-    [sentence],
+    [sentence, startedAt],
   );
 
   const initSentence = useCallback(() => {
@@ -69,7 +69,7 @@ export default function TypingGame() {
     setIsComplete(false);
     setElapsed(0);
     setLocalKeystrokes(0);
-    sentenceStartRef.current = null;
+    setStartedAt(null);
     localKeystrokesRef.current = 0;
   }, [language]);
 
@@ -78,12 +78,12 @@ export default function TypingGame() {
   }, [initSentence]);
 
   useEffect(() => {
-    if (isComplete || !sentenceStartRef.current) return;
+    if (isComplete || !startedAt) return;
     const timer = setInterval(() => {
-      setElapsed((Date.now() - sentenceStartRef.current!) / 1000);
+      setElapsed((Date.now() - startedAt) / 1000);
     }, 200);
     return () => clearInterval(timer);
-  }, [isComplete, sentence]);
+  }, [isComplete, startedAt]);
 
   const charStates = useMemo<CharState[]>(() => {
     if (!sentence) return [];
@@ -110,10 +110,15 @@ export default function TypingGame() {
     totalKeystrokes + (isComplete ? 0 : localKeystrokes);
   const displayElapsed = totalElapsed + (isComplete ? 0 : elapsed);
 
-  const cpm = useMemo(() => {
+  const cumulativeCpm = useMemo(() => {
     if (displayElapsed < 1) return 0;
     return Math.round(displayCorrect / (displayElapsed / 60));
   }, [displayCorrect, displayElapsed]);
+
+  const currentCpm = useMemo(() => {
+    if (elapsed < 1) return 0;
+    return Math.round(correctCount / (elapsed / 60));
+  }, [correctCount, elapsed]);
 
   const accuracy = useMemo(() => {
     const denominator = totalChars + (isComplete ? 0 : sentence.length);
@@ -125,12 +130,12 @@ export default function TypingGame() {
     (e: React.ChangeEvent<HTMLTextAreaElement>) => {
       if (isComplete) return;
       const value = e.target.value;
-      if (!sentenceStartRef.current && value.length > 0) {
-        sentenceStartRef.current = Date.now();
+      if (!startedAt && value.length > 0) {
+        setStartedAt(Date.now());
       }
       setUserInput(value);
     },
-    [isComplete],
+    [isComplete, startedAt],
   );
 
   const handleKeyDown = useCallback(
@@ -187,7 +192,7 @@ export default function TypingGame() {
   return (
     <S.TypingPage>
       <Head>
-        <title>손은 눈보다 빠르다 - everything-ai-have</title>
+        <title>손은 눈보다 빠르다 - Everything AI Have</title>
       </Head>
       <S.Header>
         <Link href="/" style={{ textDecoration: "none", color: "inherit" }}>
@@ -197,8 +202,12 @@ export default function TypingGame() {
       </S.Header>
       <S.StatsBar>
         <S.StatItem>
-          <S.StatValue>{cpm}</S.StatValue>
-          <S.StatLabel>CPM</S.StatLabel>
+          <S.StatValue>{currentCpm}</S.StatValue>
+          <S.StatLabel>문장 CPM</S.StatLabel>
+        </S.StatItem>
+        <S.StatItem>
+          <S.StatValue>{cumulativeCpm}</S.StatValue>
+          <S.StatLabel>누적 CPM</S.StatLabel>
         </S.StatItem>
         <S.StatItem>
           <S.StatValue>{accuracy}%</S.StatValue>
@@ -234,23 +243,21 @@ export default function TypingGame() {
             </S.Char>
           ))}
         </S.SentenceDisplay>
-        {isComplete ? (
+        <S.TextInput
+          ref={textareaRef}
+          value={userInput}
+          onChange={handleChange}
+          onKeyDown={handleKeyDown}
+          placeholder="여기에 문장을 입력하세요..."
+          autoFocus
+          spellCheck={false}
+        />
+        {isComplete && (
           <S.ResultOverlay>
-            <S.ResultTitle>문장 완료! (Enter: 다음 문장)</S.ResultTitle>
             <S.NextButton ref={nextBtnRef} onClick={handleNext}>
               다음 문장
             </S.NextButton>
           </S.ResultOverlay>
-        ) : (
-          <S.TextInput
-            ref={textareaRef}
-            value={userInput}
-            onChange={handleChange}
-            onKeyDown={handleKeyDown}
-            placeholder="여기에 문장을 입력하세요..."
-            autoFocus
-            spellCheck={false}
-          />
         )}
       </div>
 

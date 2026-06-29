@@ -224,13 +224,7 @@ export const ResultOverlay = styled.div`
   flex-direction: column;
   align-items: center;
   gap: 16px;
-`;
-
-export const ResultTitle = styled.div`
-  font-size: 18px;
-  font-weight: 700;
-  color: rgba(255, 255, 255, 0.6);
-  letter-spacing: 1px;
+  margin-top: 32px;
 `;
 
 export const HelpText = styled.div`

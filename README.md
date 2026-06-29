@@ -1,4 +1,4 @@
-# everything-ai-have
+# Everything AI Have
 
 AI 기반 도구들을 모아둔 Next.js 프로젝트입니다.
 채팅, 드로잉 보드, 3D 가구 배치 세 가지 기능을 제공합니다.

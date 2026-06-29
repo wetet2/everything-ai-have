@@ -34,7 +34,7 @@ export default function NewsPage({ news }: Props) {
   return (
     <Container>
       <Head>
-        <title>AI 뉴스 다이제스트 — everything-ai-have</title>
+        <title>AI 뉴스 다이제스트 — Everything AI Have</title>
         <meta
           name="description"
           content="최신 AI 뉴스를 한눈에 모아보는 AI 뉴스 다이제스트입니다. 인공지능 트렌드와 소식을 날짜별로 정리했습니다."
@@ -43,13 +43,13 @@ export default function NewsPage({ news }: Props) {
           name="keywords"
           content="AI 뉴스, 인공지능, AI 다이제스트, AI 소식, 인공지능 트렌드, Artificial Intelligence, News"
         />
-        <meta name="author" content="everything-ai-have" />
+        <meta name="author" content="Everything AI Have" />
         <meta name="theme-color" content="#0a0a0f" />
         <meta name="robots" content="index, follow" />
         <meta property="og:type" content="website" />
         <meta
           property="og:title"
-          content="AI 뉴스 다이제스트 — everything-ai-have"
+          content="AI 뉴스 다이제스트 — Everything AI Have"
         />
         <meta
           property="og:description"
@@ -58,7 +58,7 @@ export default function NewsPage({ news }: Props) {
         <meta name="twitter:card" content="summary" />
         <meta
           name="twitter:title"
-          content="AI 뉴스 다이제스트 — everything-ai-have"
+          content="AI 뉴스 다이제스트 — Everything AI Have"
         />
         <meta
           name="twitter:description"
@@ -67,8 +67,8 @@ export default function NewsPage({ news }: Props) {
       </Head>
       <Grid />
       <Scanline />
-      <GlowBar $top="15%" $left="10%" $color="#ffdd00" />
-      <GlowBar $top="60%" $left="75%" $color="#2266ff" />
+      <GlowBar $top="15%" $left="10%" $color="#ff00ff" />
+      <GlowBar $top="60%" $left="75%" $color="#00ffff" />
 
       <Content>
         <Badge>
@@ -76,10 +76,13 @@ export default function NewsPage({ news }: Props) {
             AI 뉴스 다이제스트
           </Link>
         </Badge>
-        {/* <Title>
-          인공지능,<br />
-          <span>오늘의 프론티어</span>
-        </Title> */}
+        <Title>
+          <span data-text="AI 뉴스">AI가 말아주는</span>
+          <br />
+          <span className="glitch" data-text="전세계 AI 늬우스">
+            전세계 AI 늬우스
+          </span>
+        </Title>
 
         <List>
           {news.map((item) => (
@@ -99,7 +102,7 @@ export default function NewsPage({ news }: Props) {
           ))}
         </List>
 
-        <Footer>neural feed // everything-ai-have</Footer>
+        <Footer>neural feed // Everything AI Have</Footer>
       </Content>
     </Container>
   );

@@ -44,10 +44,10 @@ export default function Home() {
   return (
     <S.Container>
       <Head>
-        <title>everything-ai-have</title>
+        <title>Everything AI Have</title>
         <meta
           name="description"
-          content="everything-ai-have — 여러 AI 도구를 한곳에 모은 프로젝트입니다."
+          content="Everything AI Have — 여러 AI 도구를 한곳에 모은 프로젝트입니다."
         />
       </Head>
       <S.Toolbar>

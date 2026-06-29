@@ -1,55 +1,55 @@
 import styled from "styled-components";
 
 export const Container = styled.div`
+  position: relative;
   width: 100vw;
   height: 100vh;
-  position: relative;
-  overflow: hidden;
   background: #0a0a0f;
+  overflow: hidden;
 
   &::before {
-    content: "";
     position: absolute;
     inset: 0;
+    z-index: 0;
     background-image:
       linear-gradient(rgba(0, 255, 255, 0.03) 1px, transparent 1px),
       linear-gradient(90deg, rgba(0, 255, 255, 0.03) 1px, transparent 1px);
     background-size: 40px 40px;
+    content: "";
     pointer-events: none;
-    z-index: 0;
   }
 `;
 
 export const Header = styled.header`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   z-index: 10;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
   padding: 8px 16px;
+  color: #ffffff;
   background: rgba(10, 10, 15, 0.9);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border-bottom: 1px solid rgba(0, 255, 255, 0.1);
-  color: #ffffff;
 
   h1 {
+    margin: 0;
     font-size: 14px;
     font-weight: 800;
     letter-spacing: 2px;
     text-transform: uppercase;
-    margin: 0;
     color: #fff;
 
     span {
       background: linear-gradient(135deg, #00ffff, #ff00ff);
+      background-clip: text;
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      background-clip: text;
     }
   }
 
@@ -75,15 +75,15 @@ export const MenuButton = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  color: #00ffff;
+  font-size: 18px;
   background: rgba(0, 255, 255, 0.06);
   border: 1px solid rgba(0, 255, 255, 0.15);
   border-radius: 8px;
-  color: #00ffff;
-  font-size: 18px;
-  width: 36px;
-  height: 36px;
   cursor: pointer;
-  flex-shrink: 0;
   transition: all 0.2s ease;
 
   &:hover {
@@ -101,15 +101,15 @@ export const HeaderToggleButton = styled.button`
   display: none;
   align-items: center;
   justify-content: center;
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  color: #00ffff;
+  font-size: 18px;
   background: rgba(0, 255, 255, 0.06);
   border: 1px solid rgba(0, 255, 255, 0.15);
   border-radius: 8px;
-  color: #00ffff;
-  font-size: 18px;
-  width: 36px;
-  height: 36px;
   cursor: pointer;
-  flex-shrink: 0;
   transition: all 0.2s ease;
 
   &:hover {
@@ -133,19 +133,19 @@ export const Panel = styled.div`
   top: 50px;
   left: 0;
   bottom: 0;
+  z-index: 10;
 
   width: 240px;
   padding: 16px;
-
-  border-radius: 0;
-  border-right: 1px solid rgba(0, 255, 255, 0.08);
+  color: #ffffff;
   background: rgba(10, 10, 15, 0.85);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  color: #ffffff;
+
+  border-radius: 0;
+  border-right: 1px solid rgba(0, 255, 255, 0.08);
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
   overflow-y: auto;
-  z-index: 10;
 `;
 
 export const LeftPanel = styled(Panel)<{ $open?: boolean }>`
@@ -162,9 +162,9 @@ export const RightPanel = styled(Panel)`
 `;
 
 export const Divider = styled.hr`
+  margin: 0;
   border: none;
   border-top: 1px solid rgba(0, 255, 255, 0.08);
-  margin: 0;
 `;
 
 export const SectionTitle = styled.h2`
@@ -191,23 +191,23 @@ export const CollapseAllButton = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-shrink: 0;
   width: 20px;
   height: 20px;
-  flex-shrink: 0;
+  padding: 0;
+  color: rgba(0, 255, 255, 0.4);
+  font-size: 13px;
+  line-height: 1;
   background: none;
   border: 1px solid transparent;
   border-radius: 4px;
-  color: rgba(0, 255, 255, 0.4);
-  font-size: 13px;
   cursor: pointer;
-  padding: 0;
-  line-height: 1;
   transition: all 0.15s ease;
 
   &:hover {
     color: #00ffff;
-    border-color: rgba(0, 255, 255, 0.2);
     background: rgba(0, 255, 255, 0.05);
+    border-color: rgba(0, 255, 255, 0.2);
   }
 `;
 
@@ -226,22 +226,6 @@ export const Button = styled.button<{
   flex: ${(props) => (props.$compact ? "0 0 auto" : "1 1 auto")};
   min-width: ${(props) => (props.$compact ? "0" : "60px")};
   padding: 8px 12px;
-  border: 1px solid
-    ${(props) =>
-      props.$active
-        ? "rgba(0, 255, 255, 0.5)"
-        : props.$danger
-          ? "rgba(255, 0, 0, 0.3)"
-          : "rgba(0, 255, 255, 0.1)"};
-  border-radius: 8px;
-  background: ${(props) =>
-    props.$disabled
-      ? "rgba(255, 255, 255, 0.03)"
-      : props.$danger
-        ? "rgba(255, 0, 0, 0.1)"
-        : props.$active
-          ? "rgba(0, 255, 255, 0.12)"
-          : "rgba(0, 255, 255, 0.03)"};
   color: ${(props) =>
     props.$disabled
       ? "rgba(255, 255, 255, 0.2)"
@@ -252,20 +236,28 @@ export const Button = styled.button<{
           : "rgba(255, 255, 255, 0.7)"};
   font-size: 13px;
   font-weight: 500;
-  cursor: ${(props) => (props.$disabled ? "not-allowed" : "pointer")};
-  transition: all 0.2s ease;
   text-shadow: ${(props) =>
     props.$active ? "0 0 8px rgba(0, 255, 255, 0.4)" : "none"};
+  background: ${(props) =>
+    props.$disabled
+      ? "rgba(255, 255, 255, 0.03)"
+      : props.$danger
+        ? "rgba(255, 0, 0, 0.1)"
+        : props.$active
+          ? "rgba(0, 255, 255, 0.12)"
+          : "rgba(0, 255, 255, 0.03)"};
+  border: 1px solid
+    ${(props) =>
+      props.$active
+        ? "rgba(0, 255, 255, 0.5)"
+        : props.$danger
+          ? "rgba(255, 0, 0, 0.3)"
+          : "rgba(0, 255, 255, 0.1)"};
+  border-radius: 8px;
+  cursor: ${(props) => (props.$disabled ? "not-allowed" : "pointer")};
+  transition: all 0.2s ease;
 
   &:hover {
-    border-color: ${(props) =>
-      props.$disabled
-        ? "rgba(0, 255, 255, 0.1)"
-        : props.$danger
-          ? "rgba(255, 0, 0, 0.5)"
-          : props.$active
-            ? "rgba(0, 255, 255, 0.7)"
-            : "rgba(0, 255, 255, 0.3)"};
     background: ${(props) =>
       props.$disabled
         ? "rgba(255, 255, 255, 0.03)"
@@ -274,6 +266,14 @@ export const Button = styled.button<{
           : props.$active
             ? "rgba(0, 255, 255, 0.18)"
             : "rgba(0, 255, 255, 0.06)"};
+    border-color: ${(props) =>
+      props.$disabled
+        ? "rgba(0, 255, 255, 0.1)"
+        : props.$danger
+          ? "rgba(255, 0, 0, 0.5)"
+          : props.$active
+            ? "rgba(0, 255, 255, 0.7)"
+            : "rgba(0, 255, 255, 0.3)"};
     box-shadow: ${(props) =>
       props.$active ? "0 0 16px rgba(0, 255, 255, 0.15)" : "none"};
   }
@@ -286,13 +286,22 @@ export const Button = styled.button<{
 
 export const ColorInputWrap = styled.div`
   position: relative;
-  width: 32px; /* 원하는 크기 */
+  width: 32px;
   height: 32px;
-  border-radius: 50%; /* 원형으로 설정 */
-  overflow: hidden;
+  border-radius: 50%;
+  overflow: hidden; /* 원하는 크기 */ /* 원형으로 설정 */
 `;
 
 export const ColorInput = styled.input`
+
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200% !important;
+  height: 200% !important;
+  background: none;
+  border: none;
+  cursor: pointer;
   /* width: 100%;
   height: 36px;
   min-height: 36px;
@@ -300,25 +309,16 @@ export const ColorInput = styled.input`
   border-radius: 8px;
   cursor: pointer;
   background: transparent; */
-
-  position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200% !important;
-  height: 200% !important;
-  border: none;
-  cursor: pointer;
-  background: none;
 `;
 
 export const NumberInput = styled.input`
   width: 100%;
   padding: 8px 10px;
-  border: 1px solid rgba(0, 255, 255, 0.15);
-  border-radius: 8px;
-  background: rgba(0, 255, 255, 0.03);
   color: #ffffff;
   font-size: 13px;
+  background: rgba(0, 255, 255, 0.03);
+  border: 1px solid rgba(0, 255, 255, 0.15);
+  border-radius: 8px;
   outline: none;
 
   &:focus {
@@ -330,11 +330,11 @@ export const NumberInput = styled.input`
 export const TextInput = styled.input`
   width: 100%;
   padding: 8px 10px;
-  border: 1px solid rgba(0, 255, 255, 0.15);
-  border-radius: 8px;
-  background: rgba(0, 255, 255, 0.03);
   color: #ffffff;
   font-size: 13px;
+  background: rgba(0, 255, 255, 0.03);
+  border: 1px solid rgba(0, 255, 255, 0.15);
+  border-radius: 8px;
   outline: none;
 
   &:focus {
@@ -357,21 +357,21 @@ export const DimField = styled.div`
 `;
 
 export const DimLabel = styled.span`
+  padding-left: 2px;
   font-size: 10px;
   font-weight: 700;
   color: #71717a;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  padding-left: 2px;
 `;
 
 export const DimInputWrapper = styled.div`
-  position: relative;
   flex: 0 0 auto;
+  position: relative;
 
   input {
-    padding-right: 24px;
     width: 100%;
+    padding-right: 24px;
     box-sizing: border-box;
   }
 `;
@@ -380,11 +380,11 @@ export const DimInlineLabel = styled.span`
   position: absolute;
   right: 8px;
   top: 50%;
-  transform: translateY(-50%);
   font-size: 10px;
   font-weight: 700;
   color: #52525b;
   text-transform: uppercase;
+  transform: translateY(-50%);
   pointer-events: none;
   user-select: none;
 `;
@@ -409,26 +409,26 @@ export const ListItem = styled.div<{
   $dragOver?: boolean;
   $tree?: boolean;
 }>`
-  position: relative;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  position: relative;
   padding: 6px 10px;
-
-  ${(props) => props.$indent && `margin-left: ${10 + props.$indent * 16}px;`}
-
-  border-radius: 6px;
-  background: ${(props) =>
-    props.$selected ? "rgba(0, 255, 255, 0.12)" : "rgba(0, 255, 255, 0.02)"};
   color: ${(props) =>
     props.$selected ? "#00ffff" : "rgba(255, 255, 255, 0.7)"};
   font-size: 13px;
+  text-shadow: ${(props) =>
+    props.$selected ? "0 0 8px rgba(0, 255, 255, 0.3)" : "none"};
+  background: ${(props) =>
+    props.$selected ? "rgba(0, 255, 255, 0.12)" : "rgba(0, 255, 255, 0.02)"};
+
+  border-radius: 6px;
   cursor: pointer;
   transition: all 0.2s ease;
   outline: ${(props) =>
     props.$dragOver ? "1px solid rgba(0, 255, 255, 0.5)" : "none"};
-  text-shadow: ${(props) =>
-    props.$selected ? "0 0 8px rgba(0, 255, 255, 0.3)" : "none"};
+
+  ${(props) => props.$indent && `margin-left: ${10 + props.$indent * 16}px;`}
 
   &:hover {
     background: ${(props) =>
@@ -486,16 +486,16 @@ export const CollapseToggle = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-shrink: 0;
   width: 16px;
   height: 16px;
-  flex-shrink: 0;
-  background: none;
-  border: none;
+  padding: 0;
   color: rgba(0, 255, 255, 0.4);
   font-size: 10px;
-  cursor: pointer;
-  padding: 0;
   line-height: 1;
+  background: none;
+  border: none;
+  cursor: pointer;
 
   &:hover {
     color: #00ffff;
@@ -507,9 +507,9 @@ export const RoomName = styled.span`
   align-items: center;
   gap: 4px;
   min-width: 0;
-  overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  overflow: hidden;
 `;
 
 export const HeaderButtons = styled.div<{ $open?: boolean }>`
@@ -553,17 +553,17 @@ export const OpacitySlider = styled.input`
 `;
 
 export const Toolbar = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
   position: absolute;
   top: 50px;
   left: 240px;
   right: 0px;
   z-index: 5;
-  display: flex;
-  align-items: center;
-  gap: 10px;
   padding: 8px 14px;
   color: #ffffff;
-  flex-wrap: wrap;
   background: rgba(10, 10, 15, 0.5);
   border-bottom: 1px solid rgba(0, 255, 255, 0.06);
 
@@ -575,8 +575,8 @@ export const Toolbar = styled.div`
 `;
 
 export const ToolbarDivider = styled.div`
+  flex-shrink: 0;
   width: 1px;
   height: 22px;
   background: rgba(0, 255, 255, 0.1);
-  flex-shrink: 0;
 `;

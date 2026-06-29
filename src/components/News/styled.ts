@@ -36,16 +36,16 @@ const flicker = keyframes`
 `;
 
 export const Container = styled.div`
-  min-height: 100vh;
-  background: #0a0a0f;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   position: relative;
-  overflow: hidden;
-  font-family: "Pretendard", sans-serif;
+  min-height: 100vh;
   padding: 80px 20px;
+  font-family: "Pretendard", sans-serif;
+  background: #0a0a0f;
+  overflow: hidden;
 `;
 
 export const Grid = styled.div`
@@ -73,23 +73,23 @@ export const Scanline = styled.div`
 
 export const GlowBar = styled.div<{ $top: string; $left: string; $color: string }>`
   position: absolute;
-  width: 300px;
-  height: 300px;
-  border-radius: 50%;
-  background: radial-gradient(circle, ${({ $color }) => $color}25 0%, transparent 70%);
   top: ${({ $top }) => $top};
   left: ${({ $left }) => $left};
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle, ${({ $color }) => $color}25 0%, transparent 70%);
+  border-radius: 50%;
   filter: blur(80px);
   pointer-events: none;
 `;
 
 export const Content = styled.div`
-  position: relative;
-  z-index: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 40px;
+  position: relative;
+  z-index: 1;
   width: 100%;
   max-width: 560px;
 `;
@@ -105,10 +105,10 @@ export const Badge = styled.div`
   font-weight: 700;
 
   &::after {
-    content: "";
     width: 4px;
     height: 4px;
     background: #00ffff;
+    content: "";
     border-radius: 50%;
     animation: ${blink} 1s step-end infinite;
   }
@@ -174,11 +174,11 @@ export const Card = styled.a`
   align-items: center;
   gap: 16px;
   padding: 16px 20px;
-  border: 1px solid rgba(255, 0, 255, 0.15);
-  border-radius: 8px;
+  text-decoration: none;
   background: rgba(255, 255, 255, 0.04);
   backdrop-filter: blur(8px);
-  text-decoration: none;
+  border: 1px solid rgba(255, 0, 255, 0.15);
+  border-radius: 8px;
   transition: all 0.25s ease;
   cursor: pointer;
 
@@ -192,22 +192,22 @@ export const Card = styled.a`
   }
 
   &:hover .arrow {
-    transform: translateX(4px);
     color: #00ffff;
+    transform: translateX(4px);
   }
 `;
 
 export const CardIcon = styled.div`
-  width: 36px;
-  height: 36px;
-  border-radius: 6px;
-  background: rgba(255, 0, 255, 0.08);
-  border: 1px solid rgba(255, 0, 255, 0.2);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 16px;
   flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  font-size: 16px;
+  background: rgba(255, 0, 255, 0.08);
+  border-radius: 6px;
+  border: 1px solid rgba(255, 0, 255, 0.2);
 `;
 
 export const CardText = styled.div`
@@ -230,11 +230,11 @@ export const CardDesc = styled.div`
 `;
 
 export const Arrow = styled.span`
+  flex-shrink: 0;
+  margin-left: auto;
   font-size: 16px;
   color: rgba(255, 0, 255, 0.3);
   transition: all 0.25s ease;
-  margin-left: auto;
-  flex-shrink: 0;
 `;
 
 export const Footer = styled.div`

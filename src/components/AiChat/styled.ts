@@ -26,13 +26,13 @@ const neonPulse = keyframes`
 `;
 
 export const Page = styled.div`
-  position: fixed;
-  inset: 0;
 
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  position: fixed;
+  inset: 0;
 
   padding: 60px 24px 24px;
   background: #050508;
@@ -42,9 +42,9 @@ export const Page = styled.div`
   background-size: 40px 40px;
 
   &::before {
-    content: "";
     position: fixed;
     inset: 0;
+    z-index: 999;
     width: 100%;
     height: 4px;
     background: repeating-linear-gradient(
@@ -54,8 +54,8 @@ export const Page = styled.div`
       rgba(0, 255, 255, 0.03) 2px,
       rgba(0, 255, 255, 0.03) 4px
     );
+    content: "";
     pointer-events: none;
-    z-index: 999;
     animation: ${scanlineMove} 8s linear infinite;
   }
 
@@ -66,19 +66,19 @@ export const Page = styled.div`
 
 export const ChatContainer = styled.div`
   flex: 1;
+  display: flex;
+  flex-direction: column;
+  position: relative;
   min-height: 0;
 
   width: min(1000px, 100%);
+  background: #0a0a14;
   border: 1px solid rgba(0, 255, 255, 0.15);
   border-radius: 4px;
   overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  background: #0a0a14;
   box-shadow:
     0 0 20px rgba(0, 255, 255, 0.05),
     inset 0 0 60px rgba(0, 255, 255, 0.02);
-  position: relative;
 `;
 
 export const SessionSelectWrap = styled.div`
@@ -90,18 +90,18 @@ export const SessionSelectWrap = styled.div`
 export const SessionSelect = styled.select`
   width: 100%;
   height: 36px;
-  border: 1px solid rgba(0, 255, 255, 0.2);
-  border-radius: 4px;
-  background: #0d0d1a;
   padding: 0 36px 0 10px;
   color: #00ffff;
-  appearance: none;
-  -webkit-appearance: none;
-  -moz-appearance: none;
+  background: #0d0d1a;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 20 20' fill='none'%3E%3Cpath d='M5.5 7.5L10 12L14.5 7.5' stroke='%2300ffff' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right 10px center;
   background-size: 18px 18px;
+  border: 1px solid rgba(0, 255, 255, 0.2);
+  border-radius: 4px;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
   outline: none;
 
   &:focus {
@@ -113,8 +113,8 @@ export const SessionSelect = styled.select`
 export const MessagesArea = styled.div`
   flex: 1;
   padding: 18px 16px;
-  overflow-y: auto;
   background: #0a0a14;
+  overflow-y: auto;
 
   &::-webkit-scrollbar {
     width: 5px;
@@ -139,18 +139,18 @@ export const MessagesArea = styled.div`
 `;
 
 export const EmptyMessage = styled.div`
+  margin-top: 24px;
   color: rgba(0, 255, 255, 0.3);
   text-align: center;
-  margin-top: 24px;
   font-size: 14px;
   letter-spacing: 1px;
   text-transform: uppercase;
 `;
 
 export const MessageList = styled.ul`
-  list-style: none;
   padding: 0;
   margin: 0;
+  list-style: none;
 `;
 
 export const MessageItem = styled.li<{ $isUser: boolean }>`
@@ -168,13 +168,13 @@ export const ChatBody = styled.div<{ $isUser: boolean }>`
 
 export const MarkdownContainer = styled.div`
   max-width: 100%;
-  border-radius: 4px;
   padding: 10px 14px;
   line-height: 1.5;
-  border: 1px solid rgba(0, 255, 255, 0.08);
   font-size: 14px;
   color: #c0c0e0;
   line-height: 1.7;
+  border-radius: 4px;
+  border: 1px solid rgba(0, 255, 255, 0.08);
 
   h1,
   h2,
@@ -204,8 +204,8 @@ export const MarkdownContainer = styled.div`
   pre {
     margin: 8px 0;
     padding: 10px 12px;
-    border-radius: 4px;
     background: #050510;
+    border-radius: 4px;
     border: 1px solid rgba(0, 255, 255, 0.08);
     overflow-x: auto;
   }
@@ -224,10 +224,10 @@ export const MarkdownContainer = styled.div`
 
   :not(pre) > code {
     padding: 2px 6px;
-    border-radius: 4px;
-    background: rgba(0, 255, 255, 0.1);
     color: #00ffff;
     word-break: break-word;
+    background: rgba(0, 255, 255, 0.1);
+    border-radius: 4px;
   }
 
   .hljs-keyword,
@@ -313,12 +313,12 @@ export const CopyButton = styled.button`
   top: 10px;
   right: 12px;
   z-index: 1;
-  border: 1px solid rgba(0, 255, 255, 0.2);
-  background: rgba(0, 255, 255, 0.05);
-  color: #00ffff;
-  border-radius: 4px;
   padding: 2px 8px;
+  color: #00ffff;
   font-size: 12px;
+  background: rgba(0, 255, 255, 0.05);
+  border: 1px solid rgba(0, 255, 255, 0.2);
+  border-radius: 4px;
   cursor: pointer;
   transition:
     background-color 0.18s ease,
@@ -336,16 +336,16 @@ export const CopyButton = styled.button`
 `;
 
 export const StatusText = styled.div`
+  margin-bottom: 4px;
   font-size: 12px;
   color: rgba(0, 255, 255, 0.5);
-  margin-bottom: 4px;
   animation: ${neonPulse} 1.5s ease-in-out infinite;
 `;
 
 export const InputArea = styled.div`
-  border-top: 1px solid rgba(0, 255, 255, 0.1);
   padding: 10px 12px;
   background: #0a0a14;
+  border-top: 1px solid rgba(0, 255, 255, 0.1);
 `;
 
 export const InputRow = styled.div`
@@ -357,16 +357,16 @@ export const TextInput = styled.textarea`
   flex: 1;
   min-height: 42px;
   max-height: 180px;
+  padding: 10px 14px;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #c0c0e0;
+  background: rgba(0, 255, 255, 0.03);
   resize: none;
   overflow-y: auto;
   box-sizing: border-box;
-  font-size: 14px;
-  line-height: 1.5;
-  padding: 10px 14px;
   border: 1px solid rgba(0, 255, 255, 0.15);
   border-radius: 4px;
-  background: rgba(0, 255, 255, 0.03);
-  color: #c0c0e0;
   scrollbar-width: none;
   -ms-overflow-style: none;
   outline: none;
@@ -398,11 +398,11 @@ export const SendButton = styled.button`
   flex-shrink: 0;
   width: 42px;
   height: 42px;
-  border: 1px solid rgba(0, 255, 255, 0.3);
-  border-radius: 4px;
   font-size: 16px;
   color: #00ffff;
   background: rgba(0, 255, 255, 0.06);
+  border: 1px solid rgba(0, 255, 255, 0.3);
+  border-radius: 4px;
   cursor: pointer;
   transition: all 0.2s;
 
@@ -419,8 +419,8 @@ export const SendButton = styled.button`
 `;
 
 export const SpinnerIcon = styled(SpinnerIconBase)`
-  animation: ${spin} 0.8s linear infinite;
   color: #00ffff;
+  animation: ${spin} 0.8s linear infinite;
 `;
 
 export const ModelSelectWrap = styled.div`
@@ -438,10 +438,10 @@ export const DeleteSessionButton = styled.button`
   flex-shrink: 0;
   width: 36px;
   height: 36px;
+  color: #ff4444;
+  background: rgba(255, 0, 0, 0.04);
   border: 1px solid rgba(255, 0, 0, 0.2);
   border-radius: 4px;
-  background: rgba(255, 0, 0, 0.04);
-  color: #ff4444;
   cursor: pointer;
   transition: all 0.2s;
 
@@ -461,29 +461,29 @@ export const ProviderToggleWrap = styled.div`
   display: flex;
   align-items: center;
   gap: 0;
+  flex-shrink: 0;
+  padding: 2px;
 
   background: rgba(0, 255, 255, 0.06);
   border: 1px solid rgba(0, 255, 255, 0.12);
   border-radius: 4px;
-  padding: 2px;
-  flex-shrink: 0;
 `;
 
 export const ProviderToggleButton = styled.button<{ $active: boolean }>`
   padding: 5px 18px;
-  border-radius: 2px;
   font-size: 13px;
-  border: none;
+  color: ${({ $active }) => ($active ? "#00ffff" : "rgba(0, 255, 255, 0.3)")};
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: ${({ $active }) => ($active ? 700 : 400)};
   background: ${({ $active }) =>
     $active ? "rgba(0, 255, 255, 0.12)" : "transparent"};
-  color: ${({ $active }) => ($active ? "#00ffff" : "rgba(0, 255, 255, 0.3)")};
+  border-radius: 2px;
+  border: none;
   box-shadow: ${({ $active }) =>
     $active ? "0 0 8px rgba(0, 255, 255, 0.08)" : "none"};
   cursor: pointer;
   transition: all 0.18s;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  font-weight: ${({ $active }) => ($active ? 700 : 400)};
 
   &:hover:not(:disabled) {
     color: #00ffff;
@@ -508,10 +508,10 @@ export const DeleteAllSessionsButton = styled.button`
   flex-shrink: 0;
   width: 36px;
   height: 36px;
+  color: #ff4444;
+  background: rgba(255, 0, 0, 0.03);
   border: 1px solid rgba(255, 0, 0, 0.15);
   border-radius: 4px;
-  background: rgba(255, 0, 0, 0.03);
-  color: #ff4444;
   cursor: pointer;
   transition: all 0.2s;
 
@@ -534,17 +534,17 @@ export const AttachButton = styled.button`
   flex-shrink: 0;
   width: 42px;
   height: 42px;
+  color: rgba(0, 255, 255, 0.5);
+  background: rgba(0, 255, 255, 0.03);
   border: 1px solid rgba(0, 255, 255, 0.15);
   border-radius: 4px;
-  background: rgba(0, 255, 255, 0.03);
-  color: rgba(0, 255, 255, 0.5);
   cursor: pointer;
   transition: all 0.2s;
 
   &:hover:not(:disabled) {
+    color: #00ffff;
     background: rgba(0, 255, 255, 0.08);
     border-color: rgba(0, 255, 255, 0.3);
-    color: #00ffff;
   }
 
   &:disabled {
@@ -568,28 +568,28 @@ export const AttachmentPreview = styled.div`
   position: relative;
   width: 64px;
   height: 64px;
+  background: #050508;
   border-radius: 4px;
   overflow: hidden;
   border: 1px solid rgba(0, 255, 255, 0.15);
-  background: #050508;
 
   img {
+    display: block;
     width: 100%;
     height: 100%;
     object-fit: cover;
-    display: block;
   }
 `;
 
 export const LightboxOverlay = styled.div`
-  position: fixed;
-  inset: 0;
-  z-index: 9999;
-  background: rgba(0, 0, 0, 0.9);
   display: flex;
   align-items: center;
   justify-content: center;
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
   padding: 24px;
+  background: rgba(0, 0, 0, 0.9);
   cursor: zoom-out;
 
   img {
@@ -603,21 +603,21 @@ export const LightboxOverlay = styled.div`
 `;
 
 export const AttachmentRemoveButton = styled.button`
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   position: absolute;
   top: 2px;
   right: 2px;
   width: 18px;
   height: 18px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
   padding: 0;
-  border: 1px solid rgba(255, 0, 0, 0.3);
-  border-radius: 2px;
-  background: rgba(255, 0, 0, 0.2);
   color: #ff4444;
   font-size: 14px;
   line-height: 1;
+  background: rgba(255, 0, 0, 0.2);
+  border: 1px solid rgba(255, 0, 0, 0.3);
+  border-radius: 2px;
   cursor: pointer;
   transition: background 0.18s;
 
@@ -632,12 +632,12 @@ export const AttachmentRemoveButton = styled.button`
 `;
 
 export const SetupModalOverlay = styled.div`
-  position: fixed;
-  inset: 0;
-  z-index: 1000;
   display: flex;
   align-items: center;
   justify-content: center;
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
   padding: 24px;
   background: rgba(0, 0, 0, 0.7);
   backdrop-filter: blur(4px);
@@ -645,18 +645,18 @@ export const SetupModalOverlay = styled.div`
 `;
 
 export const SetupCard = styled.div`
-  position: relative;
-  z-index: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 24px;
+  position: relative;
+  z-index: 1;
   width: 100%;
   max-width: 400px;
   padding: 40px 32px;
+  background: #0a0a14;
   border: 1px solid rgba(0, 255, 255, 0.12);
   border-radius: 4px;
-  background: #0a0a14;
   box-shadow: 0 0 40px rgba(0, 255, 255, 0.1);
 `;
 
@@ -694,12 +694,12 @@ export const SetupLabel = styled.label`
 export const SetupInput = styled.input`
   width: 100%;
   padding: 10px 14px;
-  border: 1px solid rgba(0, 255, 255, 0.15);
-  border-radius: 4px;
-  background: rgba(0, 255, 255, 0.03);
   color: #c0c0e0;
   font-size: 14px;
   font-family: monospace;
+  background: rgba(0, 255, 255, 0.03);
+  border: 1px solid rgba(0, 255, 255, 0.15);
+  border-radius: 4px;
   outline: none;
   box-sizing: border-box;
   transition: border-color 0.2s;
@@ -717,26 +717,28 @@ export const SetupInput = styled.input`
 export const SetupButton = styled.button<{ $variant?: "primary" | "secondary" }>`
   width: 100%;
   padding: 12px;
+  color: ${({ $variant }) =>
+    $variant === "secondary" ? "rgba(255, 255, 255, 0.5)" : "#00ffff"};
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  background: ${({ $variant }) =>
+    $variant === "secondary"
+      ? "rgba(255, 255, 255, 0.03)"
+      : "rgba(0, 255, 255, 0.08)"};
   border: 1px solid
     ${({ $variant }) =>
       $variant === "secondary"
         ? "rgba(255, 255, 255, 0.15)"
         : "rgba(0, 255, 255, 0.3)"};
   border-radius: 4px;
-  background: ${({ $variant }) =>
-    $variant === "secondary"
-      ? "rgba(255, 255, 255, 0.03)"
-      : "rgba(0, 255, 255, 0.08)"};
-  color: ${({ $variant }) =>
-    $variant === "secondary" ? "rgba(255, 255, 255, 0.5)" : "#00ffff"};
-  font-size: 15px;
-  font-weight: 700;
   cursor: pointer;
-  letter-spacing: 4px;
-  text-transform: uppercase;
   transition: all 0.2s ease;
 
   &:hover {
+    color: ${({ $variant }) =>
+      $variant === "secondary" ? "rgba(255, 255, 255, 0.8)" : "#00ffff"};
     background: ${({ $variant }) =>
       $variant === "secondary"
         ? "rgba(255, 255, 255, 0.08)"
@@ -745,8 +747,6 @@ export const SetupButton = styled.button<{ $variant?: "primary" | "secondary" }>
       $variant === "secondary"
         ? "rgba(255, 255, 255, 0.3)"
         : "rgba(0, 255, 255, 0.5)"};
-    color: ${({ $variant }) =>
-      $variant === "secondary" ? "rgba(255, 255, 255, 0.8)" : "#00ffff"};
     box-shadow: ${({ $variant }) =>
       $variant === "secondary" ? "none" : "0 0 20px rgba(0, 255, 255, 0.12)"};
   }
@@ -764,23 +764,23 @@ export const SetupButtonRow = styled.div`
 `;
 
 export const SetupHint = styled.p`
+  margin: 0;
   font-size: 11px;
   color: rgba(255, 255, 255, 0.2);
   text-align: center;
   line-height: 1.5;
-  margin: 0;
 `;
 
 export const Header = styled.header`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   z-index: 100;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
   height: 48px;
   padding: 0 24px;
   background: rgba(10, 10, 15, 0.85);
@@ -791,18 +791,18 @@ export const Header = styled.header`
 `;
 
 export const BrandTitle = styled.div`
+  flex-shrink: 0;
   font-size: 14px;
   font-weight: 800;
   letter-spacing: 3px;
   text-transform: uppercase;
-  flex-shrink: 0;
   color: #e0e0ff;
 
   span {
     background: linear-gradient(135deg, #00ffff, #ff00ff);
+    background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    background-clip: text;
   }
 `;
 
@@ -813,17 +813,17 @@ export const SettingsButton = styled.button`
   flex-shrink: 0;
   width: 36px;
   height: 36px;
+  color: rgba(0, 255, 255, 0.5);
+  background: rgba(0, 255, 255, 0.03);
   border: 1px solid rgba(0, 255, 255, 0.15);
   border-radius: 4px;
-  background: rgba(0, 255, 255, 0.03);
-  color: rgba(0, 255, 255, 0.5);
   cursor: pointer;
   transition: all 0.2s;
 
   &:hover:not(:disabled) {
+    color: #00ffff;
     background: rgba(0, 255, 255, 0.08);
     border-color: rgba(0, 255, 255, 0.3);
-    color: #00ffff;
   }
 
   &:disabled {

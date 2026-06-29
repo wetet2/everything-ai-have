@@ -310,8 +310,8 @@
       "modelType": "couch",
       "roomId": "room-1",
       "name": "소파(GLB) 1",
-      "width": 1800,
-      "depth": 800,
+      "width": 2080,
+      "depth": 757,
       "height": 800,
       "position": [
         -2440.356795873172, -6.776263578034403e-21, -3432.515007460721
@@ -325,8 +325,8 @@
       "modelType": "badDouble",
       "roomId": "room-1",
       "name": "침대 더블(GLB) 2",
-      "width": 1000,
-      "depth": 600,
+      "width": 892,
+      "depth": 1050,
       "height": 350,
       "position": [-2470.3998431563377, 0, 2200],
       "rotation": [0, 0, 0],
@@ -338,9 +338,9 @@
       "modelType": "donkey",
       "roomId": "room-1",
       "name": "당나귀 3",
-      "width": 2201.6985662708894,
-      "depth": 1100.8492831354447,
-      "height": 2201.6985662708894,
+      "width": 348,
+      "depth": 1419,
+      "height": 1200,
       "position": [
         861.7801085427955, -4.440892098500626e-16, -550.7316228914724
       ],

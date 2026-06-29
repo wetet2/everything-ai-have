@@ -321,7 +321,7 @@ export default function Furniture({
           <Suspense fallback={null}>
             <GLBModel
               path={DONKEY_MODEL_PATH}
-              targetHeight={MODEL_TARGET_HEIGHT}
+              targetHeight={base.height}
               animationName={data.animationName}
             />
           </Suspense>
@@ -330,7 +330,7 @@ export default function Furniture({
           <Suspense fallback={null}>
             <GLBModel
               path={DOG_MODEL_PATH}
-              targetHeight={MODEL_TARGET_HEIGHT}
+              targetHeight={base.height}
               animationName={data.animationName}
             />
           </Suspense>
@@ -339,7 +339,7 @@ export default function Furniture({
           <Suspense fallback={null}>
             <GLBModel
               path={COUCH_MODEL_PATH}
-              targetHeight={MODEL_TARGET_HEIGHT}
+              targetHeight={base.height}
             />
           </Suspense>
         )}
@@ -347,7 +347,7 @@ export default function Furniture({
           <Suspense fallback={null}>
             <GLBModel
               path={BAD_DOUBLE_MODEL_PATH}
-              targetHeight={MODEL_TARGET_HEIGHT}
+              targetHeight={base.height}
             />
           </Suspense>
         )}
@@ -355,7 +355,7 @@ export default function Furniture({
           <Suspense fallback={null}>
             <GLBModel
               path={BOOKCASE2_MODEL_PATH}
-              targetHeight={MODEL_TARGET_HEIGHT}
+              targetHeight={base.height}
             />
           </Suspense>
         )}
@@ -363,7 +363,7 @@ export default function Furniture({
           <Suspense fallback={null}>
             <GLBModel
               path={CHAIR2_MODEL_PATH}
-              targetHeight={MODEL_TARGET_HEIGHT}
+              targetHeight={base.height}
             />
           </Suspense>
         )}
@@ -371,7 +371,7 @@ export default function Furniture({
           <Suspense fallback={null}>
             <GLBModel
               path={DOOR2_MODEL_PATH}
-              targetHeight={MODEL_TARGET_HEIGHT}
+              targetHeight={base.height}
             />
           </Suspense>
         )}
@@ -379,7 +379,7 @@ export default function Furniture({
           <Suspense fallback={null}>
             <GLBModel
               path={CLOTHES_DRYER_MODEL_PATH}
-              targetHeight={MODEL_TARGET_HEIGHT}
+              targetHeight={base.height}
             />
           </Suspense>
         )}
@@ -387,7 +387,7 @@ export default function Furniture({
           <Suspense fallback={null}>
             <GLBModel
               path={FRIDGE_MODEL_PATH}
-              targetHeight={MODEL_TARGET_HEIGHT}
+              targetHeight={base.height}
             />
           </Suspense>
         )}
@@ -395,7 +395,7 @@ export default function Furniture({
           <Suspense fallback={null}>
             <GLBModel
               path={SINK_MODEL_PATH}
-              targetHeight={MODEL_TARGET_HEIGHT}
+              targetHeight={base.height}
             />
           </Suspense>
         )}
@@ -403,7 +403,7 @@ export default function Furniture({
           <Suspense fallback={null}>
             <GLBModel
               path={STOVE_MODEL_PATH}
-              targetHeight={MODEL_TARGET_HEIGHT}
+              targetHeight={base.height}
             />
           </Suspense>
         )}
@@ -922,7 +922,6 @@ const CLOTHES_DRYER_MODEL_PATH = "/models/clothes-dryer.glb";
 const FRIDGE_MODEL_PATH = "/models/fridge.glb";
 const SINK_MODEL_PATH = "/models/sink.glb";
 const STOVE_MODEL_PATH = "/models/stove.glb";
-const MODEL_TARGET_HEIGHT = 1200;
 
 useGLTF.preload(DONKEY_MODEL_PATH);
 useGLTF.preload(COUCH_MODEL_PATH);

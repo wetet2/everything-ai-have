@@ -13,19 +13,19 @@ export const scanline = keyframes`
 `;
 
 export const Toolbar = styled.header`
+  display: flex;
+  align-items: center;
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
+  z-index: 100;
   height: 52px;
-  display: flex;
-  align-items: center;
   padding: 0 24px;
   background: rgba(10, 10, 15, 0.7);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border-bottom: 1px solid rgba(0, 255, 255, 0.1);
-  z-index: 100;
 `;
 
 export const ToolbarBrand = styled.div`
@@ -42,14 +42,14 @@ export const ToolbarBrand = styled.div`
 `;
 
 export const Container = styled.div`
-  min-height: 100vh;
-  background: #0a0a0f;
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
-  overflow: hidden;
+  min-height: 100vh;
   padding: 92px 20px 40px;
+  background: #0a0a0f;
+  overflow: hidden;
 `;
 
 export const Grid = styled.div`
@@ -82,16 +82,16 @@ export const Orb = styled.div<{
   $delay: number;
 }>`
   position: absolute;
+  top: ${({ $top }) => $top};
+  left: ${({ $left }) => $left};
   width: ${({ $size }) => $size};
   height: ${({ $size }) => $size};
-  border-radius: 50%;
   background: radial-gradient(
     circle,
     rgba(0, 255, 255, 0.06) 0%,
     transparent 70%
   );
-  top: ${({ $top }) => $top};
-  left: ${({ $left }) => $left};
+  border-radius: 50%;
   filter: blur(60px);
   animation: ${pulse} 5s ease-in-out infinite;
   animation-delay: ${({ $delay }) => $delay}s;
@@ -99,12 +99,12 @@ export const Orb = styled.div<{
 `;
 
 export const Content = styled.div`
-  position: relative;
-  z-index: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 48px;
+  position: relative;
+  z-index: 1;
   width: 100%;
   max-width: 600px;
 `;
@@ -135,10 +135,10 @@ export const Title = styled.h1`
 `;
 
 export const Subtitle = styled.p`
+  margin: -24px 0 0;
   font-size: 14px;
   color: rgba(255, 255, 255, 0.3);
   text-align: center;
-  margin: -24px 0 0;
   letter-spacing: 0.5px;
 `;
 
@@ -159,36 +159,36 @@ export const Card = styled(Link)`
   align-items: center;
   gap: 16px;
   padding: 18px 22px;
-  border: 1px solid rgba(0, 255, 255, 0.12);
-  border-radius: 10px;
+  text-decoration: none;
   background: rgba(0, 255, 255, 0.02);
   backdrop-filter: blur(12px);
-  text-decoration: none;
+  border: 1px solid rgba(0, 255, 255, 0.12);
+  border-radius: 10px;
   transition: all 0.25s ease;
   cursor: pointer;
 
   &:hover {
-    border-color: rgba(0, 255, 255, 0.4);
     background: rgba(0, 255, 255, 0.05);
+    border-color: rgba(0, 255, 255, 0.4);
     box-shadow: 0 0 24px rgba(0, 255, 255, 0.1);
     transform: translateY(-1px);
   }
 `;
 
 export const CardIcon = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
   width: 42px;
   height: 42px;
-  border-radius: 8px;
+  font-size: 20px;
   background: linear-gradient(
     135deg,
     rgba(0, 255, 255, 0.12),
     rgba(255, 0, 255, 0.08)
   );
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 20px;
-  flex-shrink: 0;
+  border-radius: 8px;
 `;
 
 export const CardText = styled.div`
@@ -209,26 +209,26 @@ export const CardDesc = styled.div`
   font-size: 12px;
   color: rgba(255, 255, 255, 0.35);
   white-space: nowrap;
-  overflow: hidden;
   text-overflow: ellipsis;
+  overflow: hidden;
 `;
 
 export const Arrow = styled.span`
+  flex-shrink: 0;
   font-size: 18px;
   color: rgba(0, 255, 255, 0.4);
   transition: transform 0.25s ease;
-  flex-shrink: 0;
 
   ${Card}:hover & {
-    transform: translateX(4px);
     color: #00ffff;
+    transform: translateX(4px);
   }
 `;
 
 export const Footer = styled.div`
+  margin-top: 8px;
   font-size: 10px;
   color: rgba(255, 255, 255, 0.1);
   letter-spacing: 2px;
   text-transform: uppercase;
-  margin-top: 8px;
 `;

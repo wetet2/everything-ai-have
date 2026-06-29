@@ -20,22 +20,26 @@ export const FURNITURE_DEFAULT_DIMENSIONS: Record<
 };
 
 // 모델 타입의 기본 크기 (mm)
+// GLB 모델은 각 모델의 자연스러운 높이(height)를 기준으로 정규화하여
+// 렌더링하므로, width/depth는 그 높이에서의 실제 렌더링 비율로 맞춘다.
+// (fountain은 GLB가 아닌 코드로 그리는 모델이라 기존값 유지)
+// 이 값들이 충돌 박스의 기준이 되므로 렌더링 크기와 일치해야 한다.
 export const MODEL_DEFAULT_DIMENSIONS: Record<
   ModelType,
   { width: number; depth: number; height: number }
 > = {
   fountain: { width: 1200, depth: 1200, height: 1500 },
-  donkey: { width: 1200, depth: 600, height: 1200 },
-  dog: { width: 1200, depth: 600, height: 1200 },
-  couch: { width: 1800, depth: 800, height: 800 },
-  badDouble: { width: 1000, depth: 600, height: 350 },
-  bookcase2: { width: 900, depth: 350, height: 1800 },
-  chair2: { width: 600, depth: 600, height: 850 },
-  door2: { width: 900, depth: 240, height: 2000 },
-  clothesDryer: { width: 600, depth: 600, height: 850 },
-  fridge: { width: 900, depth: 700, height: 1800 },
-  sink: { width: 800, depth: 600, height: 850 },
-  stove: { width: 750, depth: 600, height: 850 },
+  donkey: { width: 348, depth: 1419, height: 1200 },
+  dog: { width: 416, depth: 1618, height: 1200 },
+  couch: { width: 2080, depth: 757, height: 800 },
+  badDouble: { width: 892, depth: 1050, height: 350 },
+  bookcase2: { width: 983, depth: 355, height: 1800 },
+  chair2: { width: 473, depth: 427, height: 850 },
+  door2: { width: 1125, depth: 152, height: 2000 },
+  clothesDryer: { width: 660, depth: 643, height: 850 },
+  fridge: { width: 1427, depth: 679, height: 1800 },
+  sink: { width: 746, depth: 781, height: 850 },
+  stove: { width: 812, depth: 850, height: 850 },
 };
 
 export const TYPE_LABELS: Record<FurnitureType, string> = {

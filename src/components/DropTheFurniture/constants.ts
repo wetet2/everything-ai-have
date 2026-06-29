@@ -62,7 +62,7 @@ export const MODEL_LABELS: Record<ModelType, string> = {
   clothesDryer: "건조기",
   fridge: "냉장고(GLB)",
   sink: "싱크대",
-  stove: "난로",
+  stove: "스토브",
 };
 
 export const MODE_LABELS = {

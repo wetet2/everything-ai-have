@@ -631,14 +631,17 @@ export const AttachmentRemoveButton = styled.button`
   }
 `;
 
-export const SetupPage = styled.div`
-  min-height: 100vh;
-  background: #050508;
+export const SetupModalOverlay = styled.div`
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
   display: flex;
   align-items: center;
   justify-content: center;
-  position: relative;
-  overflow: hidden;
+  padding: 24px;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
 `;
 
 export const SetupCard = styled.div`
@@ -647,14 +650,14 @@ export const SetupCard = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 28px;
+  gap: 24px;
   width: 100%;
   max-width: 400px;
   padding: 40px 32px;
   border: 1px solid rgba(0, 255, 255, 0.12);
   border-radius: 4px;
-  background: rgba(0, 255, 255, 0.02);
-  backdrop-filter: blur(12px);
+  background: #0a0a14;
+  box-shadow: 0 0 40px rgba(0, 255, 255, 0.1);
 `;
 
 export const SetupTitle = styled.h1`
@@ -711,13 +714,21 @@ export const SetupInput = styled.input`
   }
 `;
 
-export const SetupButton = styled.button`
+export const SetupButton = styled.button<{ $variant?: "primary" | "secondary" }>`
   width: 100%;
   padding: 12px;
-  border: 1px solid rgba(0, 255, 255, 0.3);
+  border: 1px solid
+    ${({ $variant }) =>
+      $variant === "secondary"
+        ? "rgba(255, 255, 255, 0.15)"
+        : "rgba(0, 255, 255, 0.3)"};
   border-radius: 4px;
-  background: rgba(0, 255, 255, 0.08);
-  color: #00ffff;
+  background: ${({ $variant }) =>
+    $variant === "secondary"
+      ? "rgba(255, 255, 255, 0.03)"
+      : "rgba(0, 255, 255, 0.08)"};
+  color: ${({ $variant }) =>
+    $variant === "secondary" ? "rgba(255, 255, 255, 0.5)" : "#00ffff"};
   font-size: 15px;
   font-weight: 700;
   cursor: pointer;
@@ -726,9 +737,29 @@ export const SetupButton = styled.button`
   transition: all 0.2s ease;
 
   &:hover {
-    background: rgba(0, 255, 255, 0.15);
-    border-color: rgba(0, 255, 255, 0.5);
-    box-shadow: 0 0 20px rgba(0, 255, 255, 0.12);
+    background: ${({ $variant }) =>
+      $variant === "secondary"
+        ? "rgba(255, 255, 255, 0.08)"
+        : "rgba(0, 255, 255, 0.15)"};
+    border-color: ${({ $variant }) =>
+      $variant === "secondary"
+        ? "rgba(255, 255, 255, 0.3)"
+        : "rgba(0, 255, 255, 0.5)"};
+    color: ${({ $variant }) =>
+      $variant === "secondary" ? "rgba(255, 255, 255, 0.8)" : "#00ffff"};
+    box-shadow: ${({ $variant }) =>
+      $variant === "secondary" ? "none" : "0 0 20px rgba(0, 255, 255, 0.12)"};
+  }
+`;
+
+export const SetupButtonRow = styled.div`
+  display: flex;
+  gap: 8px;
+  width: 100%;
+
+  ${SetupButton} {
+    flex: 1;
+    width: auto;
   }
 `;
 
@@ -738,16 +769,6 @@ export const SetupHint = styled.p`
   text-align: center;
   line-height: 1.5;
   margin: 0;
-`;
-
-export const SetupGrid = styled.div`
-  position: absolute;
-  inset: 0;
-  background-image:
-    linear-gradient(rgba(0, 255, 255, 0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0, 255, 255, 0.03) 1px, transparent 1px);
-  background-size: 40px 40px;
-  pointer-events: none;
 `;
 
 export const Header = styled.header`
@@ -782,5 +803,31 @@ export const BrandTitle = styled.div`
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+  }
+`;
+
+export const SettingsButton = styled.button`
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  border: 1px solid rgba(0, 255, 255, 0.15);
+  border-radius: 4px;
+  background: rgba(0, 255, 255, 0.03);
+  color: rgba(0, 255, 255, 0.5);
+  cursor: pointer;
+  transition: all 0.2s;
+
+  &:hover:not(:disabled) {
+    background: rgba(0, 255, 255, 0.08);
+    border-color: rgba(0, 255, 255, 0.3);
+    color: #00ffff;
+  }
+
+  &:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
   }
 `;

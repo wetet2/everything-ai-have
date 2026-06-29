@@ -12,6 +12,7 @@ import remarkGfm from "remark-gfm";
 
 import ImageIcon from "../../../resources/icons/ImageIcon";
 import SendIcon from "../../../resources/icons/SendIcon";
+import SettingsIcon from "../../../resources/icons/SettingsIcon";
 import TrashIcon from "../../../resources/icons/TrashIcon";
 import TrashXIcon from "../../../resources/icons/TrashXIcon";
 import CopyablePre from "./CopyablePre";
@@ -99,10 +100,6 @@ const AiChatComponent = () => {
   const hasChatGPT = router.isReady && !!tkey;
   const needsSetup = router.isReady && !gkey && !ckey && !tkey;
 
-  const [setupGKey, setSetupGKey] = useState("");
-  const [setupCKey, setSetupCKey] = useState("");
-  const [setupTKey, setSetupTKey] = useState("");
-
   const [provider, setProvider] = useState<AiProvider>("gemini");
 
   const geminiAi = useMemo(
@@ -160,6 +157,12 @@ const AiChatComponent = () => {
   const [attachedImages, setAttachedImages] = useState<AttachedImage[]>([]);
 
   const [lightboxImage, setLightboxImage] = useState<string | null>(null);
+
+  // 설정 모달
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  const [settingsGKey, setSettingsGKey] = useState("");
+  const [settingsCKey, setSettingsCKey] = useState("");
+  const [settingsTKey, setSettingsTKey] = useState("");
 
   // 입력 history (직전 전송 순, 최신이 index 0)
   const inputHistory = useMemo(
@@ -964,6 +967,32 @@ const AiChatComponent = () => {
   }, [lightboxImage]);
 
   useEffect(() => {
+    if (!isSettingsOpen && !needsSetup) return;
+    setSettingsGKey(gkey ?? "");
+    setSettingsCKey(ckey ?? "");
+    setSettingsTKey(tkey ?? "");
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && !needsSetup) setIsSettingsOpen(false);
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [isSettingsOpen, needsSetup, gkey, ckey, tkey]);
+
+  const closeSettings = () => {
+    if (needsSetup) return;
+    setIsSettingsOpen(false);
+  };
+
+  const handleSubmitSettings = () => {
+    const params = new URLSearchParams();
+    if (settingsGKey) params.set("gkey", settingsGKey);
+    if (settingsCKey) params.set("ckey", settingsCKey);
+    if (settingsTKey) params.set("tkey", settingsTKey);
+    setIsSettingsOpen(false);
+    router.replace(`/g?${params.toString()}`);
+  };
+
+  useEffect(() => {
     if (!isUserScrolledUpRef.current) {
       messagesEndRef.current?.scrollIntoView({
         behavior: "smooth",
@@ -1211,60 +1240,6 @@ const AiChatComponent = () => {
 
   if (!isMounted) return null;
 
-  if (needsSetup) {
-    return (
-      <S.SetupPage>
-        <S.SetupGrid />
-        <S.SetupCard>
-          <S.SetupTitle>
-            AI <span>Chat</span>
-          </S.SetupTitle>
-          <S.SetupField>
-            <S.SetupLabel>Gemini API Key (gkey)</S.SetupLabel>
-            <S.SetupInput
-              type="password"
-              placeholder="AIza..."
-              value={setupGKey}
-              onChange={(e) => setSetupGKey(e.target.value)}
-            />
-          </S.SetupField>
-          <S.SetupField>
-            <S.SetupLabel>Claude API Key (ckey)</S.SetupLabel>
-            <S.SetupInput
-              type="password"
-              placeholder="sk-ant-..."
-              value={setupCKey}
-              onChange={(e) => setSetupCKey(e.target.value)}
-            />
-          </S.SetupField>
-          <S.SetupField>
-            <S.SetupLabel>ChatGPT API Key (tkey)</S.SetupLabel>
-            <S.SetupInput
-              type="password"
-              placeholder="sk-proj-..."
-              value={setupTKey}
-              onChange={(e) => setSetupTKey(e.target.value)}
-            />
-          </S.SetupField>
-          <S.SetupButton
-            onClick={() => {
-              const params = new URLSearchParams();
-              if (setupGKey) params.set("gkey", setupGKey);
-              if (setupCKey) params.set("ckey", setupCKey);
-              if (setupTKey) params.set("tkey", setupTKey);
-              router.push(`/g?${params.toString()}`);
-            }}
-          >
-            들어가기
-          </S.SetupButton>
-          <S.SetupHint>
-            API 키는 URL 쿼리로 전달되며 서버에 저장되지 않습니다.
-          </S.SetupHint>
-        </S.SetupCard>
-      </S.SetupPage>
-    );
-  }
-
   return (
     <S.Page>
       <Head>
@@ -1292,6 +1267,7 @@ const AiChatComponent = () => {
                 control: (base, state) => ({
                   ...base,
                   minHeight: 32,
+                  width: 240,
                   borderRadius: 4,
                   fontSize: 13,
                   borderColor: state.isFocused
@@ -1332,9 +1308,7 @@ const AiChatComponent = () => {
                     backgroundColor: state.isFocused
                       ? "rgba(0, 255, 255, 0.1)"
                       : "transparent",
-                    color: isCreateOption
-                      ? "#00ffff"
-                      : "#c0c0e0",
+                    color: isCreateOption ? "#00ffff" : "#c0c0e0",
                     fontWeight: isCreateOption ? 700 : 400,
                     cursor: "pointer",
                     borderBottom: isCreateOption
@@ -1349,7 +1323,9 @@ const AiChatComponent = () => {
                       ? "#00ffff"
                       : "#c0c0e0",
                   fontWeight:
-                    state.data.value === CREATE_SESSION_OPTION_VALUE ? 700 : 400,
+                    state.data.value === CREATE_SESSION_OPTION_VALUE
+                      ? 700
+                      : 400,
                 }),
                 dropdownIndicator: (base) => ({
                   ...base,
@@ -1376,6 +1352,16 @@ const AiChatComponent = () => {
           >
             <TrashXIcon />
           </S.DeleteAllSessionsButton>
+          {!needsSetup && (
+            <S.SettingsButton
+              title="설정"
+              type="button"
+              onClick={() => setIsSettingsOpen(true)}
+              disabled={isLoading}
+            >
+              <SettingsIcon />
+            </S.SettingsButton>
+          )}
         </S.SessionSelectWrap>
       </S.Header>
 
@@ -1649,6 +1635,72 @@ const AiChatComponent = () => {
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src={lightboxImage} alt="확대 이미지" />
         </S.LightboxOverlay>
+      )}
+
+      {(isSettingsOpen || needsSetup) && (
+        <S.SetupModalOverlay onClick={closeSettings}>
+          <S.SetupCard onClick={(e) => e.stopPropagation()}>
+            <S.SetupTitle>
+              {needsSetup ? (
+                <>
+                  AI <span>Chat</span>
+                </>
+              ) : (
+                <>
+                  설정 <span>API Keys</span>
+                </>
+              )}
+            </S.SetupTitle>
+            <S.SetupField>
+              <S.SetupLabel>Gemini API Key (gkey)</S.SetupLabel>
+              <S.SetupInput
+                type="password"
+                placeholder="AIza..."
+                value={settingsGKey}
+                onChange={(e) => setSettingsGKey(e.target.value)}
+              />
+            </S.SetupField>
+            <S.SetupField>
+              <S.SetupLabel>Claude API Key (ckey)</S.SetupLabel>
+              <S.SetupInput
+                type="password"
+                placeholder="sk-ant-..."
+                value={settingsCKey}
+                onChange={(e) => setSettingsCKey(e.target.value)}
+              />
+            </S.SetupField>
+            <S.SetupField>
+              <S.SetupLabel>ChatGPT API Key (tkey)</S.SetupLabel>
+              <S.SetupInput
+                type="password"
+                placeholder="sk-proj-..."
+                value={settingsTKey}
+                onChange={(e) => setSettingsTKey(e.target.value)}
+              />
+            </S.SetupField>
+            {needsSetup ? (
+              <S.SetupButton type="button" onClick={handleSubmitSettings}>
+                들어가기
+              </S.SetupButton>
+            ) : (
+              <S.SetupButtonRow>
+                <S.SetupButton
+                  type="button"
+                  $variant="secondary"
+                  onClick={closeSettings}
+                >
+                  취소
+                </S.SetupButton>
+                <S.SetupButton type="button" onClick={handleSubmitSettings}>
+                  저장
+                </S.SetupButton>
+              </S.SetupButtonRow>
+            )}
+            <S.SetupHint>
+              API 키는 URL 쿼리로 전달되며 서버에 저장되지 않습니다.
+            </S.SetupHint>
+          </S.SetupCard>
+        </S.SetupModalOverlay>
       )}
     </S.Page>
   );

@@ -8,6 +8,7 @@ import {
 } from "react";
 import dynamic from "next/dynamic";
 import Head from "next/head";
+import Link from "next/link";
 import Select, { StylesConfig } from "react-select";
 import {
   Container,
@@ -807,7 +808,9 @@ export default function DropTheFurniture() {
         </MenuButton>
         <div>
           <h1>
-            Drop the <span>Furniture</span>
+            <Link href="/" style={{ textDecoration: "none", color: "inherit" }}>
+              Drop the <span>Furniture</span>
+            </Link>
           </h1>
         </div>
         <HeaderToggleButton onClick={() => setHeaderOpen((v) => !v)}>

@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Head from "next/head";
+import Link from "next/link";
 import { ENGLISH, KOREAN } from "./sentences";
 import * as S from "./styled";
 
@@ -36,22 +37,29 @@ export default function TypingGame() {
   const sessionCorrectRef = useRef(0);
   const sessionKeystrokesRef = useRef(0);
   const sessionElapsedRef = useRef(0);
+  const sessionCharsRef = useRef(0);
   const [totalCorrect, setTotalCorrect] = useState(0);
   const [totalKeystrokes, setTotalKeystrokes] = useState(0);
   const [totalElapsed, setTotalElapsed] = useState(0);
+  const [totalChars, setTotalChars] = useState(0);
 
-  const finishSentence = useCallback(() => {
-    const now = Date.now();
-    const sElapsed = sentenceStartRef.current
-      ? (now - sentenceStartRef.current) / 1000
-      : 0;
-    sessionCorrectRef.current += sentence.length;
-    sessionKeystrokesRef.current += localKeystrokesRef.current;
-    sessionElapsedRef.current += sElapsed;
-    setTotalCorrect(sessionCorrectRef.current);
-    setTotalKeystrokes(sessionKeystrokesRef.current);
-    setTotalElapsed(sessionElapsedRef.current);
-  }, [sentence]);
+  const finishSentence = useCallback(
+    (correctCount: number) => {
+      const now = Date.now();
+      const sElapsed = sentenceStartRef.current
+        ? (now - sentenceStartRef.current) / 1000
+        : 0;
+      sessionCorrectRef.current += correctCount;
+      sessionKeystrokesRef.current += localKeystrokesRef.current;
+      sessionElapsedRef.current += sElapsed;
+      sessionCharsRef.current += sentence.length;
+      setTotalCorrect(sessionCorrectRef.current);
+      setTotalKeystrokes(sessionKeystrokesRef.current);
+      setTotalElapsed(sessionElapsedRef.current);
+      setTotalChars(sessionCharsRef.current);
+    },
+    [sentence],
+  );
 
   const initSentence = useCallback(() => {
     const s = pickSentence(language, usedRef.current);
@@ -98,7 +106,8 @@ export default function TypingGame() {
   }, [correctCount, sentence]);
 
   const displayCorrect = totalCorrect + (isComplete ? 0 : correctCount);
-  const displayKeystrokes = totalKeystrokes + (isComplete ? 0 : localKeystrokes);
+  const displayKeystrokes =
+    totalKeystrokes + (isComplete ? 0 : localKeystrokes);
   const displayElapsed = totalElapsed + (isComplete ? 0 : elapsed);
 
   const cpm = useMemo(() => {
@@ -107,9 +116,10 @@ export default function TypingGame() {
   }, [displayCorrect, displayElapsed]);
 
   const accuracy = useMemo(() => {
-    if (displayKeystrokes === 0) return 100;
-    return Math.round((displayCorrect / displayKeystrokes) * 100);
-  }, [displayCorrect, displayKeystrokes]);
+    const denominator = totalChars + (isComplete ? 0 : sentence.length);
+    if (denominator === 0) return 100;
+    return Math.round((displayCorrect / denominator) * 100);
+  }, [displayCorrect, totalChars, isComplete, sentence]);
 
   const handleChange = useCallback(
     (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -119,12 +129,8 @@ export default function TypingGame() {
         sentenceStartRef.current = Date.now();
       }
       setUserInput(value);
-      if (value === sentence) {
-        finishSentence();
-        setIsComplete(true);
-      }
     },
-    [isComplete, sentence, finishSentence],
+    [isComplete],
   );
 
   const handleKeyDown = useCallback(
@@ -136,11 +142,20 @@ export default function TypingGame() {
         }
         return;
       }
+      if (e.key === "Enter") {
+        e.preventDefault();
+        const correct = sentence
+          .split("")
+          .filter((ch, i) => userInput[i] === ch).length;
+        finishSentence(correct);
+        setIsComplete(true);
+        return;
+      }
       if (e.key.length !== 1) return;
       localKeystrokesRef.current += 1;
       setLocalKeystrokes(localKeystrokesRef.current);
     },
-    [isComplete, initSentence],
+    [isComplete, initSentence, finishSentence, sentence, userInput],
   );
 
   const handleNext = useCallback(() => {
@@ -153,9 +168,11 @@ export default function TypingGame() {
     sessionCorrectRef.current = 0;
     sessionKeystrokesRef.current = 0;
     sessionElapsedRef.current = 0;
+    sessionCharsRef.current = 0;
     setTotalCorrect(0);
     setTotalKeystrokes(0);
     setTotalElapsed(0);
+    setTotalChars(0);
     setLanguage(lang);
   }, []);
 
@@ -168,12 +185,15 @@ export default function TypingGame() {
   }, [sentence, isComplete]);
 
   return (
-    <S.Page>
+    <S.TypingPage>
       <Head>
         <title>손은 눈보다 빠르다 - everything-ai-have</title>
       </Head>
       <S.Header>
-        <S.HeaderAccent>손</S.HeaderAccent>은 <S.HeaderAccent>눈</S.HeaderAccent>보다 빠르다
+        <Link href="/" style={{ textDecoration: "none", color: "inherit" }}>
+          <S.HeaderAccent>손</S.HeaderAccent>은{" "}
+          <S.HeaderAccent>눈</S.HeaderAccent>보다 빠르다
+        </Link>
       </S.Header>
       <S.StatsBar>
         <S.StatItem>
@@ -206,37 +226,35 @@ export default function TypingGame() {
       </S.LangToggle>
 
       <S.ProgressBar $progress={progress} />
+      <div>
+        <S.SentenceDisplay>
+          {sentence.split("").map((char, i) => (
+            <S.Char key={i} $state={charStates[i] || "pending"}>
+              {char === " " ? "\u00A0" : char}
+            </S.Char>
+          ))}
+        </S.SentenceDisplay>
+        {isComplete ? (
+          <S.ResultOverlay>
+            <S.ResultTitle>문장 완료! (Enter: 다음 문장)</S.ResultTitle>
+            <S.NextButton ref={nextBtnRef} onClick={handleNext}>
+              다음 문장
+            </S.NextButton>
+          </S.ResultOverlay>
+        ) : (
+          <S.TextInput
+            ref={textareaRef}
+            value={userInput}
+            onChange={handleChange}
+            onKeyDown={handleKeyDown}
+            placeholder="여기에 문장을 입력하세요..."
+            autoFocus
+            spellCheck={false}
+          />
+        )}
+      </div>
 
-      <S.SentenceDisplay>
-        {sentence.split("").map((char, i) => (
-          <S.Char key={i} $state={charStates[i] || "pending"}>
-            {char === " " ? "\u00A0" : char}
-          </S.Char>
-        ))}
-      </S.SentenceDisplay>
-
-      {isComplete ? (
-        <S.ResultOverlay>
-          <S.ResultTitle>문장 완료! (Enter: 다음 문장)</S.ResultTitle>
-          <S.NextButton ref={nextBtnRef} onClick={handleNext}>
-            다음 문장
-          </S.NextButton>
-        </S.ResultOverlay>
-      ) : (
-        <S.TextInput
-          ref={textareaRef}
-          value={userInput}
-          onChange={handleChange}
-          onKeyDown={handleKeyDown}
-          placeholder="여기에 문장을 입력하세요..."
-          autoFocus
-          spellCheck={false}
-        />
-      )}
-
-      <S.HelpText>
-        {isComplete ? "" : "위 문장을 그대로 입력하세요"}
-      </S.HelpText>
-    </S.Page>
+      <S.HelpText>{isComplete ? "" : "위 문장을 그대로 입력하세요"}</S.HelpText>
+    </S.TypingPage>
   );
 }

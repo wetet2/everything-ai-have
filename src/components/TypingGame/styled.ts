@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export const Page = styled.div`
+export const TypingPage = styled.div`
   position: fixed;
   inset: 0;
   display: flex;
@@ -10,6 +10,11 @@ export const Page = styled.div`
   background: #0a0a0f;
   font-family:
     "Fira Code", "Cascadia Code", "JetBrains Mono", "Consolas", monospace;
+
+  background-image:
+    linear-gradient(rgba(0, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 255, 255, 0.03) 1px, transparent 1px);
+  background-size: 40px 40px;
 `;
 
 export const Header = styled.div`
@@ -64,20 +69,23 @@ export const StatLabel = styled.div`
 `;
 
 export const SentenceDisplay = styled.div`
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: center;
+  max-width: 800px;
+  height: 80px;
+
+  padding: 16px 40px;
+  margin-bottom: 16px;
+  gap: 0px;
+
   font-size: 28px;
   line-height: 1.6;
   text-align: center;
-  max-width: 800px;
-  padding: 32px 40px;
   border-radius: 12px;
-  background: rgba(255, 255, 255, 0.03);
+  background: #1a1a1a;
   border: 1px solid rgba(255, 255, 255, 0.06);
-  margin-bottom: 32px;
-  min-height: 100px;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 4px;
 
   @media (max-width: 600px) {
     font-size: 20px;
@@ -108,20 +116,25 @@ export const Char = styled.span<{
 `;
 
 export const TextInput = styled.textarea`
-  width: 80%;
-  max-width: 600px;
-  height: 100px;
-  padding: 16px 20px;
-  font-size: 20px;
-  /* font-family: inherit; */
-  line-height: 1.5;
+  display: flex;
+  align-items: center;
+
+  font-family: inherit;
+  font-size: 28px;
+  width: 100%;
+  max-width: 800px;
+  height: 80px;
+  padding: 20px 40px 16px 40px;
+  box-sizing: border-box;
   color: #ffffff;
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 10px;
+  font-family: "Pretendard", sans-serif;
+  background: #1a1a1a;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 12px;
   outline: none;
   resize: none;
   transition: border-color 0.15s;
+  white-space: nowrap;
 
   &:focus {
     border-color: rgba(0, 255, 255, 0.3);
@@ -133,7 +146,9 @@ export const TextInput = styled.textarea`
 
   @media (max-width: 600px) {
     width: calc(100% - 32px);
-    font-size: 16px;
+    margin: 0 16px;
+    font-size: 20px;
+    padding: 24px 20px;
   }
 `;
 

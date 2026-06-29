@@ -1,4 +1,5 @@
 import Head from "next/head";
+import Link from "next/link";
 import {
   Container,
   Grid,
@@ -70,7 +71,11 @@ export default function NewsPage({ news }: Props) {
       <GlowBar $top="60%" $left="75%" $color="#2266ff" />
 
       <Content>
-        <Badge>AI 뉴스 다이제스트</Badge>
+        <Badge>
+          <Link href="/" style={{ textDecoration: "none", color: "inherit" }}>
+            AI 뉴스 다이제스트
+          </Link>
+        </Badge>
         {/* <Title>
           인공지능,<br />
           <span>오늘의 프론티어</span>

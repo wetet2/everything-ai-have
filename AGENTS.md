@@ -3,6 +3,20 @@
 - `중요` 모든 채팅은 한글로 표시한다.
 - 주석은 모두 한글로 작성한다.
 
+# css
+
+- `중요` 속성은 순서를 따라 작성한다.
+
+```
+1. flex, align-items, justify-content, gap 등 flex 관련 최우선
+2. position, top,left 등 위치 관련
+3. width, height 관련 등 사이즈 관련
+4. padding, margin 관련 등 영역 관련
+5. font 관련
+6. background 관련
+7. 그외 나머지
+```
+
 ---
 
 name: karpathy-guidelines

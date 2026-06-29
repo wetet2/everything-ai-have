@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import Head from "next/head";
+import Link from "next/link";
 import { CompactPicker } from "react-color";
 import DownloadIcon from "../../../resources/icons/DownloadIcon";
 import PenIcon from "../../../resources/icons/PenIcon";
@@ -1831,7 +1832,9 @@ export default function DrawingBoard() {
       </Head>
       <S.Toolbar>
         <S.ToolbarTitle>
-          Drawing <span>Board</span>
+          <Link href="/" style={{ textDecoration: "none", color: "inherit" }}>
+            Drawing <span>Board</span>
+          </Link>
         </S.ToolbarTitle>
         {/* 모드 선택 */}
         <S.ToolGroup>

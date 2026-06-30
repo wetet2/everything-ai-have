@@ -26,7 +26,6 @@ const neonPulse = keyframes`
 `;
 
 export const Page = styled.div`
-
   display: flex;
   justify-content: center;
   align-items: center;
@@ -85,6 +84,88 @@ export const SessionSelectWrap = styled.div`
   display: flex;
   gap: 8px;
   align-items: center;
+
+  .session-select__control {
+    min-height: 32px;
+    width: 240px;
+    border-radius: 4px;
+    font-size: 13px;
+    border-color: rgba(0, 255, 255, 0.15);
+    box-shadow: none;
+    background: rgba(0, 255, 255, 0.03);
+    cursor: pointer;
+
+    &:hover {
+      border-color: rgba(0, 255, 255, 0.3);
+    }
+
+    &--is-focused {
+      border-color: rgba(0, 255, 255, 0.5);
+      box-shadow: 0 0 8px rgba(0, 255, 255, 0.08);
+    }
+  }
+
+  .session-select__value-container {
+    padding: 0 8px;
+  }
+
+  .session-select__indicators {
+    padding-right: 4px;
+  }
+
+  .session-select__indicator-separator {
+    display: none;
+  }
+
+  .session-select__menu {
+    z-index: 10;
+    background: #0d0d1a;
+    border: 1px solid rgba(0, 255, 255, 0.15);
+    border-radius: 4px;
+  }
+
+  .session-select__option {
+    font-size: 13px;
+    cursor: pointer;
+    background-color: transparent;
+    color: #c0c0e0;
+    font-weight: 400;
+
+    &--is-focused {
+      background-color: rgba(0, 255, 255, 0.1);
+    }
+
+    &[data-is-create="true"] {
+      color: #00ffff;
+      font-weight: 700;
+      border-bottom: 1px solid rgba(0, 255, 255, 0.1);
+    }
+  }
+
+  .session-select__single-value {
+    font-size: 13px;
+    color: #c0c0e0;
+    font-weight: 400;
+
+    &[data-is-create="true"] {
+      color: #00ffff;
+      font-weight: 700;
+    }
+  }
+
+  .session-select__dropdown-indicator {
+    color: rgba(0, 255, 255, 0.3);
+  }
+
+  .session-select__placeholder {
+    color: rgba(0, 255, 255, 0.2);
+  }
+
+  @media screen and (max-width: 720px) {
+    .session-select__control {
+      width: auto;
+    }
+  }
 `;
 
 export const SessionSelect = styled.select`
@@ -284,9 +365,7 @@ export const ChatBubble = styled(MarkdownContainer)<{ $isUser: boolean }>`
       ? "linear-gradient(135deg, rgba(255, 0, 255, 0.15), rgba(255, 0, 255, 0.05))"
       : "linear-gradient(135deg, rgba(0, 255, 255, 0.08), rgba(0, 255, 255, 0.02))"};
   border-color: ${({ $isUser }) =>
-    $isUser
-      ? "rgba(255, 0, 255, 0.2)"
-      : "rgba(0, 255, 255, 0.12)"};
+    $isUser ? "rgba(255, 0, 255, 0.2)" : "rgba(0, 255, 255, 0.12)"};
   border-radius: ${({ $isUser }) =>
     $isUser ? "4px 4px 2px 4px" : "4px 4px 4px 2px"};
   white-space: ${({ $isUser }) => ($isUser ? "pre-wrap" : "")};
@@ -370,7 +449,9 @@ export const TextInput = styled.textarea`
   scrollbar-width: none;
   -ms-overflow-style: none;
   outline: none;
-  transition: border-color 0.2s, box-shadow 0.2s;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
 
   &:focus {
     border-color: rgba(0, 255, 255, 0.4);
@@ -429,6 +510,15 @@ export const ModelSelectWrap = styled.div`
   gap: 6px;
   margin-bottom: 8px;
   white-space: nowrap;
+
+  @media screen and (max-width: 720px) {
+    flex-direction: column;
+    align-items: stretch;
+
+    .model-select {
+      width: 100%;
+    }
+  }
 `;
 
 export const DeleteSessionButton = styled.button`
@@ -467,6 +557,10 @@ export const ProviderToggleWrap = styled.div`
   background: rgba(0, 255, 255, 0.06);
   border: 1px solid rgba(0, 255, 255, 0.12);
   border-radius: 4px;
+
+  @media screen and (max-width: 720px) {
+    width: 100%;
+  }
 `;
 
 export const ProviderToggleButton = styled.button<{ $active: boolean }>`
@@ -496,6 +590,7 @@ export const ProviderToggleButton = styled.button<{ $active: boolean }>`
   }
 
   @media screen and (max-width: 720px) {
+    flex: 1;
     padding: 5px 8px;
     font-size: 12px;
   }
@@ -714,7 +809,9 @@ export const SetupInput = styled.input`
   }
 `;
 
-export const SetupButton = styled.button<{ $variant?: "primary" | "secondary" }>`
+export const SetupButton = styled.button<{
+  $variant?: "primary" | "secondary";
+}>`
   width: 100%;
   padding: 12px;
   color: ${({ $variant }) =>
@@ -788,6 +885,10 @@ export const Header = styled.header`
   -webkit-backdrop-filter: blur(16px);
   border-bottom: 1px solid rgba(0, 255, 255, 0.1);
   box-sizing: border-box;
+
+  @media screen and (max-width: 720px) {
+    padding: 0 16px;
+  }
 `;
 
 export const BrandTitle = styled.div`

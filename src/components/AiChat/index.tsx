@@ -6,7 +6,7 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect, useMemo, useRef, useState } from "react";
 import Markdown from "react-markdown";
-import Select from "react-select";
+import Select, { components } from "react-select";
 import rehypeHighlight from "rehype-highlight";
 import remarkGfm from "remark-gfm";
 
@@ -57,6 +57,32 @@ const CHAT_STORAGE_KEY = "wetet-chat-messages";
 const ACTIVE_SESSION_KEY = "wetet-chat-active-session-id";
 const SETTINGS_STORAGE_KEY = "wetet-settings";
 const CREATE_SESSION_OPTION_VALUE = "__create_session__";
+
+const SessionOption = (props: any) => {
+  const isCreate = props.data.value === CREATE_SESSION_OPTION_VALUE;
+  return (
+    <components.Option
+      {...props}
+      innerProps={{
+        ...props.innerProps,
+        "data-is-create": isCreate ? "true" : "false",
+      }}
+    />
+  );
+};
+
+const SessionSingleValue = (props: any) => {
+  const isCreate = props.data.value === CREATE_SESSION_OPTION_VALUE;
+  return (
+    <components.SingleValue
+      {...props}
+      innerProps={{
+        ...props.innerProps,
+        "data-is-create": isCreate ? "true" : "false",
+      }}
+    />
+  );
+};
 
 const FAVORITE_MODELS_GEMINI = [
   "gemini-3.5-flash",
@@ -1252,92 +1278,22 @@ const AiChatComponent = () => {
           </Link>
         </S.BrandTitle>
         <S.SessionSelectWrap>
-          <div style={{ flex: 1, minWidth: 0, maxWidth: 340 }}>
-            <Select<SessionOption, false>
-              options={sessionOptions}
-              value={selectedSessionOption}
-              onChange={(option) => {
-                if (!option) return;
-                handleSelectSession(option.value);
-              }}
-              isSearchable={false}
-              placeholder="세션 선택"
-              isDisabled={isLoading}
-              styles={{
-                control: (base, state) => ({
-                  ...base,
-                  minHeight: 32,
-                  width: 240,
-                  borderRadius: 4,
-                  fontSize: 13,
-                  borderColor: state.isFocused
-                    ? "rgba(0, 255, 255, 0.5)"
-                    : "rgba(0, 255, 255, 0.15)",
-                  boxShadow: state.isFocused
-                    ? "0 0 8px rgba(0, 255, 255, 0.08)"
-                    : "none",
-                  background: "rgba(0, 255, 255, 0.03)",
-                  "&:hover": {
-                    borderColor: "rgba(0, 255, 255, 0.3)",
-                  },
-                }),
-                valueContainer: (base) => ({
-                  ...base,
-                  padding: "0 8px",
-                }),
-                indicatorsContainer: (base) => ({
-                  ...base,
-                  paddingRight: 4,
-                }),
-                indicatorSeparator: () => ({
-                  display: "none",
-                }),
-                menu: (base) => ({
-                  ...base,
-                  zIndex: 10,
-                  background: "#0d0d1a",
-                  border: "1px solid rgba(0, 255, 255, 0.15)",
-                  borderRadius: 4,
-                }),
-                option: (base, state) => {
-                  const isCreateOption =
-                    state.data.value === CREATE_SESSION_OPTION_VALUE;
-                  return {
-                    ...base,
-                    fontSize: 13,
-                    backgroundColor: state.isFocused
-                      ? "rgba(0, 255, 255, 0.1)"
-                      : "transparent",
-                    color: isCreateOption ? "#00ffff" : "#c0c0e0",
-                    fontWeight: isCreateOption ? 700 : 400,
-                    cursor: "pointer",
-                    borderBottom: isCreateOption
-                      ? "1px solid rgba(0, 255, 255, 0.1)"
-                      : "none",
-                  };
-                },
-                singleValue: (base, state) => ({
-                  ...base,
-                  color:
-                    state.data.value === CREATE_SESSION_OPTION_VALUE
-                      ? "#00ffff"
-                      : "#c0c0e0",
-                  fontWeight:
-                    state.data.value === CREATE_SESSION_OPTION_VALUE
-                      ? 700
-                      : 400,
-                }),
-                dropdownIndicator: (base) => ({
-                  ...base,
-                  color: "rgba(0, 255, 255, 0.3)",
-                }),
-                placeholder: (base) => ({
-                  ...base,
-                  color: "rgba(0, 255, 255, 0.2)",
-                }),
-              }}
-            />
-          </div>
+          <Select<SessionOption, false>
+            classNamePrefix="session-select"
+            options={sessionOptions}
+            value={selectedSessionOption}
+            onChange={(option) => {
+              if (!option) return;
+              handleSelectSession(option.value);
+            }}
+            isSearchable={false}
+            placeholder="세션 선택"
+            isDisabled={isLoading}
+            components={{
+              Option: SessionOption,
+              SingleValue: SessionSingleValue,
+            }}
+          />
           <S.DeleteSessionButton
             title="현재 대화 삭제"
             onClick={handleDeleteSession}
@@ -1482,6 +1438,7 @@ const AiChatComponent = () => {
               )}
             </S.ProviderToggleWrap>
             <Select
+              className="model-select"
               options={modelOptions}
               value={
                 modelOptions.find((opt) => opt.value === selectedModel) ?? null
@@ -1491,7 +1448,7 @@ const AiChatComponent = () => {
                 setSelectedModel(opt.value);
                 saveSettings(provider, opt.value);
               }}
-              isSearchable={false}
+              isSearchable={true}
               isDisabled={isLoading}
               menuPlacement="top"
               styles={{
@@ -1547,7 +1504,11 @@ const AiChatComponent = () => {
                       ? "rgba(0, 255, 255, 0.1)"
                       : "transparent",
                     fontWeight: state.data.isFavorite ? "700" : "400",
-                    color: state.isFocused ? "#00ffff" : "#c0c0e0",
+                    color: state.isFocused
+                      ? "#00ffff"
+                      : state.data.isFavorite
+                        ? "gold"
+                        : "#c0c0e0",
                     cursor: "pointer",
                   };
                 },

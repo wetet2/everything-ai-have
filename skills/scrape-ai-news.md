@@ -138,3 +138,7 @@ IT 뉴스 (해외):
 
 기본: 현재 작업 디렉토리 루트에 `ai-news-YYYY-MM-DD-onwards.md`.
 사용자가 별도 경로 요구하면 그 경로 사용.
+
+## html 생성
+
+생성된 `ai-news-YYYY-MM-DD-onwards.md` 내용을 기반으로 ai-news-summer-cool-style.html 파일을 참고해서 public/news 폴더에 html 파일 생성

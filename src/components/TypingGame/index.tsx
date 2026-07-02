@@ -43,12 +43,14 @@ export default function TypingGame() {
   const [totalKeystrokes, setTotalKeystrokes] = useState(0);
   const [totalElapsed, setTotalElapsed] = useState(0);
   const [totalChars, setTotalChars] = useState(0);
+  const [lastCpm, setLastCpm] = useState(0);
 
   const finishSentence = useCallback(
     (correctCount: number) => {
       const now = Date.now();
       const sElapsed = startedAt ? (now - startedAt) / 1000 : 0;
       setElapsed(sElapsed);
+      setLastCpm(sElapsed < 1 ? 0 : Math.round(correctCount / (sElapsed / 60)));
       sessionCorrectRef.current += correctCount;
       sessionKeystrokesRef.current += localKeystrokesRef.current;
       sessionElapsedRef.current += sElapsed;
@@ -67,7 +69,6 @@ export default function TypingGame() {
     setSentence(s);
     setUserInput("");
     setIsComplete(false);
-    setElapsed(0);
     setLocalKeystrokes(0);
     setStartedAt(null);
     localKeystrokesRef.current = 0;
@@ -116,9 +117,10 @@ export default function TypingGame() {
   }, [displayCorrect, displayElapsed]);
 
   const currentCpm = useMemo(() => {
-    if (elapsed < 1) return 0;
-    return Math.round(correctCount / (elapsed / 60));
-  }, [correctCount, elapsed]);
+    if (isComplete) return lastCpm;
+    if (!startedAt) return lastCpm;
+    return Math.round(correctCount / (elapsed / 60)) || 0;
+  }, [correctCount, elapsed, isComplete, lastCpm, startedAt]);
 
   const accuracy = useMemo(() => {
     const denominator = totalChars + (isComplete ? 0 : sentence.length);
@@ -132,6 +134,7 @@ export default function TypingGame() {
       const value = e.target.value;
       if (!startedAt && value.length > 0) {
         setStartedAt(Date.now());
+        setLastCpm(0);
       }
       setUserInput(value);
     },

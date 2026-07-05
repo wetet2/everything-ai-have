@@ -139,6 +139,40 @@ IT 뉴스 (해외):
 기본: 현재 작업 디렉토리 루트에 `ai-news-YYYY-MM-DD-onwards.md`.
 사용자가 별도 경로 요구하면 그 경로 사용.
 
-## html 생성
+## HTML 변환 (선택)
 
-생성된 `ai-news-YYYY-MM-DD-onwards.md` 내용을 기반으로 ai-news-summer-cool-style.html 파일을 참고해서 public/news 폴더에 html 파일 생성
+사용자가 "화면으로 만들어줘" 등 HTML 생성을 요구하면:
+
+### 참고 템플릿
+
+`public/news/ai-news-digest-0701.html` — 디자인·구조의 기준 파일.
+
+### HTML 생성 규칙
+
+1. 템플릿의 전체 구조(header → summary → stats → 5대 핵심뉴스(key-list) → 주요 흐름(trends) → 접이식 타임라인(timeline) → 요약표 → footer)를 유지.
+2. 색상 테마는 템플릿과 **다른 팔레트**를 사용해 구분 (예: 계곡 청록 → 석양 주황/보라).
+3. 파일명: `public/news/ai-news-digest-{MMDD}.html`
+4. md 내용을 HTML 섹션에 맞게 재구성:
+   - **stats**: 날짜 범위의 대표 숫자 통계 5개 (모델 수, 투자 금액, 벤치마크 점수 등)
+   - **5대 핵심뉴스**: 기간 내 가장 중요한 기사 5건 (key-item)
+   - **주요 흐름**: 5개 테마 트렌드 카드 (trend-card)
+   - **타임라인**: 날짜별로 day → article 구조 (기사당 tag + h4 + summary-text 또는 headlines 리스트)
+   - **요약표**: 날짜별 주요 이벤트 테이블
+5. 모든 `<a>` 링크는 원본 출처 URL 유지, 새 탭(`target="_blank"`)으로 열기.
+6. 고유명사·기술용어는 영어 유지, 나머지는 한글.
+
+### 워크플로우
+
+```
+1. md 파일 읽기
+2. 템플릿 HTML 읽기 (public/news/ai-news-digest-0701.html)
+3. md 내용을 HTML 구조에 맞게 변환해 새 파일 작성
+4. verify: public/news/ai-news-digest-{MMDD}.html 브라우저에서 열어 확인
+```
+
+### 주의
+
+- 템플릿의 `saved from url` 메타 주석은 제거.
+- 템플릿 끝의 Stylus 스타일 블록(`<style class="stylus">...</style>`)은 제거.
+- `@import url(...pretendard.min.css)`는 CDN `<link>`로 대체 (템플릿 최신 방식 유지).
+- 색상 테마 변경 시 `:root` 변수만 교체 — CSS 클래스 구조는 그대로 사용.

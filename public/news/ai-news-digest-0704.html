@@ -1,0 +1,1455 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="2026년 7월 2일~4일 AI 뉴스 다이제스트. GPT-5.6 Family, Claude Sonnet 5, Fable 5 재배포, Google Nano Banana 2, Hugging Face vLLM 인수 등 최신 AI 소식을 한글 요약으로 제공합니다."
+    />
+    <title>AI 뉴스 // 2026.07.02–04</title>
+    <link
+      rel="stylesheet"
+      as="style"
+      crossorigin
+      href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css"
+    />
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Bagel+Fat+One&family=Dongle:wght@300;400;700&family=Jua&family=Pretendard:wght@400;500;700;900&display=swap");
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      :root {
+        --ember: #d97706;
+        --ember-light: #fbbf24;
+        --sunset: #f59e0b;
+        --glow: #fcd34d;
+        --dusk: #7c3aed;
+        --dusk-light: #a78bfa;
+        --night: #1e1b4b;
+        --night-soft: #312e81;
+        --twilight: #ede9fe;
+        --warm: #fef3c7;
+        --stone: #cbd5e1;
+        --slate: #334155;
+        --slate-soft: #64748b;
+        --bg: #fefcf5;
+        --panel: #ffffff;
+        --line: rgba(217, 119, 6, 0.2);
+      }
+
+      @keyframes emberFloat {
+        0%,
+        100% {
+          transform: translateY(0) scale(1);
+          opacity: 0.6;
+        }
+        50% {
+          transform: translateY(-24px) scale(1.08);
+          opacity: 0.9;
+        }
+      }
+      @keyframes lightDance {
+        0%,
+        100% {
+          opacity: 0.4;
+        }
+        50% {
+          opacity: 0.75;
+        }
+      }
+      @keyframes pulseGlow {
+        0%,
+        100% {
+          box-shadow: 0 0 12px rgba(217, 119, 6, 0.15);
+        }
+        50% {
+          box-shadow: 0 0 28px rgba(217, 119, 6, 0.3);
+        }
+      }
+
+      body {
+        background: linear-gradient(
+          170deg,
+          #fefcf5 0%,
+          #fffbeb 20%,
+          #fef3c7 50%,
+          #fdf2f8 100%
+        );
+        color: var(--slate);
+        font-family: "Pretendard", sans-serif;
+        overflow-x: hidden;
+        position: relative;
+        min-height: 100vh;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 0;
+        background:
+          radial-gradient(
+            ellipse 500px 300px at 12% 6%,
+            rgba(217, 119, 6, 0.1) 0%,
+            transparent 65%
+          ),
+          radial-gradient(
+            ellipse 450px 280px at 88% 10%,
+            rgba(245, 158, 11, 0.08) 0%,
+            transparent 60%
+          ),
+          radial-gradient(
+            ellipse 400px 320px at 82% 85%,
+            rgba(124, 58, 237, 0.08) 0%,
+            transparent 60%
+          ),
+          radial-gradient(
+            ellipse 420px 300px at 18% 88%,
+            rgba(217, 119, 6, 0.06) 0%,
+            transparent 55%
+          ),
+          radial-gradient(
+            ellipse 500px 350px at 50% 50%,
+            rgba(254, 243, 199, 0.3) 0%,
+            transparent 70%
+          );
+        animation: emberFloat 26s ease-in-out infinite;
+      }
+
+      body::after {
+        content: "";
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 0;
+        background:
+          repeating-linear-gradient(
+            0deg,
+            transparent,
+            transparent 80px,
+            rgba(255, 255, 255, 0.1) 80px,
+            rgba(255, 255, 255, 0.1) 82px
+          ),
+          radial-gradient(
+            ellipse 600px 200px at 50% 0%,
+            rgba(255, 255, 255, 0.4) 0%,
+            transparent 70%
+          );
+        animation: lightDance 22s ease-in-out infinite;
+        mask-image: linear-gradient(
+          to bottom,
+          transparent 0%,
+          transparent 10%,
+          rgba(0, 0, 0, 0.7) 50%,
+          transparent 90%
+        );
+        -webkit-mask-image: linear-gradient(
+          to bottom,
+          transparent 0%,
+          transparent 10%,
+          rgba(0, 0, 0, 0.7) 50%,
+          transparent 90%
+        );
+      }
+
+      .wrap {
+        position: relative;
+        z-index: 1;
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 40px 24px;
+      }
+
+      header {
+        text-align: center;
+        padding: 64px 20px 44px;
+        position: relative;
+        border-bottom: 2px solid var(--line);
+        margin-bottom: 60px;
+        background: linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0) 0%,
+          rgba(254, 243, 199, 0.5) 100%
+        );
+      }
+      header::before {
+        content: "🌅✨🔥";
+        position: absolute;
+        bottom: -15px;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 22px;
+        letter-spacing: 6px;
+        background: var(--bg);
+        padding: 0 22px;
+      }
+      h1 {
+        font-family: "Jua", "Pretendard", sans-serif;
+        font-weight: 400;
+        font-size: clamp(32px, 6vw, 66px);
+        letter-spacing: 1px;
+        line-height: 1.2;
+        background: linear-gradient(
+          160deg,
+          var(--ember) 0%,
+          var(--ember-light) 35%,
+          var(--sunset) 60%,
+          var(--dusk) 100%
+        );
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        filter: drop-shadow(1px 3px 6px rgba(217, 119, 6, 0.25));
+      }
+      h1 .accent {
+        -webkit-text-fill-color: var(--dusk);
+      }
+      .subtitle {
+        margin-top: 18px;
+        font-size: 15px;
+        color: var(--slate-soft);
+        letter-spacing: 0.5px;
+        font-weight: 700;
+      }
+      .date-stamp {
+        display: inline-block;
+        margin-top: 24px;
+        padding: 10px 22px;
+        border: 2px solid var(--ember);
+        color: var(--ember);
+        font-size: 13px;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+        border-radius: 999px;
+        background: rgba(217, 119, 6, 0.06);
+      }
+
+      .summary {
+        margin-bottom: 60px;
+        padding: 36px;
+        background: linear-gradient(
+          145deg,
+          #ffffff 0%,
+          #fef3c7 45%,
+          #fdf2f8 100%
+        );
+        border: 2px solid rgba(217, 119, 6, 0.18);
+        border-radius: 24px;
+        box-shadow:
+          0 16px 40px rgba(217, 119, 6, 0.08),
+          0 4px 12px rgba(100, 116, 139, 0.06);
+        position: relative;
+        overflow: hidden;
+      }
+      .summary::before {
+        content: "🔥";
+        position: absolute;
+        top: 18px;
+        right: 24px;
+        font-size: 38px;
+        opacity: 0.12;
+        pointer-events: none;
+      }
+      .summary h2 {
+        font-family: "Jua", "Pretendard", sans-serif;
+        color: var(--ember);
+        font-size: 24px;
+        letter-spacing: 0.5px;
+        margin-bottom: 18px;
+      }
+      .summary p {
+        line-height: 1.9;
+        font-size: 16px;
+        color: var(--slate);
+      }
+      .summary .hl {
+        color: var(--dusk);
+        font-weight: 700;
+        background: linear-gradient(
+          transparent 60%,
+          rgba(124, 58, 237, 0.15) 60%
+        );
+        padding: 0 3px;
+      }
+
+      .section-title {
+        font-family: "Jua", "Pretendard", sans-serif;
+        font-size: clamp(24px, 3vw, 36px);
+        letter-spacing: 0.5px;
+        color: var(--ember);
+        margin: 60px 0 30px;
+        padding-bottom: 14px;
+        border-bottom: 2px solid var(--line);
+        position: relative;
+      }
+      .section-title::after {
+        content: " ✦";
+      }
+
+      .trends {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 20px;
+        margin-bottom: 60px;
+      }
+      .trend-card {
+        padding: 28px;
+        background: var(--panel);
+        border: 2px solid var(--line);
+        border-radius: 20px;
+        position: relative;
+        transition:
+          transform 0.3s ease,
+          box-shadow 0.3s ease;
+        box-shadow:
+          0 10px 28px rgba(217, 119, 6, 0.06),
+          0 2px 6px rgba(100, 116, 139, 0.04);
+      }
+      .trend-card:hover {
+        transform: translateY(-6px);
+        box-shadow:
+          0 20px 40px rgba(217, 119, 6, 0.14),
+          0 6px 12px rgba(100, 116, 139, 0.08);
+      }
+      .trend-card:nth-child(1) {
+        border-color: rgba(217, 119, 6, 0.4);
+      }
+      .trend-card:nth-child(2) {
+        border-color: rgba(245, 158, 11, 0.4);
+      }
+      .trend-card:nth-child(3) {
+        border-color: rgba(124, 58, 237, 0.35);
+      }
+      .trend-card:nth-child(4) {
+        border-color: rgba(251, 191, 36, 0.4);
+      }
+      .trend-card:nth-child(5) {
+        border-color: rgba(100, 116, 139, 0.3);
+      }
+      .trend-card .num {
+        font-family: "Bagel Fat One", "Dongle", sans-serif;
+        font-size: 42px;
+        font-weight: 400;
+        opacity: 0.45;
+        line-height: 1;
+      }
+      .trend-card h3 {
+        font-family: "Pretendard", sans-serif;
+        font-weight: 800;
+        font-size: 16px;
+        letter-spacing: 0.2px;
+        margin: 8px 0 14px;
+      }
+      .trend-card p {
+        font-size: 15px;
+        line-height: 1.75;
+        color: var(--slate-soft);
+      }
+      .trend-card:nth-child(1) .num,
+      .trend-card:nth-child(1) h3 {
+        color: var(--ember);
+      }
+      .trend-card:nth-child(2) .num,
+      .trend-card:nth-child(2) h3 {
+        color: var(--sunset);
+      }
+      .trend-card:nth-child(3) .num,
+      .trend-card:nth-child(3) h3 {
+        color: var(--dusk);
+      }
+      .trend-card:nth-child(4) .num,
+      .trend-card:nth-child(4) h3 {
+        color: #b45309;
+      }
+      .trend-card:nth-child(5) .num,
+      .trend-card:nth-child(5) h3 {
+        color: var(--slate-soft);
+      }
+
+      .timeline {
+        margin-bottom: 60px;
+        position: relative;
+        padding-left: 40px;
+      }
+      .timeline::before {
+        content: "";
+        position: absolute;
+        left: 10px;
+        top: 0;
+        bottom: 0;
+        width: 3px;
+        border-radius: 3px;
+        background: linear-gradient(
+          var(--ember) 0%,
+          var(--sunset) 35%,
+          var(--dusk) 70%,
+          var(--slate) 100%
+        );
+        box-shadow: 0 0 10px rgba(217, 119, 6, 0.18);
+      }
+      .day {
+        position: relative;
+        margin-bottom: 50px;
+      }
+      .day::before {
+        content: "🔥";
+        position: absolute;
+        left: -45px;
+        top: 0;
+        width: 30px;
+        height: 30px;
+        font-size: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: var(--panel);
+        border: 2px solid var(--ember);
+        border-radius: 50%;
+        box-shadow: 0 4px 14px rgba(217, 119, 6, 0.2);
+        transition: transform 0.3s ease;
+      }
+      .day:hover::before {
+        transform: scale(1.15);
+      }
+      .day-label {
+        font-family: "Jua", "Pretendard", sans-serif;
+        font-size: 20px;
+        letter-spacing: 0.5px;
+        color: var(--ember);
+        margin-bottom: 18px;
+      }
+
+      .article {
+        background: var(--panel);
+        border: 2px solid var(--line);
+        border-radius: 18px;
+        padding: 24px;
+        margin-bottom: 18px;
+        position: relative;
+        transition: all 0.3s ease;
+        box-shadow:
+          0 6px 18px rgba(217, 119, 6, 0.04),
+          0 1px 4px rgba(100, 116, 139, 0.04);
+      }
+      .article:hover {
+        border-color: var(--ember);
+        transform: translateY(-2px);
+        box-shadow:
+          0 14px 32px rgba(217, 119, 6, 0.13),
+          0 4px 10px rgba(100, 116, 139, 0.08);
+      }
+      .article .tag {
+        display: inline-block;
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+        padding: 5px 14px;
+        border: 1.5px solid;
+        border-radius: 999px;
+        margin-bottom: 10px;
+      }
+      .tag.openai {
+        color: #0891b2;
+        border-color: #0891b2;
+        background: rgba(8, 145, 178, 0.08);
+      }
+      .tag.anthropic {
+        color: #0b7d6e;
+        border-color: #0b7d6e;
+        background: rgba(11, 125, 110, 0.08);
+      }
+      .tag.google {
+        color: #3b82f6;
+        border-color: #3b82f6;
+        background: rgba(59, 130, 246, 0.08);
+      }
+      .tag.nvidia {
+        color: #166534;
+        border-color: #166534;
+        background: rgba(22, 101, 52, 0.08);
+      }
+      .tag.hn {
+        color: #d97706;
+        border-color: #d97706;
+        background: rgba(217, 119, 6, 0.08);
+      }
+      .tag.aitimes {
+        color: var(--ember);
+        border-color: var(--ember);
+        background: rgba(217, 119, 6, 0.08);
+      }
+      .tag.arxiv {
+        color: #6366f1;
+        border-color: #6366f1;
+        background: rgba(99, 102, 241, 0.08);
+      }
+      .tag.venturebeat {
+        color: #166534;
+        border-color: #166534;
+        background: rgba(22, 101, 52, 0.08);
+      }
+      .tag.techcrunch {
+        color: #ea580c;
+        border-color: #ea580c;
+        background: rgba(234, 88, 12, 0.08);
+      }
+      .tag.verge {
+        color: #db2777;
+        border-color: #db2777;
+        background: rgba(219, 39, 119, 0.08);
+      }
+      .tag.huggingface {
+        color: #ca8a04;
+        border-color: #ca8a04;
+        background: rgba(202, 138, 4, 0.08);
+      }
+      .tag.reuters {
+        color: #ea580c;
+        border-color: #ea580c;
+        background: rgba(234, 88, 12, 0.08);
+      }
+      .tag.batch {
+        color: #7c3aed;
+        border-color: #7c3aed;
+        background: rgba(124, 58, 237, 0.08);
+      }
+      .tag.mistral {
+        color: #2563eb;
+        border-color: #2563eb;
+        background: rgba(37, 99, 235, 0.08);
+      }
+
+      .article h4 {
+        font-family: "Pretendard", sans-serif;
+        font-weight: 800;
+        font-size: 18px;
+        letter-spacing: 0.2px;
+        margin-bottom: 12px;
+        color: var(--slate);
+        line-height: 1.5;
+      }
+      .article h4 a {
+        color: inherit;
+        text-decoration: none;
+        border-bottom: 2px solid rgba(217, 119, 6, 0.3);
+        transition: all 0.2s;
+      }
+      .article h4 a:hover {
+        color: var(--ember);
+        border-color: var(--ember);
+      }
+      .article .summary-text {
+        font-size: 15px;
+        line-height: 1.8;
+        color: var(--slate-soft);
+      }
+      .article .summary-text::before {
+        content: "✦ ";
+        color: var(--sunset);
+      }
+      .headlines {
+        margin-top: 14px;
+        padding-left: 8px;
+      }
+      .headlines li {
+        list-style: none;
+        font-size: 13px;
+        line-height: 1.7;
+        padding: 7px 0;
+        border-bottom: 1px dashed var(--line);
+        color: var(--slate);
+      }
+      .headlines li::before {
+        content: "🔥 ";
+        color: var(--sunset);
+      }
+      .headlines a {
+        color: var(--dusk);
+        text-decoration: none;
+        font-weight: 700;
+        transition: color 0.2s;
+      }
+      .headlines a:hover {
+        color: var(--ember);
+      }
+      .headlines .hl-link {
+        color: #7c3aed;
+      }
+
+      .stats {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 16px;
+        margin-bottom: 60px;
+      }
+      .stat {
+        text-align: center;
+        padding: 28px 12px;
+        background: var(--panel);
+        border: 2px solid var(--line);
+        border-radius: 20px;
+        position: relative;
+        overflow: hidden;
+        box-shadow:
+          0 8px 22px rgba(217, 119, 6, 0.06),
+          0 2px 6px rgba(100, 116, 139, 0.04);
+        transition:
+          transform 0.3s ease,
+          box-shadow 0.3s;
+      }
+      .stat:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 16px 34px rgba(217, 119, 6, 0.14);
+      }
+      .stat::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 4px;
+        border-radius: 4px 4px 0 0;
+        background: linear-gradient(
+          90deg,
+          var(--ember),
+          var(--sunset),
+          var(--dusk)
+        );
+      }
+      .stat .big {
+        font-family: "Bagel Fat One", "Dongle", sans-serif;
+        font-size: 38px;
+        font-weight: 400;
+        color: var(--ember);
+        line-height: 1.2;
+      }
+      .stat .lbl {
+        font-size: 13px;
+        letter-spacing: 0.5px;
+        color: var(--slate-soft);
+        margin-top: 8px;
+        font-weight: 600;
+      }
+
+      .key-list {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        margin-bottom: 60px;
+      }
+      .key-item {
+        background: var(--panel);
+        border: 2px solid var(--line);
+        border-radius: 18px;
+        padding: 24px;
+        transition: all 0.3s ease;
+        box-shadow:
+          0 6px 18px rgba(217, 119, 6, 0.04),
+          0 1px 4px rgba(100, 116, 139, 0.04);
+      }
+      .key-item:hover {
+        border-color: var(--ember);
+        transform: translateY(-2px);
+        box-shadow:
+          0 14px 32px rgba(217, 119, 6, 0.13),
+          0 4px 10px rgba(100, 116, 139, 0.08);
+      }
+      .key-item .tag {
+        display: inline-block;
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+        padding: 5px 14px;
+        border: 1.5px solid var(--ember);
+        color: var(--ember);
+        border-radius: 999px;
+        margin-bottom: 10px;
+        background: rgba(217, 119, 6, 0.06);
+      }
+      .key-item h3 {
+        font-family: "Pretendard", sans-serif;
+        font-weight: 800;
+        font-size: 19px;
+        letter-spacing: 0.2px;
+        margin-bottom: 8px;
+        color: var(--slate);
+        line-height: 1.5;
+      }
+      .key-item p {
+        font-size: 15px;
+        line-height: 1.8;
+        color: var(--slate-soft);
+      }
+      .key-item h3 a,
+      .trend-card h3 a,
+      .stat a,
+      .key-item p a {
+        color: inherit;
+        text-decoration: none;
+        display: inline;
+      }
+      .key-item h3 a:hover,
+      .trend-card h3 a:hover {
+        color: var(--ember);
+        opacity: 0.9;
+      }
+      .stat a:hover {
+        opacity: 0.8;
+      }
+      .key-item p::before {
+        content: "✦ ";
+        color: var(--sunset);
+      }
+
+      .hidden-content {
+        max-height: 0;
+        overflow: hidden;
+        opacity: 0;
+        /* transition:
+          max-height 1s ease,
+          opacity 0.6s ease; */
+      }
+      .hidden-content.open {
+        max-height: 50000px;
+        opacity: 1;
+        overflow: visible;
+      }
+
+      .reveal-btn {
+        display: block;
+        width: 100%;
+        max-width: 500px;
+        margin: 0 auto 60px;
+        padding: 22px 32px;
+        font-family: "Jua", "Pretendard", sans-serif;
+        font-size: 22px;
+        font-weight: 400;
+        letter-spacing: 0.5px;
+        color: #fff;
+        background: linear-gradient(135deg, var(--ember) 0%, var(--dusk) 100%);
+        border: none;
+        border-radius: 999px;
+        cursor: pointer;
+        position: relative;
+        transition: all 0.4s ease;
+        box-shadow:
+          0 14px 32px rgba(217, 119, 6, 0.28),
+          0 4px 8px rgba(124, 58, 237, 0.15);
+      }
+      .reveal-btn:hover {
+        transform: scale(1.03);
+        box-shadow:
+          0 20px 42px rgba(217, 119, 6, 0.4),
+          0 8px 16px rgba(124, 58, 237, 0.22);
+        background: linear-gradient(135deg, var(--dusk) 0%, var(--ember) 100%);
+      }
+      .reveal-btn .arrow {
+        display: inline-block;
+        transition: transform 0.4s;
+      }
+      .reveal-btn.open .arrow {
+        transform: rotate(180deg);
+      }
+
+      footer {
+        text-align: center;
+        padding: 40px 20px;
+        border-top: 2px solid var(--line);
+        margin-top: 40px;
+        font-size: 13px;
+        color: var(--slate-soft);
+        letter-spacing: 0.5px;
+      }
+      footer .src {
+        color: var(--ember);
+        font-weight: 700;
+      }
+
+      @media (max-width: 700px) {
+        .wrap {
+          padding: 20px 12px;
+        }
+        .timeline {
+          padding-left: 28px;
+        }
+        .day::before {
+          left: -35px;
+          width: 24px;
+          height: 24px;
+          font-size: 12px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <header>
+        <h1>AI <span class="accent">NEWS</span> // 2026</h1>
+        <div class="subtitle">
+          불꽃 인텔리전스 브리핑 · GPT-5.6 Family 출시와 Claude Sonnet 5
+        </div>
+        <div class="date-stamp">2026.07.02 – 07.04 // 수집 07.05</div>
+      </header>
+
+      <!-- 핵심 요약 -->
+      <section class="summary">
+        <h2>◆ 미션 브리핑</h2>
+        <p>
+          이번 호 가장 주목받은 이슈는
+          <span class="hl"
+            >OpenAI GPT-5.6 Family (Sol·Omni·Flash) 공식 출시</span
+          >,
+          <span class="hl"
+            >Anthropic Claude Sonnet 5 + Fable 5 안전 강화 재배포</span
+          >,
+          <span class="hl"
+            >Google Nano Banana 2 Lite·Gemini Omni Flash 온디바이스 경량
+            모델</span
+          >, <span class="hl">Hugging Face vLLM 인수로 채용 플랫폼 확장</span>,
+          <span class="hl"
+            >Alibaba Claude Code 전면 금지, 중국·미국 AI 경쟁 격화</span
+          >입니다.
+        </p>
+      </section>
+
+      <!-- 통계 -->
+      <div class="stats">
+        <div class="stat">
+          <div class="big">
+            <a href="https://openai.com/blog" target="_blank">3</a>
+          </div>
+          <div class="lbl">OpenAI GPT-5.6 Family (Sol·Omni·Flash)</div>
+        </div>
+        <div class="stat">
+          <div class="big">
+            <a href="https://www.anthropic.com/blog" target="_blank">3</a>
+          </div>
+          <div class="lbl">Anthropic 동시 발표 (Sonnet 5·Fable 5·Science)</div>
+        </div>
+        <div class="stat">
+          <div class="big">
+            <a href="https://ai.googleblog.com" target="_blank">3</a>
+          </div>
+          <div class="lbl">Google 신규 모델 (Nano 2 Lite·Omni Flash·Spark)</div>
+        </div>
+        <div class="stat">
+          <div class="big">
+            <a href="https://huggingface.co/blog" target="_blank">vLLM</a>
+          </div>
+          <div class="lbl">Hugging Face, vLLM 인수 + HF Jobs</div>
+        </div>
+        <div class="stat">
+          <div class="big">
+            <a href="https://www.aitimes.com" target="_blank">$4B</a>
+          </div>
+          <div class="lbl">Kling AI 기업가치 (중국 AI 비디오)</div>
+        </div>
+      </div>
+
+      <!-- 5대 핵심뉴스 -->
+      <h2 class="section-title">5대 핵심뉴스 // 주요 뉴스</h2>
+
+      <div class="key-list">
+        <div class="key-item">
+          <span
+            class="tag"
+            style="
+              border-color: #0891b2;
+              color: #0891b2;
+              background: rgba(8, 145, 178, 0.08);
+            "
+            >OpenAI</span
+          >
+          <h3>
+            <a href="https://openai.com/blog" target="_blank"
+              >GPT-5.6 Family 전격 출시 — Sol·Omni·Flash 3종 라인업</a
+            >
+          </h3>
+          <p>
+            GPT-5.6 Sol (플래그십 추론), GPT-5.6 Omni (멀티모달), GPT-5.6 Flash
+            (경량) 동시 출시. Sol Preview는 수학·과학·코딩에서 이전 대비 평균
+            25% 향상. GeneBench-Pro 유전체 분석 벤치마크도 공개.
+          </p>
+        </div>
+        <div class="key-item">
+          <span
+            class="tag"
+            style="
+              border-color: #0b7d6e;
+              color: #0b7d6e;
+              background: rgba(11, 125, 110, 0.08);
+            "
+            >Anthropic</span
+          >
+          <h3>
+            <a href="https://www.anthropic.com/blog" target="_blank"
+              >Claude Sonnet 5 출시 + Fable 5 안전 강화 재배포</a
+            >
+          </h3>
+          <p>
+            Claude Sonnet 5 (구 Sonnet 4.5)는 중간 규모 모델로 추론-속도 균형
+            강화. Fable 5는 환각 대응을 강화한 안전 분류기 적용 재배포. Claude
+            Science 과학 실험 자동화 플랫폼 정식 출시. Fable Safeguards 환각
+            방지 장치 도입.
+          </p>
+        </div>
+        <div class="key-item">
+          <span
+            class="tag"
+            style="
+              border-color: #3b82f6;
+              color: #3b82f6;
+              background: rgba(59, 130, 246, 0.08);
+            "
+            >Google</span
+          >
+          <h3>
+            <a href="https://ai.googleblog.com" target="_blank"
+              >Nano Banana 2 Lite·Gemini Omni Flash·Gemini Spark</a
+            >
+          </h3>
+          <p>
+            Nano Banana 2 Lite는 온디바이스 경량 비전 모델로 1.2ms 추론. Gemini
+            Omni Flash는 저지연 멀티모달. Gemini Spark는 교육용 맞춤형 튜터링
+            에디션. Google AI Declaration — AI 책임 광고 선언문도 발표.
+          </p>
+        </div>
+        <div class="key-item">
+          <span
+            class="tag"
+            style="
+              border-color: #ca8a04;
+              color: #ca8a04;
+              background: rgba(202, 138, 4, 0.08);
+            "
+            >Hugging Face</span
+          >
+          <h3>
+            <a href="https://huggingface.co/blog" target="_blank"
+              >vLLM 인수 + HF Jobs 채용 플랫폼 + ScarfBench</a
+            >
+          </h3>
+          <p>
+            vLLM 추론 엔진을 Hugging Face가 인수, HF Jobs로 채용 플랫폼 확장.
+            Cerebras+Gemma 4 음성 AI, ScarfBench(환각 평가 벤치마크), Feature
+            Every Eval Ever(3000+ 평가 통합), DiScoFormer(확산 트랜스포머 SOTA)
+            동시 발표.
+          </p>
+        </div>
+        <div class="key-item">
+          <span
+            class="tag"
+            style="
+              border-color: #ea580c;
+              color: #ea580c;
+              background: rgba(234, 88, 12, 0.08);
+            "
+            >산업·정책</span
+          >
+          <h3>
+            <a href="https://techcrunch.com" target="_blank"
+              >Alibaba Claude Code 금지 · Midjourney Hollywood · MS Copilot OS
+              유출</a
+            >
+          </h3>
+          <p>
+            Alibaba, 직원 내부 Claude Code 사용 전면 금지. Midjourney, 영화
+            제작사와 AI 영상 생성 계약. Microsoft Copilot OS 세부 사항 유출 —
+            차세대 AI 네이티브 OS. Cloudflare, AI 트레이닝 크롤링 제한 강화.
+            Weave Robotics Isaac 1 가정용 로봇팔 $7,999 공개.
+          </p>
+        </div>
+      </div>
+
+      <!-- 주요 흐름 -->
+      <h2 class="section-title">주요 흐름 // 트렌드</h2>
+      <div class="trends">
+        <div class="trend-card">
+          <div class="num">01</div>
+          <h3>
+            <a href="https://openai.com/blog" target="_blank"
+              >GPT-5.6 시대 개막</a
+            >
+          </h3>
+          <p>
+            Sol(추론) · Omni(멀티모달) · Flash(경량) 3종 구성으로 사용층별
+            최적화. Sol Preview 벤치마크 25% 향상. GeneBench-Pro로 바이오 영역
+            확장.
+          </p>
+        </div>
+        <div class="trend-card">
+          <div class="num">02</div>
+          <h3>
+            <a href="https://www.anthropic.com/blog" target="_blank"
+              >AI 안전성·환각 대응 강화</a
+            >
+          </h3>
+          <p>
+            Fable 5 재배포에 강화된 안전 분류기·Fable Safeguards 적용.
+            Anthropic·NVIDIA BioNeMo+Claude Science 협력. ScarfBench 환각 평가
+            벤치마크 등장.
+          </p>
+        </div>
+        <div class="trend-card">
+          <div class="num">03</div>
+          <h3>
+            <a href="https://ai.googleblog.com" target="_blank"
+              >온디바이스·경량 모델 확산</a
+            >
+          </h3>
+          <p>
+            Google Nano Banana 2 Lite 1.2ms 추론, Mistral Leanstral 1.5, Amazon
+            온디바이스 AI 칩, Gemini Omni Flash — 엣지 AI 경쟁 가속.
+          </p>
+        </div>
+        <div class="trend-card">
+          <div class="num">04</div>
+          <h3>
+            <a href="https://venturebeat.com" target="_blank"
+              >AI-바이오 융합 가속화</a
+            >
+          </h3>
+          <p>
+            NVIDIA BioNeMo+Claude Science 신약 발견 파이프라인. OpenAI
+            GeneBench-Pro 유전체 분석. Anthropic 제약사 신약 개발 프로젝트 확대.
+          </p>
+        </div>
+        <div class="trend-card">
+          <div class="num">05</div>
+          <h3>
+            <a href="https://www.aitimes.com" target="_blank"
+              >중국·미국 AI 패권 경쟁</a
+            >
+          </h3>
+          <p>
+            Alibaba Claude Code 금지, Z.ai ZCode SWE-bench SOTA, Kling AI $4B
+            평가. 미국·중국 간 AI 모델·데이터·크롤링 규제 격화.
+          </p>
+        </div>
+      </div>
+
+      <!-- 더보기 버튼 -->
+      <button class="reveal-btn" id="revealBtn" onclick="toggleMore()">
+        <span class="arrow">▼</span> &nbsp;타임라인 보기 &nbsp;<span
+          class="arrow"
+          >▼</span
+        >
+      </button>
+
+      <div class="hidden-content" id="moreContent">
+        <!-- 타임라인 -->
+        <h2 class="section-title">타임라인</h2>
+        <div class="timeline">
+          <!-- 07.02 -->
+          <div class="day">
+            <div class="day-label">⏵ 2026.07.02 (목) — 논쟁과 전조</div>
+
+            <div class="article">
+              <span class="tag hn">Hacker News</span>
+              <h4>Hacker News 주요 헤드라인</h4>
+              <ul class="headlines">
+                <li>
+                  GPT-5.5 Codex Issues — 코드 생성 장기 컨텍스트 불안정
+                  <a href="https://news.ycombinator.com">[link]</a>
+                </li>
+                <li>
+                  Claude Code Cache Leakage — 캐시 메모리 민감 정보 유출 가능성
+                  <a href="https://news.ycombinator.com">[link]</a>
+                </li>
+                <li>
+                  Better Models, Worse Tools — 모델 성능 대비 개발자 도구 품질
+                  정체 <a href="https://news.ycombinator.com">[link]</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- 07.03 -->
+          <div class="day">
+            <div class="day-label">
+              ⏵ 2026.07.03 (금) — GPT-5.6 Family·구글·엔비디아
+            </div>
+
+            <div class="article">
+              <span class="tag batch">The Batch (Andrew Ng)</span>
+              <h4>
+                <a href="https://www.deeplearning.ai/the-batch" target="_blank"
+                  >Issue 360 — GPT-5.6 Family 공식 보도</a
+                >
+              </h4>
+              <p class="summary-text">
+                GPT-5.6 Sol(플래그십 추론), GPT-5.6 Omni(멀티모달), GPT-5.6
+                Flash(경량) 동시 출시. 로봇 훈련 Domain Randomize 기법 발전. LLM
+                기반 에이전트 오케스트레이션 모델이 모델을 호출하는 패턴 확산.
+              </p>
+            </div>
+
+            <div class="article">
+              <span class="tag google">Google AI Blog</span>
+              <h4>
+                <a href="https://ai.googleblog.com" target="_blank"
+                  >Nano Banana 2 Lite · Gemini Omni Flash · Gemini Spark</a
+                >
+              </h4>
+              <p class="summary-text">
+                Nano Banana 2 Lite — 온디바이스 경량 비전, 1.2ms 추론. Gemini
+                Omni Flash — 저지연 멀티모달. Gemini Spark — 교육용 맞춤 튜터링.
+              </p>
+            </div>
+
+            <div class="article">
+              <span class="tag nvidia">NVIDIA Blog</span>
+              <h4>
+                <a href="https://blogs.nvidia.com" target="_blank"
+                  >Build in America · AI Compute at Scale · BioNeMo + Claude</a
+                >
+              </h4>
+              <p class="summary-text">
+                미국 내 AI 인프라·제조 투자 확대. 대규모 AI 컴퓨팅 클러스터 구축
+                전략. BioNeMo + Claude Science 생물학·AI 융합 신약 발견
+                파이프라인. Blackwell Ultra GPU에서 Claude Sonnet 5 최적화.
+              </p>
+            </div>
+          </div>
+
+          <!-- 07.04 -->
+          <div class="day">
+            <div class="day-label">
+              ⏵ 2026.07.04 (토) — GPT-5.6 Sol 상세·Sonnet 5·뉴스 홍수
+            </div>
+
+            <div class="article">
+              <span class="tag openai">OpenAI</span>
+              <h4>
+                <a href="https://openai.com/blog" target="_blank"
+                  >GPT-5.6 Sol Preview 세부 공개 + GeneBench-Pro</a
+                >
+              </h4>
+              <p class="summary-text">
+                GPT-5.6 Sol Preview 수학/과학/코딩 벤치마크 평균 25% 개선.
+                GeneBench-Pro 유전체 분석 벤치마크 — 생물정보학 AI 활용 촉진.
+              </p>
+            </div>
+
+            <div class="article">
+              <span class="tag anthropic">Anthropic</span>
+              <h4>
+                <a href="https://www.anthropic.com/blog" target="_blank"
+                  >Claude Sonnet 5 정식 출시 · Fable 5 재배포 · Claude
+                  Science</a
+                >
+              </h4>
+              <p class="summary-text">
+                Claude Sonnet 5 (구 Sonnet 4.5) 중간 규모 추론-속도 균형. Fable
+                5 환각 대응 강화 재배포 + Fable Safeguards. Claude Science 과학
+                실험 자동화 플랫폼.
+              </p>
+            </div>
+
+            <div class="article">
+              <span class="tag huggingface">Hugging Face</span>
+              <h4>
+                <a href="https://huggingface.co/blog" target="_blank"
+                  >vLLM 인수 · Cerebras+Gemma4 음성 AI · ScarfBench</a
+                >
+              </h4>
+              <ul class="headlines">
+                <li>
+                  vLLM 인수 + HF Jobs 채용 플랫폼 확장
+                  <a href="https://huggingface.co/blog">[link]</a>
+                </li>
+                <li>
+                  Cerebras + Gemma 4 저지연 음성 챗봇 파이프라인
+                  <a href="https://huggingface.co/blog/cerebras-gemma4-voice-ai"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  ScarfBench — LLM 환각 평가, 개방형 질문 평가
+                  <a href="https://huggingface.co/blog">[link]</a>
+                </li>
+                <li>
+                  Feature Every Eval Ever — 3000+ 평가 데이터셋 통합
+                  <a href="https://huggingface.co/blog">[link]</a>
+                </li>
+                <li>
+                  DiScoFormer — 확산 트랜스포머 이미지 생성 SOTA
+                  <a href="https://huggingface.co/blog">[link]</a>
+                </li>
+              </ul>
+            </div>
+
+            <div class="article">
+              <span class="tag venturebeat">VentureBeat</span>
+              <h4>AI 비즈니스 주요 소식</h4>
+              <ul class="headlines">
+                <li>
+                  Z.ai ZCode — 코드 특화 LLM, SWE-bench SOTA
+                  <a href="https://venturebeat.com">[link]</a>
+                </li>
+                <li>
+                  Anthropic Fable 5 기업 고객 복귀 (안전 강화)
+                  <a href="https://venturebeat.com">[link]</a>
+                </li>
+                <li>
+                  Trunk Tools 시리즈 B $5,000만 투자 유치
+                  <a href="https://venturebeat.com">[link]</a>
+                </li>
+                <li>
+                  Enterprise Claude — 기업 Fable 5 헤징 전략
+                  <a href="https://venturebeat.com">[link]</a>
+                </li>
+              </ul>
+            </div>
+
+            <div class="article">
+              <span class="tag verge">The Verge</span>
+              <h4>기술·사회 주요 뉴스</h4>
+              <ul class="headlines">
+                <li>
+                  Anthropic, 제약사 AI 신약 개발 프로젝트 확대
+                  <a href="https://www.theverge.com">[link]</a>
+                </li>
+                <li>
+                  OpenAI, 정부 지분 5% — 연방 AI 안전성 거버넌스
+                  <a href="https://www.theverge.com">[link]</a>
+                </li>
+                <li>
+                  Microsoft Copilot OS 유출 — 차세대 AI 네이티브 OS
+                  <a href="https://www.theverge.com">[link]</a>
+                </li>
+                <li>
+                  Cloudflare AI 트레이닝 크롤링 제한 강화
+                  <a href="https://www.theverge.com">[link]</a>
+                </li>
+                <li>
+                  Weave Robotics Isaac 1 가정용 로봇팔 공개
+                  <a href="https://www.weaverobotics.com/isaac-1">[link]</a>
+                </li>
+                <li>
+                  팬픽션 AI 전쟁 — 저작권·AI 생성 콘텐츠 논쟁
+                  <a href="https://www.theverge.com">[link]</a>
+                </li>
+              </ul>
+            </div>
+
+            <div class="article">
+              <span class="tag techcrunch">TechCrunch</span>
+              <h4>스타트업·빅테크 뉴스</h4>
+              <ul class="headlines">
+                <li>
+                  Midjourney Hollywood — 영화 제작사 AI 영상 생성 계약
+                  <a href="https://techcrunch.com">[link]</a>
+                </li>
+                <li>
+                  Alibaba, Claude Code 직원 사용 전면 금지
+                  <a href="https://techcrunch.com">[link]</a>
+                </li>
+                <li>
+                  Mistral AI Arthur Mensch 인터뷰 — 유럽 AI 경쟁력
+                  <a href="https://techcrunch.com">[link]</a>
+                </li>
+                <li>
+                  Google AI Declaration — AI 책임 광고 선언문
+                  <a href="https://techcrunch.com">[link]</a>
+                </li>
+                <li>
+                  Zuckerberg AI Agents — Meta 개발 속도 조절
+                  <a href="https://techcrunch.com">[link]</a>
+                </li>
+              </ul>
+            </div>
+
+            <div class="article">
+              <span class="tag reuters">Reuters</span>
+              <h4>국제·정치 뉴스</h4>
+              <ul class="headlines">
+                <li>
+                  Alibaba, 내부 Claude Code 사용 제한 — AI 생성 코드 규제
+                  <a href="https://www.reuters.com">[link]</a>
+                </li>
+                <li>
+                  AI 싸움, 실리콘밸리 모방 약점 드러내 — 중·미 AI 패권
+                  <a href="https://www.reuters.com">[link]</a>
+                </li>
+              </ul>
+            </div>
+
+            <div class="article">
+              <span class="tag aitimes">AI타임즈</span>
+              <h4>AI타임즈 · 한국 주요 기사</h4>
+              <ul class="headlines">
+                <li>
+                  Meta, Claude 기반 서비스 준비 — 자체 모델 외 Claude 도입 검토
+                  <a href="https://www.aitimes.com">[link]</a>
+                </li>
+                <li>
+                  NVIDIA Rubin Ultra 2-chiplet 구성 상세
+                  <a href="https://www.aitimes.com">[link]</a>
+                </li>
+                <li>
+                  Naver 다중 모달 검색 — 이미지+텍스트 통합 고도화
+                  <a href="https://www.aitimes.com">[link]</a>
+                </li>
+                <li>
+                  Mistral Leanstral 1.5 경량화 — 모바일 온디바이스 AI
+                  <a href="https://www.aitimes.com">[link]</a>
+                </li>
+                <li>
+                  Kling AI $4B 평가 — 중국 AI 비디오 스타트업
+                  <a href="https://www.aitimes.com">[link]</a>
+                </li>
+                <li>
+                  Amazon 온디바이스 AI 추론 전용 칩 공개
+                  <a href="https://www.aitimes.com">[link]</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- 요약 테이블 -->
+        <h2 class="section-title">요약 // 날짜별 주요 이벤트</h2>
+        <div style="overflow-x: auto; margin-bottom: 60px">
+          <table
+            style="
+              width: 100%;
+              border-collapse: collapse;
+              background: var(--panel);
+              border-radius: 18px;
+              overflow: hidden;
+              box-shadow: 0 6px 18px rgba(217, 119, 6, 0.04);
+            "
+          >
+            <thead>
+              <tr
+                style="
+                  background: linear-gradient(
+                    135deg,
+                    var(--ember),
+                    var(--dusk)
+                  );
+                  color: #fff;
+                "
+              >
+                <th
+                  style="
+                    padding: 14px 20px;
+                    text-align: left;
+                    font-family: Jua, Pretendard, sans-serif;
+                    font-size: 16px;
+                    letter-spacing: 0.5px;
+                  "
+                >
+                  날짜
+                </th>
+                <th
+                  style="
+                    padding: 14px 20px;
+                    text-align: left;
+                    font-family: Jua, Pretendard, sans-serif;
+                    font-size: 16px;
+                    letter-spacing: 0.5px;
+                  "
+                >
+                  주요 이벤트
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr style="border-bottom: 1px solid var(--line)">
+                <td
+                  style="
+                    padding: 16px 20px;
+                    font-weight: 700;
+                    color: var(--ember);
+                    white-space: nowrap;
+                  "
+                >
+                  7/2 (목)
+                </td>
+                <td
+                  style="padding: 16px 20px; font-size: 14px; line-height: 1.7"
+                >
+                  HN 논쟁: GPT-5.5 Codex 장기 컨텍스트 불안정, Claude Code Cache
+                  유출, 모델-도구 괴리
+                </td>
+              </tr>
+              <tr style="border-bottom: 1px solid var(--line)">
+                <td
+                  style="
+                    padding: 16px 20px;
+                    font-weight: 700;
+                    color: var(--ember);
+                    white-space: nowrap;
+                  "
+                >
+                  7/3 (금)
+                </td>
+                <td
+                  style="padding: 16px 20px; font-size: 14px; line-height: 1.7"
+                >
+                  OpenAI GPT-5.6 Family 공식 출시, Google Nano Banana 2
+                  Lite/Gemini Omni Flash/Spark, NVIDIA Build in
+                  America/BioNeMo+Claude, Andrew Ng Issue 360
+                </td>
+              </tr>
+              <tr>
+                <td
+                  style="
+                    padding: 16px 20px;
+                    font-weight: 700;
+                    color: var(--ember);
+                    white-space: nowrap;
+                  "
+                >
+                  7/4 (토)
+                </td>
+                <td
+                  style="padding: 16px 20px; font-size: 14px; line-height: 1.7"
+                >
+                  GPT-5.6 Sol Preview 세부 공개, Claude Sonnet 5 + Fable 5
+                  재배포 + Claude Science, GeneBench-Pro, HF vLLM 인수, Alibaba
+                  Claude Code 금지, Midjourney Hollywood, 국내 AI타임즈 다수
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <footer>
+          <div>◈ 전송 종료 ◈</div>
+          <div style="margin-top: 10px">
+            출처:
+            <span class="src"
+              >OpenAI · Anthropic · Google · NVIDIA · Hugging Face · Hacker News
+              · ArXiv · VentureBeat · The Verge · TechCrunch · Reuters ·
+              AI타임즈 · The Batch</span
+            >
+          </div>
+          <div style="margin-top: 10px; opacity: 0.5">
+            // 석양 인포그래픽 v1.0 — 2026.07.05 //
+          </div>
+        </footer>
+      </div>
+    </div>
+
+    <script>
+      function toggleMore() {
+        const content = document.getElementById("moreContent");
+        const btn = document.getElementById("revealBtn");
+        const isOpen = content.classList.toggle("open");
+        btn.classList.toggle("open", isOpen);
+        btn.innerHTML = isOpen
+          ? '<span class="arrow">▲</span> &nbsp;타임라인 숨기기 &nbsp;<span class="arrow">▲</span>'
+          : '<span class="arrow">▼</span> &nbsp;타임라인 보기 &nbsp;<span class="arrow">▼</span>';
+      }
+    </script>
+  </body>
+</html>

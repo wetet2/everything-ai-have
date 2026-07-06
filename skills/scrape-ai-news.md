@@ -13,7 +13,9 @@ description: 최신 AI 뉴스·기사를 스크랩해서 md 파일로 정리. "A
 > 소스 검증 이력은 작업 디렉토리의 `ai-news-sources.md` 참고. 사용자가 별도 파일로 관리 중이면 최신 내용을 우선 반영.
 
 ### 핵심 소스 (항상 시도, 1차 병렬 그룹)
+
 해외 모델·제품 발표:
+
 - **OpenAI 블로그**: https://openai.com/news/
 - **Anthropic 뉴스룸**: https://www.anthropic.com/news
 - **Google AI 블로그**: https://blog.google (모델·도구 발표)
@@ -21,6 +23,7 @@ description: 최신 AI 뉴스·기사를 스크랩해서 md 파일로 정리. "A
 - **NVIDIA 블로그**: https://blogs.nvidia.com (인프라·하드웨어)
 
 커뮤니티·논문·분석:
+
 - **Hacker News 메인**: https://news.ycombinator.com (AI 관련 글 선별, 추천수 높은 순)
 - **ArXiv cs.AI 최근**: https://arxiv.org/list/cs.AI/recent
 - **Hugging Face Blog**: https://huggingface.co/blog (모델 발표, Daily Papers, 튜토리얼 — 게시 빈도 높음)
@@ -28,16 +31,21 @@ description: 최신 AI 뉴스·기사를 스크랩해서 md 파일로 정리. "A
 - **Ahead of AI (Sebastian Raschka)**: https://magazine.sebastianraschka.com (LLM 아키텍처 심층 분석)
 
 IT 뉴스 (해외):
+
 - **VentureBeat AI**: https://venturebeat.com/category/ai (엔터프라이즈 AI·에이전트·인프라)
 - **The Verge AI**: https://theverge.com/ai-artificial-intelligence (정책·저작권·제품 발표)
 - **TechCrunch**: https://techcrunch.com
 - **Reuters**: https://reuters.com (통신사)
 
 한국:
+
 - **AI타임즈**: https://www.aitimes.com (AI 전문 매체, 링크 다수)
+- **AI포스트**: https://www.aipostkorea.com/ (AI 전문 매체, 링크 다수)
 
 ### 보조 소스 (사용자 요구 또는 시간 여유 시 추가, 2차 병렬 그룹)
+
 해외:
+
 - **MIT Technology Review**: https://www.technologyreview.com/topic/artificial-intelligence/ (JavaScript 필요로 실패 가능성 높음 — 실패 시 안내만)
 - **SemiAnalysis**: https://newsletter.semianalysis.com/archive (반도체·AI 인프라 심층, 본문은 페이월 — **헤드라인·요약만 무료 접근, 제목 수집용으로 활용**)
 - **Interconnects**: https://interconnects.ai (모델 심층 분석)
@@ -50,6 +58,7 @@ IT 뉴스 (해외):
 - **OpenAI 레서핑**: https://openai.com/research
 
 한국 IT/AI 매체:
+
 - **전자신문**: https://www.etnews.com
 - **ZDNet Korea**: https://www.zdnet.co.kr
 - **디지털데일리**: https://www.ddaily.co.kr
@@ -65,11 +74,13 @@ IT 뉴스 (해외):
 ## 워크플로우
 
 ### 1단계: 날짜 범위 확인 → 검증: 사용자가 범위 인지
+
 - 사용자가 날짜를 명시하면 그 범위 사용.
 - 명시하지 않으면 "최근 7일"을 기본값으로 제안하고 진행.
 - 파일명 규칙: `ai-news-YYYY-MM-DD-onwards.md` (시작일 기준). 이미 같은 파일 있으면 "copy" 접미사 붙이지 말고 사용자에게 확인.
 
 ### 2단계: 소스 병렬 수집 → 검증: 핵심 소스 최소 6개 이상 응답
+
 - 핵심 소스 14개를 한 번에 병렬 webfetch (단일 메시지에 여러 tool call). 한 번에 너무 많으면 그룹 분할(예: 해외 모델 5개 + 분석·논문 4개 + IT 뉴스 4개 + 한국 1개).
 - 형식: `markdown`.
 - ArXiv는 제출 폭증(수백~수천 건)하므로 첫 페이지만 가져오고 주요 선별(10~15건).
@@ -79,6 +90,7 @@ IT 뉴스 (해외):
 - 보조 소스는 핵심 소스 응답 부족·사용자 요구 있을 때 2차 병렬 그룹으로 추가 수집. 한국 매체(전자신문·ZDNet 등)는 한국 기업·정책 이슈가 풍부할 때 우선 추가.
 
 ### 3단계: 날짜 필터링 → 검증: 기간 내 기사만 포함
+
 - 각 소스에서 기준일 이후 기사만 추출.
 - Hacker News: AI 키워드(AI, model, agent, LLM, GPT, Claude, Gemini, chip, GPU 등)로 필터. 추천수 높은 순.
 - ArXiv: cs.AI 최근 제출 중 주목할 만한 주요 논문 10~15건 선별. 제목·간단 설명 포함. 전체 1,300+건 요약 시도 금지.
@@ -91,7 +103,9 @@ IT 뉴스 (해외):
 - Google DeepMind: "Month Year" 표기 항목은 정확 일자 미확정이므로 별도 섹션으로 분리하고 안내 명시.
 
 ### 4단계: md 파일 작성 → 검증: 날짜별 섹션 + 링크 포함
+
 구조:
+
 ```
 # AI 뉴스 정리 (기간)
 > 수집일, 기준, 출처
@@ -102,16 +116,20 @@ IT 뉴스 (해외):
 ## 주요 흐름 분석 (5개 테마)
 ## 수집 제한 안내
 ```
+
 - 각 기사는 제목 + 링크 형식.
 - 중복 기사(여러 소스에서 같은 이슈)는 가장 대표적인 소스 한 곳에 배치하고, 다른 섹션에서는 "(상세 요약은 X/Y 섹션 참고)"로 참조.
 
 ### 5단계: 한글 번역 → 검증: 영어 제목·설명·카테고리 없음
+
 - 영어 제목, 영어 설명문, 영어 카테고리("Security", "Models", "Responsibility & Safety", "Company", "points" 등)를 모두 한글로 번역.
 - 유지할 것: 고유명사(OpenAI, Claude, GLM-5.2, Jalapeño 등), 기술 용어(LLM, AI, ERP, CPU, IPO, SPAC, SaaS 등), 사람 이름, 회사명, 제품명.
 - AGENTS.md "한글 표시" 규칙 준수.
 
 ### 6단계(옵션): 핵심 기사 내용 요약 → 검증: 요약이 사실 기반
+
 사용자가 "내용 요약"을 요구하면:
+
 1. 핵심 기사 10~15건 선정.
 2. 각 기사 링크를 병렬 webfetch로 직접 방문.
 3. 각 기사에 5~10줄 분량의 내용 요약 추가 (핵심 수치·사실·의미 중심).
@@ -138,41 +156,3 @@ IT 뉴스 (해외):
 
 기본: 현재 작업 디렉토리 루트에 `ai-news-YYYY-MM-DD-onwards.md`.
 사용자가 별도 경로 요구하면 그 경로 사용.
-
-## HTML 변환 (선택)
-
-사용자가 "화면으로 만들어줘" 등 HTML 생성을 요구하면:
-
-### 참고 템플릿
-
-`public/news/ai-news-digest-0701.html` — 디자인·구조의 기준 파일.
-
-### HTML 생성 규칙
-
-1. 템플릿의 전체 구조(header → summary → stats → 5대 핵심뉴스(key-list) → 주요 흐름(trends) → 접이식 타임라인(timeline) → 요약표 → footer)를 유지.
-2. 색상 테마는 템플릿과 **다른 팔레트**를 사용해 구분 (예: 계곡 청록 → 석양 주황/보라).
-3. 파일명: `public/news/ai-news-digest-{MMDD}.html`
-4. md 내용을 HTML 섹션에 맞게 재구성:
-   - **stats**: 날짜 범위의 대표 숫자 통계 5개 (모델 수, 투자 금액, 벤치마크 점수 등)
-   - **5대 핵심뉴스**: 기간 내 가장 중요한 기사 5건 (key-item)
-   - **주요 흐름**: 5개 테마 트렌드 카드 (trend-card)
-   - **타임라인**: 날짜별로 day → article 구조 (기사당 tag + h4 + summary-text 또는 headlines 리스트)
-   - **요약표**: 날짜별 주요 이벤트 테이블
-5. 모든 `<a>` 링크는 원본 출처 URL 유지, 새 탭(`target="_blank"`)으로 열기.
-6. 고유명사·기술용어는 영어 유지, 나머지는 한글.
-
-### 워크플로우
-
-```
-1. md 파일 읽기
-2. 템플릿 HTML 읽기 (public/news/ai-news-digest-0701.html)
-3. md 내용을 HTML 구조에 맞게 변환해 새 파일 작성
-4. verify: public/news/ai-news-digest-{MMDD}.html 브라우저에서 열어 확인
-```
-
-### 주의
-
-- 템플릿의 `saved from url` 메타 주석은 제거.
-- 템플릿 끝의 Stylus 스타일 블록(`<style class="stylus">...</style>`)은 제거.
-- `@import url(...pretendard.min.css)`는 CDN `<link>`로 대체 (템플릿 최신 방식 유지).
-- 색상 테마 변경 시 `:root` 변수만 교체 — CSS 클래스 구조는 그대로 사용.

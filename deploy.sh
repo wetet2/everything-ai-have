@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 
 # 커밋 메시지가 파라미터로 전달되지 않았으면 사용법을 출력하고 종료
 if [ -z "$1" ]; then
@@ -44,7 +45,7 @@ find . -type d -exec mkdir -p "$TARGET_DIR/{}" \;
 
 # 2. 모든 파일을 폴터 구조를 유지하며 복사
 echo "파일 복사 중..."
-find . -type f -exec cp --parents -f {} "$TARGET_DIR/" \;
+find . -type f -exec cp --parents -f "{}" "$TARGET_DIR/" \;
 
 # 대상 폴터로 이동하여 git add, commit 수행
 cd "$TARGET_DIR" || exit 1

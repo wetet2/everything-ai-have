@@ -16,6 +16,7 @@ import SettingsIcon from "../../../resources/icons/SettingsIcon";
 import TrashIcon from "../../../resources/icons/TrashIcon";
 import TrashXIcon from "../../../resources/icons/TrashXIcon";
 import CopyablePre from "./CopyablePre";
+import { compressImage, isHeic } from "../../utils/compressImage";
 
 import * as S from "./styled";
 import { isEmpty } from "lodash-es";
@@ -88,32 +89,45 @@ const FAVORITE_MODELS_GEMINI = [
   "gemini-3.5-flash",
   "gemini-3.1-flash-lite-preview",
   "gemini-3.1-pro-preview",
-  "imagen-4.0-ultra-generate-001",
-  "imagen-4.0-generate-001",
-  "imagen-4.0-fast-generate-001",
-  "gemini-2.5-flash-image",
-  "gemini-3-pro-image-preview",
   "gemini-3.1-flash-image-preview",
+  "gemini-3.1-flash-lite-image",
+  // "imagen-4.0-ultra-generate-001",
+  // "imagen-4.0-generate-001",
+  // "imagen-4.0-fast-generate-001",
+  // "gemini-2.5-flash-image",
+  // "gemini-3-pro-image-preview",
 ];
 
 const FAVORITE_MODELS_CLAUDE = [
   "claude-haiku-4-5-20251001",
-  "claude-sonnet-4-5-20250929",
   "claude-sonnet-4-6",
-  "claude-opus-4-6",
-  "claude-opus-4-7",
+  "claude-sonnet-5",
   "claude-opus-4-8",
+  "claude-fable-5",
+  // "claude-sonnet-4-5-20250929",
+  // "claude-opus-4-6",
+  // "claude-opus-4-7",
 ];
 
 const FAVORITE_MODELS_CHATGPT = [
   "gpt-5.5",
   "gpt-5.3-codex",
   "gpt-5",
-  "gpt-5-mini",
-  "gpt-5-nano",
+  // "gpt-5-mini",
+  // "gpt-5-nano",
   "gpt-image-2-2026-04-21",
   "gpt-image-1.5",
 ];
+
+// Gemini finishReason별 한국어 안내 메시지
+const GEMINI_FINISH_REASON_MESSAGES: Record<string, string> = {
+  IMAGE_SAFETY:
+    "생성된 이미지가 Google의 금지 사용 정책에 의해 필터링되었습니다. 프롬프트를 수정해 다시 시도해 주세요.",
+  SAFETY:
+    "응답이 안전 필터에 의해 차단되었습니다. 프롬프트를 수정해 다시 시도해 주세요.",
+  PROHIBITED_CONTENT: "금지된 콘텐츠로 인해 응답이 차단되었습니다.",
+  RECITATION: "저작권 관련 제한으로 응답이 차단되었습니다.",
+};
 
 const AiChatComponent = () => {
   const router = useRouter();
@@ -338,21 +352,17 @@ const AiChatComponent = () => {
     }
   };
 
-  const handleAddImageFiles = (files: File[]) => {
-    files.forEach((file) => {
-      if (!file.type.startsWith("image/")) return;
-      const reader = new FileReader();
-      reader.onload = () => {
-        const dataUrl = reader.result as string;
-        const base64 = dataUrl.split(",")[1] ?? "";
-        if (!base64) return;
-        setAttachedImages((prev) => [
-          ...prev,
-          { dataUrl, base64, mimeType: file.type },
-        ]);
-      };
-      reader.readAsDataURL(file);
-    });
+  const handleAddImageFiles = async (files: File[]) => {
+    for (const file of files) {
+      const isImage = file.type.startsWith("image/") || isHeic(file);
+      if (!isImage) continue;
+      try {
+        const compressed = await compressImage(file);
+        setAttachedImages((prev) => [...prev, compressed]);
+      } catch (error) {
+        console.error("이미지 압축 실패", error);
+      }
+    }
   };
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -611,7 +621,8 @@ const AiChatComponent = () => {
 
       // chunk.text는 text 파트만 읽고 inlineData(이미지)는 무시하므로
       // parts에서 inlineData를 직접 추출
-      const parts = chunk.candidates?.[0]?.content?.parts ?? [];
+      const candidate = chunk.candidates?.[0];
+      const parts = candidate?.content?.parts ?? [];
       const chunkImages: string[] = [];
       for (const part of parts) {
         const inline = (part as any).inlineData;
@@ -637,6 +648,26 @@ const AiChatComponent = () => {
             : message,
         ),
       );
+
+      // finishReason 처리 (안전 필터 등으로 중단된 경우)
+      const finishReason = candidate?.finishReason;
+      if (finishReason && finishReason !== "STOP") {
+        const reasonMessage =
+          GEMINI_FINISH_REASON_MESSAGES[finishReason] ??
+          candidate?.finishMessage ??
+          `응답이 중단되었습니다. (사유: ${finishReason})`;
+        setMessages((prev) =>
+          prev.map((message) =>
+            message.id === assistantMessageId
+              ? {
+                  ...message,
+                  text:
+                    (message.text ? message.text + "\n\n" : "") + reasonMessage,
+                }
+              : message,
+          ),
+        );
+      }
     }
   };
 
@@ -1274,7 +1305,7 @@ const AiChatComponent = () => {
       <S.Header>
         <S.BrandTitle>
           <Link href="/" style={{ textDecoration: "none", color: "inherit" }}>
-            AI <span>Chat</span>
+            <span>Chat</span>
           </Link>
         </S.BrandTitle>
         <S.SessionSelectWrap>
@@ -1448,7 +1479,7 @@ const AiChatComponent = () => {
                 setSelectedModel(opt.value);
                 saveSettings(provider, opt.value);
               }}
-              isSearchable={true}
+              isSearchable={false}
               isDisabled={isLoading}
               menuPlacement="top"
               styles={{

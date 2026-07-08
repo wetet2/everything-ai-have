@@ -112,21 +112,71 @@ IT 뉴스 (해외):
 ## 핵심 요약 (이번 주 대표 이슈 3~5개)
 ## YYYY-MM-DD (요일)
 ### 소스명
-- 기사 제목 [링크]
+- **기사 제목** [링크](https://...) | ![thumb](og:image URL)
+  - 기사 설명...
+## 주요 논문 (ArXiv)
+| 논문 | 요약 |
 ## 주요 흐름 분석 (5개 테마)
 ## 수집 제한 안내
 ```
 
-- 각 기사는 제목 + 링크 형식.
+- 각 기사는 **제목 + 링크 + 썸네일** 형식. 썸네일은 `![thumb](URL)` 형식으로 링크 뒤에 추가.
+- 썸네일 수집이 불가능한 기사는 제목+링크만 표기.
 - 중복 기사(여러 소스에서 같은 이슈)는 가장 대표적인 소스 한 곳에 배치하고, 다른 섹션에서는 "(상세 요약은 X/Y 섹션 참고)"로 참조.
 
-### 5단계: 한글 번역 → 검증: 영어 제목·설명·카테고리 없음
+### 5단계: 썸네일 수집 → 검증: 각 기사별 og:image 원본 URL 확보
+
+기사 제목과 링크만으로는 시각적 정보가 부족하므로, 각 기사 페이지를 HTML 포맷으로 `webfetch`하여 썸네일 이미지를 추출해 md에 추가한다. **해상도 suffix를 변경하거나 URL을 임의로 조작하지 않고, 페이지에 명시된 원본 URL을 그대로 사용**하는 것이 핵심이다.
+
+**일반적인 추출 방법 (모든 소스 공통):**
+
+1. 각 기사 URL을 `format: html`로 개별 `webfetch` (6개씩 병렬, 나머지 소스 수집과 동시 진행)
+2. 응답 HTML에서 `<head>` 내 `<meta property="og:image" content="...">` 태그를 찾는다
+3. `og:image`가 없으면 `<meta name="twitter:image" content="...">`를 대체재로 사용
+4. 추출한 이미지 URL을 `![thumb](이미지URL)` 형식으로 각 기사의 링크 뒤에 추가
+
+**소스별 og:image CDN 패턴:**
+
+| 소스 | og:image CDN | 비고 |
+|------|-------------|------|
+| **AI타임즈** | `https://cdn.aitimes.com/news/photo/YYYYMM/IDXNO_HASH_ID.ext` | **반드시 개별 기사 페이지를 fetch**할 것. 목록 페이지의 `thumbnail/custom/` 경로는 썸네일 크기가 작고 해상도 suffix가 붙어 있음. 개별 페이지의 `og:image`는 원본 해상도. |
+| **VentureBeat** | `https://images.ctfassets.net/...` | HTML 포맷으로 fetch하면 `<head>`에 og:image가 포함됨. markdown 포맷으로는 추출 불가. |
+| **TechCrunch** | `https://techcrunch.com/wp-content/uploads/...` | 일부 기사는 JS 동적 로딩으로 og:image가 TC 로고로 fallback될 수 있음. |
+| **The Verge** | `https://platform.theverge.com/wp-content/uploads/...` | 오피니언·컬럼 기사는 placeholder 이미지가 og:image로 설정된 경우 있음. |
+| **NVIDIA 블로그** | `https://blogs.nvidia.com/wp-content/uploads/...` | Yoast SEO 플러그인으로 og:image가 명확히 설정됨. |
+| **Hugging Face** | `https://cdn-uploads.huggingface.co/...` 또는 `https://huggingface.co/front/thumbnails/...` | 커뮤니티 글은 작성자 업로드 이미지, 공식 글은 CDN 썸네일. |
+| **Anthropic** | `https://cdn.sanity.io/images/...` 또는 `https://www-cdn.anthropic.com/...` | Sanity CMS 기반. 일부는 OpenGraph API(`/api/opengraph-illustration`) 사용. |
+
+**AI타임즈 특별 주의사항:**
+
+- AI타임즈는 **두 가지 CDN 경로**가 존재한다:
+  - `https://cdn.aitimes.com/news/thumbnail/custom/...` — 목록 페이지용 저해상도 썸네일 (사용 금지)
+  - `https://cdn.aitimes.com/news/photo/...` — 개별 기사 페이지의 원본 og:image (이것을 사용)
+- `thumbnail/custom/` URL의 해상도 suffix(`_600`, `_250` 등)를 변경하거나 `news/photo/` 경로를 유추해서 조합하지 말 것. 해시값이 서로 달라 링크가 깨진다.
+- **반드시 각 기사 페이지를 직접 fetch해서 `<meta property="og:image">` 값을 그대로 사용**한다.
+
+**md 파일에 썸네일 추가 형식:**
+
+```
+- **기사 제목** [링크](https://...) | ![thumb](https://cdn...og이미지.jpg)
+  - 기사 설명...
+```
+
+**썸네일 수집이 불가능한 경우:**
+
+- JS 렌더링이 필요한 사이트 (MIT Technology Review 등)
+- og:image가 아예 없는 텍스트 전용 기사
+- fetch가 차단된 사이트
+
+이 경우 썸네일 없이 제목+링크만 유지하고, "수집 제한 안내"에 해당 사실을 기록한다.
+
+### 6단계: 한글 번역 → 검증: 영어 제목·설명·카테고리 없음
 
 - 영어 제목, 영어 설명문, 영어 카테고리("Security", "Models", "Responsibility & Safety", "Company", "points" 등)를 모두 한글로 번역.
 - 유지할 것: 고유명사(OpenAI, Claude, GLM-5.2, Jalapeño 등), 기술 용어(LLM, AI, ERP, CPU, IPO, SPAC, SaaS 등), 사람 이름, 회사명, 제품명.
 - AGENTS.md "한글 표시" 규칙 준수.
 
-### 6단계(옵션): 핵심 기사 내용 요약 → 검증: 요약이 사실 기반
+### 7단계(옵션): 핵심 기사 내용 요약 → 검증: 요약이 사실 기반
 
 사용자가 "내용 요약"을 요구하면:
 
@@ -151,8 +201,9 @@ IT 뉴스 (해외):
 - 파일 덮어쓰기 전에 반드시 Read 도구로 기존 내용 확인.
 - "수집 제한 안내" 섹션에 실패한 소스·페이월 소스·선별 기준·날짜 불확정 항목을 투명하게 기록.
 - 소스 검증 이력·후보 목록은 작업 디렉토리의 `ai-news-sources.md`가 있으면 우선 참고·갱신.
+- **임시 파일 정리**: 스크랩 과정에서 생성한 `.mjs`, `.json` 등 임시 스크립트·데이터 파일은 사용 완료 후 **즉시 삭제**한다. 최종 결과물(md 파일)만 남기고 모두 정리할 것.
 
 ## 파일 저장 위치
 
-기본: 현재 작업 디렉토리 루트에 `ai-news-YYYY-MM-DD-onwards.md`.
+기본: 작업 디렉토리 루트에 `ai-news-YYYY-MM-DD-onwards.md` 생성 후, 최종적으로 `{root}/temp/` 폴더로 이동하여 보관한다. `temp/` 폴더가 없으면 생성한다.
 사용자가 별도 경로 요구하면 그 경로 사용.

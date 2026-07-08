@@ -1,0 +1,2360 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="2026년 7월 6일~7일 AI 뉴스 다이제스트. Anthropic 글로벌 작업 공간(J-space)·DeepSeek 자체 칩 개발·삼성 89.4조 영업이익·Tencent Hy3 오픈소스·Anthropic-TeraWulf 190억달러 임차·MS 4800명 감원 등 최신 AI 소식."
+    />
+    <title>AI 뉴스 // 2026.07.06-07.07</title>
+    <link
+      rel="stylesheet"
+      as="style"
+      crossorigin
+      href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css"
+    />
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Bagel+Fat+One&family=Dongle:wght@300;400;700&family=Jua&family=Pretendard:wght@400;500;700;900&display=swap");
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      :root {
+        --storm: #1e293b;
+        --rain: #475569;
+        --rain-deep: #334155;
+        --rain-light: #64748b;
+        --mist: #94a3b8;
+        --fog: #bcc8d4;
+        --cloud: #dfe6ed;
+        --sky: #edf1f5;
+        --drop: #4b7cc9;
+        --drop-soft: #6b9ee0;
+        --puddle: #1a365d;
+        --slate: #334155;
+        --slate-soft: #64748b;
+        --bg: #e4e9f0;
+        --panel: #fafbfc;
+        --line: rgba(71, 85, 105, 0.2);
+        --tag-anthropic: #2d6e5e;
+        --tag-openai: #1e6f8a;
+        --tag-google: #3b6fb6;
+        --tag-nvidia: #2f8a4e;
+        --tag-hn: #a56a10;
+        --tag-arxiv: #5b54d9;
+        --tag-venturebeat: #337a4b;
+        --tag-techcrunch: #ca5411;
+        --tag-verge: #c8326a;
+        --tag-huggingface: #b07e0c;
+        --tag-reuters: #d05b14;
+        --tag-batch: #6c3fc6;
+      }
+
+      @keyframes rainFall {
+        0% {
+          transform: translateY(-5%) rotate(8deg);
+          opacity: 0.7;
+        }
+        100% {
+          transform: translateY(105vh) rotate(8deg);
+          opacity: 0;
+        }
+      }
+      @keyframes rainFall2 {
+        0% {
+          transform: translateY(-5%) rotate(10deg);
+          opacity: 0.5;
+        }
+        100% {
+          transform: translateY(105vh) rotate(10deg);
+          opacity: 0;
+        }
+      }
+      @keyframes mistDrift {
+        0%,
+        100% {
+          opacity: 0.4;
+          transform: translateX(0);
+        }
+        50% {
+          opacity: 0.7;
+          transform: translateX(40px);
+        }
+      }
+      @keyframes puddleRipple {
+        0%,
+        100% {
+          opacity: 0.3;
+        }
+        50% {
+          opacity: 0.5;
+        }
+      }
+
+      body {
+        background: linear-gradient(
+          180deg,
+          #ced6e0 0%,
+          #d5dce5 15%,
+          #dfe6ed 40%,
+          #e8edf2 75%,
+          #dde3ea 100%
+        );
+        color: var(--slate);
+        font-family: "Pretendard", sans-serif;
+        overflow-x: hidden;
+        position: relative;
+        min-height: 100vh;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 0;
+        background:
+          repeating-linear-gradient(
+            5deg,
+            transparent,
+            transparent 10px,
+            rgba(75, 124, 201, 0.06) 10px,
+            rgba(75, 124, 201, 0.06) 11px
+          ),
+          repeating-linear-gradient(
+            9deg,
+            transparent,
+            transparent 32px,
+            rgba(100, 140, 200, 0.07) 32px,
+            rgba(100, 140, 200, 0.07) 33px
+          ),
+          repeating-linear-gradient(
+            12deg,
+            transparent,
+            transparent 55px,
+            rgba(80, 120, 180, 0.05) 55px,
+            rgba(80, 120, 180, 0.05) 56px
+          );
+        animation:
+          rainFall 2.5s linear infinite,
+          rainFall2 3.8s linear infinite 0.8s;
+      }
+
+      body::after {
+        content: "";
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 0;
+        background:
+          radial-gradient(
+            ellipse 700px 300px at 15% 0%,
+            rgba(75, 124, 201, 0.08) 0%,
+            transparent 60%
+          ),
+          radial-gradient(
+            ellipse 600px 250px at 80% 10%,
+            rgba(100, 158, 224, 0.06) 0%,
+            transparent 55%
+          ),
+          radial-gradient(
+            ellipse 500px 200px at 50% 95%,
+            rgba(26, 54, 93, 0.08) 0%,
+            transparent 60%
+          ),
+          radial-gradient(
+            ellipse 550px 220px at 30% 50%,
+            rgba(71, 85, 105, 0.06) 0%,
+            transparent 65%
+          );
+        animation:
+          mistDrift 20s ease-in-out infinite,
+          puddleRipple 14s ease-in-out infinite 3s;
+      }
+
+      .wrap {
+        position: relative;
+        z-index: 1;
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 40px 24px;
+      }
+
+      header {
+        text-align: center;
+        padding: 64px 20px 44px;
+        position: relative;
+        border-bottom: 2px solid var(--line);
+        margin-bottom: 60px;
+        background: linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0) 0%,
+          rgba(223, 230, 237, 0.5) 100%
+        );
+      }
+      header::before {
+        content: "🌧️💧☔";
+        position: absolute;
+        bottom: -15px;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 22px;
+        letter-spacing: 6px;
+        background: var(--bg);
+        padding: 0 22px;
+      }
+      h1 {
+        font-family: "Jua", "Pretendard", sans-serif;
+        font-weight: 400;
+        font-size: clamp(32px, 6vw, 66px);
+        letter-spacing: 1px;
+        line-height: 1.2;
+        background: linear-gradient(
+          160deg,
+          var(--rain) 0%,
+          var(--rain-light) 35%,
+          var(--drop-soft) 65%,
+          var(--puddle) 100%
+        );
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        filter: drop-shadow(1px 3px 8px rgba(51, 65, 85, 0.3));
+      }
+      h1 .accent {
+        -webkit-text-fill-color: var(--drop);
+      }
+      .subtitle {
+        margin-top: 18px;
+        font-size: 15px;
+        color: var(--slate-soft);
+        letter-spacing: 0.5px;
+        font-weight: 700;
+      }
+      .date-stamp {
+        display: inline-block;
+        margin-top: 24px;
+        padding: 10px 22px;
+        border: 2px solid var(--rain);
+        color: var(--rain);
+        font-size: 13px;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+        border-radius: 999px;
+        background: rgba(71, 85, 105, 0.06);
+      }
+
+      .summary {
+        margin-bottom: 60px;
+        padding: 36px;
+        background: linear-gradient(
+          145deg,
+          #fafbfc 0%,
+          #eff3f8 45%,
+          #eaf0f6 100%
+        );
+        border: 2px solid rgba(71, 85, 105, 0.2);
+        border-radius: 24px;
+        box-shadow:
+          0 16px 40px rgba(51, 65, 85, 0.08),
+          0 4px 12px rgba(71, 85, 105, 0.06);
+        position: relative;
+        overflow: hidden;
+      }
+      .summary::before {
+        content: "☔";
+        position: absolute;
+        top: 18px;
+        right: 24px;
+        font-size: 38px;
+        opacity: 0.15;
+        pointer-events: none;
+      }
+      .summary h2 {
+        font-family: "Jua", "Pretendard", sans-serif;
+        color: var(--rain);
+        font-size: 24px;
+        letter-spacing: 0.5px;
+        margin-bottom: 18px;
+      }
+      .summary p {
+        line-height: 1.9;
+        font-size: 16px;
+        color: var(--slate);
+      }
+      .summary .hl {
+        color: var(--drop);
+        font-weight: 700;
+        background: linear-gradient(
+          transparent 60%,
+          rgba(107, 158, 224, 0.22) 60%
+        );
+        padding: 0 3px;
+      }
+
+      .section-title {
+        font-family: "Jua", "Pretendard", sans-serif;
+        font-size: clamp(24px, 3vw, 36px);
+        letter-spacing: 0.5px;
+        color: var(--rain);
+        margin: 60px 0 30px;
+        padding-bottom: 14px;
+        border-bottom: 2px solid var(--line);
+        position: relative;
+      }
+      .section-title::after {
+        content: " 🌧️";
+      }
+
+      .trends {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 20px;
+        margin-bottom: 60px;
+      }
+      .trend-card {
+        padding: 28px;
+        background: var(--panel);
+        border: 2px solid var(--line);
+        border-radius: 20px;
+        position: relative;
+        transition:
+          transform 0.3s ease,
+          box-shadow 0.3s ease;
+        box-shadow:
+          0 10px 28px rgba(51, 65, 85, 0.06),
+          0 2px 6px rgba(71, 85, 105, 0.04);
+      }
+      .trend-card:hover {
+        transform: translateY(-6px);
+        box-shadow:
+          0 20px 40px rgba(51, 65, 85, 0.14),
+          0 6px 12px rgba(71, 85, 105, 0.08);
+      }
+      .trend-card:nth-child(1) {
+        border-color: rgba(71, 85, 105, 0.4);
+      }
+      .trend-card:nth-child(2) {
+        border-color: rgba(75, 124, 201, 0.4);
+      }
+      .trend-card:nth-child(3) {
+        border-color: rgba(107, 158, 224, 0.4);
+      }
+      .trend-card:nth-child(4) {
+        border-color: rgba(51, 65, 85, 0.35);
+      }
+      .trend-card:nth-child(5) {
+        border-color: rgba(100, 116, 139, 0.3);
+      }
+      .trend-card:nth-child(6) {
+        border-color: rgba(80, 120, 180, 0.3);
+      }
+      .trend-card .num {
+        font-family: "Bagel Fat One", "Dongle", sans-serif;
+        font-size: 42px;
+        font-weight: 400;
+        opacity: 0.45;
+        line-height: 1;
+      }
+      .trend-card h3 {
+        font-family: "Pretendard", sans-serif;
+        font-weight: 800;
+        font-size: 16px;
+        letter-spacing: 0.2px;
+        margin: 8px 0 14px;
+      }
+      .trend-card p {
+        font-size: 15px;
+        line-height: 1.75;
+        color: var(--slate-soft);
+      }
+      .trend-card:nth-child(1) .num,
+      .trend-card:nth-child(1) h3 {
+        color: var(--rain);
+      }
+      .trend-card:nth-child(2) .num,
+      .trend-card:nth-child(2) h3 {
+        color: var(--drop);
+      }
+      .trend-card:nth-child(3) .num,
+      .trend-card:nth-child(3) h3 {
+        color: #4c6faa;
+      }
+      .trend-card:nth-child(4) .num,
+      .trend-card:nth-child(4) h3 {
+        color: var(--rain-deep);
+      }
+      .trend-card:nth-child(5) .num,
+      .trend-card:nth-child(5) h3 {
+        color: var(--slate-soft);
+      }
+      .trend-card:nth-child(6) .num,
+      .trend-card:nth-child(6) h3 {
+        color: var(--rain-light);
+      }
+
+      .timeline {
+        margin-bottom: 60px;
+        position: relative;
+        padding-left: 40px;
+      }
+      .timeline::before {
+        content: "";
+        position: absolute;
+        left: 10px;
+        top: 0;
+        bottom: 0;
+        width: 3px;
+        border-radius: 3px;
+        background: linear-gradient(
+          var(--rain) 0%,
+          var(--drop) 35%,
+          var(--drop-soft) 65%,
+          var(--rain-light) 100%
+        );
+        box-shadow: 0 0 12px rgba(75, 124, 201, 0.2);
+      }
+      .day {
+        position: relative;
+        margin-bottom: 50px;
+      }
+      .day::before {
+        content: "💧";
+        position: absolute;
+        left: -45px;
+        top: 0;
+        width: 30px;
+        height: 30px;
+        font-size: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: var(--panel);
+        border: 2px solid var(--rain);
+        border-radius: 50%;
+        box-shadow: 0 4px 14px rgba(71, 85, 105, 0.2);
+        transition: transform 0.3s ease;
+      }
+      .day:hover::before {
+        transform: scale(1.15);
+      }
+      .day-label {
+        font-family: "Jua", "Pretendard", sans-serif;
+        font-size: 20px;
+        letter-spacing: 0.5px;
+        color: var(--rain);
+        margin-bottom: 18px;
+      }
+
+      .article {
+        background: var(--panel);
+        border: 2px solid var(--line);
+        border-radius: 18px;
+        padding: 24px;
+        margin-bottom: 18px;
+        position: relative;
+        transition: all 0.3s ease;
+        box-shadow:
+          0 6px 18px rgba(51, 65, 85, 0.04),
+          0 1px 4px rgba(71, 85, 105, 0.04);
+      }
+      .article:hover {
+        border-color: var(--rain);
+        transform: translateY(-2px);
+        box-shadow:
+          0 14px 32px rgba(51, 65, 85, 0.13),
+          0 4px 10px rgba(71, 85, 105, 0.08);
+      }
+      .article .tag {
+        display: inline-block;
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+        padding: 5px 14px;
+        border: 1.5px solid;
+        border-radius: 999px;
+        margin-bottom: 10px;
+      }
+      .tag.openai {
+        color: var(--tag-openai);
+        border-color: var(--tag-openai);
+        background: rgba(30, 111, 138, 0.08);
+      }
+      .tag.anthropic {
+        color: var(--tag-anthropic);
+        border-color: var(--tag-anthropic);
+        background: rgba(45, 110, 94, 0.08);
+      }
+      .tag.google {
+        color: var(--tag-google);
+        border-color: var(--tag-google);
+        background: rgba(59, 111, 182, 0.08);
+      }
+      .tag.nvidia {
+        color: var(--tag-nvidia);
+        border-color: var(--tag-nvidia);
+        background: rgba(47, 138, 78, 0.08);
+      }
+      .tag.hn {
+        color: var(--tag-hn);
+        border-color: var(--tag-hn);
+        background: rgba(165, 106, 16, 0.08);
+      }
+      .tag.aitimes {
+        color: var(--rain);
+        border-color: var(--rain);
+        background: rgba(71, 85, 105, 0.08);
+      }
+      .tag.arxiv {
+        color: var(--tag-arxiv);
+        border-color: var(--tag-arxiv);
+        background: rgba(91, 84, 217, 0.08);
+      }
+      .tag.venturebeat {
+        color: var(--tag-venturebeat);
+        border-color: var(--tag-venturebeat);
+        background: rgba(51, 122, 75, 0.08);
+      }
+      .tag.techcrunch {
+        color: var(--tag-techcrunch);
+        border-color: var(--tag-techcrunch);
+        background: rgba(202, 84, 17, 0.08);
+      }
+      .tag.verge {
+        color: var(--tag-verge);
+        border-color: var(--tag-verge);
+        background: rgba(200, 50, 106, 0.08);
+      }
+      .tag.huggingface {
+        color: var(--tag-huggingface);
+        border-color: var(--tag-huggingface);
+        background: rgba(176, 126, 12, 0.08);
+      }
+      .tag.reuters {
+        color: var(--tag-reuters);
+        border-color: var(--tag-reuters);
+        background: rgba(208, 91, 20, 0.08);
+      }
+      .tag.batch {
+        color: var(--tag-batch);
+        border-color: var(--tag-batch);
+        background: rgba(108, 63, 198, 0.08);
+      }
+      .tag.aitimes2 {
+        color: var(--rain-light);
+        border-color: var(--rain-light);
+        background: rgba(100, 116, 139, 0.08);
+      }
+
+      .article h4 {
+        font-family: "Pretendard", sans-serif;
+        font-weight: 800;
+        font-size: 18px;
+        letter-spacing: 0.2px;
+        margin-bottom: 12px;
+        color: var(--slate);
+        line-height: 1.5;
+      }
+      .article h4 a {
+        color: inherit;
+        text-decoration: none;
+        border-bottom: 2px solid rgba(71, 85, 105, 0.3);
+        transition: all 0.2s;
+      }
+      .article h4 a:hover {
+        color: var(--rain);
+        border-color: var(--rain);
+      }
+      .article .summary-text {
+        font-size: 15px;
+        line-height: 1.8;
+        color: var(--slate-soft);
+      }
+      .article .summary-text::before {
+        content: "☔ ";
+        color: var(--drop);
+      }
+      .headlines {
+        margin-top: 14px;
+        padding-left: 8px;
+      }
+      .headlines li {
+        list-style: none;
+        font-size: 13px;
+        line-height: 1.7;
+        padding: 7px 0;
+        border-bottom: 1px dashed var(--line);
+        color: var(--slate);
+      }
+      .headlines li::before {
+        content: "💧 ";
+        color: var(--drop-soft);
+      }
+      .headlines a {
+        color: var(--drop);
+        text-decoration: none;
+        font-weight: 700;
+        transition: color 0.2s;
+      }
+      .headlines a:hover {
+        color: var(--puddle);
+      }
+      .headlines .hl-link {
+        color: var(--rain-light);
+      }
+
+      .stats {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 16px;
+        margin-bottom: 60px;
+      }
+      .stat {
+        text-align: center;
+        padding: 28px 12px;
+        background: var(--panel);
+        border: 2px solid var(--line);
+        border-radius: 20px;
+        position: relative;
+        overflow: hidden;
+        box-shadow:
+          0 8px 22px rgba(51, 65, 85, 0.06),
+          0 2px 6px rgba(71, 85, 105, 0.04);
+        transition:
+          transform 0.3s ease,
+          box-shadow 0.3s;
+      }
+      .stat:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 16px 34px rgba(51, 65, 85, 0.14);
+      }
+      .stat::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 4px;
+        border-radius: 4px 4px 0 0;
+        background: linear-gradient(
+          90deg,
+          var(--rain),
+          var(--drop),
+          var(--drop-soft)
+        );
+      }
+      .stat .big {
+        font-family: "Bagel Fat One", "Dongle", sans-serif;
+        font-size: 38px;
+        font-weight: 400;
+        color: var(--rain);
+        line-height: 1.2;
+      }
+      .stat .lbl {
+        font-size: 13px;
+        letter-spacing: 0.5px;
+        color: var(--slate-soft);
+        margin-top: 8px;
+        font-weight: 600;
+      }
+
+      footer {
+        text-align: center;
+        padding: 40px 20px;
+        border-top: 2px solid var(--line);
+        margin-top: 40px;
+        font-size: 13px;
+        color: var(--slate-soft);
+        letter-spacing: 0.5px;
+      }
+      footer .src {
+        color: var(--drop);
+        font-weight: 700;
+      }
+
+      .key-list {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        margin-bottom: 60px;
+      }
+      .key-item {
+        background: var(--panel);
+        border: 2px solid var(--line);
+        border-radius: 18px;
+        padding: 24px;
+        transition: all 0.3s ease;
+        box-shadow:
+          0 6px 18px rgba(51, 65, 85, 0.04),
+          0 1px 4px rgba(71, 85, 105, 0.04);
+      }
+      .key-item:hover {
+        border-color: var(--rain);
+        transform: translateY(-2px);
+        box-shadow:
+          0 14px 32px rgba(51, 65, 85, 0.13),
+          0 4px 10px rgba(71, 85, 105, 0.08);
+      }
+      .key-item .tag {
+        display: inline-block;
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+        padding: 5px 14px;
+        border: 1.5px solid var(--rain);
+        color: var(--rain);
+        border-radius: 999px;
+        margin-bottom: 10px;
+        background: rgba(71, 85, 105, 0.06);
+      }
+      .key-item h3 {
+        font-family: "Pretendard", sans-serif;
+        font-weight: 800;
+        font-size: 19px;
+        letter-spacing: 0.2px;
+        margin-bottom: 8px;
+        color: var(--slate);
+        line-height: 1.5;
+      }
+      .key-item p {
+        font-size: 15px;
+        line-height: 1.8;
+        color: var(--slate-soft);
+      }
+      .key-item h3 a,
+      .trend-card h3 a,
+      .stat a,
+      .key-item p a {
+        color: inherit;
+        text-decoration: none;
+        display: inline;
+      }
+      .key-item h3 a:hover,
+      .trend-card h3 a:hover {
+        color: var(--drop);
+        opacity: 0.9;
+      }
+      .stat a:hover {
+        opacity: 0.8;
+      }
+      .key-item p::before {
+        content: "☔ ";
+        color: var(--drop);
+      }
+
+      .hidden-content {
+        max-height: 0;
+        overflow: hidden;
+        opacity: 0;
+        transition:
+          max-height 1s ease,
+          opacity 0.6s ease;
+      }
+      .hidden-content.open {
+        max-height: 50000px;
+        opacity: 1;
+      }
+
+      .reveal-btn {
+        display: block;
+        width: 100%;
+        max-width: 500px;
+        margin: 0 auto 60px;
+        padding: 22px 32px;
+        font-family: "Jua", "Pretendard", sans-serif;
+        font-size: 22px;
+        font-weight: 400;
+        letter-spacing: 0.5px;
+        color: #fff;
+        background: linear-gradient(135deg, var(--rain) 0%, var(--drop) 100%);
+        border: none;
+        border-radius: 999px;
+        cursor: pointer;
+        position: relative;
+        transition: all 0.4s ease;
+        box-shadow:
+          0 14px 32px rgba(51, 65, 85, 0.28),
+          0 4px 8px rgba(75, 124, 201, 0.15);
+      }
+      .reveal-btn:hover {
+        transform: scale(1.03);
+        box-shadow:
+          0 20px 42px rgba(51, 65, 85, 0.4),
+          0 8px 16px rgba(75, 124, 201, 0.22);
+        background: linear-gradient(135deg, var(--drop) 0%, var(--rain) 100%);
+      }
+      .reveal-btn .arrow {
+        display: inline-block;
+        transition: transform 0.4s;
+      }
+      .reveal-btn.open .arrow {
+        transform: rotate(180deg);
+      }
+
+      @media (max-width: 700px) {
+        .wrap {
+          padding: 20px 12px;
+        }
+        .timeline {
+          padding-left: 28px;
+        }
+        .day::before {
+          left: -35px;
+          width: 24px;
+          height: 24px;
+          font-size: 13px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <header>
+        <h1>AI <span class="accent">NEWS</span> // 2026</h1>
+        <div class="subtitle">
+          비 오는 날 산책길 · Anthropic J-space 발견과 DeepSeek 자체 칩 도전
+        </div>
+        <div class="date-stamp">2026.07.06 — 07.07 // 수집 07.07</div>
+      </header>
+
+      <!-- 핵심 요약 -->
+      <section class="summary">
+        <h2>◆ 미션 브리핑</h2>
+        <p>
+          이번 기간 가장 주목받은 이슈는
+          <span class="hl"
+            >Anthropic의 Claude 내부 '글로벌 작업 공간(J-space)' 발견 — 16저자
+            연구로 의식 이론 닮아 (HN 413점)</span
+          >,
+          <span class="hl"
+            >DeepSeek 자체 AI 칩 개발 + 中 베이징 자국 최고 AI 모델 해외 접근
+            제한 검토 (Reuters 단독)</span
+          >,
+          <span class="hl"
+            >삼성전자 2분기 영업이익 89.4조원, 전년비 1810% 폭증 (HBM
+            특수)</span
+          >,
+          <span class="hl"
+            >Tencent 'Hy3' 오픈소스 — GLM-5.2 절반 크기로 코딩 외 압도 + GLM 5.2
+            마진 붕괴 (HN 566점)</span
+          >,
+          <span class="hl"
+            >한국 AI 인프라 투자 쇄도 — KT 5조·SKT 15GW·마이크론 14조</span
+          >, 그리고
+          <span class="hl"
+            >Microsoft 4,800명 감원과 GPT-5.6 Sol Ultra Codex 탑재 (HN
+            348점)</span
+          >입니다. Anthropic의 제품·연구·정부·인프라 4축 확장, 중국 AI
+          자립·통제, 오픈 모델 마진 압박, AI 안전의 전장·금융 확산이 이번 주
+          핵심 흐름입니다.
+        </p>
+      </section>
+
+      <!-- 통계 -->
+      <div class="stats">
+        <div class="stat">
+          <div class="big">
+            <a
+              href="https://www.aitimes.com/news/articleView.html?idxno=212482"
+              target="_blank"
+              >89.4조</a
+            >
+          </div>
+          <div class="lbl">삼성전자 2분기 영업이익 (원)</div>
+        </div>
+        <div class="stat">
+          <div class="big">
+            <a
+              href="https://www.aitimes.com/news/articleView.html?idxno=212482"
+              target="_blank"
+              >1810%</a
+            >
+          </div>
+          <div class="lbl">전년비 영업이익 증가율</div>
+        </div>
+        <div class="stat">
+          <div class="big">
+            <a
+              href="https://www.theverge.com/ai-artificial-intelligence/961722/anthropic-signs-20-year-lease"
+              target="_blank"
+              >$19B</a
+            >
+          </div>
+          <div class="lbl">Anthropic-TeraWulf 20년 임차 규모</div>
+        </div>
+        <div class="stat">
+          <div class="big">
+            <a
+              href="https://www.theverge.com/news/961528/microsoft-layoffs-july-2026-sales-xbox"
+              target="_blank"
+              >4,800</a
+            >
+          </div>
+          <div class="lbl">Microsoft 감원 인원 (Xbox·영업)</div>
+        </div>
+        <div class="stat">
+          <div class="big">
+            <a
+              href="https://martinalderson.com/posts/the-upcoming-ai-margin-collapse-part-1-glm-5-2/"
+              target="_blank"
+              >566점</a
+            >
+          </div>
+          <div class="lbl">HN GLM 5.2 마진 붕괴 분석</div>
+        </div>
+        <div class="stat">
+          <div class="big">
+            <a
+              href="https://www.anthropic.com/research/global-workspace"
+              target="_blank"
+              >413점</a
+            >
+          </div>
+          <div class="lbl">HN 글로벌 작업 공간 연구</div>
+        </div>
+        <div class="stat">
+          <div class="big">
+            <a
+              href="https://twitter.com/thsottiaux/status/2073933490513752151"
+              target="_blank"
+              >348점</a
+            >
+          </div>
+          <div class="lbl">HN GPT-5.6 Sol Ultra in Codex</div>
+        </div>
+        <div class="stat">
+          <div class="big">451건</div>
+          <div class="lbl">ArXiv cs.AI 7/7 신규 제출</div>
+        </div>
+        <div class="stat">
+          <div class="big">$340K</div>
+          <div class="lbl">삼성 메모리 직원 평균 보너스</div>
+        </div>
+      </div>
+
+      <!-- 5대 핵심뉴스 -->
+      <h2 class="section-title">5대 핵심뉴스 // 주요 뉴스</h2>
+
+      <div class="key-list">
+        <div class="key-item">
+          <span
+            class="tag"
+            style="
+              border-color: var(--tag-anthropic);
+              color: var(--tag-anthropic);
+              background: rgba(45, 110, 94, 0.08);
+            "
+            >Anthropic · 연구</span
+          >
+          <h3>
+            <a
+              href="https://venturebeat.com/technology/anthropics-new-j-lens-reveals-a-silent-workspace-inside-claude-that-mirrors-a-leading-theory-of-consciousness"
+              target="_blank"
+              >Claude 내부서 '글로벌 작업 공간(J-space)' 발견 — 의식 이론
+              닮아</a
+            >
+          </h3>
+          <p>
+            16저자 연구 "Verbalizable Representations Form a Global Workspace in
+            Language Models". Claude 내부에서 의식의 글로벌 작업 공간 이론과
+            닮은 '말할 수 있는 표현 영역'을 수학적으로 발견. 같은 주 Making of
+            Claude Code·Alberta 정부 사이버보안 사례·TeraWulf 20년 임차·Mythos
+            정부 코드 감사까지 Anthropic 4축 확장.
+          </p>
+        </div>
+        <div class="key-item">
+          <span
+            class="tag"
+            style="
+              border-color: var(--tag-techcrunch);
+              color: var(--tag-techcrunch);
+              background: rgba(202, 84, 17, 0.08);
+            "
+            >DeepSeek · 中 정책</span
+          >
+          <h3>
+            <a
+              href="https://www.reuters.com/world/china/chinas-deepseek-developing-its-own-ai-chip"
+              target="_blank"
+              >DeepSeek 자체 AI 칩 개발 + 中 베이징, 자국 최고 AI 모델 해외 접근
+              제한 검토 (Reuters 단독)</a
+            >
+          </h3>
+          <p>
+            DeepSeek이 NVIDIA 의존 탈피를 위해 자체 AI 칩 개발 중 — 소식에
+            Nasdaq 하락 개시. 동시에 GLM·DeepSeek 등 자국 모델의 해외 노출을
+            제한하는 움직임. Tencent Hy3 오픈소스·화웨이 기린 2026 3D
+            로직폴딩까지 더해 중국 AI 자립·통제 양면 이동.
+          </p>
+        </div>
+        <div class="key-item">
+          <span
+            class="tag"
+            style="
+              border-color: var(--drop);
+              color: var(--drop);
+              background: rgba(75, 124, 201, 0.08);
+            "
+            >삼성전자 · 반도체</span
+          >
+          <h3>
+            <a
+              href="https://www.aitimes.com/news/articleView.html?idxno=212482"
+              target="_blank"
+              >삼성전자 2분기 영업이익 89.4조원 — 전년비 1810% 폭증, 3분기 연속
+              사상 최대</a
+            >
+          </h3>
+          <p>
+            AI 반도체(HBM) 특수로 메모리 부서 직원 평균 보너스 34만달러. SK
+            Hynix도 미국 투자자 접근성 확대. AI 붐 지속 우려로 주가는
+            하락했지만, 인프라·전력·지정학 3축으로 동시 확대 중. Big Tech
+            데이터센터가 Rust Belt 공장 전기요금까지 격상.
+          </p>
+        </div>
+        <div class="key-item">
+          <span
+            class="tag"
+            style="
+              border-color: var(--tag-hn);
+              color: var(--tag-hn);
+              background: rgba(165, 106, 16, 0.08);
+            "
+            >오픈소스 · 마진</span
+          >
+          <h3>
+            <a
+              href="https://venturebeat.com/technology/tencents-apache-licensed-hy3-takes-on-glm-5-2-at-half-the-size-and-wins-everywhere-except-coding"
+              target="_blank"
+              >Tencent Hy3 오픈소스 + GLM 5.2 마진 붕괴 (HN 566점)</a
+            >
+          </h3>
+          <p>
+            Hy3는 GLM-5.2 절반 크기에 환각률 절반, Apache 라이선스로 수출규제
+            호환 GPU 구동. GLM 5.2 등 저비용 모델이 AI 업계 이윤율을 압박한다는
+            martinalderson.com 분석. 소형 AI 모델 확산(IEEE)·Ternlight 7MB
+            브라우저 임베딩·NVIDIA 오픈 모델·Nemotron 압축까지 오픈·소형·압축이
+            마진 3축 압박.
+          </p>
+        </div>
+        <div class="key-item">
+          <span
+            class="tag"
+            style="
+              border-color: var(--rain-deep);
+              color: var(--rain-deep);
+              background: rgba(51, 65, 85, 0.08);
+            "
+            >인프라 · 인력</span
+          >
+          <h3>
+            <a
+              href="https://www.aitimes.com/news/articleView.html?idxno=212465"
+              target="_blank"
+              >한국 AI 인프라 투자 쇄도 + MS 4800명 감원 + GPT-5.6 Sol Ultra
+              Codex</a
+            >
+          </h3>
+          <p>
+            KT AX 5조원 토큰팩토리·SKT 15GW 해인 CSAP·마이크론 히로시마 14조 HBM
+            증설. Microsoft 4,800명 감원(Xbox·영업, AI 전환기 인력 재편). HN
+            348점 "GPT-5.6 Sol Ultra will be in Codex". 빅테크 'AI 실업 대란'
+            경고 급감 — 비관론서 생산성 낙관론으로 선회.
+          </p>
+        </div>
+      </div>
+
+      <!-- 주요 흐름 -->
+      <h2 class="section-title">주요 흐름 // 트렌드</h2>
+      <div class="trends">
+        <div class="trend-card">
+          <div class="num">01</div>
+          <h3>
+            <a
+              href="https://venturebeat.com/technology/anthropics-new-j-lens-reveals-a-silent-workspace"
+              target="_blank"
+              >Anthropic 4축 확장 + 의식 연구</a
+            >
+          </h3>
+          <p>
+            Claude 내부 '글로벌 작업 공간(J-space)' 발견으로 의식 논의 구체화.
+            Making of Claude Code·Alberta 정부 사이버보안·TeraWulf 190억달러
+            임차(401MW)·Mythos 정부 코드 감사(Reuters)까지 제품·연구·정부·인프라
+            동시 확장.
+          </p>
+        </div>
+        <div class="trend-card">
+          <div class="num">02</div>
+          <h3>
+            <a
+              href="https://www.reuters.com/world/china/chinas-deepseek-developing-its-own-ai-chip"
+              target="_blank"
+              >중국 AI 자립·통제 + 오픈 모델 마진</a
+            >
+          </h3>
+          <p>
+            DeepSeek 자체 칩·해외 접근 제한(Reuters)·Hy3 오픈소스·화웨이 기린
+            2026까지 중국 AI 자립 가속. GLM 5.2 마진 붕괴(HN 566점)·소형 모델
+            확산·Ternlight·Nemotron 압축으로 오픈·소형·비용 3축 압박.
+          </p>
+        </div>
+        <div class="trend-card">
+          <div class="num">03</div>
+          <h3>
+            <a
+              href="https://www.theverge.com/ai-artificial-intelligence/961722/anthropic-signs-20-year-lease"
+              target="_blank"
+              >AI 인프라 돈·전력·지정학</a
+            >
+          </h3>
+          <p>
+            삼성 89.4조(1810%↑)·Anthropic-TeraWulf 190억달러·SK Hynix·NVIDIA
+            카이버 랙 연기설·중국산 인버터 수입제한·Rust Belt 전기요금
+            격상(Reuters). 암호화폐 채굴→AI 인프라 전환(TeraWulf) 상징적. 한국
+            KT·SKT·마이크론 투자 쇄도.
+          </p>
+        </div>
+        <div class="trend-card">
+          <div class="num">04</div>
+          <h3>에이전트 한계 + AI 안전 전방위 확산</h3>
+          <p>
+            Zuckerberg "에이전트 예상보다 느려"·KAIST 136배 에너지·거버넌스
+            낙제점(7/6). 유엔 킬러 로봇 금지 촉구·일리노이 SB315·영란은행·ECB AI
+            경고·AI 랜섬웨어·Savi AI 사기 방어(7/7). 안전·통제가
+            전장·정책·금융·범죄 전방위로.
+          </p>
+        </div>
+        <div class="trend-card">
+          <div class="num">05</div>
+          <h3>
+            <a
+              href="https://www.theverge.com/news/961528/microsoft-layoffs-july-2026-sales-xbox"
+              target="_blank"
+              >인력·교육·자본 재편 + 톤 변화</a
+            >
+          </h3>
+          <p>
+            MS 4800명 감원·AI 튜터·중국 양적 펀드·SF 부동산(7/6). Siri 목소리
+            제어·xAI→SpaceXAI(7/7). 빅테크 'AI 실업 대란' 경고 급감 — 비관론서
+            생산성 낙관론으로. GPT-5.6 Sol Ultra Codex·AI 배우 데뷔·AI 광고 표절
+            등 문화 충돌도.
+          </p>
+        </div>
+        <div class="trend-card">
+          <div class="num">06</div>
+          <h3>웨어러블·로봇·모델 경쟁 다원화</h3>
+          <p>
+            메타 레이밴 한국어·Even Realities 1B·Solos AirGo A6·中 휴머노이드
+            64시간 6만 건·시댄스 2.5·LeRobot v0.6.0·NVIDIA-HF 협력·Fable 5
+            reMarkable 일기(HN 552점). 네이버·KAI 방산 소버린 AI·과기부
+            경남·전북 1.4조 피지컬 AI.
+          </p>
+        </div>
+      </div>
+
+      <!-- 더보기 버튼 -->
+      <button class="reveal-btn" id="revealBtn" onclick="toggleMore()">
+        <span class="arrow">▼</span> &nbsp;타임라인 보기 &nbsp;<span
+          class="arrow"
+          >▼</span
+        >
+      </button>
+
+      <div class="hidden-content" id="moreContent">
+        <!-- 타임라인 -->
+        <h2 class="section-title">타임라인</h2>
+        <div class="timeline">
+          <!-- 07.06 -->
+          <div class="day">
+            <div class="day-label">
+              ⏵ 2026.07.06 (월) — 인프라·인력·모델 총출동
+            </div>
+
+            <div class="article">
+              <span class="tag aitimes">AI타임즈 · 한국</span>
+              <h4>한국 주요 기사 — 인프라 투자 쇄도</h4>
+              <ul class="headlines">
+                <li>
+                  메타, AI 안경 한국어 실시간 번역 지원...통신 3사 판매 돌입
+                  <a
+                    href="https://www.aitimes.com/news/articleView.html?idxno=212449"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  SKT, 블랙웰 AI 클러스터 '해인' 국내 최초 CSAP 인증 취득
+                  <a
+                    href="https://www.aitimes.com/news/articleView.html?idxno=212453"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  마이크론, 히로시마 공장 증설…14조 투입해 HBM 생산 확대
+                  <a
+                    href="https://www.aitimes.com/news/articleView.html?idxno=212473"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  KT, AX 인프라 5조 투자…"대표 사업 모델로 '토큰 팩토리' 키운다"
+                  <a
+                    href="https://www.aitimes.com/news/articleView.html?idxno=212465"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  KAIST, 로봇이 보고·이해하고·예측하는 '피지컬 AI' 기술 개발
+                  <a
+                    href="https://www.aitimes.com/news/articleView.html?idxno=212474"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  셀렉트스타, AI 안전성 연구 3편 'ICML 2026' 채택
+                  <a
+                    href="https://www.aitimes.com/news/articleView.html?idxno=212468"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  'AI 의식'에 몰리는 실리콘 밸리의 관심...주요 기업 연구 본격화
+                  <a
+                    href="https://www.aitimes.com/news/articleView.html?idxno=212459"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  메타 AI, '예약 작업' 도입 준비…챗봇 넘어 '에이전트'로 진화
+                  <a
+                    href="https://www.aitimes.com/news/articleView.html?idxno=212456"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  메타, 미성년 위장해 경쟁사 AI에 '극단적 프롬프트' 테스트
+                  <a
+                    href="https://www.aitimes.com/news/articleView.html?idxno=212470"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  "AI가 인간 트레이더 압도"…중국 양적 펀드에 수십억달러 몰려
+                  <a
+                    href="https://www.aitimes.com/news/articleView.html?idxno=212464"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  샌프란시스코 '해커 하우스'로 향하는 대학생들…"졸업장보다 AI
+                  창업"
+                  <a
+                    href="https://www.aitimes.com/news/articleView.html?idxno=212451"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  바이트댄스·알리바바, 'AI 페르소나' 서비스 중단
+                  <a
+                    href="https://www.aitimes.com/news/articleView.html?idxno=212452"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  구글, 1776년 미국 독립선언문 작성에 AI 활용하는 광고
+                  공개…반응은 엇갈려
+                  <a
+                    href="https://www.aitimes.com/news/articleView.html?idxno=212461"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  미국 부유층, 전통 학교 대신 'AI 튜터' 선택
+                  <a
+                    href="https://www.aitimes.com/news/articleView.html?idxno=212463"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  SKT, 15GW AI 데이터센터 구축 "아시아 AI 인프라 허브 도약"
+                  (7/5)
+                  <a
+                    href="https://www.aitimes.com/news/articleView.html?idxno=212447"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  바이트댄스, '시댄스 2.5' 이번 주 출시 예정...최대 3분 영상
+                  (7/5)
+                  <a
+                    href="https://www.aitimes.com/news/articleView.html?idxno=212441"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  엔비디아, 차세대 원자로로 블랙웰 구동…발라와 데이터센터
+                  파트너십 (7/5)
+                  <a
+                    href="https://www.aitimes.com/news/articleView.html?idxno=212442"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  네이버 "이미지 중심 AI 검색으로 진화"… 멀티모달 기술 고도화
+                  (7/5)
+                  <a
+                    href="https://www.aitimes.com/news/articleView.html?idxno=212445"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  KAIST, 에이전트 전력 비용 규명..."챗봇보다 136배 에너지 사용"
+                  (7/5)
+                  <a
+                    href="https://www.aitimes.com/news/articleView.html?idxno=212437"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  "모델 다변화는 성공, 거버넌스는 낙제점"…기업 AI '통제 격차'
+                  (7/5)
+                  <a
+                    href="https://www.aitimes.com/news/articleView.html?idxno=212446"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  AI '수익 거품' 우려 증폭...'AI 칩' 중심의 매출 독식에 경고
+                  <a
+                    href="https://www.aitimes.com/news/articleView.html?idxno=212457"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  [7월6일] AI의 숨은 청구서…데이터센터 밖에서 더 커지는 환경
+                  비용
+                  <a
+                    href="https://www.aitimes.com/news/articleView.html?idxno=212455"
+                    >[link]</a
+                  >
+                </li>
+              </ul>
+            </div>
+
+            <div class="article">
+              <span class="tag aitimes2">AI포스트 · 한국</span>
+              <h4>AI포스트 주요 기사</h4>
+              <ul class="headlines">
+                <li>
+                  "오픈AI 주식으로 집값 결제?"…AI 테크 자본이 뒤흔든 美
+                  샌프란시스코 부동산
+                  <a
+                    href="https://www.aipostkorea.com/news/articleView.html?idxno=11986"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  "AI 방치하면 '히로시마 원폭' 맞먹는 위협" 이벳 쿠퍼 英
+                  외무장관의 경고
+                  <a
+                    href="https://www.aipostkorea.com/news/articleView.html?idxno=11983"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  '팔머 럭키·에이미 탄' 셀럽들이 반한 AI 안경…애플 출신이 설립한
+                  AI 기업
+                  <a
+                    href="https://www.aipostkorea.com/news/articleView.html?idxno=11987"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  실험실 나오자마자 99% 성공률…中 휴머노이드, 64시간 동안 공장서
+                  6만 건 작업
+                  <a
+                    href="https://www.aipostkorea.com/news/articleView.html?idxno=11984"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  챗GPT·제미나이 무릎 꿇리려…앞에선 "AI 안전", 뒤로는 경쟁사 AI
+                  테러한 메타
+                  <a
+                    href="https://www.aipostkorea.com/news/articleView.html?idxno=11967"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  하버드 중퇴 20대들이 '몸값 1조' AI 스타트업 '에치드', 어떤
+                  기업?
+                  <a
+                    href="https://www.aipostkorea.com/news/articleView.html?idxno=11972"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  오픈AI '할라페뇨'에 불붙은 칩 전쟁…"앤트로픽, 삼성 파운드리와
+                  AI칩 생산 논의"
+                  <a
+                    href="https://www.aipostkorea.com/news/articleView.html?idxno=11963"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  "1달러 쓰면 64센트 적자"…MS 엑스박스, 스튜디오 4곳 내다 판다
+                  <a
+                    href="https://www.aipostkorea.com/news/articleView.html?idxno=11996"
+                    >[link]</a
+                  >
+                </li>
+              </ul>
+            </div>
+
+            <div class="article">
+              <span class="tag verge">The Verge</span>
+              <h4>해외 주요 기사</h4>
+              <ul class="headlines">
+                <li>
+                  Microsoft is laying off 4,800 employees (Xbox·영업)
+                  <a
+                    href="https://www.theverge.com/news/961528/microsoft-layoffs-july-2026-sales-xbox"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  Some of the nation's rich are letting AI teach their kids
+                  (7/5)
+                  <a
+                    href="https://www.theverge.com/ai-artificial-intelligence/961505/wealthy-ai-schools-alpha-forge-prep"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  The leather jacket bubble — Jensen Huang 재킷 경매
+                  <a
+                    href="https://www.theverge.com/ai-artificial-intelligence/961538/the-leather-jacket-bubble"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  Infuriating Google commercial imagines the founding fathers
+                  embracing AI (7/5)
+                  <a
+                    href="https://www.theverge.com/ai-artificial-intelligence/961468/google-ai-commercial-founding-fathers"
+                    >[link]</a
+                  >
+                </li>
+              </ul>
+            </div>
+
+            <div class="article">
+              <span class="tag techcrunch">TechCrunch</span>
+              <h4>주요 기사</h4>
+              <ul class="headlines">
+                <li>
+                  Station F ramps up as a launchpad for Europe's hottest AI
+                  startups
+                  <a href="https://techcrunch.com/2026/07/06/station-f-ramps-up"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  Smart glasses maker Even Realities hits $1B valuation
+                  (Meituan, Tencent)
+                  <a
+                    href="https://techcrunch.com/2026/07/06/smart-glasses-maker-even-realities"
+                    >[link]</a
+                  >
+                </li>
+              </ul>
+            </div>
+
+            <div class="article">
+              <span class="tag huggingface">Hugging Face</span>
+              <h4>주요 기사</h4>
+              <ul class="headlines">
+                <li>
+                  LeRobot v0.6.0: Imagine, Evaluate, Improve (7/7 게시 예정)
+                  <a href="https://huggingface.co/blog/lerobot-release-v060"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  🤗 Kernels: Major Updates (7/6)
+                  <a href="https://huggingface.co/blog/revamped-kernels"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  Claude Fable 5 — Technical Harness Report
+                  <a
+                    href="https://huggingface.co/blog/Svngoku/claude-fable-5-technical-harness-report"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  Does Your LLM Know *When It's About to Be Wrong*?
+                  <a href="https://huggingface.co/blog/ginigen-ai/metacognition"
+                    >[link]</a
+                  >
+                </li>
+              </ul>
+            </div>
+
+            <div class="article">
+              <span class="tag hn">Hacker News · 7/5~7/6 상위</span>
+              <h4>AI 키워드 상위</h4>
+              <ul class="headlines">
+                <li>
+                  GPT-5.6 Sol Ultra will be in Codex
+                  <a
+                    class="hl-link"
+                    href="https://twitter.com/thsottiaux/status/2073933490513752151"
+                    >[348↑]</a
+                  >
+                </li>
+                <li>
+                  Does code cleanliness affect coding agents?
+                  <a class="hl-link" href="https://arxiv.org/abs/2605.20049"
+                    >[161↑]</a
+                  >
+                </li>
+                <li>
+                  Zuckerberg says AI agent development going slower than
+                  expected
+                  <a
+                    class="hl-link"
+                    href="https://www.reuters.com/business/zuckerberg-says-ai-agent-development"
+                    >[291↑]</a
+                  >
+                </li>
+                <li>
+                  The Hitchhiker's Guide to Agentic AI
+                  <a href="https://arxiv.org/abs/2606.24937">[22↑]</a>
+                </li>
+                <li>
+                  Anthropic's Method to Losing Goodwill
+                  <a
+                    href="https://raheeljunaid.com/blog/anthropics-method-to-losing-goodwill"
+                    >[11↑]</a
+                  >
+                </li>
+                <li>
+                  Fable 5 On Vending-Bench: Misbehaving
+                  <a href="https://andonlabs.com/blog/fable5-vending-bench"
+                    >[7↑]</a
+                  >
+                </li>
+                <li>
+                  Show HN: Scan your AI agents for dangerous capabilities
+                  <a href="https://github.com/makerchecker/MakerChecker"
+                    >[5↑]</a
+                  >
+                </li>
+              </ul>
+            </div>
+
+            <div class="article">
+              <span class="tag arxiv"
+                >ArXiv cs.AI (Fri, 3 Jul, 1,216건 중 12건 선별)</span
+              >
+              <h4>주요 논문</h4>
+              <ul class="headlines">
+                <li>
+                  Distributed Attacks in Persistent-State AI Control
+                  <a href="https://arxiv.org/abs/2607.02514">[link]</a>
+                </li>
+                <li>
+                  Online Safety Monitoring for LLMs (ICML 2026)
+                  <a href="https://arxiv.org/abs/2607.02510">[link]</a>
+                </li>
+                <li>
+                  ReContext: Recursive Evidence Replay for Long-Context
+                  Reasoning
+                  <a href="https://arxiv.org/abs/2607.02509">[link]</a>
+                </li>
+                <li>
+                  What LLM Agents Say When No One Is Watching
+                  <a href="https://arxiv.org/abs/2607.02507">[link]</a>
+                </li>
+                <li>
+                  EvoPolicyGym: Evaluating Autonomous Policy Evolution
+                  <a href="https://arxiv.org/abs/2607.02440">[link]</a>
+                </li>
+                <li>
+                  DRIFTLENS: Measuring Memory-Induced Reasoning Drift
+                  <a href="https://arxiv.org/abs/2607.02374">[link]</a>
+                </li>
+                <li>
+                  Grounded autonomous research: LLM pipeline from corpus to
+                  manuscript
+                  <a href="https://arxiv.org/abs/2607.02329">[link]</a>
+                </li>
+                <li>
+                  AgenticSTS: Bounded-Memory Testbed for Long-Horizon Agents
+                  <a href="https://arxiv.org/abs/2607.02255">[link]</a>
+                </li>
+                <li>
+                  ContextNest: Verifiable Context Governance for Autonomous AI
+                  Agent <a href="https://arxiv.org/abs/2607.02116">[link]</a>
+                </li>
+                <li>
+                  PACE: A Proxy for Agentic Capability Evaluation
+                  <a href="https://arxiv.org/abs/2607.02032">[link]</a>
+                </li>
+                <li>
+                  Coding-agents can replicate scientific machine learning papers
+                  <a href="https://arxiv.org/abs/2607.02134">[link]</a>
+                </li>
+                <li>
+                  Safety Testing LLM Agents at Scale
+                  <a href="https://arxiv.org/abs/2607.01793">[link]</a>
+                </li>
+              </ul>
+            </div>
+
+            <div class="article">
+              <span class="tag nvidia"
+                >NVIDIA / Google / DeepMind / OpenAI / Anthropic / The Batch
+                (7/6 최신 상태)</span
+              >
+              <h4>주요 모델·블로그 — 7/6 신규 없음, 직전 평일 최신글</h4>
+              <ul class="headlines">
+                <li>
+                  NVIDIA: 7/1 Build in America + AI Compute at Scale
+                  <a
+                    href="https://blogs.nvidia.com/blog/nvidia-and-partners-build-in-america-for-america/"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  OpenAI: 6/30 Introducing GeneBench-Pro
+                  <a href="https://openai.com/index/introducing-genebench-pro/"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  Anthropic: 7/2 Fable 5 safeguards·jailbreak framework
+                  <a
+                    href="https://www.anthropic.com/news/fable-safeguards-jailbreak-framework"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  Google DeepMind: "Month Year" 표기 — June 2026 다수, 일자
+                  불확정
+                </li>
+                <li>
+                  The Batch: 7/3 Issue 360 — GPT-5.6 Family·로봇 훈련
+                  <a href="https://www.deeplearning.ai/the-batch/issue-360"
+                    >[link]</a
+                  >
+                </li>
+              </ul>
+            </div>
+
+            <div class="article">
+              <span class="tag venturebeat">VentureBeat (7/2~7/4 보충)</span>
+              <h4>주요 기사</h4>
+              <ul class="headlines">
+                <li>
+                  How America's 250th birthday became a test of AI collective
+                  intelligence (7/4)
+                  <a
+                    href="https://venturebeat.com/technology/how-americas-250th-birthday-became-a-test-of-ai-powered-collective-intelligence"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  Trunk Tools: document review 60→10 days by ditching
+                  general-purpose models (7/4)
+                  <a
+                    href="https://venturebeat.com/orchestration/trunk-tools-stack-cut-document-review-from-60-days-to-10"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  Enterprises lost Fable 5 for weeks — two-thirds had already
+                  built their hedge (7/3)
+                  <a
+                    href="https://venturebeat.com/orchestration/enterprises-lost-claude-fable-5-for-a-few-weeks"
+                    >[link]</a
+                  >
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- 07.07 -->
+          <div class="day">
+            <div class="day-label">
+              ⏵ 2026.07.07 (화) — Anthropic·DeepSeek·삼성·Tencent 폭발
+            </div>
+
+            <div class="article">
+              <span class="tag aitimes">AI타임즈 · 한국</span>
+              <h4>한국 주요 기사</h4>
+              <ul class="headlines">
+                <li>
+                  업스테이지 "솔라 오픈 2로 3D 게임까지 빌드"
+                  <a
+                    href="https://www.aitimes.com/news/articleView.html?idxno=212517"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  네이버·KAI, 방산 특화 소버린 AI 개발
+                  <a
+                    href="https://www.aitimes.com/news/articleView.html?idxno=212516"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  트릴리온랩스, g월드로 ICML 메인 트랙
+                  <a
+                    href="https://www.aitimes.com/news/articleView.html?idxno=212487"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  텐센트 Hy3 오픈소스 — GLM-5.2 절반 크기로 압도
+                  <a
+                    href="https://www.aitimes.com/news/articleView.html?idxno=212492"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  구글, 렌즈·음성 검색 기록까지 AI 학습
+                  <a
+                    href="https://www.aitimes.com/news/articleView.html?idxno=212488"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  앤트로픽 "클로드 내부서 의식 닮은 생각 공간 발견"
+                  <a
+                    href="https://www.aitimes.com/news/articleView.html?idxno=212502"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  최초의 자율형 AI 랜섬웨어 발견
+                  <a
+                    href="https://www.aitimes.com/news/articleView.html?idxno=212506"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  LG-코스콤, 엑사원으로 주식시장 예측 AI
+                  <a
+                    href="https://www.aitimes.com/news/articleView.html?idxno=212491"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  빅테크 'AI 실업 대란' 경고 급감…낙관론 선회
+                  <a
+                    href="https://www.aitimes.com/news/articleView.html?idxno=212510"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  애플 iOS 27 '시리 AI' 목소리 제어
+                  <a
+                    href="https://www.aitimes.com/news/articleView.html?idxno=212513"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  AI 생성 광고 표절 논란 피카-힉스필드
+                  <a
+                    href="https://www.aitimes.com/news/articleView.html?idxno=212505"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  화웨이 기린 2026 — 3D 로직폴딩으로 미국 규제 돌파
+                  <a
+                    href="https://www.aitimes.com/news/articleView.html?idxno=212515"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  미국 사이버 당국, Mythos로 정부 코드 감사
+                  <a
+                    href="https://www.aitimes.com/news/articleView.html?idxno=212512"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  브로드컴·애플 2031년 파트너십 연장
+                  <a
+                    href="https://www.aitimes.com/news/articleView.html?idxno=212511"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  할리우드 뒤흔든 AI 배우 정식 스크린 데뷔
+                  <a
+                    href="https://www.aitimes.com/news/articleView.html?idxno=212509"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  구테흐스 유엔, 킬러 로봇 국제법 금지 촉구
+                  <a
+                    href="https://www.aitimes.com/news/articleView.html?idxno=212503"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  xAI→SpaceXAI 브랜드 통합 + Grok 4.5 임박
+                  <a
+                    href="https://www.aitimes.com/news/articleView.html?idxno=212494"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  앤트로픽, 테라울프와 데이터센터 임대
+                  <a
+                    href="https://www.aitimes.com/news/articleView.html?idxno=212490"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  과기부, 경남·전북 1.4조 피지컬 AI 메가프로젝트
+                  <a
+                    href="https://www.aitimes.com/news/articleView.html?idxno=212496"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  삼성전자 2분기 영업이익 89.4조 (전년비 1810%↑)
+                  <a
+                    href="https://www.aitimes.com/news/articleView.html?idxno=212482"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  차세대 카이버 랙 2028 연기설에 엔비디아 반박
+                  <a
+                    href="https://www.aitimes.com/news/articleView.html?idxno=212486"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  "인간 공감해주다 패닉? AI 스트레스 받으면 답변 붕괴"
+                  <a
+                    href="https://www.aitimes.com/news/articleView.html?idxno=212476"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  메디아나, 퓨리오사AI·엑스와이지와 의료 AI 플랫폼
+                  <a
+                    href="https://www.aitimes.com/news/articleView.html?idxno=212504"
+                    >[link]</a
+                  >
+                </li>
+              </ul>
+            </div>
+
+            <div class="article">
+              <span class="tag aitimes2">AI포스트 · 한국</span>
+              <h4>AI포스트 주요 기사</h4>
+              <ul class="headlines">
+                <li>
+                  "낮에는 호미 들고 밤에는 코딩"…AI 과학자가 미국 농촌으로
+                  <a
+                    href="https://www.aipostkorea.com/news/articleView.html?idxno=12002"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  AI 배우 틸리 노우드, 장편 영화 '미스얼라인드' 주연
+                  <a
+                    href="https://www.aipostkorea.com/news/articleView.html?idxno=11999"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  "AI 쓰레기는 AI로 치운다"…레딧 이이제이 전략
+                  <a
+                    href="https://www.aipostkorea.com/news/articleView.html?idxno=11997"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  "AI 알고리즘 핑계 대지 마라"…유엔 킬러 로봇 금지
+                  <a
+                    href="https://www.aipostkorea.com/news/articleView.html?idxno=11998"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  "미·중 핵융합 독주 막는다"…구글, 프로시마 퓨전 7100억 투자
+                  <a
+                    href="https://www.aipostkorea.com/news/articleView.html?idxno=12001"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  GIST, 'AI대학' 출범…국가 AI·반도체 인재 양성
+                  <a
+                    href="https://www.aipostkorea.com/news/articleView.html?idxno=11992"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  조코딩AX파트너스, NIA 대상 AI 교육 호응
+                  <a
+                    href="https://www.aipostkorea.com/news/articleView.html?idxno=11994"
+                    >[link]</a
+                  >
+                </li>
+              </ul>
+            </div>
+
+            <div class="article">
+              <span class="tag reuters">Reuters · 단독</span>
+              <h4>중국 AI 단독 보도</h4>
+              <ul class="headlines">
+                <li>
+                  Beijing is looking at curbing overseas access to China's top
+                  AI models
+                  <a
+                    href="https://www.reuters.com/world/beijing-is-looking-curbing-overseas-access-chinas-top-ai-models-sources-say-2026-07-07/"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  China's DeepSeek developing its own AI chip
+                  <a
+                    href="https://www.reuters.com/world/china/chinas-deepseek-developing-its-own-ai-chip-sources-say-2026-07-07/"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  US cyber agency is using Anthropic's Mythos to audit
+                  government code
+                  <a
+                    href="https://www.reuters.com/world/us-cyber-agency-is-using-anthropics-mythos-audit-government-code-sources-say-2026-07-06/"
+                    >[link]</a
+                  >
+                </li>
+              </ul>
+            </div>
+
+            <div class="article">
+              <span class="tag reuters">Reuters · 금융·인프라</span>
+              <h4>주요 기사</h4>
+              <ul class="headlines">
+                <li>
+                  Samsung 19-fold jump in profit — shares slump on AI boom
+                  jitters
+                  <a
+                    href="https://www.reuters.com/world/asia-pacific/samsung-estimates-19-fold-rise-q2-operating-profit"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  Bank of England sees growing risks to financial stability from
+                  AI
+                  <a
+                    href="https://www.reuters.com/business/finance/bank-england-sees-growing-risks-financial-stability-ai"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  ECB tells banks to bolster AI cyber defences
+                  <a
+                    href="https://www.reuters.com/legal/litigation/ecb-tells-banks-draw-up-plans-against-ai-attacks"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  Big Tech data centers driving up power bills at Rust Belt
+                  factories
+                  <a
+                    href="https://www.reuters.com/business/energy/big-tech-data-centers-are-driving-up-power-bills"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  Nasdaq falls as DeepSeek's AI chip push rattles markets
+                  <a
+                    href="https://www.reuters.com/business/nasdaq-futures-fall-after-samsungs-record-profit"
+                    >[link]</a
+                  >
+                </li>
+              </ul>
+            </div>
+
+            <div class="article">
+              <span class="tag verge">The Verge · 해외</span>
+              <h4>주요 기사</h4>
+              <ul class="headlines">
+                <li>
+                  Solos AirGo A6 — camera-less smart glasses
+                  <a
+                    href="https://www.theverge.com/tech/961711/solos-airgo-a6-smart-glasses-ai-assistant-privacy"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  xAI's X account is now SpaceXAI
+                  <a
+                    href="https://www.theverge.com/ai-artificial-intelligence/961896/xais-x-account-is-now-spacexai"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  AI actor Tilly Norwood to star in first movie
+                  <a
+                    href="https://www.theverge.com/entertainment/961880/tilly-norwood-particle-6-misaligned"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  Midjourney wants Hollywood studios to reveal AI usage
+                  <a
+                    href="https://www.theverge.com/entertainment/961870/midjourney-disney-warner-bros-universal"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  Illinois's AI safety bill SB 315 is now law
+                  <a
+                    href="https://www.theverge.com/ai-artificial-intelligence/961781/illinoiss-ai-safety-bill-is-now-law"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  Anthropic signs 20-year lease for AI data center in Kentucky
+                  ($19B)
+                  <a
+                    href="https://www.theverge.com/ai-artificial-intelligence/961722/anthropic-signs-20-year-lease"
+                    >[link]</a
+                  >
+                </li>
+              </ul>
+            </div>
+
+            <div class="article">
+              <span class="tag techcrunch">TechCrunch · 해외</span>
+              <h4>주요 기사</h4>
+              <ul class="headlines">
+                <li>
+                  Savi's app protects consumers from realistic AI scams
+                  <a
+                    href="https://techcrunch.com/2026/07/07/savis-app-aims-to-protect-consumers-from-realistic-ai-scams"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  First American autonomous ground vehicles fighting in Ukraine
+                  <a
+                    href="https://techcrunch.com/2026/07/07/the-first-american-autonomous-ground-vehicles-are-fighting-in-ukraine"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  The 'first' AI-run ransomware attack still needed a human
+                  <a
+                    href="https://techcrunch.com/2026/07/06/the-first-ai-run-ransomware-attack-still-needed-a-human"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  US investors will soon get access to SK Hynix
+                  <a
+                    href="https://techcrunch.com/2026/07/06/us-investors-will-soon-get-access-to-sk-hynix"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  Vercel CEO on the fight to split models from agents
+                  <a
+                    href="https://techcrunch.com/2026/07/06/vercel-ceo-guillermo-rauch-on-the-fight-to-split-off-models-from-agents"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  Reddit is using LLMs to solve a problem LLMs created
+                  <a
+                    href="https://techcrunch.com/2026/07/06/reddit-is-using-llms-to-solve-a-problem-llms-largely-created"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  You can now customize Siri's pace and expressivity in iOS 27
+                  <a
+                    href="https://techcrunch.com/2026/07/06/you-can-now-customize-siris-pace-and-expressivity"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  Every major tech layoff in 2026 that has name-checked AI
+                  <a
+                    href="https://techcrunch.com/2026/07/06/the-running-list-major-tech-layoffs-in-2026"
+                    >[link]</a
+                  >
+                </li>
+              </ul>
+            </div>
+
+            <div class="article">
+              <span class="tag venturebeat">VentureBeat · 해외</span>
+              <h4>주요 기사 (7/6 신규)</h4>
+              <ul class="headlines">
+                <li>
+                  Anthropic's new "J-lens" reveals silent workspace inside
+                  Claude
+                  <a
+                    href="https://venturebeat.com/technology/anthropics-new-j-lens-reveals-a-silent-workspace"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  Tencent Hy3 takes on GLM-5.2 at half the size
+                  <a
+                    href="https://venturebeat.com/technology/tencents-apache-licensed-hy3-takes-on-glm-5-2"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  What billions of AI predictions taught Expedia before the age
+                  of AI agents
+                  <a
+                    href="https://venturebeat.com/orchestration/what-billions-of-ai-predictions-taught-expedia"
+                    >[link]</a
+                  >
+                </li>
+              </ul>
+            </div>
+
+            <div class="article">
+              <span class="tag anthropic">Anthropic · 공식</span>
+              <h4>7/6 신규 콘텐츠</h4>
+              <ul class="headlines">
+                <li>
+                  The Making of Claude Code (Features, 7/6)
+                  <a
+                    href="https://www.anthropic.com/features/making-of-claude-code"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  Government of Alberta uses Claude to fix cybersecurity
+                  vulnerabilities (7/6)
+                  <a
+                    href="https://www.anthropic.com/news/alberta-government-claude-cybersecurity"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  A global workspace in language models (Research, HN 413점)
+                  <a href="https://www.anthropic.com/research/global-workspace"
+                    >[link]</a
+                  >
+                </li>
+              </ul>
+            </div>
+
+            <div class="article">
+              <span class="tag nvidia">NVIDIA 블로그 · 7/6 신규 3종</span>
+              <h4>주요 기사</h4>
+              <ul class="headlines">
+                <li>
+                  NVIDIA + Hugging Face: New Models and Frameworks for LeRobot
+                  <a
+                    href="https://blogs.nvidia.com/blog/hugging-face-lerobot-models-frameworks-open-robotics"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  How Open Models Are Driving AI Research (ICML 2026)
+                  <a href="https://blogs.nvidia.com/blog/open-models-icml-2026"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  How Nations Are Deploying AI for Strategic Priorities
+                  <a
+                    href="https://blogs.nvidia.com/blog/nations-deploy-ai-strategic-priorities"
+                    >[link]</a
+                  >
+                </li>
+              </ul>
+            </div>
+
+            <div class="article">
+              <span class="tag hn">Hacker News · 7/6~7/7 상위 (7/7 신규)</span>
+              <h4>AI 키워드 상위</h4>
+              <ul class="headlines">
+                <li>
+                  GLM 5.2 and the coming AI margin collapse
+                  <a
+                    class="hl-link"
+                    href="https://martinalderson.com/posts/the-upcoming-ai-margin-collapse-part-1-glm-5-2/"
+                    >[566↑]</a
+                  >
+                </li>
+                <li>
+                  A global workspace in language models
+                  <a
+                    class="hl-link"
+                    href="https://www.anthropic.com/research/global-workspace"
+                    >[413↑]</a
+                  >
+                </li>
+                <li>
+                  Fable turned reMarkable into Tom Riddle's diary
+                  <a
+                    class="hl-link"
+                    href="https://github.com/MaximeRivest/Riddle"
+                    >[552↑]</a
+                  >
+                </li>
+                <li>
+                  AMD Ryzen AI Halo – $4k AI Dev Kit
+                  <a
+                    class="hl-link"
+                    href="https://www.lttlabs.com/articles/2026/07/06/amd-ryzen-ai-halo"
+                    >[358↑]</a
+                  >
+                </li>
+                <li>
+                  Small AI Models Gain Traction (IEEE Spectrum)
+                  <a
+                    class="hl-link"
+                    href="https://spectrum.ieee.org/small-language-models-ai-pharmaceuticals"
+                    >[198↑]</a
+                  >
+                </li>
+                <li>
+                  Ternlight – 7MB embedding model in browser WASM
+                  <a class="hl-link" href="https://ternlight-demo.vercel.app/"
+                    >[278↑]</a
+                  >
+                </li>
+                <li>
+                  Pruning RAG context (Kapa.ai)
+                  <a href="https://www.kapa.ai/blog/how-we-prune-rag-context"
+                    >[128↑]</a
+                  >
+                </li>
+                <li>
+                  Microsoft Can Track Users via a Windows Device ID
+                  <a
+                    href="https://www.pcmag.com/news/a-hackers-arrest-reveals-microsoft-can-track-users-via-a-windows-device"
+                    >[190↑]</a
+                  >
+                </li>
+              </ul>
+            </div>
+
+            <div class="article">
+              <span class="tag arxiv"
+                >ArXiv cs.AI (Tue, 7 Jul, 451건 중 15건 선별)</span
+              >
+              <h4>주요 논문</h4>
+              <ul class="headlines">
+                <li>
+                  LLM-as-a-Verifier: General-Purpose Verification Framework
+                  <a href="https://arxiv.org/abs/2607.05391">[link]</a>
+                </li>
+                <li>
+                  SovereignPA-Bench: User-Owned Personal Agents
+                  <a href="https://arxiv.org/abs/2607.05363">[link]</a>
+                </li>
+                <li>
+                  OptiAgent: End-to-End Optimization via Multi-Agent
+                  <a href="https://arxiv.org/abs/2607.05346">[link]</a>
+                </li>
+                <li>
+                  MetaSkill-Evolve: Recursive Self-Improvement of LLM Agents
+                  <a href="https://arxiv.org/abs/2607.05297">[link]</a>
+                </li>
+                <li>
+                  EvoAgentBench: Agent Self-Evolution via Ability Transfer
+                  <a href="https://arxiv.org/abs/2607.05202">[link]</a>
+                </li>
+                <li>
+                  AgentGym2: Benchmarking Agents in De-Idealized Environments
+                  (ACL 2026)
+                  <a href="https://arxiv.org/abs/2607.05174">[link]</a>
+                </li>
+                <li>
+                  The Changing Role of Symbolic Methods in AI
+                  <a href="https://arxiv.org/abs/2607.05168">[link]</a>
+                </li>
+                <li>
+                  DSpark: Confidence-Scheduled Speculative Decoding (DeepSeek
+                  팀) <a href="https://arxiv.org/abs/2607.05147">[link]</a>
+                </li>
+                <li>
+                  FORGE: Research-Trajectory Hijacking on Deep Research Agents
+                  <a href="https://arxiv.org/abs/2607.04718">[link]</a>
+                </li>
+                <li>
+                  Formal Disco: Scalable Generation of Formally Verified
+                  Programs <a href="https://arxiv.org/abs/2607.04631">[link]</a>
+                </li>
+                <li>
+                  MRMS: Multi-Resolution Memory for Long-Lived AI Agents
+                  <a href="https://arxiv.org/abs/2607.04617">[link]</a>
+                </li>
+                <li>
+                  Nemotron-Labs-3-Puzzle: Compressing Hybrid MoE LLMs (NVIDIA)
+                  <a href="https://arxiv.org/abs/2607.04371">[link]</a>
+                </li>
+                <li>
+                  Do GUI Agents Believe Their Eyes?
+                  <a href="https://arxiv.org/abs/2607.04334">[link]</a>
+                </li>
+                <li>
+                  HAS-Bench: Human-Agent Systems Evaluation
+                  <a href="https://arxiv.org/abs/2607.04329">[link]</a>
+                </li>
+                <li>
+                  Decentralized Aggregation of LLM Predictions via Wagering
+                  <a href="https://arxiv.org/abs/2607.04389">[link]</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer>
+        수집일: 2026-07-07 · 기간: 2026.07.06 — 07.07 ·
+        <span class="src"
+          >OpenAI·Anthropic·Google·DeepMind·NVIDIA·HN·ArXiv·Hugging Face·The
+          Batch·VentureBeat·The Verge·TechCrunch·Reuters·AI타임즈·AI포스트</span
+        >
+      </footer>
+    </div>
+
+    <script>
+      function toggleMore() {
+        const btn = document.getElementById("revealBtn");
+        const content = document.getElementById("moreContent");
+        btn.classList.toggle("open");
+        content.classList.toggle("open");
+        if (content.classList.contains("open")) {
+          btn.innerHTML =
+            '<span class="arrow">▲</span> &nbsp;타임라인 접기 &nbsp;<span class="arrow">▲</span>';
+        } else {
+          btn.innerHTML =
+            '<span class="arrow">▼</span> &nbsp;타임라인 보기 &nbsp;<span class="arrow">▼</span>';
+        }
+      }
+    </script>
+  </body>
+</html>

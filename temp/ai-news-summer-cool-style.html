@@ -3,7 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="2026년 6월 28일~30일 AI 뉴스 다이제스트. Azure AI, GPT-5, Gemini 2.5, Claude 4.5, Perplexity 등 최신 AI 소식을 한글 요약으로 제공합니다." />
+    <meta
+      name="description"
+      content="2026년 6월 28일~30일 AI 뉴스 다이제스트. Azure AI, GPT-5, Gemini 2.5, Claude 4.5, Perplexity 등 최신 AI 소식을 한글 요약으로 제공합니다."
+    />
     <title>AI 뉴스 // 2026.06.28-06.30</title>
     <link
       rel="stylesheet"
@@ -41,25 +44,49 @@
 
       @keyframes streamFlow {
         0%,
-        100% { transform: translateX(0) translateY(0); }
-        25% { transform: translateX(18px) translateY(-8px); }
-        50% { transform: translateX(-8px) translateY(12px); }
-        75% { transform: translateX(-20px) translateY(-6px); }
+        100% {
+          transform: translateX(0) translateY(0);
+        }
+        25% {
+          transform: translateX(18px) translateY(-8px);
+        }
+        50% {
+          transform: translateX(-8px) translateY(12px);
+        }
+        75% {
+          transform: translateX(-20px) translateY(-6px);
+        }
       }
       @keyframes mistDrift {
         0%,
-        100% { transform: translateY(0) scale(1); opacity: 1; }
-        50% { transform: translateY(-18px) scale(1.06); opacity: 0.85; }
+        100% {
+          transform: translateY(0) scale(1);
+          opacity: 1;
+        }
+        50% {
+          transform: translateY(-18px) scale(1.06);
+          opacity: 0.85;
+        }
       }
       @keyframes sunlightFilter {
         0%,
-        100% { opacity: 0.5; }
-        50% { opacity: 0.8; }
+        100% {
+          opacity: 0.5;
+        }
+        50% {
+          opacity: 0.8;
+        }
       }
 
       body {
         background:
-          linear-gradient(175deg, #f2fbfc 0%, #ecf6f5 20%, #f0f7f4 60%, #f5fafa 100%),
+          linear-gradient(
+            175deg,
+            #f2fbfc 0%,
+            #ecf6f5 20%,
+            #f0f7f4 60%,
+            #f5fafa 100%
+          ),
           var(--bg);
         color: var(--slate);
         font-family: "Pretendard", sans-serif;
@@ -76,11 +103,31 @@
         pointer-events: none;
         z-index: 0;
         background:
-          radial-gradient(ellipse 500px 300px at 10% 8%, rgba(13, 148, 136, 0.12) 0%, transparent 65%),
-          radial-gradient(ellipse 450px 280px at 90% 14%, rgba(46, 213, 191, 0.1) 0%, transparent 60%),
-          radial-gradient(ellipse 400px 320px at 85% 82%, rgba(186, 230, 253, 0.14) 0%, transparent 60%),
-          radial-gradient(ellipse 420px 300px at 15% 86%, rgba(71, 196, 157, 0.1) 0%, transparent 55%),
-          radial-gradient(ellipse 500px 350px at 50% 50%, rgba(224, 242, 244, 0.2) 0%, transparent 70%);
+          radial-gradient(
+            ellipse 500px 300px at 10% 8%,
+            rgba(13, 148, 136, 0.12) 0%,
+            transparent 65%
+          ),
+          radial-gradient(
+            ellipse 450px 280px at 90% 14%,
+            rgba(46, 213, 191, 0.1) 0%,
+            transparent 60%
+          ),
+          radial-gradient(
+            ellipse 400px 320px at 85% 82%,
+            rgba(186, 230, 253, 0.14) 0%,
+            transparent 60%
+          ),
+          radial-gradient(
+            ellipse 420px 300px at 15% 86%,
+            rgba(71, 196, 157, 0.1) 0%,
+            transparent 55%
+          ),
+          radial-gradient(
+            ellipse 500px 350px at 50% 50%,
+            rgba(224, 242, 244, 0.2) 0%,
+            transparent 70%
+          );
         animation: streamFlow 28s ease-in-out infinite;
       }
 
@@ -100,10 +147,26 @@
             rgba(255, 255, 255, 0.12) 82px
           ),
           /* 햇살 */
-          radial-gradient(ellipse 600px 200px at 50% 0%, rgba(255, 255, 255, 0.5) 0%, transparent 70%);
+          radial-gradient(
+              ellipse 600px 200px at 50% 0%,
+              rgba(255, 255, 255, 0.5) 0%,
+              transparent 70%
+            );
         animation: mistDrift 20s ease-in-out infinite;
-        mask-image: linear-gradient(to bottom, transparent 0%, transparent 10%, rgba(0,0,0,0.7) 50%, transparent 90%);
-        -webkit-mask-image: linear-gradient(to bottom, transparent 0%, transparent 10%, rgba(0,0,0,0.7) 50%, transparent 90%);
+        mask-image: linear-gradient(
+          to bottom,
+          transparent 0%,
+          transparent 10%,
+          rgba(0, 0, 0, 0.7) 50%,
+          transparent 90%
+        );
+        -webkit-mask-image: linear-gradient(
+          to bottom,
+          transparent 0%,
+          transparent 10%,
+          rgba(0, 0, 0, 0.7) 50%,
+          transparent 90%
+        );
       }
 
       .wrap {
@@ -120,7 +183,11 @@
         position: relative;
         border-bottom: 2px solid var(--line);
         margin-bottom: 60px;
-        background: linear-gradient(180deg, rgba(255,255,255,0) 0%, rgba(224,242,244,0.4) 100%);
+        background: linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0) 0%,
+          rgba(224, 242, 244, 0.4) 100%
+        );
       }
       header::before {
         content: "🏔️💧🌿";
@@ -139,7 +206,13 @@
         font-size: clamp(32px, 6vw, 66px);
         letter-spacing: 1px;
         line-height: 1.2;
-        background: linear-gradient(160deg, var(--water) 0%, var(--water-light) 40%, var(--ice) 70%, var(--water) 100%);
+        background: linear-gradient(
+          160deg,
+          var(--water) 0%,
+          var(--water-light) 40%,
+          var(--ice) 70%,
+          var(--water) 100%
+        );
         -webkit-background-clip: text;
         background-clip: text;
         -webkit-text-fill-color: transparent;
@@ -171,7 +244,12 @@
       .summary {
         margin-bottom: 60px;
         padding: 36px;
-        background: linear-gradient(145deg, #ffffff 0%, #ecf9f7 45%, #f0f8fc 100%);
+        background: linear-gradient(
+          145deg,
+          #ffffff 0%,
+          #ecf9f7 45%,
+          #f0f8fc 100%
+        );
         border: 2px solid rgba(13, 148, 136, 0.18);
         border-radius: 24px;
         box-shadow:
@@ -204,7 +282,10 @@
       .summary .hl {
         color: var(--water);
         font-weight: 700;
-        background: linear-gradient(transparent 60%, rgba(46, 213, 191, 0.22) 60%);
+        background: linear-gradient(
+          transparent 60%,
+          rgba(46, 213, 191, 0.22) 60%
+        );
         padding: 0 3px;
       }
 
@@ -247,11 +328,21 @@
           0 20px 40px rgba(13, 148, 136, 0.14),
           0 6px 12px rgba(100, 116, 139, 0.08);
       }
-      .trend-card:nth-child(1) { border-color: rgba(13, 148, 136, 0.4); }
-      .trend-card:nth-child(2) { border-color: rgba(46, 213, 191, 0.4); }
-      .trend-card:nth-child(3) { border-color: rgba(186, 230, 253, 0.45); }
-      .trend-card:nth-child(4) { border-color: rgba(22, 163, 74, 0.3); }
-      .trend-card:nth-child(5) { border-color: rgba(100, 116, 139, 0.3); }
+      .trend-card:nth-child(1) {
+        border-color: rgba(13, 148, 136, 0.4);
+      }
+      .trend-card:nth-child(2) {
+        border-color: rgba(46, 213, 191, 0.4);
+      }
+      .trend-card:nth-child(3) {
+        border-color: rgba(186, 230, 253, 0.45);
+      }
+      .trend-card:nth-child(4) {
+        border-color: rgba(22, 163, 74, 0.3);
+      }
+      .trend-card:nth-child(5) {
+        border-color: rgba(100, 116, 139, 0.3);
+      }
       .trend-card .num {
         font-family: "Bagel Fat One", "Dongle", sans-serif;
         font-size: 42px;
@@ -272,15 +363,25 @@
         color: var(--slate-soft);
       }
       .trend-card:nth-child(1) .num,
-      .trend-card:nth-child(1) h3 { color: var(--water); }
+      .trend-card:nth-child(1) h3 {
+        color: var(--water);
+      }
       .trend-card:nth-child(2) .num,
-      .trend-card:nth-child(2) h3 { color: var(--spring); }
+      .trend-card:nth-child(2) h3 {
+        color: var(--spring);
+      }
       .trend-card:nth-child(3) .num,
-      .trend-card:nth-child(3) h3 { color: #388ca0; }
+      .trend-card:nth-child(3) h3 {
+        color: #388ca0;
+      }
       .trend-card:nth-child(4) .num,
-      .trend-card:nth-child(4) h3 { color: var(--pine); }
+      .trend-card:nth-child(4) h3 {
+        color: var(--pine);
+      }
       .trend-card:nth-child(5) .num,
-      .trend-card:nth-child(5) h3 { color: var(--slate-soft); }
+      .trend-card:nth-child(5) h3 {
+        color: var(--slate-soft);
+      }
 
       .timeline {
         margin-bottom: 60px;
@@ -520,7 +621,12 @@
         width: 100%;
         height: 4px;
         border-radius: 4px 4px 0 0;
-        background: linear-gradient(90deg, var(--water), var(--spring), var(--ice));
+        background: linear-gradient(
+          90deg,
+          var(--water),
+          var(--spring),
+          var(--ice)
+        );
       }
       .stat .big {
         font-family: "Bagel Fat One", "Dongle", sans-serif;
@@ -631,6 +737,8 @@
           opacity 0.6s ease;
       }
       .hidden-content.open {
+        overflow: visible;
+
         max-height: 50000px;
         opacity: 1;
       }
@@ -646,7 +754,11 @@
         font-weight: 400;
         letter-spacing: 0.5px;
         color: #fff;
-        background: linear-gradient(135deg, var(--water) 0%, var(--spring) 100%);
+        background: linear-gradient(
+          135deg,
+          var(--water) 0%,
+          var(--spring) 100%
+        );
         border: none;
         border-radius: 999px;
         cursor: pointer;
@@ -661,7 +773,11 @@
         box-shadow:
           0 20px 42px rgba(13, 148, 136, 0.4),
           0 8px 16px rgba(46, 213, 191, 0.22);
-        background: linear-gradient(135deg, var(--spring) 0%, var(--water) 100%);
+        background: linear-gradient(
+          135deg,
+          var(--spring) 0%,
+          var(--water) 100%
+        );
       }
       .reveal-btn .arrow {
         display: inline-block;
@@ -724,36 +840,70 @@
       <!-- 통계 -->
       <div class="stats">
         <div class="stat">
-          <div class="big"><a href="https://www.anthropic.com/news/claude-sonnet-5" target="_blank">3</a></div>
+          <div class="big">
+            <a
+              href="https://www.anthropic.com/news/claude-sonnet-5"
+              target="_blank"
+              >3</a
+            >
+          </div>
           <div class="lbl">Anthropic 동시 발표 (Sonnet 5·Fable 5·Science)</div>
         </div>
         <div class="stat">
-          <div class="big"><a href="https://www.anthropic.com/news/claude-sonnet-5" target="_blank">$2</a></div>
+          <div class="big">
+            <a
+              href="https://www.anthropic.com/news/claude-sonnet-5"
+              target="_blank"
+              >$2</a
+            >
+          </div>
           <div class="lbl">Sonnet 5 입력토큰 100만 개 ($3/8월 후)</div>
         </div>
         <div class="stat">
-          <div class="big"><a href="https://venturebeat.com/technology/meituan-open-sources-longcat-2-0-the-1-6t-near-frontier-agentic-coding-model-thats-been-leading-openrouter-trained-entirely-on-chinese-chips" target="_blank">1.6T</a></div>
+          <div class="big">
+            <a
+              href="https://venturebeat.com/technology/meituan-open-sources-longcat-2-0-the-1-6t-near-frontier-agentic-coding-model-thats-been-leading-openrouter-trained-entirely-on-chinese-chips"
+              target="_blank"
+              >1.6T</a
+            >
+          </div>
           <div class="lbl">LongCat-2.0 파라미터 (중국칩 학습)</div>
         </div>
         <div class="stat">
-          <div class="big"><a href="https://techcrunch.com/2026/06/30/nvidia-competitor-etched-hits-5b-valuation-1b-in-sales-for-ai-chip/" target="_blank">$5B</a></div>
+          <div class="big">
+            <a
+              href="https://techcrunch.com/2026/06/30/nvidia-competitor-etched-hits-5b-valuation-1b-in-sales-for-ai-chip/"
+              target="_blank"
+              >$5B</a
+            >
+          </div>
           <div class="lbl">Etched 기업 가치</div>
         </div>
         <div class="stat">
-          <div class="big"><a href="https://thereallo.dev/blog/claude-code-prompt-steganography" target="_blank">2088</a></div>
+          <div class="big">
+            <a
+              href="https://thereallo.dev/blog/claude-code-prompt-steganography"
+              target="_blank"
+              >2088</a
+            >
+          </div>
           <div class="lbl">Claude Code 스테가노그래피 HN 추천</div>
         </div>
       </div>
 
       <!-- 5대 핵심뉴스 -->
-      <h2 class="section-title">
-        5대 핵심뉴스 // 주요 뉴스
-      </h2>
+      <h2 class="section-title">5대 핵심뉴스 // 주요 뉴스</h2>
 
       <div class="key-list">
         <div class="key-item">
           <span class="tag">Anthropic</span>
-          <h3><a href="https://www.anthropic.com/news/claude-sonnet-5" target="_blank">Claude Sonnet 5 출시 — Opus 4.8급 성능, 가격 60% 낮춰</a></h3>
+          <h3>
+            <a
+              href="https://www.anthropic.com/news/claude-sonnet-5"
+              target="_blank"
+              >Claude Sonnet 5 출시 — Opus 4.8급 성능, 가격 60% 낮춰</a
+            >
+          </h3>
           <p>
             Sonnet 4.6의 후속. "몇 달 전까지는 더 크고 비싼 모델이 필요했던
             수준의 에이전트 성능" 달성. API $2/백만 입력토큰(~8/31), 이후
@@ -763,11 +913,20 @@
         <div class="key-item">
           <span
             class="tag"
-            style="border-color: #0b7d6e; color: #0b7d6e; background: rgba(11, 125, 110, 0.08)"
+            style="
+              border-color: #0b7d6e;
+              color: #0b7d6e;
+              background: rgba(11, 125, 110, 0.08);
+            "
             >Anthropic · 정책</span
           >
           <h3>
-            <a href="https://www.anthropic.com/news/redeploying-fable-5" target="_blank">Fable 5 전 세계 복귀 — 수출 통제 철회, Glasswing 프레임워크 제안</a>
+            <a
+              href="https://www.anthropic.com/news/redeploying-fable-5"
+              target="_blank"
+              >Fable 5 전 세계 복귀 — 수출 통제 철회, Glasswing 프레임워크
+              제안</a
+            >
           </h3>
           <p>
             미 상무부 수출 통제 철회. Amazon·Microsoft·Google 등 Glasswing
@@ -776,10 +935,22 @@
           </p>
         </div>
         <div class="key-item">
-          <span class="tag" style="border-color: #3b82f6; color: #3b82f6; background: rgba(59, 130, 246, 0.08)"
+          <span
+            class="tag"
+            style="
+              border-color: #3b82f6;
+              color: #3b82f6;
+              background: rgba(59, 130, 246, 0.08);
+            "
             >Google</span
           >
-          <h3><a href="https://blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-omni-flash-nano-banana-2-lite/" target="_blank">Nano Banana 2 Lite + Gemini Omni Flash — 생성 미디어 대중화</a></h3>
+          <h3>
+            <a
+              href="https://blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-omni-flash-nano-banana-2-lite/"
+              target="_blank"
+              >Nano Banana 2 Lite + Gemini Omni Flash — 생성 미디어 대중화</a
+            >
+          </h3>
           <p>
             Nano Banana 2 Lite: 4초 이미지 생성, 가장 저렴한 Gemini 이미지 모델.
             Gemini Omni Flash: 자연어로 비디오 생성·수정·편집. 영화 제작팀 없이
@@ -787,11 +958,22 @@
           </p>
         </div>
         <div class="key-item">
-          <span class="tag" style="border-color: #166534; color: #166534; background: rgba(22, 163, 74, 0.08)"
+          <span
+            class="tag"
+            style="
+              border-color: #166534;
+              color: #166534;
+              background: rgba(22, 163, 74, 0.08);
+            "
             >중국</span
           >
           <h3>
-            <a href="https://venturebeat.com/technology/meituan-open-sources-longcat-2-0-the-1-6t-near-frontier-agentic-coding-model-thats-been-leading-openrouter-trained-entirely-on-chinese-chips" target="_blank">Meituan LongCat-2.0 오픈소스 — 1.6T, 중국산 칩 학습, OpenRouter 선두</a>
+            <a
+              href="https://venturebeat.com/technology/meituan-open-sources-longcat-2-0-the-1-6t-near-frontier-agentic-coding-model-thats-been-leading-openrouter-trained-entirely-on-chinese-chips"
+              target="_blank"
+              >Meituan LongCat-2.0 오픈소스 — 1.6T, 중국산 칩 학습, OpenRouter
+              선두</a
+            >
           </h3>
           <p>
             MIT 라이선스. 1.6T 파라미터 에이전틱 코딩 모델. 중국산 칩으로만
@@ -801,11 +983,20 @@
         <div class="key-item">
           <span
             class="tag"
-            style="border-color: var(--water); color: var(--water); background: rgba(13, 148, 136, 0.08)"
+            style="
+              border-color: var(--water);
+              color: var(--water);
+              background: rgba(13, 148, 136, 0.08);
+            "
             >AI 칩 경쟁</span
           >
           <h3>
-            <a href="https://blogs.nvidia.com/blog/anthropic-nvidia-gb300-blackwell-ultra-microsoft-azure/" target="_blank">NVIDIA Blackwell Ultra · Etched $5B · OpenAI Jalapeño — AI 칩 다극화</a>
+            <a
+              href="https://blogs.nvidia.com/blog/anthropic-nvidia-gb300-blackwell-ultra-microsoft-azure/"
+              target="_blank"
+              >NVIDIA Blackwell Ultra · Etched $5B · OpenAI Jalapeño — AI 칩
+              다극화</a
+            >
           </h3>
           <p>
             NVIDIA GB300 Blackwell Ultra 출시, Etched 추론 전용 칩 $5B
@@ -820,7 +1011,13 @@
       <div class="trends">
         <div class="trend-card">
           <div class="num">01</div>
-          <h3><a href="https://www.anthropic.com/news/claude-sonnet-5" target="_blank">Anthropic IPO 전략 '3연타'</a></h3>
+          <h3>
+            <a
+              href="https://www.anthropic.com/news/claude-sonnet-5"
+              target="_blank"
+              >Anthropic IPO 전략 '3연타'</a
+            >
+          </h3>
           <p>
             Sonnet 5(Opus급 성능, 60% 가격) + Fable 5 전면 복귀 + Claude
             Science. 하루 만에 모델·규제·플랫폼 모두 커버. IPO 전 사용자 기반
@@ -829,7 +1026,13 @@
         </div>
         <div class="trend-card">
           <div class="num">02</div>
-          <h3><a href="https://blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-omni-flash-nano-banana-2-lite/" target="_blank">생성 미디어 상품화</a></h3>
+          <h3>
+            <a
+              href="https://blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-omni-flash-nano-banana-2-lite/"
+              target="_blank"
+              >생성 미디어 상품화</a
+            >
+          </h3>
           <p>
             Nano Banana 2 Lite(4초 이미지, 저비용) + Gemini Omni Flash(API
             비디오). 기업이 영화 제작팀 없이도 고품질 비디오·이미지 대량 생산
@@ -838,7 +1041,13 @@
         </div>
         <div class="trend-card">
           <div class="num">03</div>
-          <h3><a href="https://venturebeat.com/technology/meituan-open-sources-longcat-2-0-the-1-6t-near-frontier-agentic-coding-model-thats-been-leading-openrouter-trained-entirely-on-chinese-chips" target="_blank">중국 AI 자립 가속</a></h3>
+          <h3>
+            <a
+              href="https://venturebeat.com/technology/meituan-open-sources-longcat-2-0-the-1-6t-near-frontier-agentic-coding-model-thats-been-leading-openrouter-trained-entirely-on-chinese-chips"
+              target="_blank"
+              >중국 AI 자립 가속</a
+            >
+          </h3>
           <p>
             LongCat-2.0(1.6T, 중국산 칩), GLM-5.2(Mythos 수준 주장), DSpark(추론
             85%↑). 美 수출 통제에도 자체 칩+모델로 버티며 격차 좁히는 중.
@@ -846,7 +1055,13 @@
         </div>
         <div class="trend-card">
           <div class="num">04</div>
-          <h3><a href="https://www.theverge.com/ai-artificial-intelligence/958787/google-is-putting-a-cap-on-metas-gemini-usage" target="_blank">AI 칩 경쟁 다극화</a></h3>
+          <h3>
+            <a
+              href="https://www.theverge.com/ai-artificial-intelligence/958787/google-is-putting-a-cap-on-metas-gemini-usage"
+              target="_blank"
+              >AI 칩 경쟁 다극화</a
+            >
+          </h3>
           <p>
             NVIDIA Blackwell Ultra·GB300 vs OpenAI+Broadcom Jalapeño vs Etched
             $5B. Google이 Meta Gemini 사용량 캡 — 인프라 병목이 공급 제약
@@ -855,7 +1070,13 @@
         </div>
         <div class="trend-card">
           <div class="num">05</div>
-          <h3><a href="https://www.reuters.com/business/unchecked-ai-progress-may-pose-catastrophic-risks-un-panel-warns-2026-07-01/" target="_blank">규제·거품 논쟁 고조</a></h3>
+          <h3>
+            <a
+              href="https://www.reuters.com/business/unchecked-ai-progress-may-pose-catastrophic-risks-un-panel-warns-2026-07-01/"
+              target="_blank"
+              >규제·거품 논쟁 고조</a
+            >
+          </h3>
           <p>
             UN "AI 재앙적 위험" 경고, BIS "AI 거품 붕괴 시 금융 시스템 위험".
             정부는 Anthropic 수출 통제 철회 — 규제의 방향성 혼란 속 과잉 투자와

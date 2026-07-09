@@ -36,10 +36,26 @@
 
       body {
         background:
-          radial-gradient(ellipse 80% 60% at 15% 10%, #ffecef 0%, transparent 48%),
-          radial-gradient(ellipse 70% 60% at 88% 8%, #fff8e1 0%, transparent 44%),
-          radial-gradient(ellipse 70% 55% at 80% 90%, #eafff0 0%, transparent 46%),
-          radial-gradient(ellipse 70% 55% at 8% 92%, #f3eaff 0%, transparent 44%),
+          radial-gradient(
+            ellipse 80% 60% at 15% 10%,
+            #ffecef 0%,
+            transparent 48%
+          ),
+          radial-gradient(
+            ellipse 70% 60% at 88% 8%,
+            #fff8e1 0%,
+            transparent 44%
+          ),
+          radial-gradient(
+            ellipse 70% 55% at 80% 90%,
+            #eafff0 0%,
+            transparent 46%
+          ),
+          radial-gradient(
+            ellipse 70% 55% at 8% 92%,
+            #f3eaff 0%,
+            transparent 44%
+          ),
           var(--bg);
         color: var(--ink);
         font-family: "Pretendard", sans-serif;
@@ -51,20 +67,36 @@
 
       @keyframes float1 {
         0%,
-        100% { transform: translate(0, 0) scale(1); }
-        33% { transform: translate(30px, -20px) scale(1.05); }
-        66% { transform: translate(-15px, 15px) scale(0.95); }
+        100% {
+          transform: translate(0, 0) scale(1);
+        }
+        33% {
+          transform: translate(30px, -20px) scale(1.05);
+        }
+        66% {
+          transform: translate(-15px, 15px) scale(0.95);
+        }
       }
       @keyframes float2 {
         0%,
-        100% { transform: translate(0, 0) scale(1); }
-        50% { transform: translate(-25px, -30px) scale(1.08); }
+        100% {
+          transform: translate(0, 0) scale(1);
+        }
+        50% {
+          transform: translate(-25px, -30px) scale(1.08);
+        }
       }
       @keyframes float3 {
         0%,
-        100% { transform: translate(0, 0) scale(1); }
-        40% { transform: translate(20px, 25px) scale(0.94); }
-        80% { transform: translate(-28px, -10px) scale(1.06); }
+        100% {
+          transform: translate(0, 0) scale(1);
+        }
+        40% {
+          transform: translate(20px, 25px) scale(0.94);
+        }
+        80% {
+          transform: translate(-28px, -10px) scale(1.06);
+        }
       }
 
       body::before {
@@ -74,11 +106,31 @@
         pointer-events: none;
         z-index: 0;
         background:
-          radial-gradient(circle at 8% 15%, rgba(255, 179, 198, 0.25) 0%, transparent 22%),
-          radial-gradient(circle at 92% 12%, rgba(255, 224, 154, 0.22) 0%, transparent 20%),
-          radial-gradient(circle at 85% 80%, rgba(182, 232, 182, 0.2) 0%, transparent 20%),
-          radial-gradient(circle at 12% 85%, rgba(212, 196, 251, 0.2) 0%, transparent 22%),
-          radial-gradient(circle at 50% 50%, rgba(255, 205, 178, 0.12) 0%, transparent 35%);
+          radial-gradient(
+            circle at 8% 15%,
+            rgba(255, 179, 198, 0.25) 0%,
+            transparent 22%
+          ),
+          radial-gradient(
+            circle at 92% 12%,
+            rgba(255, 224, 154, 0.22) 0%,
+            transparent 20%
+          ),
+          radial-gradient(
+            circle at 85% 80%,
+            rgba(182, 232, 182, 0.2) 0%,
+            transparent 20%
+          ),
+          radial-gradient(
+            circle at 12% 85%,
+            rgba(212, 196, 251, 0.2) 0%,
+            transparent 22%
+          ),
+          radial-gradient(
+            circle at 50% 50%,
+            rgba(255, 205, 178, 0.12) 0%,
+            transparent 35%
+          );
         animation: float1 18s ease-in-out infinite;
       }
 
@@ -89,11 +141,31 @@
         pointer-events: none;
         z-index: 0;
         background:
-          radial-gradient(ellipse 200px 160px at 18% 25%, rgba(255, 179, 198, 0.18) 0%, transparent 80%),
-          radial-gradient(ellipse 180px 140px at 80% 20%, rgba(255, 224, 154, 0.16) 0%, transparent 80%),
-          radial-gradient(ellipse 190px 150px at 82% 78%, rgba(182, 232, 182, 0.15) 0%, transparent 80%),
-          radial-gradient(ellipse 170px 140px at 22% 75%, rgba(212, 196, 251, 0.16) 0%, transparent 80%),
-          radial-gradient(ellipse 200px 180px at 52% 50%, rgba(181, 223, 250, 0.1) 0%, transparent 80%);
+          radial-gradient(
+            ellipse 200px 160px at 18% 25%,
+            rgba(255, 179, 198, 0.18) 0%,
+            transparent 80%
+          ),
+          radial-gradient(
+            ellipse 180px 140px at 80% 20%,
+            rgba(255, 224, 154, 0.16) 0%,
+            transparent 80%
+          ),
+          radial-gradient(
+            ellipse 190px 150px at 82% 78%,
+            rgba(182, 232, 182, 0.15) 0%,
+            transparent 80%
+          ),
+          radial-gradient(
+            ellipse 170px 140px at 22% 75%,
+            rgba(212, 196, 251, 0.16) 0%,
+            transparent 80%
+          ),
+          radial-gradient(
+            ellipse 200px 180px at 52% 50%,
+            rgba(181, 223, 250, 0.1) 0%,
+            transparent 80%
+          );
         animation: float2 22s ease-in-out infinite;
       }
 
@@ -130,7 +202,13 @@
         letter-spacing: 1px;
         color: var(--sakura);
         line-height: 1.2;
-        background: linear-gradient(150deg, var(--sakura) 0%, #ff8fa3 30%, var(--lilac) 70%, var(--peach) 100%);
+        background: linear-gradient(
+          150deg,
+          var(--sakura) 0%,
+          #ff8fa3 30%,
+          var(--lilac) 70%,
+          var(--peach) 100%
+        );
         -webkit-background-clip: text;
         background-clip: text;
         -webkit-text-fill-color: transparent;
@@ -164,7 +242,12 @@
       .summary {
         margin-bottom: 60px;
         padding: 36px;
-        background: linear-gradient(145deg, #ffffff 0%, #fff5f8 40%, #fef6ec 100%);
+        background: linear-gradient(
+          145deg,
+          #ffffff 0%,
+          #fff5f8 40%,
+          #fef6ec 100%
+        );
         border: 2px solid rgba(255, 179, 198, 0.35);
         border-radius: 32px;
         box-shadow:
@@ -197,7 +280,10 @@
       .summary .hl {
         color: #e8849a;
         font-weight: 700;
-        background: linear-gradient(transparent 60%, rgba(255, 179, 198, 0.28) 60%);
+        background: linear-gradient(
+          transparent 60%,
+          rgba(255, 179, 198, 0.28) 60%
+        );
         padding: 0 3px;
       }
 
@@ -240,11 +326,21 @@
           0 24px 44px rgba(255, 179, 198, 0.18),
           0 6px 14px rgba(255, 205, 178, 0.14);
       }
-      .trend-card:nth-child(1) { border-color: rgba(255, 179, 198, 0.5); }
-      .trend-card:nth-child(2) { border-color: rgba(255, 224, 154, 0.5); }
-      .trend-card:nth-child(3) { border-color: rgba(182, 232, 182, 0.5); }
-      .trend-card:nth-child(4) { border-color: rgba(212, 196, 251, 0.5); }
-      .trend-card:nth-child(5) { border-color: rgba(181, 223, 250, 0.5); }
+      .trend-card:nth-child(1) {
+        border-color: rgba(255, 179, 198, 0.5);
+      }
+      .trend-card:nth-child(2) {
+        border-color: rgba(255, 224, 154, 0.5);
+      }
+      .trend-card:nth-child(3) {
+        border-color: rgba(182, 232, 182, 0.5);
+      }
+      .trend-card:nth-child(4) {
+        border-color: rgba(212, 196, 251, 0.5);
+      }
+      .trend-card:nth-child(5) {
+        border-color: rgba(181, 223, 250, 0.5);
+      }
       .trend-card .num {
         font-family: "Bagel Fat One", "Dongle", sans-serif;
         font-size: 44px;
@@ -265,15 +361,25 @@
         color: var(--ink-soft);
       }
       .trend-card:nth-child(1) .num,
-      .trend-card:nth-child(1) h3 { color: var(--sakura); }
+      .trend-card:nth-child(1) h3 {
+        color: var(--sakura);
+      }
       .trend-card:nth-child(2) .num,
-      .trend-card:nth-child(2) h3 { color: #e0b44c; }
+      .trend-card:nth-child(2) h3 {
+        color: #e0b44c;
+      }
       .trend-card:nth-child(3) .num,
-      .trend-card:nth-child(3) h3 { color: #7cbf7c; }
+      .trend-card:nth-child(3) h3 {
+        color: #7cbf7c;
+      }
       .trend-card:nth-child(4) .num,
-      .trend-card:nth-child(4) h3 { color: var(--lilac); }
+      .trend-card:nth-child(4) h3 {
+        color: var(--lilac);
+      }
       .trend-card:nth-child(5) .num,
-      .trend-card:nth-child(5) h3 { color: #7db9e0; }
+      .trend-card:nth-child(5) h3 {
+        color: #7db9e0;
+      }
 
       .timeline {
         margin-bottom: 60px;
@@ -513,7 +619,12 @@
         width: 100%;
         height: 5px;
         border-radius: 5px 5px 0 0;
-        background: linear-gradient(90deg, var(--sakura), var(--butter), var(--sprout));
+        background: linear-gradient(
+          90deg,
+          var(--sakura),
+          var(--butter),
+          var(--sprout)
+        );
       }
       .stat .big {
         font-family: "Bagel Fat One", "Dongle", sans-serif;
@@ -624,6 +735,7 @@
           opacity 0.6s ease;
       }
       .hidden-content.open {
+        overflow: visible;
         max-height: 50000px;
         opacity: 1;
       }
@@ -717,36 +829,70 @@
       <!-- 통계 -->
       <div class="stats">
         <div class="stat">
-          <div class="big"><a href="https://www.anthropic.com/news/claude-sonnet-5" target="_blank">3</a></div>
+          <div class="big">
+            <a
+              href="https://www.anthropic.com/news/claude-sonnet-5"
+              target="_blank"
+              >3</a
+            >
+          </div>
           <div class="lbl">Anthropic 동시 발표 (Sonnet 5·Fable 5·Science)</div>
         </div>
         <div class="stat">
-          <div class="big"><a href="https://www.anthropic.com/news/claude-sonnet-5" target="_blank">$2</a></div>
+          <div class="big">
+            <a
+              href="https://www.anthropic.com/news/claude-sonnet-5"
+              target="_blank"
+              >$2</a
+            >
+          </div>
           <div class="lbl">Sonnet 5 입력토큰 100만 개 ($3/8월 후)</div>
         </div>
         <div class="stat">
-          <div class="big"><a href="https://venturebeat.com/technology/meituan-open-sources-longcat-2-0-the-1-6t-near-frontier-agentic-coding-model-thats-been-leading-openrouter-trained-entirely-on-chinese-chips" target="_blank">1.6T</a></div>
+          <div class="big">
+            <a
+              href="https://venturebeat.com/technology/meituan-open-sources-longcat-2-0-the-1-6t-near-frontier-agentic-coding-model-thats-been-leading-openrouter-trained-entirely-on-chinese-chips"
+              target="_blank"
+              >1.6T</a
+            >
+          </div>
           <div class="lbl">LongCat-2.0 파라미터 (중국칩 학습)</div>
         </div>
         <div class="stat">
-          <div class="big"><a href="https://techcrunch.com/2026/06/30/nvidia-competitor-etched-hits-5b-valuation-1b-in-sales-for-ai-chip/" target="_blank">$5B</a></div>
+          <div class="big">
+            <a
+              href="https://techcrunch.com/2026/06/30/nvidia-competitor-etched-hits-5b-valuation-1b-in-sales-for-ai-chip/"
+              target="_blank"
+              >$5B</a
+            >
+          </div>
           <div class="lbl">Etched 기업 가치</div>
         </div>
         <div class="stat">
-          <div class="big"><a href="https://thereallo.dev/blog/claude-code-prompt-steganography" target="_blank">2088</a></div>
+          <div class="big">
+            <a
+              href="https://thereallo.dev/blog/claude-code-prompt-steganography"
+              target="_blank"
+              >2088</a
+            >
+          </div>
           <div class="lbl">Claude Code 스테가노그래피 HN 추천</div>
         </div>
       </div>
 
       <!-- 5대 핵심뉴스 -->
-      <h2 class="section-title">
-        5대 핵심뉴스 // 주요 뉴스
-      </h2>
+      <h2 class="section-title">5대 핵심뉴스 // 주요 뉴스</h2>
 
       <div class="key-list">
         <div class="key-item">
           <span class="tag">Anthropic</span>
-          <h3><a href="https://www.anthropic.com/news/claude-sonnet-5" target="_blank">Claude Sonnet 5 출시 — Opus 4.8급 성능, 가격 60% 낮춰</a></h3>
+          <h3>
+            <a
+              href="https://www.anthropic.com/news/claude-sonnet-5"
+              target="_blank"
+              >Claude Sonnet 5 출시 — Opus 4.8급 성능, 가격 60% 낮춰</a
+            >
+          </h3>
           <p>
             Sonnet 4.6의 후속. "몇 달 전까지는 더 크고 비싼 모델이 필요했던
             수준의 에이전트 성능" 달성. API $2/백만 입력토큰(~8/31), 이후
@@ -756,11 +902,20 @@
         <div class="key-item">
           <span
             class="tag"
-            style="border-color: #d9a840; color: #d9a840; background: rgba(217, 168, 64, 0.1)"
+            style="
+              border-color: #d9a840;
+              color: #d9a840;
+              background: rgba(217, 168, 64, 0.1);
+            "
             >Anthropic · 정책</span
           >
           <h3>
-            <a href="https://www.anthropic.com/news/redeploying-fable-5" target="_blank">Fable 5 전 세계 복귀 — 수출 통제 철회, Glasswing 프레임워크 제안</a>
+            <a
+              href="https://www.anthropic.com/news/redeploying-fable-5"
+              target="_blank"
+              >Fable 5 전 세계 복귀 — 수출 통제 철회, Glasswing 프레임워크
+              제안</a
+            >
           </h3>
           <p>
             미 상무부 수출 통제 철회. Amazon·Microsoft·Google 등 Glasswing
@@ -769,10 +924,22 @@
           </p>
         </div>
         <div class="key-item">
-          <span class="tag" style="border-color: #6ea8d9; color: #6ea8d9; background: rgba(110, 168, 217, 0.1)"
+          <span
+            class="tag"
+            style="
+              border-color: #6ea8d9;
+              color: #6ea8d9;
+              background: rgba(110, 168, 217, 0.1);
+            "
             >Google</span
           >
-          <h3><a href="https://blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-omni-flash-nano-banana-2-lite/" target="_blank">Nano Banana 2 Lite + Gemini Omni Flash — 생성 미디어 대중화</a></h3>
+          <h3>
+            <a
+              href="https://blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-omni-flash-nano-banana-2-lite/"
+              target="_blank"
+              >Nano Banana 2 Lite + Gemini Omni Flash — 생성 미디어 대중화</a
+            >
+          </h3>
           <p>
             Nano Banana 2 Lite: 4초 이미지 생성, 가장 저렴한 Gemini 이미지 모델.
             Gemini Omni Flash: 자연어로 비디오 생성·수정·편집. 영화 제작팀 없이
@@ -780,11 +947,22 @@
           </p>
         </div>
         <div class="key-item">
-          <span class="tag" style="border-color: #7cbf7c; color: #7cbf7c; background: rgba(124, 191, 124, 0.1)"
+          <span
+            class="tag"
+            style="
+              border-color: #7cbf7c;
+              color: #7cbf7c;
+              background: rgba(124, 191, 124, 0.1);
+            "
             >중국</span
           >
           <h3>
-            <a href="https://venturebeat.com/technology/meituan-open-sources-longcat-2-0-the-1-6t-near-frontier-agentic-coding-model-thats-been-leading-openrouter-trained-entirely-on-chinese-chips" target="_blank">Meituan LongCat-2.0 오픈소스 — 1.6T, 중국산 칩 학습, OpenRouter 선두</a>
+            <a
+              href="https://venturebeat.com/technology/meituan-open-sources-longcat-2-0-the-1-6t-near-frontier-agentic-coding-model-thats-been-leading-openrouter-trained-entirely-on-chinese-chips"
+              target="_blank"
+              >Meituan LongCat-2.0 오픈소스 — 1.6T, 중국산 칩 학습, OpenRouter
+              선두</a
+            >
           </h3>
           <p>
             MIT 라이선스. 1.6T 파라미터 에이전틱 코딩 모델. 중국산 칩으로만
@@ -794,11 +972,20 @@
         <div class="key-item">
           <span
             class="tag"
-            style="border-color: var(--sakura); color: var(--sakura); background: rgba(255, 179, 198, 0.12)"
+            style="
+              border-color: var(--sakura);
+              color: var(--sakura);
+              background: rgba(255, 179, 198, 0.12);
+            "
             >AI 칩 경쟁</span
           >
           <h3>
-            <a href="https://blogs.nvidia.com/blog/anthropic-nvidia-gb300-blackwell-ultra-microsoft-azure/" target="_blank">NVIDIA Blackwell Ultra · Etched $5B · OpenAI Jalapeño — AI 칩 다극화</a>
+            <a
+              href="https://blogs.nvidia.com/blog/anthropic-nvidia-gb300-blackwell-ultra-microsoft-azure/"
+              target="_blank"
+              >NVIDIA Blackwell Ultra · Etched $5B · OpenAI Jalapeño — AI 칩
+              다극화</a
+            >
           </h3>
           <p>
             NVIDIA GB300 Blackwell Ultra 출시, Etched 추론 전용 칩 $5B
@@ -813,7 +1000,13 @@
       <div class="trends">
         <div class="trend-card">
           <div class="num">01</div>
-          <h3><a href="https://www.anthropic.com/news/claude-sonnet-5" target="_blank">Anthropic IPO 전략 '3연타'</a></h3>
+          <h3>
+            <a
+              href="https://www.anthropic.com/news/claude-sonnet-5"
+              target="_blank"
+              >Anthropic IPO 전략 '3연타'</a
+            >
+          </h3>
           <p>
             Sonnet 5(Opus급 성능, 60% 가격) + Fable 5 전면 복귀 + Claude
             Science. 하루 만에 모델·규제·플랫폼 모두 커버. IPO 전 사용자 기반
@@ -822,7 +1015,13 @@
         </div>
         <div class="trend-card">
           <div class="num">02</div>
-          <h3><a href="https://blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-omni-flash-nano-banana-2-lite/" target="_blank">생성 미디어 상품화</a></h3>
+          <h3>
+            <a
+              href="https://blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-omni-flash-nano-banana-2-lite/"
+              target="_blank"
+              >생성 미디어 상품화</a
+            >
+          </h3>
           <p>
             Nano Banana 2 Lite(4초 이미지, 저비용) + Gemini Omni Flash(API
             비디오). 기업이 영화 제작팀 없이도 고품질 비디오·이미지 대량 생산
@@ -831,7 +1030,13 @@
         </div>
         <div class="trend-card">
           <div class="num">03</div>
-          <h3><a href="https://venturebeat.com/technology/meituan-open-sources-longcat-2-0-the-1-6t-near-frontier-agentic-coding-model-thats-been-leading-openrouter-trained-entirely-on-chinese-chips" target="_blank">중국 AI 자립 가속</a></h3>
+          <h3>
+            <a
+              href="https://venturebeat.com/technology/meituan-open-sources-longcat-2-0-the-1-6t-near-frontier-agentic-coding-model-thats-been-leading-openrouter-trained-entirely-on-chinese-chips"
+              target="_blank"
+              >중국 AI 자립 가속</a
+            >
+          </h3>
           <p>
             LongCat-2.0(1.6T, 중국산 칩), GLM-5.2(Mythos 수준 주장), DSpark(추론
             85%↑). 美 수출 통제에도 자체 칩+모델로 버티며 격차 좁히는 중.
@@ -839,7 +1044,13 @@
         </div>
         <div class="trend-card">
           <div class="num">04</div>
-          <h3><a href="https://www.theverge.com/ai-artificial-intelligence/958787/google-is-putting-a-cap-on-metas-gemini-usage" target="_blank">AI 칩 경쟁 다극화</a></h3>
+          <h3>
+            <a
+              href="https://www.theverge.com/ai-artificial-intelligence/958787/google-is-putting-a-cap-on-metas-gemini-usage"
+              target="_blank"
+              >AI 칩 경쟁 다극화</a
+            >
+          </h3>
           <p>
             NVIDIA Blackwell Ultra·GB300 vs OpenAI+Broadcom Jalapeño vs Etched
             $5B. Google이 Meta Gemini 사용량 캡 — 인프라 병목이 공급 제약
@@ -848,7 +1059,13 @@
         </div>
         <div class="trend-card">
           <div class="num">05</div>
-          <h3><a href="https://www.reuters.com/business/unchecked-ai-progress-may-pose-catastrophic-risks-un-panel-warns-2026-07-01/" target="_blank">규제·거품 논쟁 고조</a></h3>
+          <h3>
+            <a
+              href="https://www.reuters.com/business/unchecked-ai-progress-may-pose-catastrophic-risks-un-panel-warns-2026-07-01/"
+              target="_blank"
+              >규제·거품 논쟁 고조</a
+            >
+          </h3>
           <p>
             UN "AI 재앙적 위험" 경고, BIS "AI 거품 붕괴 시 금융 시스템 위험".
             정부는 Anthropic 수출 통제 철회 — 규제의 방향성 혼란 속 과잉 투자와

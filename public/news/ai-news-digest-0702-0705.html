@@ -44,25 +44,49 @@
 
       @keyframes streamFlow {
         0%,
-        100% { transform: translateX(0) translateY(0); }
-        25% { transform: translateX(18px) translateY(-8px); }
-        50% { transform: translateX(-8px) translateY(12px); }
-        75% { transform: translateX(-20px) translateY(-6px); }
+        100% {
+          transform: translateX(0) translateY(0);
+        }
+        25% {
+          transform: translateX(18px) translateY(-8px);
+        }
+        50% {
+          transform: translateX(-8px) translateY(12px);
+        }
+        75% {
+          transform: translateX(-20px) translateY(-6px);
+        }
       }
       @keyframes mistDrift {
         0%,
-        100% { transform: translateY(0) scale(1); opacity: 1; }
-        50% { transform: translateY(-18px) scale(1.06); opacity: 0.85; }
+        100% {
+          transform: translateY(0) scale(1);
+          opacity: 1;
+        }
+        50% {
+          transform: translateY(-18px) scale(1.06);
+          opacity: 0.85;
+        }
       }
       @keyframes sunlightFilter {
         0%,
-        100% { opacity: 0.5; }
-        50% { opacity: 0.8; }
+        100% {
+          opacity: 0.5;
+        }
+        50% {
+          opacity: 0.8;
+        }
       }
 
       body {
         background:
-          linear-gradient(175deg, #f2fbfc 0%, #ecf6f5 20%, #f0f7f4 60%, #f5fafa 100%),
+          linear-gradient(
+            175deg,
+            #f2fbfc 0%,
+            #ecf6f5 20%,
+            #f0f7f4 60%,
+            #f5fafa 100%
+          ),
           var(--bg);
         color: var(--slate);
         font-family: "Pretendard", sans-serif;
@@ -79,11 +103,31 @@
         pointer-events: none;
         z-index: 0;
         background:
-          radial-gradient(ellipse 500px 300px at 10% 8%, rgba(13, 148, 136, 0.12) 0%, transparent 65%),
-          radial-gradient(ellipse 450px 280px at 90% 14%, rgba(46, 213, 191, 0.1) 0%, transparent 60%),
-          radial-gradient(ellipse 400px 320px at 85% 82%, rgba(186, 230, 253, 0.14) 0%, transparent 60%),
-          radial-gradient(ellipse 420px 300px at 15% 86%, rgba(71, 196, 157, 0.1) 0%, transparent 55%),
-          radial-gradient(ellipse 500px 350px at 50% 50%, rgba(224, 242, 244, 0.2) 0%, transparent 70%);
+          radial-gradient(
+            ellipse 500px 300px at 10% 8%,
+            rgba(13, 148, 136, 0.12) 0%,
+            transparent 65%
+          ),
+          radial-gradient(
+            ellipse 450px 280px at 90% 14%,
+            rgba(46, 213, 191, 0.1) 0%,
+            transparent 60%
+          ),
+          radial-gradient(
+            ellipse 400px 320px at 85% 82%,
+            rgba(186, 230, 253, 0.14) 0%,
+            transparent 60%
+          ),
+          radial-gradient(
+            ellipse 420px 300px at 15% 86%,
+            rgba(71, 196, 157, 0.1) 0%,
+            transparent 55%
+          ),
+          radial-gradient(
+            ellipse 500px 350px at 50% 50%,
+            rgba(224, 242, 244, 0.2) 0%,
+            transparent 70%
+          );
         animation: streamFlow 28s ease-in-out infinite;
       }
 
@@ -101,10 +145,26 @@
             rgba(255, 255, 255, 0.12) 80px,
             rgba(255, 255, 255, 0.12) 82px
           ),
-          radial-gradient(ellipse 600px 200px at 50% 0%, rgba(255, 255, 255, 0.5) 0%, transparent 70%);
+          radial-gradient(
+            ellipse 600px 200px at 50% 0%,
+            rgba(255, 255, 255, 0.5) 0%,
+            transparent 70%
+          );
         animation: mistDrift 20s ease-in-out infinite;
-        mask-image: linear-gradient(to bottom, transparent 0%, transparent 10%, rgba(0, 0, 0, 0.7) 50%, transparent 90%);
-        -webkit-mask-image: linear-gradient(to bottom, transparent 0%, transparent 10%, rgba(0, 0, 0, 0.7) 50%, transparent 90%);
+        mask-image: linear-gradient(
+          to bottom,
+          transparent 0%,
+          transparent 10%,
+          rgba(0, 0, 0, 0.7) 50%,
+          transparent 90%
+        );
+        -webkit-mask-image: linear-gradient(
+          to bottom,
+          transparent 0%,
+          transparent 10%,
+          rgba(0, 0, 0, 0.7) 50%,
+          transparent 90%
+        );
       }
 
       .wrap {
@@ -121,7 +181,11 @@
         position: relative;
         border-bottom: 2px solid var(--line);
         margin-bottom: 60px;
-        background: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(224, 242, 244, 0.4) 100%);
+        background: linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0) 0%,
+          rgba(224, 242, 244, 0.4) 100%
+        );
       }
       header::before {
         content: "🏔️💧🌿";
@@ -140,7 +204,13 @@
         font-size: clamp(32px, 6vw, 66px);
         letter-spacing: 1px;
         line-height: 1.2;
-        background: linear-gradient(160deg, var(--water) 0%, var(--water-light) 40%, var(--ice) 70%, var(--water) 100%);
+        background: linear-gradient(
+          160deg,
+          var(--water) 0%,
+          var(--water-light) 40%,
+          var(--ice) 70%,
+          var(--water) 100%
+        );
         -webkit-background-clip: text;
         background-clip: text;
         -webkit-text-fill-color: transparent;
@@ -172,7 +242,12 @@
       .summary {
         margin-bottom: 60px;
         padding: 36px;
-        background: linear-gradient(145deg, #ffffff 0%, #ecf9f7 45%, #f0f8fc 100%);
+        background: linear-gradient(
+          145deg,
+          #ffffff 0%,
+          #ecf9f7 45%,
+          #f0f8fc 100%
+        );
         border: 2px solid rgba(13, 148, 136, 0.18);
         border-radius: 24px;
         box-shadow:
@@ -205,7 +280,10 @@
       .summary .hl {
         color: var(--water);
         font-weight: 700;
-        background: linear-gradient(transparent 60%, rgba(46, 213, 191, 0.22) 60%);
+        background: linear-gradient(
+          transparent 60%,
+          rgba(46, 213, 191, 0.22) 60%
+        );
         padding: 0 3px;
       }
 
@@ -248,11 +326,21 @@
           0 20px 40px rgba(13, 148, 136, 0.14),
           0 6px 12px rgba(100, 116, 139, 0.08);
       }
-      .trend-card:nth-child(1) { border-color: rgba(13, 148, 136, 0.4); }
-      .trend-card:nth-child(2) { border-color: rgba(46, 213, 191, 0.4); }
-      .trend-card:nth-child(3) { border-color: rgba(186, 230, 253, 0.45); }
-      .trend-card:nth-child(4) { border-color: rgba(22, 163, 74, 0.3); }
-      .trend-card:nth-child(5) { border-color: rgba(100, 116, 139, 0.3); }
+      .trend-card:nth-child(1) {
+        border-color: rgba(13, 148, 136, 0.4);
+      }
+      .trend-card:nth-child(2) {
+        border-color: rgba(46, 213, 191, 0.4);
+      }
+      .trend-card:nth-child(3) {
+        border-color: rgba(186, 230, 253, 0.45);
+      }
+      .trend-card:nth-child(4) {
+        border-color: rgba(22, 163, 74, 0.3);
+      }
+      .trend-card:nth-child(5) {
+        border-color: rgba(100, 116, 139, 0.3);
+      }
       .trend-card .num {
         font-family: "Bagel Fat One", "Dongle", sans-serif;
         font-size: 42px;
@@ -273,15 +361,25 @@
         color: var(--slate-soft);
       }
       .trend-card:nth-child(1) .num,
-      .trend-card:nth-child(1) h3 { color: var(--water); }
+      .trend-card:nth-child(1) h3 {
+        color: var(--water);
+      }
       .trend-card:nth-child(2) .num,
-      .trend-card:nth-child(2) h3 { color: var(--spring); }
+      .trend-card:nth-child(2) h3 {
+        color: var(--spring);
+      }
       .trend-card:nth-child(3) .num,
-      .trend-card:nth-child(3) h3 { color: #388ca0; }
+      .trend-card:nth-child(3) h3 {
+        color: #388ca0;
+      }
       .trend-card:nth-child(4) .num,
-      .trend-card:nth-child(4) h3 { color: var(--pine); }
+      .trend-card:nth-child(4) h3 {
+        color: var(--pine);
+      }
       .trend-card:nth-child(5) .num,
-      .trend-card:nth-child(5) h3 { color: var(--slate-soft); }
+      .trend-card:nth-child(5) h3 {
+        color: var(--slate-soft);
+      }
 
       .timeline {
         margin-bottom: 60px;
@@ -526,7 +624,12 @@
         width: 100%;
         height: 4px;
         border-radius: 4px 4px 0 0;
-        background: linear-gradient(90deg, var(--water), var(--spring), var(--ice));
+        background: linear-gradient(
+          90deg,
+          var(--water),
+          var(--spring),
+          var(--ice)
+        );
       }
       .stat .big {
         font-family: "Bagel Fat One", "Dongle", sans-serif;
@@ -637,6 +740,7 @@
           opacity 0.6s ease;
       }
       .hidden-content.open {
+        overflow: visible;
         max-height: 50000px;
         opacity: 1;
       }
@@ -652,7 +756,11 @@
         font-weight: 400;
         letter-spacing: 0.5px;
         color: #fff;
-        background: linear-gradient(135deg, var(--water) 0%, var(--spring) 100%);
+        background: linear-gradient(
+          135deg,
+          var(--water) 0%,
+          var(--spring) 100%
+        );
         border: none;
         border-radius: 999px;
         cursor: pointer;
@@ -667,7 +775,11 @@
         box-shadow:
           0 20px 42px rgba(13, 148, 136, 0.4),
           0 8px 16px rgba(46, 213, 191, 0.22);
-        background: linear-gradient(135deg, var(--spring) 0%, var(--water) 100%);
+        background: linear-gradient(
+          135deg,
+          var(--spring) 0%,
+          var(--water) 100%
+        );
       }
       .reveal-btn .arrow {
         display: inline-block;
@@ -733,39 +845,89 @@
       <!-- 통계 -->
       <div class="stats">
         <div class="stat">
-          <div class="big"><a href="https://www.anthropic.com/news/fable-safeguards-jailbreak-framework" target="_blank">3</a></div>
+          <div class="big">
+            <a
+              href="https://www.anthropic.com/news/fable-safeguards-jailbreak-framework"
+              target="_blank"
+              >3</a
+            >
+          </div>
           <div class="lbl">Glasswing 공동 제안 파트너 (Amazon·MS·Google)</div>
         </div>
         <div class="stat">
-          <div class="big"><a href="https://news.ycombinator.com" target="_blank">286</a></div>
+          <div class="big">
+            <a href="https://news.ycombinator.com" target="_blank">286</a>
+          </div>
           <div class="lbl">Claude Code 세션 유출 HN 추천수</div>
         </div>
         <div class="stat">
-          <div class="big"><a href="https://venturebeat.com/orchestration/new-alibaba-ai-framework-skips-loading-every-tool-cutting-agent-token-use-99" target="_blank">99%</a></div>
+          <div class="big">
+            <a
+              href="https://venturebeat.com/orchestration/new-alibaba-ai-framework-skips-loading-every-tool-cutting-agent-token-use-99"
+              target="_blank"
+              >99%</a
+            >
+          </div>
           <div class="lbl">알리바바 SkillWeaver 토큰 절감</div>
         </div>
         <div class="stat">
-          <div class="big"><a href="https://www.aitimes.com/news/articleView.html?idxno=212437" target="_blank">136×</a></div>
+          <div class="big">
+            <a
+              href="https://www.aitimes.com/news/articleView.html?idxno=212437"
+              target="_blank"
+              >136×</a
+            >
+          </div>
           <div class="lbl">AI 에이전트 챗봇 대비 에너지 (KAIST)</div>
         </div>
         <div class="stat">
-          <div class="big"><a href="https://www.aitimes.com/news/articleView.html?idxno=212420" target="_blank">60조</a></div>
+          <div class="big">
+            <a
+              href="https://www.aitimes.com/news/articleView.html?idxno=212420"
+              target="_blank"
+              >60조</a
+            >
+          </div>
           <div class="lbl">삼성 영남 피지컬 AI 클러스터 투자</div>
         </div>
         <div class="stat">
-          <div class="big"><a href="https://www.aitimes.com/news/articleView.html?idxno=212427" target="_blank">4조</a></div>
+          <div class="big">
+            <a
+              href="https://www.aitimes.com/news/articleView.html?idxno=212427"
+              target="_blank"
+              >4조</a
+            >
+          </div>
           <div class="lbl">클링 AI 투자 유치 (Alibaba·Tencent·중동)</div>
         </div>
         <div class="stat">
-          <div class="big"><a href="https://www.aitimes.com/news/articleView.html?idxno=212444" target="_blank">1,500억</a></div>
+          <div class="big">
+            <a
+              href="https://www.aitimes.com/news/articleView.html?idxno=212444"
+              target="_blank"
+              >1,500억</a
+            >
+          </div>
           <div class="lbl">AI 평가플랫폼 Arena 연매출 (상용화 8개월)</div>
         </div>
         <div class="stat">
-          <div class="big"><a href="https://intextbooks.science.uu.nl/workshop2026/files/itb26_s1s2.pdf" target="_blank">1.30 SD</a></div>
+          <div class="big">
+            <a
+              href="https://intextbooks.science.uu.nl/workshop2026/files/itb26_s1s2.pdf"
+              target="_blank"
+              >1.30 SD</a
+            >
+          </div>
           <div class="lbl">Dartmouth AI 튜터 효과 크기 상한 (HN)</div>
         </div>
         <div class="stat">
-          <div class="big"><a href="https://www.aitimes.com/news/articleView.html?idxno=212375" target="_blank">742조</a></div>
+          <div class="big">
+            <a
+              href="https://www.aitimes.com/news/articleView.html?idxno=212375"
+              target="_blank"
+              >742조</a
+            >
+          </div>
           <div class="lbl">IRENA 재생에너지 절감 (화석연료 회피)</div>
         </div>
       </div>
@@ -775,62 +937,117 @@
 
       <div class="key-list">
         <div class="key-item">
-          <span class="tag" style="border-color: #0b7d6e; color: #0b7d6e; background: rgba(11, 125, 110, 0.08);">Anthropic · 정책</span>
+          <span
+            class="tag"
+            style="
+              border-color: #0b7d6e;
+              color: #0b7d6e;
+              background: rgba(11, 125, 110, 0.08);
+            "
+            >Anthropic · 정책</span
+          >
           <h3>
-            <a href="https://www.anthropic.com/news/fable-safeguards-jailbreak-framework" target="_blank"
+            <a
+              href="https://www.anthropic.com/news/fable-safeguards-jailbreak-framework"
+              target="_blank"
               >Fable 5 사이버 안전장치·jailbreak 업계 프레임워크 제안</a
             >
           </h3>
           <p>
-            7/1 전격 복귀한 Fable 5의 사이버 보안장치 상세 공개. Amazon·Microsoft·Google
-            등 Glasswing 파트너와 공동으로 jailbreak 심각도 표준 평가 프레임워크 제안.
-            AI 안전 거버넌스의 업계 자율 규제 방향성 제시.
+            7/1 전격 복귀한 Fable 5의 사이버 보안장치 상세 공개.
+            Amazon·Microsoft·Google 등 Glasswing 파트너와 공동으로 jailbreak
+            심각도 표준 평가 프레임워크 제안. AI 안전 거버넌스의 업계 자율 규제
+            방향성 제시.
           </p>
         </div>
         <div class="key-item">
-          <span class="tag" style="border-color: #ea580c; color: #ea580c; background: rgba(234, 88, 12, 0.08);">알리바바 · 보안</span>
+          <span
+            class="tag"
+            style="
+              border-color: #ea580c;
+              color: #ea580c;
+              background: rgba(234, 88, 12, 0.08);
+            "
+            >알리바바 · 보안</span
+          >
           <h3>
-            <a href="https://www.reuters.com/world/china/alibaba-ban-claude-code-workplace-over-alleged-backdoor-risks-source-says-2026-07-03/" target="_blank"
-              >알리바바, 직원 Claude Code 사용 전면 금지 — 백도어·중국 사용자 추적 우려</a
+            <a
+              href="https://www.reuters.com/world/china/alibaba-ban-claude-code-workplace-over-alleged-backdoor-risks-source-says-2026-07-03/"
+              target="_blank"
+              >알리바바, 직원 Claude Code 사용 전면 금지 — 백도어·중국 사용자
+              추적 우려</a
             >
           </h3>
           <p>
-            Anthropic 코딩 도구가 중국 사용자 비밀을 추적할 수 있다는 우려로 사내
-            사용 금지. 자체 코드 도구로 회수. 미·중 AI 도구 분리 가속화 신호.
+            Anthropic 코딩 도구가 중국 사용자 비밀을 추적할 수 있다는 우려로
+            사내 사용 금지. 자체 코드 도구로 회수. 미·중 AI 도구 분리 가속화
+            신호.
           </p>
         </div>
         <div class="key-item">
-          <span class="tag" style="border-color: #d97706; color: #d97706; background: rgba(217, 119, 6, 0.08);">Hacker News</span>
+          <span
+            class="tag"
+            style="
+              border-color: #d97706;
+              color: #d97706;
+              background: rgba(217, 119, 6, 0.08);
+            "
+            >Hacker News</span
+          >
           <h3>
-            <a href="https://github.com/anthropics/claude-code/issues/74066" target="_blank"
-              >Claude Code 세션/캐시 유출 가능성 — 워크스페이스 인스턴스 간 잠재 노출</a
+            <a
+              href="https://github.com/anthropics/claude-code/issues/74066"
+              target="_blank"
+              >Claude Code 세션/캐시 유출 가능성 — 워크스페이스 인스턴스 간 잠재
+              노출</a
             >
           </h3>
           <p>
-            HN 286 points·130 comments. 워크스페이스 인스턴스 또는 소비자 계정 간
-            세션/캐시 누출 가능성 제기. 동시에 GPT-5.5 Codex reasoning-token
+            HN 286 points·130 comments. 워크스페이스 인스턴스 또는 소비자 계정
+            간 세션/캐시 누출 가능성 제기. 동시에 GPT-5.5 Codex reasoning-token
             클러스터링 성능 저하(224↑), "Better Models: Worse Tools" 논쟁(144↑)
             폭증.
           </p>
         </div>
         <div class="key-item">
-          <span class="tag" style="border-color: #0891b2; color: #0891b2; background: rgba(8, 145, 178, 0.08);">OpenAI · 정책</span>
+          <span
+            class="tag"
+            style="
+              border-color: #0891b2;
+              color: #0891b2;
+              background: rgba(8, 145, 178, 0.08);
+            "
+            >OpenAI · 정책</span
+          >
           <h3>
-            <a href="https://www.theverge.com/ai-artificial-intelligence/960588/openai-government-5-percent-stake-trump" target="_blank"
+            <a
+              href="https://www.theverge.com/ai-artificial-intelligence/960588/openai-government-5-percent-stake-trump"
+              target="_blank"
               >OpenAI, Trump 행정부에 AI 붐 5% 지분 제안</a
             >
           </h3>
           <p>
-            AI 붐 수익 일부를 연방 거버넌스에 할당하는 방안 검토. 백악관은 다음 주
-            AI '출시 가이드라인' 발표 예정 — OpenAI·Anthropic 최종 조율 중.
+            AI 붐 수익 일부를 연방 거버넌스에 할당하는 방안 검토. 백악관은 다음
+            주 AI '출시 가이드라인' 발표 예정 — OpenAI·Anthropic 최종 조율 중.
             한편 Anthropic은 "정부 지분 논의 없어" 부인.
           </p>
         </div>
         <div class="key-item">
-          <span class="tag" style="border-color: var(--pine); color: var(--pine); background: rgba(22, 163, 74, 0.08);">Z.ai · 코딩</span>
+          <span
+            class="tag"
+            style="
+              border-color: var(--pine);
+              color: var(--pine);
+              background: rgba(22, 163, 74, 0.08);
+            "
+            >Z.ai · 코딩</span
+          >
           <h3>
-            <a href="https://venturebeat.com/technology/z-ai-launches-zcode-to-challenge-cursor-claude-code-and-github-copilot-in-ai-coding" target="_blank"
-              >Z.ai, ZCode 출시 — GLM-5.2 공식 IDE로 Cursor·Claude Code·Copilot 도전</a
+            <a
+              href="https://venturebeat.com/technology/z-ai-launches-zcode-to-challenge-cursor-claude-code-and-github-copilot-in-ai-coding"
+              target="_blank"
+              >Z.ai, ZCode 출시 — GLM-5.2 공식 IDE로 Cursor·Claude Code·Copilot
+              도전</a
             >
           </h3>
           <p>
@@ -845,7 +1062,13 @@
       <div class="trends">
         <div class="trend-card">
           <div class="num">01</div>
-          <h3><a href="https://www.anthropic.com/news/fable-safeguards-jailbreak-framework" target="_blank">AI 안전 거버넌스, 정부 개입 심화</a></h3>
+          <h3>
+            <a
+              href="https://www.anthropic.com/news/fable-safeguards-jailbreak-framework"
+              target="_blank"
+              >AI 안전 거버넌스, 정부 개입 심화</a
+            >
+          </h3>
           <p>
             Anthropic 주도 jailbreak 프레임워크 제안. 백악관 AI 출시 가이드라인
             다음 주 발표. OpenAI 정부 5% 지분 제안. 규제의 방향성 혼산 속 자율
@@ -854,16 +1077,28 @@
         </div>
         <div class="trend-card">
           <div class="num">02</div>
-          <h3><a href="https://github.com/anthropics/claude-code/issues/74066" target="_blank">코딩 에이전트 경쟁 + 보안 결함</a></h3>
+          <h3>
+            <a
+              href="https://github.com/anthropics/claude-code/issues/74066"
+              target="_blank"
+              >코딩 에이전트 경쟁 + 보안 결함</a
+            >
+          </h3>
           <p>
             Z.ai ZCode 출시로 Cursor·Claude Code·Copilot 정면 도전. Claude Code
-            세션 유출·GPT-5.5 Codex 성능 저하 버그 보고. "모델 향상 vs 도구 정체"
-            비판 확산. 알리바바 Claude Code 사내 금지.
+            세션 유출·GPT-5.5 Codex 성능 저하 버그 보고. "모델 향상 vs 도구
+            정체" 비판 확산. 알리바바 Claude Code 사내 금지.
           </p>
         </div>
         <div class="trend-card">
           <div class="num">03</div>
-          <h3><a href="https://venturebeat.com/orchestration/new-alibaba-ai-framework-skips-loading-every-tool-cutting-agent-token-use-99" target="_blank">비용·토큰 효율성 + 평가 시장 자립</a></h3>
+          <h3>
+            <a
+              href="https://venturebeat.com/orchestration/new-alibaba-ai-framework-skips-loading-every-tool-cutting-agent-token-use-99"
+              target="_blank"
+              >비용·토큰 효율성 + 평가 시장 자립</a
+            >
+          </h3>
           <p>
             알리바바 SkillWeaver 토큰 99.9% 절감. AI 토큰 지출 지표 첫 하락 —
             거품 붕괴 vs 수요 조정 논쟁. Tesla 직원 AI 사용료 주당 $200 제한.
@@ -873,7 +1108,13 @@
         </div>
         <div class="trend-card">
           <div class="num">04</div>
-          <h3><a href="https://blogs.nvidia.com/blog/nvidia-and-partners-build-in-america-for-america/" target="_blank">피지컬 AI·인프라 자체화·AC→DC</a></h3>
+          <h3>
+            <a
+              href="https://blogs.nvidia.com/blog/nvidia-and-partners-build-in-america-for-america/"
+              target="_blank"
+              >피지컬 AI·인프라 자체화·AC→DC</a
+            >
+          </h3>
           <p>
             NVIDIA Build in America + AI Compute at Scale. 삼성 영남 60조,
             소프트뱅크 10GW, MS 6000명 FDE + 25억$. 머스크 '테라팹' Intel 베테랑
@@ -884,7 +1125,13 @@
         </div>
         <div class="trend-card">
           <div class="num">05</div>
-          <h3><a href="https://blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-omni-flash-nano-banana-2-lite/" target="_blank">멀티모달·온디바이스·음성</a></h3>
+          <h3>
+            <a
+              href="https://blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-omni-flash-nano-banana-2-lite/"
+              target="_blank"
+              >멀티모달·온디바이스·음성</a
+            >
+          </h3>
           <p>
             Google Nano Banana 2 Lite + Gemini Omni Flash. HF+Cerebras 음성 AI.
             xAI 보이스 에이전트 빌더 베타. Amazon 온디바이스 칩. Naver 이미지
@@ -907,7 +1154,9 @@
         <div class="timeline">
           <!-- 07.05 -->
           <div class="day">
-            <div class="day-label">⏵ 2026.07.05 (일) — 인력·평가·인프라 재편</div>
+            <div class="day-label">
+              ⏵ 2026.07.05 (일) — 인력·평가·인프라 재편
+            </div>
 
             <div class="article">
               <span class="tag techcrunch">TechCrunch</span>
@@ -915,13 +1164,14 @@
                 <a
                   href="https://techcrunch.com/2026/07/05/amazon-will-stop-accepting-new-customers-for-mechanical-turk/"
                   target="_blank"
-                  >Amazon, Mechanical Turk 신규 고객 가입 중단 — 크라우드 작업→AI 자동화 재편</a
+                  >Amazon, Mechanical Turk 신규 고객 가입 중단 — 크라우드
+                  작업→AI 자동화 재편</a
                 >
               </h4>
               <p class="summary-text">
-                AI 합성 데이터·자동화 확산으로 인간 크라우드 작업 플랫폼이
-                축소 신호. 인력·작업 플랫폼을 AI 에이전트가 대체하는 흐름의
-                상징적 사례.
+                AI 합성 데이터·자동화 확산으로 인간 크라우드 작업 플랫폼이 축소
+                신호. 인력·작업 플랫폼을 AI 에이전트가 대체하는 흐름의 상징적
+                사례.
               </p>
             </div>
 
@@ -931,7 +1181,8 @@
                 <a
                   href="https://www.aitimes.com/news/articleView.html?idxno=212444"
                   target="_blank"
-                  >AI 평가 플랫폼 아레나(Arena), 상용화 8개월 만에 연매출 1,500억원 돌파</a
+                  >AI 평가 플랫폼 아레나(Arena), 상용화 8개월 만에 연매출
+                  1,500억원 돌파</a
                 >
               </h4>
               <p class="summary-text">
@@ -946,12 +1197,13 @@
                 <a
                   href="https://www.aitimes.com/news/articleView.html?idxno=212443"
                   target="_blank"
-                  >머스크 자체 칩 '테라팹(Terafab)' 가속 — Intel 18A 양산 베테랑 영입</a
+                  >머스크 자체 칩 '테라팹(Terafab)' 가속 — Intel 18A 양산 베테랑
+                  영입</a
                 >
               </h4>
               <p class="summary-text">
-                Tesla가 Intel 차세대 18A 공정 양산 공장 구축을 이끈 핵심
-                제조 전문가 영입. 자체 GPU·AI 가속기 독립 속도 부여.
+                Tesla가 Intel 차세대 18A 공정 양산 공장 구축을 이끈 핵심 제조
+                전문가 영입. 자체 GPU·AI 가속기 독립 속도 부여.
               </p>
             </div>
 
@@ -961,12 +1213,13 @@
                 <a
                   href="https://www.aitimes.com/news/articleView.html?idxno=212440"
                   target="_blank"
-                  >"교류에서 직류로" — AI 데이터센터 증설에 전력 인프라 시장 격변</a
+                  >"교류에서 직류로" — AI 데이터센터 증설에 전력 인프라 시장
+                  격변</a
                 >
               </h4>
               <p class="summary-text">
-                AI 팩토리 전력 소비 급증에 따라 기존 AC 배전에서 DC 체계로
-                전환. 차세대 AI 인프라 전력 인프라 시장 판도 변화.
+                AI 팩토리 전력 소비 급증에 따라 기존 AC 배전에서 DC 체계로 전환.
+                차세대 AI 인프라 전력 인프라 시장 판도 변화.
               </p>
             </div>
 
@@ -976,12 +1229,14 @@
                 <a
                   href="https://www.aitimes.com/news/articleView.html?idxno=212435"
                   target="_blank"
-                  >한국딥러닝 "기업 LLM 시대, AI 경쟁력은 '컨텍스트 관리 시스템'에"</a
+                  >한국딥러닝 "기업 LLM 시대, AI 경쟁력은 '컨텍스트 관리
+                  시스템'에"</a
                 >
               </h4>
               <p class="summary-text">
-                삼성·LG 등 LLM 도입 이후 승부는 컨텍스트 통제(RAG·메모리·가드레일)로
-                이동. 모델 선택 단계를 넘어선 기업 AI 경쟁력의 새 경지.
+                삼성·LG 등 LLM 도입 이후 승부는 컨텍스트
+                통제(RAG·메모리·가드레일)로 이동. 모델 선택 단계를 넘어선 기업
+                AI 경쟁력의 새 경지.
               </p>
             </div>
 
@@ -1005,12 +1260,21 @@
               <h4>AI 키워드 상위 — 튜터 효과·fab 다변화·오프라인 추론</h4>
               <ul class="headlines">
                 <li>
-                  New AI tutor achieves 0.71-1.30 SD effect size in Dartmouth course [PDF]
-                  <a class="hl-link" href="https://intextbooks.science.uu.nl/workshop2026/files/itb26_s1s2.pdf">[106↑]</a>
+                  New AI tutor achieves 0.71-1.30 SD effect size in Dartmouth
+                  course [PDF]
+                  <a
+                    class="hl-link"
+                    href="https://intextbooks.science.uu.nl/workshop2026/files/itb26_s1s2.pdf"
+                    >[106↑]</a
+                  >
                 </li>
                 <li>
                   Jim Keller startup Fab2, 소형 chip fab 양산 공장 건설
-                  <a class="hl-link" href="https://www.tomshardware.com/tech-industry/atomic-semi-rebrands-as-fab2-and-shifts-operations-to-texas">[87↑]</a>
+                  <a
+                    class="hl-link"
+                    href="https://www.tomshardware.com/tech-industry/atomic-semi-rebrands-as-fab2-and-shifts-operations-to-texas"
+                    >[87↑]</a
+                  >
                 </li>
                 <li>
                   Organic Maps — 오프라인 추론 맥락 인용 빈번
@@ -1025,15 +1289,24 @@
               <ul class="headlines">
                 <li>
                   Mistral AI 전체 가이드 — OpenAI 경쟁사 (Anna Heim)
-                  <a href="https://techcrunch.com/2026/07/04/what-is-mistral-ai-everything-to-know-about-the-openai-competitor/">[link]</a>
+                  <a
+                    href="https://techcrunch.com/2026/07/04/what-is-mistral-ai-everything-to-know-about-the-openai-competitor/"
+                    >[link]</a
+                  >
                 </li>
                 <li>
                   Bending Spoons, AOL·Vimeo 인수 후 IPO 공개 — SaaS·AI 군 확장
-                  <a href="https://techcrunch.com/2026/07/05/what-is-bending-spoons-everything-to-know-about-aols-acquirer/">[link]</a>
+                  <a
+                    href="https://techcrunch.com/2026/07/05/what-is-bending-spoons-everything-to-know-about-aols-acquirer/"
+                    >[link]</a
+                  >
                 </li>
                 <li>
                   올해 90개 신규 유니콘 탄생 — AI 카테고리 다수 포함
-                  <a href="https://techcrunch.com/2026/07/05/almost-40-new-unicorns-have-been-minted-so-far-this-year-here-they-are/">[link]</a>
+                  <a
+                    href="https://techcrunch.com/2026/07/05/almost-40-new-unicorns-have-been-minted-so-far-this-year-here-they-are/"
+                    >[link]</a
+                  >
                 </li>
               </ul>
             </div>
@@ -1043,27 +1316,41 @@
               <h4>주요 모델·제품 발표 소스 — 주말이라 신규 글 없음</h4>
               <ul class="headlines">
                 <li>
-                  NVIDIA: 7/1 Build in America + Unlocks AI Compute at Scale (직전 평일 최신)
-                  <a href="https://blogs.nvidia.com/blog/nvidia-and-partners-build-in-america-for-america/">[link]</a>
+                  NVIDIA: 7/1 Build in America + Unlocks AI Compute at Scale
+                  (직전 평일 최신)
+                  <a
+                    href="https://blogs.nvidia.com/blog/nvidia-and-partners-build-in-america-for-america/"
+                    >[link]</a
+                  >
                 </li>
                 <li>
                   Anthropic: 7/2 Fable 5 사이버 안전장치·jailbreak 프레임워크
-                  <a href="https://www.anthropic.com/news/fable-safeguards-jailbreak-framework">[link]</a>
+                  <a
+                    href="https://www.anthropic.com/news/fable-safeguards-jailbreak-framework"
+                    >[link]</a
+                  >
                 </li>
                 <li>
                   OpenAI: 최신 6/30 Introducing GeneBench-Pro
-                  <a href="https://openai.com/index/introducing-genebench-pro/">[link]</a>
+                  <a href="https://openai.com/index/introducing-genebench-pro/"
+                    >[link]</a
+                  >
                 </li>
                 <li>
                   Hugging Face: 7/1+Cerebras Gemma 4 실시간 음성 AI
-                  <a href="https://huggingface.co/blog/cerebras-gemma4-voice-ai">[link]</a>
+                  <a href="https://huggingface.co/blog/cerebras-gemma4-voice-ai"
+                    >[link]</a
+                  >
                 </li>
                 <li>
                   The Batch: 7/3 Issue 360 — GPT-5.6 패밀리·로봇 훈련
-                  <a href="https://www.deeplearning.ai/the-batch/issue-360">[link]</a>
+                  <a href="https://www.deeplearning.ai/the-batch/issue-360"
+                    >[link]</a
+                  >
                 </li>
                 <li>
-                  DeepMind: "Month Year" 표기 항목이라 정확 일자 불확정 — 아래 참고 섹션
+                  DeepMind: "Month Year" 표기 항목이라 정확 일자 불확정 — 아래
+                  참고 섹션
                   <a href="https://deepmind.google/discover/blog/">[link]</a>
                 </li>
               </ul>
@@ -1084,9 +1371,9 @@
                 >
               </h4>
               <p class="summary-text">
-                7/1 전격 복귀한 Fable 5의 사이버 보안장치 상세 설명. Amazon·Microsoft·Google
-                등 Glasswing 파트너와 함께 jailbreak 심각도 업계 표준 평가
-                프레임워크 제안.
+                7/1 전격 복귀한 Fable 5의 사이버 보안장치 상세 설명.
+                Amazon·Microsoft·Google 등 Glasswing 파트너와 함께 jailbreak
+                심각도 업계 표준 평가 프레임워크 제안.
               </p>
             </div>
 
@@ -1143,7 +1430,9 @@
                 </li>
                 <li>
                   Better Models: Worse Tools (Armin Ronacher)
-                  <a class="hl-link" href="https://lucumr.pocoo.org/2026/7/4/better-models-worse-tools/"
+                  <a
+                    class="hl-link"
+                    href="https://lucumr.pocoo.org/2026/7/4/better-models-worse-tools/"
                     >[144↑]</a
                   >
                 </li>
@@ -1164,7 +1453,8 @@
                 <a
                   href="https://venturebeat.com/orchestration/trunk-tools-stack-cut-document-review-from-60-days-to-10-by-ditching-general-purpose-models"
                   target="_blank"
-                  >Trunk Tools, 문서 검토 60일→10일 — 범용 모델 대신 전용 스택</a
+                  >Trunk Tools, 문서 검토 60일→10일 — 범용 모델 대신 전용
+                  스택</a
                 >
               </h4>
               <p class="summary-text">
@@ -1194,13 +1484,15 @@
               <ul class="headlines">
                 <li>
                   Midjourney 의료용 초음파 스캐너 비하인드 영상 — 의문 남아
-                  <a href="https://www.theverge.com/ai-artificial-intelligence/961265/midjourney-medical-ultrasound-scanner-behind-the-scenes-video"
+                  <a
+                    href="https://www.theverge.com/ai-artificial-intelligence/961265/midjourney-medical-ultrasound-scanner-behind-the-scenes-video"
                     >[link]</a
                   >
                 </li>
                 <li>
                   팬픽션 커뮤니티 vs AI — 탐지기 논란
-                  <a href="https://www.theverge.com/tech/960854/ai-fanfiction-ao3-claude-detector"
+                  <a
+                    href="https://www.theverge.com/tech/960854/ai-fanfiction-ao3-claude-detector"
                     >[link]</a
                   >
                 </li>
@@ -1213,25 +1505,29 @@
               <ul class="headlines">
                 <li>
                   Google 신광고, AI 도움으로 쓴 독립선언서 상상 (7/4)
-                  <a href="https://techcrunch.com/2026/07/04/new-google-commercial-imagines-a-declaration-of-independence-written-with-help-from-ai/"
+                  <a
+                    href="https://techcrunch.com/2026/07/04/new-google-commercial-imagines-a-declaration-of-independence-written-with-help-from-ai/"
                     >[link]</a
                   >
                 </li>
                 <li>
                   Midjourney, 할리우드 스튜디오에 AI 사용 상세 공개 요구
-                  <a href="https://techcrunch.com/2026/07/04/midjourney-wants-hollywood-studios-to-reveal-the-details-of-their-ai-usage/"
+                  <a
+                    href="https://techcrunch.com/2026/07/04/midjourney-wants-hollywood-studios-to-reveal-the-details-of-their-ai-usage/"
                     >[link]</a
                   >
                 </li>
                 <li>
                   알리바바, 직원 Claude Code 사용 금지
-                  <a href="https://techcrunch.com/2026/07/04/alibaba-reportedly-bans-employees-from-using-claude-code/"
+                  <a
+                    href="https://techcrunch.com/2026/07/04/alibaba-reportedly-bans-employees-from-using-claude-code/"
                     >[link]</a
                   >
                 </li>
                 <li>
                   Mistral AI 전체 가이드 — OpenAI 경쟁사
-                  <a href="https://techcrunch.com/2026/07/04/what-is-mistral-ai-everything-to-know-about-the-openai-competitor/"
+                  <a
+                    href="https://techcrunch.com/2026/07/04/what-is-mistral-ai-everything-to-know-about-the-openai-competitor/"
                     >[link]</a
                   >
                 </li>
@@ -1244,55 +1540,95 @@
               <ul class="headlines">
                 <li>
                   Naver "이미지 중심 AI 검색으로 진화" — 9년 멀티모달
-                  <a href="https://www.aitimes.com/news/articleView.html?idxno=212445">[link]</a>
+                  <a
+                    href="https://www.aitimes.com/news/articleView.html?idxno=212445"
+                    >[link]</a
+                  >
                 </li>
                 <li>
                   "테스트 타임 컴퓨트가 새로운 스케일링 법칙" — '엣지벤치' 공개
-                  <a href="https://www.aitimes.com/news/articleView.html?idxno=212425">[link]</a>
+                  <a
+                    href="https://www.aitimes.com/news/articleView.html?idxno=212425"
+                    >[link]</a
+                  >
                 </li>
                 <li>
                   'AI 토큰 지출' 지표 첫 하락세 — 거품 붕괴 vs 수요 조정
-                  <a href="https://www.aitimes.com/news/articleView.html?idxno=212434">[link]</a>
+                  <a
+                    href="https://www.aitimes.com/news/articleView.html?idxno=212434"
+                    >[link]</a
+                  >
                 </li>
                 <li>
-                  알리바바, 직원 '클로드 코드' 사용 금지 — '중국 사용자 비밀 추적'
-                  <a href="https://www.aitimes.com/news/articleView.html?idxno=212423">[link]</a>
+                  알리바바, 직원 '클로드 코드' 사용 금지 — '중국 사용자 비밀
+                  추적'
+                  <a
+                    href="https://www.aitimes.com/news/articleView.html?idxno=212423"
+                    >[link]</a
+                  >
                 </li>
                 <li>
                   Tesla, 직원 AI 사용료 주당 200달러 제한
-                  <a href="https://www.aitimes.com/news/articleView.html?idxno=212424">[link]</a>
+                  <a
+                    href="https://www.aitimes.com/news/articleView.html?idxno=212424"
+                    >[link]</a
+                  >
                 </li>
                 <li>
                   젠슨 황 '가죽 재킷' 소더비 경매 — 낙찰가 9000만원 예상
-                  <a href="https://www.aitimes.com/news/articleView.html?idxno=212433">[link]</a>
+                  <a
+                    href="https://www.aitimes.com/news/articleView.html?idxno=212433"
+                    >[link]</a
+                  >
                 </li>
                 <li>
                   Amazon, 온디바이스 AI 칩 설계 — 화면 없는 자체 AI 기기
-                  <a href="https://www.aitimes.com/news/articleView.html?idxno=212429">[link]</a>
+                  <a
+                    href="https://www.aitimes.com/news/articleView.html?idxno=212429"
+                    >[link]</a
+                  >
                 </li>
                 <li>
                   KAIST, AI 에이전트 전력 비용 — 챗봇보다 최대 136배 에너지
-                  <a href="https://www.aitimes.com/news/articleView.html?idxno=212437">[link]</a>
+                  <a
+                    href="https://www.aitimes.com/news/articleView.html?idxno=212437"
+                    >[link]</a
+                  >
                 </li>
                 <li>
                   한국딥러닝 기고 "경쟁력은 컨텍스트 관리 시스템에"
-                  <a href="https://www.aitimes.com/news/articleView.html?idxno=212435">[link]</a>
+                  <a
+                    href="https://www.aitimes.com/news/articleView.html?idxno=212435"
+                    >[link]</a
+                  >
                 </li>
                 <li>
                   미스트랄 '린스트랄 1.5' — 퍼트넘벤치 역대 최고
-                  <a href="https://www.aitimes.com/news/articleView.html?idxno=212428">[link]</a>
+                  <a
+                    href="https://www.aitimes.com/news/articleView.html?idxno=212428"
+                    >[link]</a
+                  >
                 </li>
                 <li>
                   엔비디아 '루빈 울트라' 4칩렛→2칩렛 선회
-                  <a href="https://www.aitimes.com/news/articleView.html?idxno=212421">[link]</a>
+                  <a
+                    href="https://www.aitimes.com/news/articleView.html?idxno=212421"
+                    >[link]</a
+                  >
                 </li>
                 <li>
                   인텔, 코어 울트라·제온 CPU 가격 인상
-                  <a href="https://www.aitimes.com/news/articleView.html?idxno=212422">[link]</a>
+                  <a
+                    href="https://www.aitimes.com/news/articleView.html?idxno=212422"
+                    >[link]</a
+                  >
                 </li>
                 <li>
                   '클링 AI' 4조 원 확보 — Alibaba·Tencent·Baidu·중동 자본
-                  <a href="https://www.aitimes.com/news/articleView.html?idxno=212427">[link]</a>
+                  <a
+                    href="https://www.aitimes.com/news/articleView.html?idxno=212427"
+                    >[link]</a
+                  >
                 </li>
               </ul>
             </div>
@@ -1300,19 +1636,24 @@
 
           <!-- 07.03 -->
           <div class="day">
-            <div class="day-label">⏵ 2026.07.03 (목) — GPT-5.6·인프라·ArXiv</div>
+            <div class="day-label">
+              ⏵ 2026.07.03 (목) — GPT-5.6·인프라·ArXiv
+            </div>
 
             <div class="article">
               <span class="tag batch">The Batch · Andrew Ng</span>
               <h4>
-                <a href="https://www.deeplearning.ai/the-batch/issue-360" target="_blank"
-                  >The Batch Issue 360 — OpenAI GPT-5.6 패밀리·로봇 훈련·모델이 모델을 호출</a
+                <a
+                  href="https://www.deeplearning.ai/the-batch/issue-360"
+                  target="_blank"
+                  >The Batch Issue 360 — OpenAI GPT-5.6 패밀리·로봇 훈련·모델이
+                  모델을 호출</a
                 >
               </h4>
               <p class="summary-text">
-                GPT-5.6 Sol(플래그십)·Omni(멀티모달)·Flash(경량) 동시 출시. 시뮬레이션-실세계
-                간 domain randomization 기법 발전. LLM 기반 에이전트 오케스트레이션 패턴
-                확산 — 모델이 모델을 호출.
+                GPT-5.6 Sol(플래그십)·Omni(멀티모달)·Flash(경량) 동시 출시.
+                시뮬레이션-실세계 간 domain randomization 기법 발전. LLM 기반
+                에이전트 오케스트레이션 패턴 확산 — 모델이 모델을 호출.
               </p>
             </div>
 
@@ -1322,7 +1663,8 @@
                 <a
                   href="https://blogs.nvidia.com/blog/nvidia-and-partners-build-in-america-for-america/"
                   target="_blank"
-                  >NVIDIA·파트너, 미국 내 제조 투자 "Build in America, for America"</a
+                  >NVIDIA·파트너, 미국 내 제조 투자 "Build in America, for
+                  America"</a
                 >
               </h4>
               <p class="summary-text">
@@ -1337,13 +1679,14 @@
                 <a
                   href="https://blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-omni-flash-nano-banana-2-lite/"
                   target="_blank"
-                  >Nano Banana 2 Lite + Gemini Omni Flash — 빠른 비용효율 Gemini</a
+                  >Nano Banana 2 Lite + Gemini Omni Flash — 빠른 비용효율
+                  Gemini</a
                 >
               </h4>
               <p class="summary-text">
                 가장 빠르고 비용 효율적인 Gemini Image 모델. 고품질 영상·대화형
-                편집. Gemini Spark는 macOS 출시, Canva/Instacart 연동, Tasks/Keep
-                연결.
+                편집. Gemini Spark는 macOS 출시, Canva/Instacart 연동,
+                Tasks/Keep 연결.
               </p>
             </div>
 
@@ -1352,56 +1695,96 @@
               <h4>한국 주요 기사</h4>
               <ul class="headlines">
                 <li>
-                  저커버그 "AI 에이전트 개발 속도 예상보다 느려" — 조직 개편 한계
-                  <a href="https://www.aitimes.com/news/articleView.html?idxno=212385">[link]</a>
+                  저커버그 "AI 에이전트 개발 속도 예상보다 느려" — 조직 개편
+                  한계
+                  <a
+                    href="https://www.aitimes.com/news/articleView.html?idxno=212385"
+                    >[link]</a
+                  >
                 </li>
                 <li>
                   MS 코파일럿 소비자·기업용 전면 통합 — 8월 '슈퍼 앱' 진화
-                  <a href="https://www.aitimes.com/news/articleView.html?idxno=212399">[link]</a>
+                  <a
+                    href="https://www.aitimes.com/news/articleView.html?idxno=212399"
+                    >[link]</a
+                  >
                 </li>
                 <li>
                   알리바바 '스킬위버' — 토큰 사용량 99.9% 절감
-                  <a href="https://www.aitimes.com/news/articleView.html?idxno=212408">[link]</a>
+                  <a
+                    href="https://www.aitimes.com/news/articleView.html?idxno=212408"
+                    >[link]</a
+                  >
                 </li>
                 <li>
                   메타, 바이브 코딩 '포켓' 출시
-                  <a href="https://www.aitimes.com/news/articleView.html?idxno=212395">[link]</a>
+                  <a
+                    href="https://www.aitimes.com/news/articleView.html?idxno=212395"
+                    >[link]</a
+                  >
                 </li>
                 <li>
                   xAI, '보이스 에이전트 빌더' 베타 — 코드 없이 음성 AI
-                  <a href="https://www.aitimes.com/news/articleView.html?idxno=212402">[link]</a>
+                  <a
+                    href="https://www.aitimes.com/news/articleView.html?idxno=212402"
+                    >[link]</a
+                  >
                 </li>
                 <li>
                   오픈AI 5% 제안, 트럼프·앤트로픽 지분 논의 "아직 없어"
-                  <a href="https://www.aitimes.com/news/articleView.html?idxno=212389">[link]</a>
+                  <a
+                    href="https://www.aitimes.com/news/articleView.html?idxno=212389"
+                    >[link]</a
+                  >
                 </li>
                 <li>
                   MS, 6000명 FDE 전담조직 — 25억$ 투자, 멀티모델 지원
-                  <a href="https://www.aitimes.com/news/articleView.html?idxno=212387">[link]</a>
+                  <a
+                    href="https://www.aitimes.com/news/articleView.html?idxno=212387"
+                    >[link]</a
+                  >
                 </li>
                 <li>
                   백악관, AI '출시 가이드라인' 다음 주 발표
-                  <a href="https://www.aitimes.com/news/articleView.html?idxno=212388">[link]</a>
+                  <a
+                    href="https://www.aitimes.com/news/articleView.html?idxno=212388"
+                    >[link]</a
+                  >
                 </li>
                 <li>
                   소프트뱅크, 미국 10GW AI 클라우드 — "제2의 창업"
-                  <a href="https://www.aitimes.com/news/articleView.html?idxno=212407">[link]</a>
+                  <a
+                    href="https://www.aitimes.com/news/articleView.html?idxno=212407"
+                    >[link]</a
+                  >
                 </li>
                 <li>
                   SKT, '구글 AI 플랜' 구독 서비스 — 제미나이/나노 바나나 할인
-                  <a href="https://www.aitimes.com/news/articleView.html?idxno=212404">[link]</a>
+                  <a
+                    href="https://www.aitimes.com/news/articleView.html?idxno=212404"
+                    >[link]</a
+                  >
                 </li>
                 <li>
                   삼성, 영남 60조 — '글로벌 피지컬 AI 혁신 클러스터'
-                  <a href="https://www.aitimes.com/news/articleView.html?idxno=212420">[link]</a>
+                  <a
+                    href="https://www.aitimes.com/news/articleView.html?idxno=212420"
+                    >[link]</a
+                  >
                 </li>
                 <li>
                   구글 차세대 '제미나이 플래시' 테스트 — LM 아레나 포착
-                  <a href="https://www.aitimes.com/news/articleView.html?idxno=212397">[link]</a>
+                  <a
+                    href="https://www.aitimes.com/news/articleView.html?idxno=212397"
+                    >[link]</a
+                  >
                 </li>
                 <li>
                   "한국 AI, 패배주의 벗어나야" — OpenAI·MIT·NYU 권고
-                  <a href="https://www.aitimes.com/news/articleView.html?idxno=212410">[link]</a>
+                  <a
+                    href="https://www.aitimes.com/news/articleView.html?idxno=212410"
+                    >[link]</a
+                  >
                 </li>
               </ul>
             </div>
@@ -1412,11 +1795,17 @@
               <ul class="headlines">
                 <li>
                   올해 AI 용어집 (Glossary) — 환각·에이전트·토큰 정리
-                  <a href="https://techcrunch.com/2026/07/03/artificial-intelligence-definition-glossary-hallucinations-guide-to-common-ai-terms/">[link]</a>
+                  <a
+                    href="https://techcrunch.com/2026/07/03/artificial-intelligence-definition-glossary-hallucinations-guide-to-common-ai-terms/"
+                    >[link]</a
+                  >
                 </li>
                 <li>
                   브라우저 전쟁, 더 이상 검색이 아니다 — Chrome/Safari 대안
-                  <a href="https://techcrunch.com/2026/07/03/as-the-browser-wars-heat-up-here-are-the-hottest-alternatives-to-chrome-and-safari-in-2026/">[link]</a>
+                  <a
+                    href="https://techcrunch.com/2026/07/03/as-the-browser-wars-heat-up-here-are-the-hottest-alternatives-to-chrome-and-safari-in-2026/"
+                    >[link]</a
+                  >
                 </li>
               </ul>
             </div>
@@ -1427,12 +1816,14 @@
                 <a
                   href="https://www.reuters.com/world/china/alibaba-ban-claude-code-workplace-over-alleged-backdoor-risks-source-says-2026-07-03/"
                   target="_blank"
-                  >알리바바, Anthropic 코딩 도구 사용 금지 — 백도어 리스크 주장</a
+                  >알리바바, Anthropic 코딩 도구 사용 금지 — 백도어 리스크
+                  주장</a
                 >
               </h4>
               <p class="summary-text">
-                알리바바가 직원들에게 Anthropic Claude Code 사내 사용 금지. 백도어
-                리스크와 중국 사용자 데이터 추출 우려 제기. 자체 코드 도구로 회수.
+                알리바바가 직원들에게 Anthropic Claude Code 사내 사용 금지.
+                백도어 리스크와 중국 사용자 데이터 추출 우려 제기. 자체 코드
+                도구로 회수.
               </p>
             </div>
 
@@ -1454,7 +1845,9 @@
 
           <!-- 07.02 -->
           <div class="day">
-            <div class="day-label">⏵ 2026.07.02 (목) — 코딭 에이전트·정책·음성</div>
+            <div class="day-label">
+              ⏵ 2026.07.02 (목) — 코딭 에이전트·정책·음성
+            </div>
 
             <div class="article">
               <span class="tag venturebeat">VentureBeat</span>
@@ -1462,12 +1855,14 @@
                 <a
                   href="https://venturebeat.com/orchestration/new-alibaba-ai-framework-skips-loading-every-tool-cutting-agent-token-use-99"
                   target="_blank"
-                  >알리바바, 에이전트 토큰 99% 절감 프레임워크 — 도구 전부 로딩 건너뛰어</a
+                  >알리바바, 에이전트 토큰 99% 절감 프레임워크 — 도구 전부 로딩
+                  건너뛰어</a
                 >
               </h4>
               <p class="summary-text">
                 수천 개 도구를 다루는 AI 에이전트의 라우팅 문제 해결. 토큰 비용
-                99% 절감. AITimes 보도로는 99.9% 절감. 도구 선택 효율화가 새 경쟁력.
+                99% 절감. AITimes 보도로는 99.9% 절감. 도구 선택 효율화가 새
+                경쟁력.
               </p>
             </div>
 
@@ -1477,12 +1872,13 @@
                 <a
                   href="https://venturebeat.com/technology/z-ai-launches-zcode-to-challenge-cursor-claude-code-and-github-copilot-in-ai-coding"
                   target="_blank"
-                  >Z.ai, ZCode 출시 — GLM-5.2 공식 IDE, Cursor·Claude Code·Copilot 도전</a
+                  >Z.ai, ZCode 출시 — GLM-5.2 공식 IDE, Cursor·Claude
+                  Code·Copilot 도전</a
                 >
               </h4>
               <p class="summary-text">
-                macOS·Windows·Linux 지원. BYOK(자체 API 키) 허용. GLM Coding Plan
-                구독자에 1.5x 사용 할당량. 코딩 에이전트 시장 다극화.
+                macOS·Windows·Linux 지원. BYOK(자체 API 키) 허용. GLM Coding
+                Plan 구독자에 1.5x 사용 할당량. 코딩 에이전트 시장 다극화.
               </p>
             </div>
 
@@ -1492,13 +1888,14 @@
                 <a
                   href="https://www.theverge.com/tech/961195/microsoft-copilot-os-aion-leak"
                   target="_blank"
-                  >Microsoft 'Copilot OS' Aion 영상 유출 — AI 네이티브 Windows 컨셉</a
+                  >Microsoft 'Copilot OS' Aion 영상 유출 — AI 네이티브 Windows
+                  컨셉</a
                 >
               </h4>
               <p class="summary-text">
-                Zac Bowden(Windows Central)이 2024년 제작 영상 공개. Edge 브라우저·웹
-                앱 기반, Chrome OS와 유사한 경량 OS. Project Solara와 연관 추측.
-                출시 여부는 미확정.
+                Zac Bowden(Windows Central)이 2024년 제작 영상 공개. Edge
+                브라우저·웹 앱 기반, Chrome OS와 유사한 경량 OS. Project
+                Solara와 연관 추측. 출시 여부는 미확정.
               </p>
             </div>
 
@@ -1508,7 +1905,8 @@
                 <a
                   href="https://www.theverge.com/ai-artificial-intelligence/960795/cloudflare-is-cracking-down-on-multi-purpose-crawlers"
                   target="_blank"
-                  >Cloudflare, 다목적 크롤러 제한 — 9/15부터 검색+AI 훈련 혼용 봇 차단</a
+                  >Cloudflare, 다목적 크롤러 제한 — 9/15부터 검색+AI 훈련 혼용
+                  봇 차단</a
                 >
               </h4>
               <p class="summary-text">
@@ -1523,7 +1921,8 @@
                 <a
                   href="https://www.theverge.com/tech/960615/you-can-now-pre-order-this-8000-laundry-folding-robot"
                   target="_blank"
-                  >Weave Robotics, $8,000 빨래 접기 로봇 'Isaac 1' 예약 판매 — $250 예약금</a
+                  >Weave Robotics, $8,000 빨래 접기 로봇 'Isaac 1' 예약 판매 —
+                  $250 예약금</a
                 >
               </h4>
               <p class="summary-text">
@@ -1553,12 +1952,13 @@
                 <a
                   href="https://techcrunch.com/2026/07/02/mark-zuckerberg-tells-staff-that-ai-agents-havent-progressed-as-quickly-as-hed-hoped/"
                   target="_blank"
-                  >Mark Zuckerberg, AI 에이전트 진전 예상보다 느리다고 직원 통보</a
+                  >Mark Zuckerberg, AI 에이전트 진전 예상보다 느리다고 직원
+                  통보</a
                 >
               </h4>
               <p class="summary-text">
-                사내 전체 회의에서 공개 불만 표시. 조직 개편 한계 인정. Meta 에이전트
-                개발 속도 조절 신호.
+                사내 전체 회의에서 공개 불만 표시. 조직 개편 한계 인정. Meta
+                에이전트 개발 속도 조절 신호.
               </p>
             </div>
 
@@ -1572,8 +1972,9 @@
                 >
               </h4>
               <p class="summary-text">
-                Tim De Chant 분석. Google이 Meta Gemini 사용량 상한 설정. AI 인프라
-                병목이 공급 제약 현실화. 수백억 달러 투자에도 컴퓨팅 파워 부족.
+                Tim De Chant 분석. Google이 Meta Gemini 사용량 상한 설정. AI
+                인프라 병목이 공급 제약 현실화. 수백억 달러 투자에도 컴퓨팅 파워
+                부족.
               </p>
             </div>
 
@@ -1583,15 +1984,24 @@
               <ul class="headlines">
                 <li>
                   Meta, 바이브 코딩 게임 'Pocket' 조용히 출시
-                  <a href="https://techcrunch.com/2026/07/02/meta-quietly-launches-vibe-coded-gaming-app-pocket/">[link]</a>
+                  <a
+                    href="https://techcrunch.com/2026/07/02/meta-quietly-launches-vibe-coded-gaming-app-pocket/"
+                    >[link]</a
+                  >
                 </li>
                 <li>
                   Hopper, FTC 합의 $35M — 숨겨진 수수료 부당 청구
-                  <a href="https://techcrunch.com/2026/07/02/travel-app-hopper-to-pay-35m-in-ftc-settlement-over-unfairly-charging-hidden-fees/">[link]</a>
+                  <a
+                    href="https://techcrunch.com/2026/07/02/travel-app-hopper-to-pay-35m-in-ftc-settlement-over-unfairly-charging-hidden-fees/"
+                    >[link]</a
+                  >
                 </li>
                 <li>
                   TV Time 앱 종료 — 회사 AI 집중
-                  <a href="https://techcrunch.com/2026/07/02/popular-tv-tracking-app-tv-time-is-shutting-down-as-company-focuses-on-ai/">[link]</a>
+                  <a
+                    href="https://techcrunch.com/2026/07/02/popular-tv-tracking-app-tv-time-is-shutting-down-as-company-focuses-on-ai/"
+                    >[link]</a
+                  >
                 </li>
               </ul>
             </div>
@@ -1601,16 +2011,23 @@
               <h4>Hugging Face Blog 주요 글</h4>
               <ul class="headlines">
                 <li>
-                  Hugging Face + Cerebras, Gemma 4 실시간 음성 AI 파이프라인 (7/1)
-                  <a href="https://huggingface.co/blog/cerebras-gemma4-voice-ai">[link]</a>
+                  Hugging Face + Cerebras, Gemma 4 실시간 음성 AI 파이프라인
+                  (7/1)
+                  <a href="https://huggingface.co/blog/cerebras-gemma4-voice-ai"
+                    >[link]</a
+                  >
                 </li>
                 <li>
                   ScarfBench — 기업 Java 프레임워크 마이그레이션 벤치마크 (IBM)
-                  <a href="https://huggingface.co/blog/ibm-research/scarfbench">[link]</a>
+                  <a href="https://huggingface.co/blog/ibm-research/scarfbench"
+                    >[link]</a
+                  >
                 </li>
                 <li>
                   DiScoFormer — 밀도·스코어 동시 처리 단일 트랜스포머 (Allen AI)
-                  <a href="https://huggingface.co/blog/allenai/discoformer">[link]</a>
+                  <a href="https://huggingface.co/blog/allenai/discoformer"
+                    >[link]</a
+                  >
                 </li>
                 <li>
                   vLLM 서버, HF Jobs에서 한 줄 실행
@@ -1644,7 +2061,8 @@
               <a href="https://arxiv.org/abs/2607.02509">[link]</a>
             </li>
             <li>
-              What LLM Agents Say When No One Is Watching — 멀티 에이전트 사회구조
+              What LLM Agents Say When No One Is Watching — 멀티 에이전트
+              사회구조
               <a href="https://arxiv.org/abs/2607.02507">[link]</a>
             </li>
             <li>
@@ -1656,7 +2074,8 @@
               <a href="https://arxiv.org/abs/2607.02440">[link]</a>
             </li>
             <li>
-              Text-Driven 3D Indoor Scene Synthesis in Non-Manhattan Environments
+              Text-Driven 3D Indoor Scene Synthesis in Non-Manhattan
+              Environments
               <a href="https://arxiv.org/abs/2607.02407">[link]</a>
             </li>
             <li>
@@ -1672,14 +2091,19 @@
               <a href="https://arxiv.org/abs/2607.02116">[link]</a>
             </li>
             <li>
-              OntoLearner: LLM 기반 온톨로지 학습 모듈 라이브러리 (Nature Comms 검수)
+              OntoLearner: LLM 기반 온톨로지 학습 모듈 라이브러리 (Nature Comms
+              검수)
               <a href="https://arxiv.org/abs/2607.01977">[link]</a>
             </li>
           </ul>
-          <p class="summary-text" style="margin-top: 14px;">
+          <p class="summary-text" style="margin-top: 14px">
             전체 1,216건 등록(7/3 기준). 키워드: LLM 추론 최적화, 멀티모달 이해,
             코드 생성, 환각 완화, AI 안전성, 자율 에이전트 메모리. 전체 목록:
-            <a href="https://arxiv.org/list/cs.AI/recent" style="color: var(--water); font-weight: 700;">arxiv.org/list/cs.AI/recent</a>
+            <a
+              href="https://arxiv.org/list/cs.AI/recent"
+              style="color: var(--water); font-weight: 700"
+              >arxiv.org/list/cs.AI/recent</a
+            >
           </p>
         </div>
 
@@ -1691,19 +2115,28 @@
           <ul class="headlines">
             <li>
               Introducing GeneBench-Pro — 유전체 분석 벤치마크 (6/30)
-              <a href="https://openai.com/index/introducing-genebench-pro/">[link]</a>
+              <a href="https://openai.com/index/introducing-genebench-pro/"
+                >[link]</a
+              >
             </li>
             <li>
               Previewing GPT-5.6 Sol — 차세대 모델 프리뷰 (6/26)
-              <a href="https://openai.com/index/previewing-gpt-5-6-sol/">[link]</a>
+              <a href="https://openai.com/index/previewing-gpt-5-6-sol/"
+                >[link]</a
+              >
             </li>
             <li>
               GPT-5.6 Preview System Card (6/26)
-              <a href="https://deploymentsafety.openai.com/gpt-5-6-preview">[link]</a>
+              <a href="https://deploymentsafety.openai.com/gpt-5-6-preview"
+                >[link]</a
+              >
             </li>
             <li>
               OpenAI + Broadcom, Jalapeño LLM 최적화 추론 칩 (6/24)
-              <a href="https://openai.com/index/openai-broadcom-jalapeno-inference-chip/">[link]</a>
+              <a
+                href="https://openai.com/index/openai-broadcom-jalapeno-inference-chip/"
+                >[link]</a
+              >
             </li>
           </ul>
         </div>
@@ -1714,19 +2147,33 @@
           <ul class="headlines">
             <li>
               Securing the Future of AI Agents
-              <a href="https://deepmind.google/blog/securing-the-future-of-ai-agents/">[link]</a>
+              <a
+                href="https://deepmind.google/blog/securing-the-future-of-ai-agents/"
+                >[link]</a
+              >
             </li>
             <li>
               DiffusionGemma: 4x 빠른 텍스트 생성
-              <a href="https://blog.google/innovation-and-ai/technology/developers-tools/diffusion-gemma-faster-text-generation/">[link]</a>
+              <a
+                href="https://blog.google/innovation-and-ai/technology/developers-tools/diffusion-gemma-faster-text-generation/"
+                >[link]</a
+              >
             </li>
             <li>
               Gemma 4 12B: 엔코더-프리 멀티모달 통합 모델
-              <a href="https://blog.google/innovation-and-ai/technology/developers-tools/introducing-gemma-4-12b/">[link]</a>
+              <a
+                href="https://blog.google/innovation-and-ai/technology/developers-tools/introducing-gemma-4-12b/"
+                >[link]</a
+              >
             </li>
           </ul>
-          <p class="summary-text" style="margin-top: 14px;">
-            출처: <a href="https://deepmind.google/discover/blog/" style="color: var(--water); font-weight: 700;">deepmind.google/discover/blog</a>
+          <p class="summary-text" style="margin-top: 14px">
+            출처:
+            <a
+              href="https://deepmind.google/discover/blog/"
+              style="color: var(--water); font-weight: 700"
+              >deepmind.google/discover/blog</a
+            >
           </p>
         </div>
 
@@ -1737,48 +2184,54 @@
           <h4>수집 한계·선별 기준</h4>
           <ul class="headlines">
             <li>
-              MIT Technology Review: 미수집 (이번 실행에서 제외, JavaScript 필요로 실패 빈번)
+              MIT Technology Review: 미수집 (이번 실행에서 제외, JavaScript
+              필요로 실패 빈번)
             </li>
             <li>
-              SemiAnalysis·Interconnects·Simon Willison·Import AI·Stratechery·The Information·AI Snake Oil:
-              보조 소스. 핵심 14개 응답 충분해 생략
+              SemiAnalysis·Interconnects·Simon Willison·Import
+              AI·Stratechery·The Information·AI Snake Oil: 보조 소스. 핵심 14개
+              응답 충분해 생략
             </li>
             <li>
               ArXiv: 7/3 기준 228건 중 주요 12건만 선별 (전체 요약 시도 안 함)
             </li>
+            <li>The Batch: Issue 360 (7/3) 단일 주간 이슈 단위 포함</li>
             <li>
-              The Batch: Issue 360 (7/3) 단일 주간 이슈 단위 포함
+              DeepMind "Month Year" 표기 항목: 정확 일자 미확정이라 별도 섹션
+              처리
             </li>
             <li>
-              DeepMind "Month Year" 표기 항목: 정확 일자 미확정이라 별도 섹션 처리
+              AI타임스 기사: 7/2~7/4 기사가 7/5 발행일로 표시된 경우 多数 — 내용
+              기준일로 분류
             </li>
             <li>
-              AI타임스 기사: 7/2~7/4 기사가 7/5 발행일로 표시된 경우 多数 — 내용 기준일로 분류
+              Reuters: 일반 뉴스가 主라 AI 기사만 2건 선별 (알리바바 금지, 모방
+              약점)
             </li>
             <li>
-              Reuters: 일반 뉴스가 主라 AI 기사만 2건 선별 (알리바바 금지, 모방 약점)
+              OpenAI·HF Blog 일부 항목: 6/30 게시분은 기간 초과이나 맥락 연결을
+              위해 참고 섹션에만 배치
             </li>
             <li>
-              OpenAI·HF Blog 일부 항목: 6/30 게시분은 기간 초과이나 맥락 연결을 위해 참고 섹션에만 배치
+              내용 요약 6단계: 미실행 (사용자 "링크 잘 수집해" 요청에 맞춰 링크
+              중심 정리)
             </li>
             <li>
-              내용 요약 6단계: 미실행 (사용자 "링크 잘 수집해" 요청에 맞춰 링크 중심 정리)
+              7/5는 일요일로 OpenAI·Anthropic·DeepMind·NVIDIA·Hugging Face·The
+              Batch 등 핵심 모델·제품 발표 소스 신규 글 없음 — 직전
+              평일(6/30~7/3) 최신글을 맥락으로 7/5 day에 표기
             </li>
             <li>
-              7/5는 일요일로 OpenAI·Anthropic·DeepMind·NVIDIA·Hugging Face·The Batch
-              등 핵심 모델·제품 발표 소스 신규 글 없음 — 직전 평일(6/30~7/3) 최신글을
-              맥락으로 7/5 day에 표기
+              ArXiv: 주말(7/4~7/5) 제출 리스트 갱신 없음 — 7/3 기준 1,216건
+              그대로
             </li>
             <li>
-              ArXiv: 주말(7/4~7/5) 제출 리스트 갱신 없음 — 7/3 기준 1,216건 그대로
+              SemiAnalysis·MIT Technology Review·Ahead of AI: 이번 회차 수집
+              미진행 (07-05 md 기준)
             </li>
             <li>
-              SemiAnalysis·MIT Technology Review·Ahead of AI: 이번 회차 수집 미진행
-              (07-05 md 기준)
-            </li>
-            <li>
-              07-02~07-04 기간 상세는 ai-news-2026-07-02-onwards.md와 중복 배제 —
-              본 파일에 통합 수록
+              07-02~07-04 기간 상세는 ai-news-2026-07-02-onwards.md와 중복 배제
+              — 본 파일에 통합 수록
             </li>
           </ul>
         </div>
@@ -1786,7 +2239,10 @@
 
       <footer>
         수집일: 2026-07-06 · 기간: 2026.07.02 — 07.05 ·
-        <span class="src">OpenAI·Anthropic·Google·DeepMind·NVIDIA·HN·ArXiv·Hugging Face·The Batch·VentureBeat·The Verge·TechCrunch·Reuters·AI타임즈</span>
+        <span class="src"
+          >OpenAI·Anthropic·Google·DeepMind·NVIDIA·HN·ArXiv·Hugging Face·The
+          Batch·VentureBeat·The Verge·TechCrunch·Reuters·AI타임즈</span
+        >
       </footer>
     </div>
 

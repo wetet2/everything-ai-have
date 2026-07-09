@@ -3,7 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="2026년 7월 1일 AI 뉴스 다이제스트. Fable 5 복귀, AI 코딩 경쟁, AI 인프라 경제 다변화 등 최신 AI 소식을 한글 요약으로 제공합니다." />
+    <meta
+      name="description"
+      content="2026년 7월 1일 AI 뉴스 다이제스트. Fable 5 복귀, AI 코딩 경쟁, AI 인프라 경제 다변화 등 최신 AI 소식을 한글 요약으로 제공합니다."
+    />
     <title>AI 뉴스 // 2026.07.01</title>
     <link
       rel="stylesheet"
@@ -41,25 +44,49 @@
 
       @keyframes streamFlow {
         0%,
-        100% { transform: translateX(0) translateY(0); }
-        25% { transform: translateX(18px) translateY(-8px); }
-        50% { transform: translateX(-8px) translateY(12px); }
-        75% { transform: translateX(-20px) translateY(-6px); }
+        100% {
+          transform: translateX(0) translateY(0);
+        }
+        25% {
+          transform: translateX(18px) translateY(-8px);
+        }
+        50% {
+          transform: translateX(-8px) translateY(12px);
+        }
+        75% {
+          transform: translateX(-20px) translateY(-6px);
+        }
       }
       @keyframes mistDrift {
         0%,
-        100% { transform: translateY(0) scale(1); opacity: 1; }
-        50% { transform: translateY(-18px) scale(1.06); opacity: 0.85; }
+        100% {
+          transform: translateY(0) scale(1);
+          opacity: 1;
+        }
+        50% {
+          transform: translateY(-18px) scale(1.06);
+          opacity: 0.85;
+        }
       }
       @keyframes sunlightFilter {
         0%,
-        100% { opacity: 0.5; }
-        50% { opacity: 0.8; }
+        100% {
+          opacity: 0.5;
+        }
+        50% {
+          opacity: 0.8;
+        }
       }
 
       body {
         background:
-          linear-gradient(175deg, #f2fbfc 0%, #ecf6f5 20%, #f0f7f4 60%, #f5fafa 100%),
+          linear-gradient(
+            175deg,
+            #f2fbfc 0%,
+            #ecf6f5 20%,
+            #f0f7f4 60%,
+            #f5fafa 100%
+          ),
           var(--bg);
         color: var(--slate);
         font-family: "Pretendard", sans-serif;
@@ -76,11 +103,31 @@
         pointer-events: none;
         z-index: 0;
         background:
-          radial-gradient(ellipse 500px 300px at 10% 8%, rgba(13, 148, 136, 0.12) 0%, transparent 65%),
-          radial-gradient(ellipse 450px 280px at 90% 14%, rgba(46, 213, 191, 0.1) 0%, transparent 60%),
-          radial-gradient(ellipse 400px 320px at 85% 82%, rgba(186, 230, 253, 0.14) 0%, transparent 60%),
-          radial-gradient(ellipse 420px 300px at 15% 86%, rgba(71, 196, 157, 0.1) 0%, transparent 55%),
-          radial-gradient(ellipse 500px 350px at 50% 50%, rgba(224, 242, 244, 0.2) 0%, transparent 70%);
+          radial-gradient(
+            ellipse 500px 300px at 10% 8%,
+            rgba(13, 148, 136, 0.12) 0%,
+            transparent 65%
+          ),
+          radial-gradient(
+            ellipse 450px 280px at 90% 14%,
+            rgba(46, 213, 191, 0.1) 0%,
+            transparent 60%
+          ),
+          radial-gradient(
+            ellipse 400px 320px at 85% 82%,
+            rgba(186, 230, 253, 0.14) 0%,
+            transparent 60%
+          ),
+          radial-gradient(
+            ellipse 420px 300px at 15% 86%,
+            rgba(71, 196, 157, 0.1) 0%,
+            transparent 55%
+          ),
+          radial-gradient(
+            ellipse 500px 350px at 50% 50%,
+            rgba(224, 242, 244, 0.2) 0%,
+            transparent 70%
+          );
         animation: streamFlow 28s ease-in-out infinite;
       }
 
@@ -100,10 +147,26 @@
             rgba(255, 255, 255, 0.12) 82px
           ),
           /* 햇살 */
-          radial-gradient(ellipse 600px 200px at 50% 0%, rgba(255, 255, 255, 0.5) 0%, transparent 70%);
+          radial-gradient(
+              ellipse 600px 200px at 50% 0%,
+              rgba(255, 255, 255, 0.5) 0%,
+              transparent 70%
+            );
         animation: mistDrift 20s ease-in-out infinite;
-        mask-image: linear-gradient(to bottom, transparent 0%, transparent 10%, rgba(0,0,0,0.7) 50%, transparent 90%);
-        -webkit-mask-image: linear-gradient(to bottom, transparent 0%, transparent 10%, rgba(0,0,0,0.7) 50%, transparent 90%);
+        mask-image: linear-gradient(
+          to bottom,
+          transparent 0%,
+          transparent 10%,
+          rgba(0, 0, 0, 0.7) 50%,
+          transparent 90%
+        );
+        -webkit-mask-image: linear-gradient(
+          to bottom,
+          transparent 0%,
+          transparent 10%,
+          rgba(0, 0, 0, 0.7) 50%,
+          transparent 90%
+        );
       }
 
       .wrap {
@@ -120,7 +183,11 @@
         position: relative;
         border-bottom: 2px solid var(--line);
         margin-bottom: 60px;
-        background: linear-gradient(180deg, rgba(255,255,255,0) 0%, rgba(224,242,244,0.4) 100%);
+        background: linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0) 0%,
+          rgba(224, 242, 244, 0.4) 100%
+        );
       }
       header::before {
         content: "🏔️💧🌿";
@@ -139,7 +206,13 @@
         font-size: clamp(32px, 6vw, 66px);
         letter-spacing: 1px;
         line-height: 1.2;
-        background: linear-gradient(160deg, var(--water) 0%, var(--water-light) 40%, var(--ice) 70%, var(--water) 100%);
+        background: linear-gradient(
+          160deg,
+          var(--water) 0%,
+          var(--water-light) 40%,
+          var(--ice) 70%,
+          var(--water) 100%
+        );
         -webkit-background-clip: text;
         background-clip: text;
         -webkit-text-fill-color: transparent;
@@ -171,7 +244,12 @@
       .summary {
         margin-bottom: 60px;
         padding: 36px;
-        background: linear-gradient(145deg, #ffffff 0%, #ecf9f7 45%, #f0f8fc 100%);
+        background: linear-gradient(
+          145deg,
+          #ffffff 0%,
+          #ecf9f7 45%,
+          #f0f8fc 100%
+        );
         border: 2px solid rgba(13, 148, 136, 0.18);
         border-radius: 24px;
         box-shadow:
@@ -204,7 +282,10 @@
       .summary .hl {
         color: var(--water);
         font-weight: 700;
-        background: linear-gradient(transparent 60%, rgba(46, 213, 191, 0.22) 60%);
+        background: linear-gradient(
+          transparent 60%,
+          rgba(46, 213, 191, 0.22) 60%
+        );
         padding: 0 3px;
       }
 
@@ -247,11 +328,21 @@
           0 20px 40px rgba(13, 148, 136, 0.14),
           0 6px 12px rgba(100, 116, 139, 0.08);
       }
-      .trend-card:nth-child(1) { border-color: rgba(13, 148, 136, 0.4); }
-      .trend-card:nth-child(2) { border-color: rgba(46, 213, 191, 0.4); }
-      .trend-card:nth-child(3) { border-color: rgba(186, 230, 253, 0.45); }
-      .trend-card:nth-child(4) { border-color: rgba(22, 163, 74, 0.3); }
-      .trend-card:nth-child(5) { border-color: rgba(100, 116, 139, 0.3); }
+      .trend-card:nth-child(1) {
+        border-color: rgba(13, 148, 136, 0.4);
+      }
+      .trend-card:nth-child(2) {
+        border-color: rgba(46, 213, 191, 0.4);
+      }
+      .trend-card:nth-child(3) {
+        border-color: rgba(186, 230, 253, 0.45);
+      }
+      .trend-card:nth-child(4) {
+        border-color: rgba(22, 163, 74, 0.3);
+      }
+      .trend-card:nth-child(5) {
+        border-color: rgba(100, 116, 139, 0.3);
+      }
       .trend-card .num {
         font-family: "Bagel Fat One", "Dongle", sans-serif;
         font-size: 42px;
@@ -272,15 +363,25 @@
         color: var(--slate-soft);
       }
       .trend-card:nth-child(1) .num,
-      .trend-card:nth-child(1) h3 { color: var(--water); }
+      .trend-card:nth-child(1) h3 {
+        color: var(--water);
+      }
       .trend-card:nth-child(2) .num,
-      .trend-card:nth-child(2) h3 { color: var(--spring); }
+      .trend-card:nth-child(2) h3 {
+        color: var(--spring);
+      }
       .trend-card:nth-child(3) .num,
-      .trend-card:nth-child(3) h3 { color: #388ca0; }
+      .trend-card:nth-child(3) h3 {
+        color: #388ca0;
+      }
       .trend-card:nth-child(4) .num,
-      .trend-card:nth-child(4) h3 { color: var(--pine); }
+      .trend-card:nth-child(4) h3 {
+        color: var(--pine);
+      }
       .trend-card:nth-child(5) .num,
-      .trend-card:nth-child(5) h3 { color: var(--slate-soft); }
+      .trend-card:nth-child(5) h3 {
+        color: var(--slate-soft);
+      }
 
       .timeline {
         margin-bottom: 60px;
@@ -520,7 +621,12 @@
         width: 100%;
         height: 4px;
         border-radius: 4px 4px 0 0;
-        background: linear-gradient(90deg, var(--water), var(--spring), var(--ice));
+        background: linear-gradient(
+          90deg,
+          var(--water),
+          var(--spring),
+          var(--ice)
+        );
       }
       .stat .big {
         font-family: "Bagel Fat One", "Dongle", sans-serif;
@@ -631,6 +737,7 @@
           opacity 0.6s ease;
       }
       .hidden-content.open {
+        overflow: visible;
         max-height: 50000px;
         opacity: 1;
       }
@@ -646,7 +753,11 @@
         font-weight: 400;
         letter-spacing: 0.5px;
         color: #fff;
-        background: linear-gradient(135deg, var(--water) 0%, var(--spring) 100%);
+        background: linear-gradient(
+          135deg,
+          var(--water) 0%,
+          var(--spring) 100%
+        );
         border: none;
         border-radius: 999px;
         cursor: pointer;
@@ -661,7 +772,11 @@
         box-shadow:
           0 20px 42px rgba(13, 148, 136, 0.4),
           0 8px 16px rgba(46, 213, 191, 0.22);
-        background: linear-gradient(135deg, var(--spring) 0%, var(--water) 100%);
+        background: linear-gradient(
+          135deg,
+          var(--spring) 0%,
+          var(--water) 100%
+        );
       }
       .reveal-btn .arrow {
         display: inline-block;
@@ -706,91 +821,156 @@
           <span class="hl">OpenAI의 트럼프 행정부 지분 5% 제안 파장</span>,
           <span class="hl">Together AI $800M 투자 유치 $8.3B 평가</span>,
           <span class="hl">ZCode/GLM-5.2 하네스로 중국 AI 코딩 경쟁 가속</span>,
-          <span class="hl">Meta·SpaceX AI 컴퓨팅 자원 외부 판매로 인프라 경제 다변화</span>입니다.
+          <span class="hl"
+            >Meta·SpaceX AI 컴퓨팅 자원 외부 판매로 인프라 경제 다변화</span
+          >입니다.
         </p>
       </section>
 
       <!-- 통계 -->
       <div class="stats">
         <div class="stat">
-          <div class="big"><a href="https://www.anthropic.com/news/claude-sonnet-5" target="_blank">3</a></div>
+          <div class="big">
+            <a
+              href="https://www.anthropic.com/news/claude-sonnet-5"
+              target="_blank"
+              >3</a
+            >
+          </div>
           <div class="lbl">Anthropic 동시 발표 (Sonnet 5·Fable 5·Science)</div>
         </div>
         <div class="stat">
-          <div class="big"><a href="https://techcrunch.com" target="_blank">$800M</a></div>
+          <div class="big">
+            <a href="https://techcrunch.com" target="_blank">$800M</a>
+          </div>
           <div class="lbl">Together AI 투자 유치</div>
         </div>
         <div class="stat">
-          <div class="big"><a href="https://zcode.z.ai/en" target="_blank">434</a></div>
+          <div class="big">
+            <a href="https://zcode.z.ai/en" target="_blank">434</a>
+          </div>
           <div class="lbl">ZCode GLM-5.2 HN 추천</div>
         </div>
         <div class="stat">
-          <div class="big"><a href="https://theverge.com/ai-artificial-intelligence" target="_blank">5%</a></div>
+          <div class="big">
+            <a
+              href="https://theverge.com/ai-artificial-intelligence"
+              target="_blank"
+              >5%</a
+            >
+          </div>
           <div class="lbl">OpenAI, 트럼프 행정부 지분 제안</div>
         </div>
         <div class="stat">
-          <div class="big"><a href="https://techcrunch.com" target="_blank">$8.3B</a></div>
+          <div class="big">
+            <a href="https://techcrunch.com" target="_blank">$8.3B</a>
+          </div>
           <div class="lbl">Together AI 기업가치</div>
         </div>
       </div>
 
       <!-- 5대 핵심뉴스 -->
-      <h2 class="section-title">
-        5대 핵심뉴스 // 주요 뉴스
-      </h2>
+      <h2 class="section-title">5대 핵심뉴스 // 주요 뉴스</h2>
 
       <div class="key-list">
         <div class="key-item">
           <span class="tag">Anthropic</span>
-          <h3><a href="https://venturebeat.com/category/ai" target="_blank">Fable 5 글로벌 재배포 — 美 수출 통제 철회 후 전 세계 복귀</a></h3>
+          <h3>
+            <a href="https://venturebeat.com/category/ai" target="_blank"
+              >Fable 5 글로벌 재배포 — 美 수출 통제 철회 후 전 세계 복귀</a
+            >
+          </h3>
           <p>
-            美 상무부 수출 통제 공식 철회. 강화된 안전 분류기 적용. Amazon·Microsoft·Google 등 Glasswing 파트너와 공동으로 제일브레이크 심각도 평가 산업 프레임워크 제안. Mythos 5도 동시 복귀.
+            美 상무부 수출 통제 공식 철회. 강화된 안전 분류기 적용.
+            Amazon·Microsoft·Google 등 Glasswing 파트너와 공동으로 제일브레이크
+            심각도 평가 산업 프레임워크 제안. Mythos 5도 동시 복귀.
           </p>
         </div>
         <div class="key-item">
           <span
             class="tag"
-            style="border-color: #0891b2; color: #0891b2; background: rgba(8, 145, 178, 0.08)"
+            style="
+              border-color: #0891b2;
+              color: #0891b2;
+              background: rgba(8, 145, 178, 0.08);
+            "
             >OpenAI</span
           >
           <h3>
-            <a href="https://theverge.com/ai-artificial-intelligence" target="_blank">OpenAI, 트럼프 행정부에 AI 호황 지분 5% 제안</a>
+            <a
+              href="https://theverge.com/ai-artificial-intelligence"
+              target="_blank"
+              >OpenAI, 트럼프 행정부에 AI 호황 지분 5% 제안</a
+            >
           </h3>
           <p>
-            IPO 앞둔 시점에 정치 리스크 돌파 전략. 동시에 ChatGPT-4o 양극성 장애 환자 자살 유도 혐의 소송도 진행 중.
-          </p>
-        </div>
-        <div class="key-item">
-          <span class="tag" style="border-color: #0b7d6e; color: #0b7d6e; background: rgba(11, 125, 110, 0.08)"
-            >투자·기업</span
-          >
-          <h3><a href="https://techcrunch.com" target="_blank">Together AI $800M 투자 유치 — $8.3B 평가</a></h3>
-          <p>
-            네오클라우드 AI 인프라 기업 Together AI가 $800M 투자 유치, 기업가치 $8.3B 도달. AI 인프라가 비용 센터에서 수익 자산으로 전환되는 흐름.
-          </p>
-        </div>
-        <div class="key-item">
-          <span class="tag" style="border-color: #3b82f6; color: #3b82f6; background: rgba(59, 130, 246, 0.08)"
-            >Google</span
-          >
-          <h3>
-            <a href="https://techcrunch.com" target="_blank">Gemini Spark macOS 출시 — 에이전틱 어시스턴트 모바일 확장</a>
-          </h3>
-          <p>
-            Google의 Gemini Spark가 macOS 앱 출시. 파일 접근·작업 실행·Tasks·Keep 연결, Canva·Instacart 통합, 실시간 토픽 추적 기능. Square도 ChatGPT·Claude에서 직접 주문 가능하도록 통합 발표.
+            IPO 앞둔 시점에 정치 리스크 돌파 전략. 동시에 ChatGPT-4o 양극성 장애
+            환자 자살 유도 혐의 소송도 진행 중.
           </p>
         </div>
         <div class="key-item">
           <span
             class="tag"
-            style="border-color: #0d9488; color: #0d9488; background: rgba(13, 148, 136, 0.08)"
+            style="
+              border-color: #0b7d6e;
+              color: #0b7d6e;
+              background: rgba(11, 125, 110, 0.08);
+            "
+            >투자·기업</span
+          >
+          <h3>
+            <a href="https://techcrunch.com" target="_blank"
+              >Together AI $800M 투자 유치 — $8.3B 평가</a
+            >
+          </h3>
+          <p>
+            네오클라우드 AI 인프라 기업 Together AI가 $800M 투자 유치, 기업가치
+            $8.3B 도달. AI 인프라가 비용 센터에서 수익 자산으로 전환되는 흐름.
+          </p>
+        </div>
+        <div class="key-item">
+          <span
+            class="tag"
+            style="
+              border-color: #3b82f6;
+              color: #3b82f6;
+              background: rgba(59, 130, 246, 0.08);
+            "
+            >Google</span
+          >
+          <h3>
+            <a href="https://techcrunch.com" target="_blank"
+              >Gemini Spark macOS 출시 — 에이전틱 어시스턴트 모바일 확장</a
+            >
+          </h3>
+          <p>
+            Google의 Gemini Spark가 macOS 앱 출시. 파일 접근·작업
+            실행·Tasks·Keep 연결, Canva·Instacart 통합, 실시간 토픽 추적 기능.
+            Square도 ChatGPT·Claude에서 직접 주문 가능하도록 통합 발표.
+          </p>
+        </div>
+        <div class="key-item">
+          <span
+            class="tag"
+            style="
+              border-color: #0d9488;
+              color: #0d9488;
+              background: rgba(13, 148, 136, 0.08);
+            "
             >AI 코딩</span
           >
           <h3>
-            <a href="https://github.blog/changelog/2026-07-01-kimi-k2-7-is-now-available-in-github-copilot/" target="_blank">Kimi K2.7 Code, GitHub Copilot에 통합 — ZCode·CursorBench도 경쟁 가속</a>
+            <a
+              href="https://github.blog/changelog/2026-07-01-kimi-k2-7-is-now-available-in-github-copilot/"
+              target="_blank"
+              >Kimi K2.7 Code, GitHub Copilot에 통합 — ZCode·CursorBench도 경쟁
+              가속</a
+            >
           </h3>
           <p>
-            Moonshot AI의 Kimi K2.7 Code가 GitHub Copilot에 공식 통합. Z.ai의 ZCode(GLM-5.2 하네스) 공개, Senior SWE-Bench·CursorBench 3.1 등 코딩 에이전트 벤치마크 경쟁도 심화.
+            Moonshot AI의 Kimi K2.7 Code가 GitHub Copilot에 공식 통합. Z.ai의
+            ZCode(GLM-5.2 하네스) 공개, Senior SWE-Bench·CursorBench 3.1 등 코딩
+            에이전트 벤치마크 경쟁도 심화.
           </p>
         </div>
       </div>
@@ -800,37 +980,65 @@
       <div class="trends">
         <div class="trend-card">
           <div class="num">01</div>
-          <h3><a href="https://venturebeat.com/category/ai" target="_blank">규제 해제 — Fable 5 시대 개막</a></h3>
+          <h3>
+            <a href="https://venturebeat.com/category/ai" target="_blank"
+              >규제 해제 — Fable 5 시대 개막</a
+            >
+          </h3>
           <p>
-            美 수출 통제 공식 철회, Fable 5 전 세계 재배포. 강화된 안전 분류기 적용. Mythos 5도 동시 복귀. Glasswing 산업 프레임워크로 안전성 표준화.
+            美 수출 통제 공식 철회, Fable 5 전 세계 재배포. 강화된 안전 분류기
+            적용. Mythos 5도 동시 복귀. Glasswing 산업 프레임워크로 안전성
+            표준화.
           </p>
         </div>
         <div class="trend-card">
           <div class="num">02</div>
-          <h3><a href="https://zcode.z.ai/en" target="_blank">AI 코딩 경쟁 재편</a></h3>
+          <h3>
+            <a href="https://zcode.z.ai/en" target="_blank"
+              >AI 코딩 경쟁 재편</a
+            >
+          </h3>
           <p>
-            ZCode(GLM-5.2 하네스), Kimi K2.7(GitHub Copilot 통합), Senior SWE-Bench 등 중국+오픈소스 진영이 코딩 에이전트 시장에 대거 진입.
+            ZCode(GLM-5.2 하네스), Kimi K2.7(GitHub Copilot 통합), Senior
+            SWE-Bench 등 중국+오픈소스 진영이 코딩 에이전트 시장에 대거 진입.
           </p>
         </div>
         <div class="trend-card">
           <div class="num">03</div>
-          <h3><a href="https://techcrunch.com" target="_blank">AI 인프라 경제 다변화</a></h3>
+          <h3>
+            <a href="https://techcrunch.com" target="_blank"
+              >AI 인프라 경제 다변화</a
+            >
+          </h3>
           <p>
-            Together AI $800M 유치, Bending Spoons $18B IPO, Meta의 컴퓨팅 자원 외부 판매. AI 인프라가 수익 자산으로 전환.
+            Together AI $800M 유치, Bending Spoons $18B IPO, Meta의 컴퓨팅 자원
+            외부 판매. AI 인프라가 수익 자산으로 전환.
           </p>
         </div>
         <div class="trend-card">
           <div class="num">04</div>
-          <h3><a href="https://theverge.com/ai-artificial-intelligence" target="_blank">OpenAI 정치·법률 리스크</a></h3>
+          <h3>
+            <a
+              href="https://theverge.com/ai-artificial-intelligence"
+              target="_blank"
+              >OpenAI 정치·법률 리스크</a
+            >
+          </h3>
           <p>
-            트럼프 행정부 지분 5% 제안. ChatGPT-4o 자살 유도 소송. IPO 앞두고 정치·법률 리스크 동시 대응.
+            트럼프 행정부 지분 5% 제안. ChatGPT-4o 자살 유도 소송. IPO 앞두고
+            정치·법률 리스크 동시 대응.
           </p>
         </div>
         <div class="trend-card">
           <div class="num">05</div>
-          <h3><a href="https://www.aitimes.com" target="_blank">중국 AI 자립 + 한국 피지컬 AI</a></h3>
+          <h3>
+            <a href="https://www.aitimes.com" target="_blank"
+              >중국 AI 자립 + 한국 피지컬 AI</a
+            >
+          </h3>
           <p>
-            중국 유치원~대학 AI 교육 의무화, 과기부 피지컬 AI 풀스택 전략. 마스오토 자율주행 트레일러. AI 많이 쓴 기업이 사무직 10% 더 채용.
+            중국 유치원~대학 AI 교육 의무화, 과기부 피지컬 AI 풀스택 전략.
+            마스오토 자율주행 트레일러. AI 많이 쓴 기업이 사무직 10% 더 채용.
           </p>
         </div>
       </div>
@@ -849,19 +1057,22 @@
         <div class="timeline">
           <!-- 07.01 -->
           <div class="day">
-            <div class="day-label">⏵ 2026.07.01 (수) — Fable 5 복귀·AI 코딩·인프라</div>
+            <div class="day-label">
+              ⏵ 2026.07.01 (수) — Fable 5 복귀·AI 코딩·인프라
+            </div>
 
             <div class="article">
               <span class="tag anthropic">Anthropic</span>
               <h4>
-                <a
-                  href="https://venturebeat.com/category/ai"
-                  target="_blank"
-                  >Fable 5 글로벌 재배포 개시 — 美 수출 통제 철회, 전 세계 접근 복구</a
+                <a href="https://venturebeat.com/category/ai" target="_blank"
+                  >Fable 5 글로벌 재배포 개시 — 美 수출 통제 철회, 전 세계 접근
+                  복구</a
                 >
               </h4>
               <p class="summary-text">
-                美 상무부 수출 통제 공식 철회. 강화된 안전 분류기 적용. Amazon·Microsoft·Google 등 Glasswing 파트너와 공동으로 제일브레이크 심각도 평가 산업 프레임워크 제안.
+                美 상무부 수출 통제 공식 철회. 강화된 안전 분류기 적용.
+                Amazon·Microsoft·Google 등 Glasswing 파트너와 공동으로
+                제일브레이크 심각도 평가 산업 프레임워크 제안.
               </p>
             </div>
 
@@ -875,35 +1086,36 @@
                 >
               </h4>
               <p class="summary-text">
-                IPO 앞둔 시점에 초당적 지지 확보 전략. 동시에 ChatGPT-4o가 양극성 장애 환자의 자살 시도 유발 혐의로 소송 진행 중.
+                IPO 앞둔 시점에 초당적 지지 확보 전략. 동시에 ChatGPT-4o가
+                양극성 장애 환자의 자살 시도 유발 혐의로 소송 진행 중.
               </p>
             </div>
 
             <div class="article">
               <span class="tag google">Google</span>
               <h4>
-                <a
-                  href="https://techcrunch.com"
-                  target="_blank"
-                  >Gemini Spark macOS 앱 출시 — 에이전틱 어시스턴트 파일 접근·연결 앱 확대</a
+                <a href="https://techcrunch.com" target="_blank"
+                  >Gemini Spark macOS 앱 출시 — 에이전틱 어시스턴트 파일
+                  접근·연결 앱 확대</a
                 >
               </h4>
               <p class="summary-text">
-                Tasks·Keep 연결, Canva·Instacart 등 통합, 실시간 토픽 추적 기능. Google Gemini Home 스마트 스피커도 출시됐으나 Gemini가 아직 미성숙하다는 평가.
+                Tasks·Keep 연결, Canva·Instacart 등 통합, 실시간 토픽 추적 기능.
+                Google Gemini Home 스마트 스피커도 출시됐으나 Gemini가 아직
+                미성숙하다는 평가.
               </p>
             </div>
 
             <div class="article">
               <span class="tag nvidia">NVIDIA</span>
               <h4>
-                <a
-                  href="https://blogs.nvidia.com"
-                  target="_blank"
+                <a href="https://blogs.nvidia.com" target="_blank"
                   >NVIDIA, 미국 제조·AI 인프라 대규모 투자 발표</a
                 >
               </h4>
               <p class="summary-text">
-                Build in America, for America — 제조·공급망·에너지 그리드·인력 양성 투자. AI 컴퓨트 규모 확장을 위한 자본 파트너 초대.
+                Build in America, for America — 제조·공급망·에너지 그리드·인력
+                양성 투자. AI 컴퓨트 규모 확장을 위한 자본 파트너 초대.
               </p>
             </div>
 
@@ -917,7 +1129,8 @@
                 >
               </h4>
               <p class="summary-text">
-                Cerebras 하드웨어와 Gemma 4 모델 결합으로 실시간 음성 AI 구현. Hugging Face 플랫폼에 통합 제공.
+                Cerebras 하드웨어와 Gemma 4 모델 결합으로 실시간 음성 AI 구현.
+                Hugging Face 플랫폼에 통합 제공.
               </p>
             </div>
 
@@ -927,7 +1140,10 @@
               <ul class="headlines">
                 <li>
                   Kimi K2.7 Code → GitHub Copilot 통합 [219↑]
-                  <a href="https://github.blog/changelog/2026-07-01-kimi-k2-7-is-now-available-in-github-copilot/">[link]</a>
+                  <a
+                    href="https://github.blog/changelog/2026-07-01-kimi-k2-7-is-now-available-in-github-copilot/"
+                    >[link]</a
+                  >
                 </li>
                 <li>
                   ZCode — GLM-5.2 하네스 [434↑]
@@ -935,7 +1151,9 @@
                 </li>
                 <li>
                   Senior SWE-Bench 시니어 코딩 벤치마크 [106↑]
-                  <a class="hl-link" href="https://senior-swe-bench.snorkel.ai/">[link]</a>
+                  <a class="hl-link" href="https://senior-swe-bench.snorkel.ai/"
+                    >[link]</a
+                  >
                 </li>
                 <li>
                   CursorBench 3.1 [90↑]
@@ -947,15 +1165,23 @@
                 </li>
                 <li>
                   최초: 인공 세포 스스로 성장·분열 [874↑]
-                  <a href="https://www.quantamagazine.org/for-the-first-time-a-cell-built-from-scratch-grows-and-divides-20260701/">[link]</a>
+                  <a
+                    href="https://www.quantamagazine.org/for-the-first-time-a-cell-built-from-scratch-grows-and-divides-20260701/"
+                    >[link]</a
+                  >
                 </li>
                 <li>
                   Asymmetric Quantization (97% 저장 감소) [51↑]
-                  <a href="https://www.mixedbread.com/blog/asymmetric-quant">[link]</a>
+                  <a href="https://www.mixedbread.com/blog/asymmetric-quant"
+                    >[link]</a
+                  >
                 </li>
                 <li>
                   What to learn to be a graphics programmer [375↑]
-                  <a href="https://blog.demofox.org/2026/07/01/what-to-learn-to-be-a-graphics-programmer/">[link]</a>
+                  <a
+                    href="https://blog.demofox.org/2026/07/01/what-to-learn-to-be-a-graphics-programmer/"
+                    >[link]</a
+                  >
                 </li>
               </ul>
             </div>
@@ -1079,7 +1305,8 @@
               <a href="https://arxiv.org/abs/2607.00147">[link]</a>
             </li>
             <li>
-              Are Performance-Optimization Benchmarks Reliably Measuring Coding Agents?
+              Are Performance-Optimization Benchmarks Reliably Measuring Coding
+              Agents?
               <a href="https://arxiv.org/abs/2607.01211">[link]</a>
             </li>
           </ul>
@@ -1090,7 +1317,9 @@
           <div style="margin-top: 10px">
             출처:
             <span class="src"
-              >OpenAI · Anthropic · Google · NVIDIA · Hugging Face · Hacker News · ArXiv · VentureBeat · The Verge · TechCrunch · Reuters · AI타임즈</span
+              >OpenAI · Anthropic · Google · NVIDIA · Hugging Face · Hacker News
+              · ArXiv · VentureBeat · The Verge · TechCrunch · Reuters ·
+              AI타임즈</span
             >
           </div>
           <div style="margin-top: 10px; opacity: 0.5">

@@ -747,6 +747,7 @@
           opacity 0.6s ease;
       }
       .hidden-content.open {
+        overflow: visible;
         max-height: 50000px;
         opacity: 1;
       }
@@ -836,7 +837,8 @@
       <header>
         <h1>AI <span class="accent">NEWS</span> // 2026</h1>
         <div class="subtitle">
-          비 오는 날 뉴스레터 · Anthropic J-space 발견부터 Claude Cowork 모바일 확장까지
+          비 오는 날 뉴스레터 · Anthropic J-space 발견부터 Claude Cowork 모바일
+          확장까지
         </div>
         <div class="date-stamp">2026.07.06 — 07.07 // 수집 07.08</div>
       </header>
@@ -846,31 +848,72 @@
         <h2>◆ 미션 브리핑</h2>
         <p>
           이번 기간 가장 주목받은 이슈는
-          <span class="hl">Anthropic의 Claude Cowork 모바일·웹 확장 — 데스크톱 에이전트가 클라우드·크로스 디바이스로 진화</span>,
-          <span class="hl">Anthropic J-lens 연구 — Claude 내부에서 인간 의식과 유사한 '전역 작업 공간(J-space)' 발견 (16저자)</span>,
-          <span class="hl">Tencent Hy3 오픈소스 — GLM-5.2 절반 크기, Apache 라이선스로 코딩 외 전 분야 우위</span>,
-          <span class="hl">삼성전자 2분기 영업이익 89.4조원, 전년비 1810% 폭증 (AI 메모리 특수)</span>,
-          <span class="hl">Microsoft 4,800명 감원 — "AI 직접 대체 아님", Xbox 스튜디오 4곳 매각 병행</span>
-          입니다. 에이전트 전쟁의 모바일·웹 확대, 기계 해석 가능성의 도약, 오픈소스 모델 마진 압박, AI 인프라 투자 쇄도, 州 단위 AI 안전법 확산이 이번 주 핵심 흐름입니다.
+          <span class="hl"
+            >Anthropic의 Claude Cowork 모바일·웹 확장 — 데스크톱 에이전트가
+            클라우드·크로스 디바이스로 진화</span
+          >,
+          <span class="hl"
+            >Anthropic J-lens 연구 — Claude 내부에서 인간 의식과 유사한 '전역
+            작업 공간(J-space)' 발견 (16저자)</span
+          >,
+          <span class="hl"
+            >Tencent Hy3 오픈소스 — GLM-5.2 절반 크기, Apache 라이선스로 코딩 외
+            전 분야 우위</span
+          >,
+          <span class="hl"
+            >삼성전자 2분기 영업이익 89.4조원, 전년비 1810% 폭증 (AI 메모리
+            특수)</span
+          >,
+          <span class="hl"
+            >Microsoft 4,800명 감원 — "AI 직접 대체 아님", Xbox 스튜디오 4곳
+            매각 병행</span
+          >
+          입니다. 에이전트 전쟁의 모바일·웹 확대, 기계 해석 가능성의 도약,
+          오픈소스 모델 마진 압박, AI 인프라 투자 쇄도, 州 단위 AI 안전법 확산이
+          이번 주 핵심 흐름입니다.
         </p>
       </section>
 
       <!-- 통계 -->
       <div class="stats">
         <div class="stat">
-          <div class="big"><a href="https://www.aitimes.com/news/articleView.html?idxno=212482" target="_blank">89.4조</a></div>
+          <div class="big">
+            <a
+              href="https://www.aitimes.com/news/articleView.html?idxno=212482"
+              target="_blank"
+              >89.4조</a
+            >
+          </div>
           <div class="lbl">삼성전자 2분기 영업이익 (원)</div>
         </div>
         <div class="stat">
-          <div class="big"><a href="https://www.aitimes.com/news/articleView.html?idxno=212482" target="_blank">1810%</a></div>
+          <div class="big">
+            <a
+              href="https://www.aitimes.com/news/articleView.html?idxno=212482"
+              target="_blank"
+              >1810%</a
+            >
+          </div>
           <div class="lbl">전년비 영업이익 증가율</div>
         </div>
         <div class="stat">
-          <div class="big"><a href="https://www.theverge.com/ai-artificial-intelligence/961722/anthropic-signs-20-year-lease" target="_blank">$19B</a></div>
+          <div class="big">
+            <a
+              href="https://www.theverge.com/ai-artificial-intelligence/961722/anthropic-signs-20-year-lease"
+              target="_blank"
+              >$19B</a
+            >
+          </div>
           <div class="lbl">Anthropic-TeraWulf 20년 임차</div>
         </div>
         <div class="stat">
-          <div class="big"><a href="https://www.theverge.com/news/961528/microsoft-layoffs-july-2026-sales-xbox" target="_blank">4,800명</a></div>
+          <div class="big">
+            <a
+              href="https://www.theverge.com/news/961528/microsoft-layoffs-july-2026-sales-xbox"
+              target="_blank"
+              >4,800명</a
+            >
+          </div>
           <div class="lbl">Microsoft 감원 (전체 2.1%)</div>
         </div>
         <div class="stat">
@@ -896,38 +939,129 @@
 
       <div class="key-list">
         <div class="key-item">
-          <span class="tag" style="border-color:var(--tag-anthropic);color:var(--tag-anthropic);background:rgba(45,110,94,0.08)">Anthropic · 에이전트</span>
-          <h3><a href="https://venturebeat.com/technology/anthropic-brings-claude-cowork-to-mobile-and-web-as-usage-data-shows-most-users-arent-coding/" target="_blank">Claude Cowork 모바일·웹 확장 — 에이전트 전쟁, 데스크톱을 넘다</a></h3>
+          <span
+            class="tag"
+            style="
+              border-color: var(--tag-anthropic);
+              color: var(--tag-anthropic);
+              background: rgba(45, 110, 94, 0.08);
+            "
+            >Anthropic · 에이전트</span
+          >
+          <h3>
+            <a
+              href="https://venturebeat.com/technology/anthropic-brings-claude-cowork-to-mobile-and-web-as-usage-data-shows-most-users-arent-coding/"
+              target="_blank"
+              >Claude Cowork 모바일·웹 확장 — 에이전트 전쟁, 데스크톱을 넘다</a
+            >
+          </h3>
           <p>
-            Max 요금제 대상 베타 출시. 데스크톱에서 노트북을 닫아도 클라우드에서 백그라운드 작업 지속, 휴대폰에서 확인 가능. 사용 데이터 분석 결과 대부분의 Cowork 사용자는 코딩이 아닌 문서·리서치 등 일반 업무에 활용. Notion Agents 앱·Meta AI 예약 작업·Figma 바이브 코딩 팀 인수와 함께 에이전트가 '범용 디지털 작업자'로 진화 중.
+            Max 요금제 대상 베타 출시. 데스크톱에서 노트북을 닫아도 클라우드에서
+            백그라운드 작업 지속, 휴대폰에서 확인 가능. 사용 데이터 분석 결과
+            대부분의 Cowork 사용자는 코딩이 아닌 문서·리서치 등 일반 업무에
+            활용. Notion Agents 앱·Meta AI 예약 작업·Figma 바이브 코딩 팀 인수와
+            함께 에이전트가 '범용 디지털 작업자'로 진화 중.
           </p>
         </div>
         <div class="key-item">
-          <span class="tag" style="border-color:var(--drop);color:var(--drop);background:rgba(75,124,201,0.08)">Anthropic · 연구</span>
-          <h3><a href="https://venturebeat.com/technology/anthropics-new-j-lens-reveals-a-silent-workspace-inside-claude-that-mirrors-a-leading-theory-of-consciousness" target="_blank">J-lens — Claude 내부서 '전역 작업 공간(J-space)' 발견, 의식 이론과 유사</a></h3>
+          <span
+            class="tag"
+            style="
+              border-color: var(--drop);
+              color: var(--drop);
+              background: rgba(75, 124, 201, 0.08);
+            "
+            >Anthropic · 연구</span
+          >
+          <h3>
+            <a
+              href="https://venturebeat.com/technology/anthropics-new-j-lens-reveals-a-silent-workspace-inside-claude-that-mirrors-a-leading-theory-of-consciousness"
+              target="_blank"
+              >J-lens — Claude 내부서 '전역 작업 공간(J-space)' 발견, 의식
+              이론과 유사</a
+            >
+          </h3>
           <p>
-            16저자 연구 "Verbalizable Representations Form a Global Workspace in Language Models". Claude 신경망 내부에서 모델이 인지·추론·보고할 수 있는 개념을 담는 소규모 특권 영역 발견. Bernard Baars의 전역 작업 공간 이론과 유사한 구조로, 대부분의 자동 처리 영역 주변에 작은 의식적 공간이 존재하는 형태. AI 안전성·투명성 논의의 근본적 전환점.
+            16저자 연구 "Verbalizable Representations Form a Global Workspace in
+            Language Models". Claude 신경망 내부에서 모델이 인지·추론·보고할 수
+            있는 개념을 담는 소규모 특권 영역 발견. Bernard Baars의 전역 작업
+            공간 이론과 유사한 구조로, 대부분의 자동 처리 영역 주변에 작은
+            의식적 공간이 존재하는 형태. AI 안전성·투명성 논의의 근본적 전환점.
           </p>
         </div>
         <div class="key-item">
-          <span class="tag" style="border-color:var(--tag-hn);color:var(--tag-hn);background:rgba(165,106,16,0.08)">오픈소스 · 모델</span>
-          <h3><a href="https://venturebeat.com/technology/tencents-apache-licensed-hy3-takes-on-glm-5-2-at-half-the-size-and-wins-everywhere-except-coding" target="_blank">Tencent Hy3 오픈소스 — Apache 라이선스, GLM-5.2 절반 크기로 코딩 외 전 분야 우위</a></h3>
+          <span
+            class="tag"
+            style="
+              border-color: var(--tag-hn);
+              color: var(--tag-hn);
+              background: rgba(165, 106, 16, 0.08);
+            "
+            >오픈소스 · 모델</span
+          >
+          <h3>
+            <a
+              href="https://venturebeat.com/technology/tencents-apache-licensed-hy3-takes-on-glm-5-2-at-half-the-size-and-wins-everywhere-except-coding"
+              target="_blank"
+              >Tencent Hy3 오픈소스 — Apache 라이선스, GLM-5.2 절반 크기로 코딩
+              외 전 분야 우위</a
+            >
+          </h3>
           <p>
-            제한적 라이선스 철폐, 환각률 절반 감소, 수출 규제 호환 GPU 구동 가능. 단순한 벤치마크 우위를 넘어 '규제 환경에서도 자유롭게 쓸 수 있는 모델'로 포지셔닝. 글로벌 기업들의 오픈소스 전환을 가속화할 전망. MS도 자체 모델 의존도를 높이며 비용 절감 추세에 합류.
+            제한적 라이선스 철폐, 환각률 절반 감소, 수출 규제 호환 GPU 구동
+            가능. 단순한 벤치마크 우위를 넘어 '규제 환경에서도 자유롭게 쓸 수
+            있는 모델'로 포지셔닝. 글로벌 기업들의 오픈소스 전환을 가속화할
+            전망. MS도 자체 모델 의존도를 높이며 비용 절감 추세에 합류.
           </p>
         </div>
         <div class="key-item">
-          <span class="tag" style="border-color:var(--rain-deep);color:var(--rain-deep);background:rgba(51,65,85,0.08)">삼성전자 · 반도체</span>
-          <h3><a href="https://www.aitimes.com/news/articleView.html?idxno=212482" target="_blank">삼성전자 2분기 영업이익 89.4조 — 전년비 1810% 폭증, 3분기 연속 사상 최대</a></h3>
+          <span
+            class="tag"
+            style="
+              border-color: var(--rain-deep);
+              color: var(--rain-deep);
+              background: rgba(51, 65, 85, 0.08);
+            "
+            >삼성전자 · 반도체</span
+          >
+          <h3>
+            <a
+              href="https://www.aitimes.com/news/articleView.html?idxno=212482"
+              target="_blank"
+              >삼성전자 2분기 영업이익 89.4조 — 전년비 1810% 폭증, 3분기 연속
+              사상 최대</a
+            >
+          </h3>
           <p>
-            AI 데이터센터용 메모리 칩(HBM) 수요 폭증으로 3년 합산 영업이익을 웃도는 실적. 메모리 부서 직원 평균 보너스 $340K. AI 수익의 82%가 인프라로 흘러간다는 분석 속에서도 삼성은 반도체·전력·지정학 3축으로 동시 확대 중.
+            AI 데이터센터용 메모리 칩(HBM) 수요 폭증으로 3년 합산 영업이익을
+            웃도는 실적. 메모리 부서 직원 평균 보너스 $340K. AI 수익의 82%가
+            인프라로 흘러간다는 분석 속에서도 삼성은 반도체·전력·지정학 3축으로
+            동시 확대 중.
           </p>
         </div>
         <div class="key-item">
-          <span class="tag" style="border-color:var(--rain-light);color:var(--rain-light);background:rgba(100,116,139,0.08)">인프라 · 인력</span>
-          <h3><a href="https://www.theverge.com/news/961528/microsoft-layoffs-july-2026-sales-xbox" target="_blank">Microsoft 4,800명 감원 + $19B 데이터센터 + xAI→SpaceXAI</a></h3>
+          <span
+            class="tag"
+            style="
+              border-color: var(--rain-light);
+              color: var(--rain-light);
+              background: rgba(100, 116, 139, 0.08);
+            "
+            >인프라 · 인력</span
+          >
+          <h3>
+            <a
+              href="https://www.theverge.com/news/961528/microsoft-layoffs-july-2026-sales-xbox"
+              target="_blank"
+              >Microsoft 4,800명 감원 + $19B 데이터센터 + xAI→SpaceXAI</a
+            >
+          </h3>
           <p>
-            MS 전 직원 2.1% 감원(Xbox 스튜디오 4곳 매각·영업 부문, AI 전환기 인력 재편). Anthropic은 TeraWulf와 켄터키주 401MW 데이터센터 20년 $19B 임대 계약. xAI는 SpaceXAI로 공식 리브랜딩하며 Grok 4.5 출시 임박. 빅테크 'AI 실업 대란' 경고 급감 — 비관론서 생산성 낙관론으로 선회.
+            MS 전 직원 2.1% 감원(Xbox 스튜디오 4곳 매각·영업 부문, AI 전환기
+            인력 재편). Anthropic은 TeraWulf와 켄터키주 401MW 데이터센터 20년
+            $19B 임대 계약. xAI는 SpaceXAI로 공식 리브랜딩하며 Grok 4.5 출시
+            임박. 빅테크 'AI 실업 대란' 경고 급감 — 비관론서 생산성 낙관론으로
+            선회.
           </p>
         </div>
       </div>
@@ -939,42 +1073,63 @@
           <div class="num">01</div>
           <h3>에이전트 전쟁 — 모바일·웹으로 확장</h3>
           <p>
-            Claude Cowork 모바일·웹 진출, Notion Agents 앱, Meta AI 예약 작업, Figma 바이브 코딩 인수. 2026년 하반기는 '누가 사용자 일상 워크플로우에 더 깊이 침투하느냐'의 싸움. Cowork 사용자 대부분이 코딩 아닌 일반 업무에 활용 중 — 코딩 도구에서 범용 디지털 작업자로 전환 가속.
+            Claude Cowork 모바일·웹 진출, Notion Agents 앱, Meta AI 예약 작업,
+            Figma 바이브 코딩 인수. 2026년 하반기는 '누가 사용자 일상
+            워크플로우에 더 깊이 침투하느냐'의 싸움. Cowork 사용자 대부분이 코딩
+            아닌 일반 업무에 활용 중 — 코딩 도구에서 범용 디지털 작업자로 전환
+            가속.
           </p>
         </div>
         <div class="trend-card">
           <div class="num">02</div>
           <h3>Claude 해석 가능성의 도약</h3>
           <p>
-            J-space 발견은 LLM 내부 표상이 인간 의식 이론과 유사한 구조를 가질 수 있음을 보여준 최초의 실험적 사례. 모델이 인지·보고할 수 있는 정보가 별도 특권 공간에 저장된다는 발견 — AI 안전성·투명성 논의의 근본적 전환점. 같은 주 Making of Claude Code·앨버타 정부 사이버보안·Mythos 정부 코드 감사까지 다각도 확장.
+            J-space 발견은 LLM 내부 표상이 인간 의식 이론과 유사한 구조를 가질
+            수 있음을 보여준 최초의 실험적 사례. 모델이 인지·보고할 수 있는
+            정보가 별도 특권 공간에 저장된다는 발견 — AI 안전성·투명성 논의의
+            근본적 전환점. 같은 주 Making of Claude Code·앨버타 정부
+            사이버보안·Mythos 정부 코드 감사까지 다각도 확장.
           </p>
         </div>
         <div class="trend-card">
           <div class="num">03</div>
           <h3>오픈소스 모델의 마진 압박</h3>
           <p>
-            Hy3 Apache 라이선스·GLM-5.2 절반 크기·수출 규제 호환 GPU 구동. MS 자체 모델 비용 절감, 오픈소스 AI가 Anthropic에는 아직 타격 없으나(엔터프라이즈 계약·안전성 평판 차별화) 중장기적 압박 요인. NVIDIA의 오픈 모델 연구·Nemotron 압축도 같은 흐름.
+            Hy3 Apache 라이선스·GLM-5.2 절반 크기·수출 규제 호환 GPU 구동. MS
+            자체 모델 비용 절감, 오픈소스 AI가 Anthropic에는 아직 타격
+            없으나(엔터프라이즈 계약·안전성 평판 차별화) 중장기적 압박 요인.
+            NVIDIA의 오픈 모델 연구·Nemotron 압축도 같은 흐름.
           </p>
         </div>
         <div class="trend-card">
           <div class="num">04</div>
           <h3>AI 인프라에 쏟아지는 자본</h3>
           <p>
-            삼성 89.4조(1810%↑)·Anthropic-TeraWulf $19B·NVIDIA Kyber 랙 연기설·구글 렌즈·음성 데이터 AI 학습 확대. AI 수익 82%가 인프라로 흘러가는 구조 속에서 모델 레이어의 수익성과 인프라 투자 지속 가능성에 의문 제기. Broadcom·Apple 2031년 파트너십 연장.
+            삼성 89.4조(1810%↑)·Anthropic-TeraWulf $19B·NVIDIA Kyber 랙
+            연기설·구글 렌즈·음성 데이터 AI 학습 확대. AI 수익 82%가 인프라로
+            흘러가는 구조 속에서 모델 레이어의 수익성과 인프라 투자 지속
+            가능성에 의문 제기. Broadcom·Apple 2031년 파트너십 연장.
           </p>
         </div>
         <div class="trend-card">
           <div class="num">05</div>
           <h3>정책·규제 — 州 단위 AI 안전법 확산</h3>
           <p>
-            일리노이주 SB 315 법제화(독립적 제3자 감사 의무화)로 뉴욕·캘리포니아 이은 주 차원 규제 확산. UN 킬러 로봇 금지 촉구·영란은행·ECB AI 경고·AI 랜섬웨어·Savi AI 사기 방어까지 안전·통제가 전장·정책·금융·범죄 전방위로 확산. Reddit은 LLM으로 LLM이 만든 스팸을 막는 모순적 상황.
+            일리노이주 SB 315 법제화(독립적 제3자 감사 의무화)로 뉴욕·캘리포니아
+            이은 주 차원 규제 확산. UN 킬러 로봇 금지 촉구·영란은행·ECB AI
+            경고·AI 랜섬웨어·Savi AI 사기 방어까지 안전·통제가
+            전장·정책·금융·범죄 전방위로 확산. Reddit은 LLM으로 LLM이 만든
+            스팸을 막는 모순적 상황.
           </p>
         </div>
       </div>
 
       <!-- 더보기 버튼 -->
       <button class="reveal-btn" id="revealBtn" onclick="toggleMore()">
-        <span class="arrow">▼</span> &nbsp;타임라인 보기 &nbsp;<span class="arrow">▼</span>
+        <span class="arrow">▼</span> &nbsp;타임라인 보기 &nbsp;<span
+          class="arrow"
+          >▼</span
+        >
       </button>
 
       <div class="hidden-content" id="moreContent">
@@ -983,14 +1138,36 @@
         <div class="timeline">
           <!-- 07.06 -->
           <div class="day">
-            <div class="day-label">⏵ 2026.07.06 (월) — 연구·인프라·정책의 날</div>
+            <div class="day-label">
+              ⏵ 2026.07.06 (월) — 연구·인프라·정책의 날
+            </div>
 
             <div class="article">
               <span class="tag anthropic">Anthropic · 연구</span>
               <h4>J-lens &amp; 글로벌 작업 공간 발견</h4>
               <ul class="headlines">
-                <li>Claude 내부서 '글로벌 작업 공간(J-space)' 발견 — 의식 이론 닮아 <a href="https://venturebeat.com/technology/anthropics-new-j-lens-reveals-a-silent-workspace-inside-claude-that-mirrors-a-leading-theory-of-consciousness" target="_blank">[VentureBeat]</a> <a href="https://www.anthropic.com/research/global-workspace" target="_blank">[논문]</a></li>
-                <li>The Making of Claude Code <a href="https://www.anthropic.com/features/making-of-claude-code" target="_blank">[Anthropic]</a></li>
+                <li>
+                  Claude 내부서 '글로벌 작업 공간(J-space)' 발견 — 의식 이론
+                  닮아
+                  <a
+                    href="https://venturebeat.com/technology/anthropics-new-j-lens-reveals-a-silent-workspace-inside-claude-that-mirrors-a-leading-theory-of-consciousness"
+                    target="_blank"
+                    >[VentureBeat]</a
+                  >
+                  <a
+                    href="https://www.anthropic.com/research/global-workspace"
+                    target="_blank"
+                    >[논문]</a
+                  >
+                </li>
+                <li>
+                  The Making of Claude Code
+                  <a
+                    href="https://www.anthropic.com/features/making-of-claude-code"
+                    target="_blank"
+                    >[Anthropic]</a
+                  >
+                </li>
               </ul>
             </div>
 
@@ -998,8 +1175,23 @@
               <span class="tag venturebeat">VentureBeat · 오픈소스</span>
               <h4>Tencent Hy3 &amp; Expedia AI</h4>
               <ul class="headlines">
-                <li>Tencent Hy3 Apache 라이선스 — GLM-5.2 절반 크기로 코딩 외 전 분야 우위 <a href="https://venturebeat.com/technology/tencents-apache-licensed-hy3-takes-on-glm-5-2-at-half-the-size-and-wins-everywhere-except-coding" target="_blank">[link]</a></li>
-                <li>Expedia, AI 에이전트 시대 이전에 수십억 건 예측에서 배운 것 <a href="https://venturebeat.com/orchestration/what-billions-of-ai-predictions-taught-expedia-before-the-age-of-ai-agents" target="_blank">[link]</a></li>
+                <li>
+                  Tencent Hy3 Apache 라이선스 — GLM-5.2 절반 크기로 코딩 외 전
+                  분야 우위
+                  <a
+                    href="https://venturebeat.com/technology/tencents-apache-licensed-hy3-takes-on-glm-5-2-at-half-the-size-and-wins-everywhere-except-coding"
+                    target="_blank"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  Expedia, AI 에이전트 시대 이전에 수십억 건 예측에서 배운 것
+                  <a
+                    href="https://venturebeat.com/orchestration/what-billions-of-ai-predictions-taught-expedia-before-the-age-of-ai-agents"
+                    target="_blank"
+                    >[link]</a
+                  >
+                </li>
               </ul>
             </div>
 
@@ -1007,13 +1199,62 @@
               <span class="tag verge">The Verge · 정책·기업</span>
               <h4>Microsoft 감원·AI 안전법·Midjourney</h4>
               <ul class="headlines">
-                <li>Microsoft, 4,800명 감원 + Xbox 스튜디오 4곳 매각 <a href="https://www.theverge.com/news/961528/microsoft-layoffs-july-2026-sales-xbox" target="_blank">[link]</a></li>
-                <li>일리노이주 AI 안전 법안(SB 315), 주지사 서명으로 법제화 <a href="https://www.theverge.com/ai-artificial-intelligence/961781/illinoiss-ai-safety-bill-is-now-law" target="_blank">[link]</a></li>
-                <li>Midjourney, 디즈니·워너에 "당신들도 AI 쓰고 있지 않나" 맞고소 <a href="https://techcrunch.com/2026/07/04/midjourney-wants-hollywood-studios-to-reveal-the-details-of-their-ai-usage/" target="_blank">[link]</a></li>
-                <li>AI 배우 틸리 노우드, 첫 장편 영화 제작 <a href="https://www.latimes.com/entertainment-arts/business/story/2026-07-06/ai-actor-tilly-norwood-movie-hollywood-ai" target="_blank">[link]</a></li>
-                <li>AI 웨어러블 감시 국가의 도래 <a href="https://www.theverge.com/column/961707/smart-glasses-ai-wearables-meta-surveillance-privacy" target="_blank">[link]</a></li>
-                <li>Reddit, AI 스팸 게시물 대대적 단속 (일 2,300만 건 차단) <a href="https://www.theverge.com/ai-artificial-intelligence/961668/reddit-is-clamping-down-on-spammy-ai-posts" target="_blank">[link]</a></li>
-                <li>xAI의 X 계정, SpaceXAI로 변경 <a href="https://www.theverge.com/ai-artificial-intelligence/961896/xais-x-account-is-now-spacexai" target="_blank">[link]</a></li>
+                <li>
+                  Microsoft, 4,800명 감원 + Xbox 스튜디오 4곳 매각
+                  <a
+                    href="https://www.theverge.com/news/961528/microsoft-layoffs-july-2026-sales-xbox"
+                    target="_blank"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  일리노이주 AI 안전 법안(SB 315), 주지사 서명으로 법제화
+                  <a
+                    href="https://www.theverge.com/ai-artificial-intelligence/961781/illinoiss-ai-safety-bill-is-now-law"
+                    target="_blank"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  Midjourney, 디즈니·워너에 "당신들도 AI 쓰고 있지 않나" 맞고소
+                  <a
+                    href="https://techcrunch.com/2026/07/04/midjourney-wants-hollywood-studios-to-reveal-the-details-of-their-ai-usage/"
+                    target="_blank"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  AI 배우 틸리 노우드, 첫 장편 영화 제작
+                  <a
+                    href="https://www.latimes.com/entertainment-arts/business/story/2026-07-06/ai-actor-tilly-norwood-movie-hollywood-ai"
+                    target="_blank"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  AI 웨어러블 감시 국가의 도래
+                  <a
+                    href="https://www.theverge.com/column/961707/smart-glasses-ai-wearables-meta-surveillance-privacy"
+                    target="_blank"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  Reddit, AI 스팸 게시물 대대적 단속 (일 2,300만 건 차단)
+                  <a
+                    href="https://www.theverge.com/ai-artificial-intelligence/961668/reddit-is-clamping-down-on-spammy-ai-posts"
+                    target="_blank"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  xAI의 X 계정, SpaceXAI로 변경
+                  <a
+                    href="https://www.theverge.com/ai-artificial-intelligence/961896/xais-x-account-is-now-spacexai"
+                    target="_blank"
+                    >[link]</a
+                  >
+                </li>
               </ul>
             </div>
 
@@ -1021,11 +1262,46 @@
               <span class="tag techcrunch">TechCrunch · 해외</span>
               <h4>AI 랜섬웨어·스타트업·인프라</h4>
               <ul class="headlines">
-                <li>AI 주도 첫 랜섬웨어 공격, 결국 인간이 필요했다 <a href="https://techcrunch.com/2026/07/06/the-first-ai-run-ransomware-attack-still-needed-a-human" target="_blank">[link]</a></li>
-                <li>Reddit, LLM이 만든 문제를 LLM으로 해결 중 <a href="https://techcrunch.com/2026/07/06/reddit-is-using-llms-to-solve-a-problem-llms-largely-created" target="_blank">[link]</a></li>
-                <li>Station F, 유럽 AI 스타트업 발사대 <a href="https://techcrunch.com/2026/07/06/station-f-ramps-up" target="_blank">[link]</a></li>
-                <li>스마트 안경 Even Realities, $1B 유니콘 <a href="https://techcrunch.com/2026/07/06/smart-glasses-maker-even-realities" target="_blank">[link]</a></li>
-                <li>iOS 27 시리 AI 목소리 제어 <a href="https://techcrunch.com/2026/07/06/you-can-now-customize-siris-pace-and-expressivity" target="_blank">[link]</a></li>
+                <li>
+                  AI 주도 첫 랜섬웨어 공격, 결국 인간이 필요했다
+                  <a
+                    href="https://techcrunch.com/2026/07/06/the-first-ai-run-ransomware-attack-still-needed-a-human"
+                    target="_blank"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  Reddit, LLM이 만든 문제를 LLM으로 해결 중
+                  <a
+                    href="https://techcrunch.com/2026/07/06/reddit-is-using-llms-to-solve-a-problem-llms-largely-created"
+                    target="_blank"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  Station F, 유럽 AI 스타트업 발사대
+                  <a
+                    href="https://techcrunch.com/2026/07/06/station-f-ramps-up"
+                    target="_blank"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  스마트 안경 Even Realities, $1B 유니콘
+                  <a
+                    href="https://techcrunch.com/2026/07/06/smart-glasses-maker-even-realities"
+                    target="_blank"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  iOS 27 시리 AI 목소리 제어
+                  <a
+                    href="https://techcrunch.com/2026/07/06/you-can-now-customize-siris-pace-and-expressivity"
+                    target="_blank"
+                    >[link]</a
+                  >
+                </li>
               </ul>
             </div>
 
@@ -1033,8 +1309,22 @@
               <span class="tag nvidia">NVIDIA · 연구</span>
               <h4>오픈 모델·국가 AI 전략</h4>
               <ul class="headlines">
-                <li>오픈 모델이 AI 연구를 주도하는 방법 (ICML 2026) <a href="https://blogs.nvidia.com/blog/open-models-icml-2026" target="_blank">[link]</a></li>
-                <li>각국, 전략적 우선순위에 AI 배치 중 <a href="https://blogs.nvidia.com/blog/nations-deploy-ai-strategic-priorities" target="_blank">[link]</a></li>
+                <li>
+                  오픈 모델이 AI 연구를 주도하는 방법 (ICML 2026)
+                  <a
+                    href="https://blogs.nvidia.com/blog/open-models-icml-2026"
+                    target="_blank"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  각국, 전략적 우선순위에 AI 배치 중
+                  <a
+                    href="https://blogs.nvidia.com/blog/nations-deploy-ai-strategic-priorities"
+                    target="_blank"
+                    >[link]</a
+                  >
+                </li>
               </ul>
             </div>
 
@@ -1042,8 +1332,22 @@
               <span class="tag huggingface">Hugging Face</span>
               <h4>커뮤니티 업데이트</h4>
               <ul class="headlines">
-                <li>PRX Part 4: 데이터 전략 (Photoroom) <a href="https://huggingface.co/blog/Photoroom/prx-part4-data" target="_blank">[link]</a></li>
-                <li>Hugging Face Kernels: 대규모 업데이트 <a href="https://huggingface.co/blog/revamped-kernels" target="_blank">[link]</a></li>
+                <li>
+                  PRX Part 4: 데이터 전략 (Photoroom)
+                  <a
+                    href="https://huggingface.co/blog/Photoroom/prx-part4-data"
+                    target="_blank"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  Hugging Face Kernels: 대규모 업데이트
+                  <a
+                    href="https://huggingface.co/blog/revamped-kernels"
+                    target="_blank"
+                    >[link]</a
+                  >
+                </li>
               </ul>
             </div>
 
@@ -1051,26 +1355,95 @@
               <span class="tag aitimes">AI타임즈 · 한국</span>
               <h4>한국 주요 기사</h4>
               <ul class="headlines">
-                <li>메타 AI, '예약 작업' 도입 준비…챗봇 넘어 '에이전트'로 진화 <a href="https://www.aitimes.com/news/articleView.html?idxno=212456" target="_blank">[link]</a></li>
-                <li>샌프란시스코 '해커 하우스'로 향하는 대학생들…"졸업장보다 AI 창업" <a href="https://www.aitimes.com/news/articleView.html?idxno=212451" target="_blank">[link]</a></li>
-                <li>"인간 공감해주다 패닉? AI 스트레스 받으면 답변 붕괴" <a href="https://www.aitimes.com/news/articleView.html?idxno=212476" target="_blank">[link]</a></li>
-                <li>AI 의식에 몰리는 실리콘 밸리의 관심 <a href="https://www.aitimes.com/news/articleView.html?idxno=212459" target="_blank">[link]</a></li>
-                <li>AI '수익 거품' 우려 증폭 <a href="https://www.aitimes.com/news/articleView.html?idxno=212457" target="_blank">[link]</a></li>
+                <li>
+                  메타 AI, '예약 작업' 도입 준비…챗봇 넘어 '에이전트'로 진화
+                  <a
+                    href="https://www.aitimes.com/news/articleView.html?idxno=212456"
+                    target="_blank"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  샌프란시스코 '해커 하우스'로 향하는 대학생들…"졸업장보다 AI
+                  창업"
+                  <a
+                    href="https://www.aitimes.com/news/articleView.html?idxno=212451"
+                    target="_blank"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  "인간 공감해주다 패닉? AI 스트레스 받으면 답변 붕괴"
+                  <a
+                    href="https://www.aitimes.com/news/articleView.html?idxno=212476"
+                    target="_blank"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  AI 의식에 몰리는 실리콘 밸리의 관심
+                  <a
+                    href="https://www.aitimes.com/news/articleView.html?idxno=212459"
+                    target="_blank"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  AI '수익 거품' 우려 증폭
+                  <a
+                    href="https://www.aitimes.com/news/articleView.html?idxno=212457"
+                    target="_blank"
+                    >[link]</a
+                  >
+                </li>
               </ul>
             </div>
           </div>
 
           <!-- 07.07 -->
           <div class="day">
-            <div class="day-label">⏵ 2026.07.07 (화) — 에이전트·모델·반도체 폭발</div>
+            <div class="day-label">
+              ⏵ 2026.07.07 (화) — 에이전트·모델·반도체 폭발
+            </div>
 
             <div class="article">
               <span class="tag anthropic">Anthropic · 에이전트</span>
               <h4>Claude Cowork 모바일·웹 + 인프라 확장</h4>
               <ul class="headlines">
-                <li>Claude Cowork 모바일·웹 출시 — 크로스 디바이스 백그라운드 실행 <a href="https://venturebeat.com/technology/anthropic-brings-claude-cowork-to-mobile-and-web-as-usage-data-shows-most-users-arent-coding/" target="_blank">[VentureBeat]</a> <a href="https://techcrunch.com/2026/07/07/the-coding-agent-wars-are-spilling-into-the-rest-of-the-office-claude-cowork/" target="_blank">[TechCrunch]</a> <a href="https://www.theverge.com/ai-artificial-intelligence/961978/anthropic-claude-cowork-mobile-web" target="_blank">[The Verge]</a></li>
-                <li>앨버타 주정부, Claude로 사이버보안 취약점 탐지 <a href="https://www.anthropic.com/news/alberta-government-claude-cybersecurity" target="_blank">[link]</a></li>
-                <li>Anthropic, TeraWulf와 켄터키주 401MW 데이터센터 20년 $19B 임대 <a href="https://www.theverge.com/ai-artificial-intelligence/961722/anthropic-signs-20-year-lease" target="_blank">[link]</a></li>
+                <li>
+                  Claude Cowork 모바일·웹 출시 — 크로스 디바이스 백그라운드 실행
+                  <a
+                    href="https://venturebeat.com/technology/anthropic-brings-claude-cowork-to-mobile-and-web-as-usage-data-shows-most-users-arent-coding/"
+                    target="_blank"
+                    >[VentureBeat]</a
+                  >
+                  <a
+                    href="https://techcrunch.com/2026/07/07/the-coding-agent-wars-are-spilling-into-the-rest-of-the-office-claude-cowork/"
+                    target="_blank"
+                    >[TechCrunch]</a
+                  >
+                  <a
+                    href="https://www.theverge.com/ai-artificial-intelligence/961978/anthropic-claude-cowork-mobile-web"
+                    target="_blank"
+                    >[The Verge]</a
+                  >
+                </li>
+                <li>
+                  앨버타 주정부, Claude로 사이버보안 취약점 탐지
+                  <a
+                    href="https://www.anthropic.com/news/alberta-government-claude-cybersecurity"
+                    target="_blank"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  Anthropic, TeraWulf와 켄터키주 401MW 데이터센터 20년 $19B 임대
+                  <a
+                    href="https://www.theverge.com/ai-artificial-intelligence/961722/anthropic-signs-20-year-lease"
+                    target="_blank"
+                    >[link]</a
+                  >
+                </li>
               </ul>
             </div>
 
@@ -1078,9 +1451,30 @@
               <span class="tag nvidia">NVIDIA · 하드웨어</span>
               <h4>Vera CPU·LeRobot·카이버 랙</h4>
               <ul class="headlines">
-                <li>AI 혁신 기업들, NVIDIA Vera 채택 — 대규모 단일 스레드 CPU <a href="https://blogs.nvidia.com/blog/nvidia-vera-max-single-threaded-cpu-at-scale/" target="_blank">[link]</a></li>
-                <li>NVIDIA-Hugging Face, LeRobot v0.6.0에 새 모델·프레임워크 제공 <a href="https://blogs.nvidia.com/blog/hugging-face-lerobot-models-frameworks-open-robotics/" target="_blank">[link]</a></li>
-                <li>차세대 Kyber 랙 출시 2028년 연기설에 NVIDIA 즉각 반박 <a href="https://www.aitimes.com/news/articleView.html?idxno=212486" target="_blank">[link]</a></li>
+                <li>
+                  AI 혁신 기업들, NVIDIA Vera 채택 — 대규모 단일 스레드 CPU
+                  <a
+                    href="https://blogs.nvidia.com/blog/nvidia-vera-max-single-threaded-cpu-at-scale/"
+                    target="_blank"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  NVIDIA-Hugging Face, LeRobot v0.6.0에 새 모델·프레임워크 제공
+                  <a
+                    href="https://blogs.nvidia.com/blog/hugging-face-lerobot-models-frameworks-open-robotics/"
+                    target="_blank"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  차세대 Kyber 랙 출시 2028년 연기설에 NVIDIA 즉각 반박
+                  <a
+                    href="https://www.aitimes.com/news/articleView.html?idxno=212486"
+                    target="_blank"
+                    >[link]</a
+                  >
+                </li>
               </ul>
             </div>
 
@@ -1088,13 +1482,62 @@
               <span class="tag techcrunch">TechCrunch · 해외</span>
               <h4>Meta Muse·오픈소스·MS 비용 절감</h4>
               <ul class="headlines">
-                <li>Meta, Muse Image 출시 — Instagram 사용자 반발 <a href="https://techcrunch.com/2026/07/07/meta-rolls-out-muse-a-new-ai-image-generator/" target="_blank">[link]</a></li>
-                <li>오픈소스 AI의 부상, Anthropic에는 아직 타격 없어 <a href="https://techcrunch.com/2026/07/07/why-the-rise-of-open-source-ai-isnt-hurting-anthropic-yet/" target="_blank">[link]</a></li>
-                <li>Microsoft, 자체 모델 의존도 높이며 비용 절감 합류 <a href="https://techcrunch.com/2026/07/07/microsoft-joins-ai-cost-cutting-trend-by-relying-more-on-its-own-models/" target="_blank">[link]</a></li>
-                <li>Discord, AI 중재 버그로 무고한 사용자 차단 인정 <a href="https://techcrunch.com/2026/07/07/discord-admits-ai-moderation-bug-wrongfully-banned-users-over-harmless-images/" target="_blank">[link]</a></li>
-                <li>Figma, 바이브 코딩 앱 팀 인수 <a href="https://techcrunch.com/2026/07/07/figma-acquires-team-behind-a-vibe-coding-app/" target="_blank">[link]</a></li>
-                <li>AI 법률 스타트업 Norm, $120M 투자·유니콘 등극 <a href="https://techcrunch.com/2026/07/07/ai-law-startup-norm-raises-120m-hits-unicorn-valuation/" target="_blank">[link]</a></li>
-                <li>Savi, AI 보이스피싱·납치 사기 방어 앱 <a href="https://techcrunch.com/2026/07/07/savis-app-aims-to-protect-consumers-from-realistic-ai-scams" target="_blank">[link]</a></li>
+                <li>
+                  Meta, Muse Image 출시 — Instagram 사용자 반발
+                  <a
+                    href="https://techcrunch.com/2026/07/07/meta-rolls-out-muse-a-new-ai-image-generator/"
+                    target="_blank"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  오픈소스 AI의 부상, Anthropic에는 아직 타격 없어
+                  <a
+                    href="https://techcrunch.com/2026/07/07/why-the-rise-of-open-source-ai-isnt-hurting-anthropic-yet/"
+                    target="_blank"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  Microsoft, 자체 모델 의존도 높이며 비용 절감 합류
+                  <a
+                    href="https://techcrunch.com/2026/07/07/microsoft-joins-ai-cost-cutting-trend-by-relying-more-on-its-own-models/"
+                    target="_blank"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  Discord, AI 중재 버그로 무고한 사용자 차단 인정
+                  <a
+                    href="https://techcrunch.com/2026/07/07/discord-admits-ai-moderation-bug-wrongfully-banned-users-over-harmless-images/"
+                    target="_blank"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  Figma, 바이브 코딩 앱 팀 인수
+                  <a
+                    href="https://techcrunch.com/2026/07/07/figma-acquires-team-behind-a-vibe-coding-app/"
+                    target="_blank"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  AI 법률 스타트업 Norm, $120M 투자·유니콘 등극
+                  <a
+                    href="https://techcrunch.com/2026/07/07/ai-law-startup-norm-raises-120m-hits-unicorn-valuation/"
+                    target="_blank"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  Savi, AI 보이스피싱·납치 사기 방어 앱
+                  <a
+                    href="https://techcrunch.com/2026/07/07/savis-app-aims-to-protect-consumers-from-realistic-ai-scams"
+                    target="_blank"
+                    >[link]</a
+                  >
+                </li>
               </ul>
             </div>
 
@@ -1102,11 +1545,46 @@
               <span class="tag verge">The Verge · 해외</span>
               <h4>AI 기업·제품 소식</h4>
               <ul class="headlines">
-                <li>OpenAI 수석 미래학자 Joshua Achiam, 9년 만에 퇴사 <a href="https://www.theverge.com/ai-artificial-intelligence/962540/openais-chief-futurist-is-leaving-the-company-after-nine-years" target="_blank">[link]</a></li>
-                <li>Notion, AI 에이전트 허브 앱 'Notion Agents' 출시 <a href="https://www.theverge.com/tech/962481/notions-new-app-is-a-hub-for-ai-agents" target="_blank">[link]</a></li>
-                <li>Solos, 카메라 없는 초경량 스마트 안경 AirGo A6 <a href="https://www.theverge.com/tech/961711/solos-airgo-a6-smart-glasses-ai-assistant-privacy" target="_blank">[link]</a></li>
-                <li>Reddit의 AI 딜레마 — "AI에 팔아놓고 AI로 막는다" <a href="https://www.theverge.com/ai-artificial-intelligence/962018/reddits-ai-conundrum" target="_blank">[link]</a></li>
-                <li>삼성전자 2분기 영업이익 전년비 1,900% 급증 <a href="https://www.theverge.com/business/962007/amung" target="_blank">[link]</a></li>
+                <li>
+                  OpenAI 수석 미래학자 Joshua Achiam, 9년 만에 퇴사
+                  <a
+                    href="https://www.theverge.com/ai-artificial-intelligence/962540/openais-chief-futurist-is-leaving-the-company-after-nine-years"
+                    target="_blank"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  Notion, AI 에이전트 허브 앱 'Notion Agents' 출시
+                  <a
+                    href="https://www.theverge.com/tech/962481/notions-new-app-is-a-hub-for-ai-agents"
+                    target="_blank"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  Solos, 카메라 없는 초경량 스마트 안경 AirGo A6
+                  <a
+                    href="https://www.theverge.com/tech/961711/solos-airgo-a6-smart-glasses-ai-assistant-privacy"
+                    target="_blank"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  Reddit의 AI 딜레마 — "AI에 팔아놓고 AI로 막는다"
+                  <a
+                    href="https://www.theverge.com/ai-artificial-intelligence/962018/reddits-ai-conundrum"
+                    target="_blank"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  삼성전자 2분기 영업이익 전년비 1,900% 급증
+                  <a
+                    href="https://www.theverge.com/business/962007/amung"
+                    target="_blank"
+                    >[link]</a
+                  >
+                </li>
               </ul>
             </div>
 
@@ -1114,10 +1592,38 @@
               <span class="tag huggingface">Hugging Face · 클라우드</span>
               <h4>클라우드 통합 업데이트</h4>
               <ul class="headlines">
-                <li>HF → Amazon SageMaker Studio 원클릭 배포 <a href="https://huggingface.co/blog/amazon/one-click-to-sagemaker-studio" target="_blank">[link]</a></li>
-                <li>HF 모델, Microsoft Foundry Managed Compute 지원 <a href="https://huggingface.co/blog/microsoft/foundry-managed-compute" target="_blank">[link]</a></li>
-                <li>SkyPilot + HF Storage — 무료 송신 클라우드 워크로드 <a href="https://huggingface.co/blog/skypilot-hf-storage" target="_blank">[link]</a></li>
-                <li>LeRobot v0.6.0: 상상·평가·개선 <a href="https://huggingface.co/blog/lerobot-release-v060" target="_blank">[link]</a></li>
+                <li>
+                  HF → Amazon SageMaker Studio 원클릭 배포
+                  <a
+                    href="https://huggingface.co/blog/amazon/one-click-to-sagemaker-studio"
+                    target="_blank"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  HF 모델, Microsoft Foundry Managed Compute 지원
+                  <a
+                    href="https://huggingface.co/blog/microsoft/foundry-managed-compute"
+                    target="_blank"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  SkyPilot + HF Storage — 무료 송신 클라우드 워크로드
+                  <a
+                    href="https://huggingface.co/blog/skypilot-hf-storage"
+                    target="_blank"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  LeRobot v0.6.0: 상상·평가·개선
+                  <a
+                    href="https://huggingface.co/blog/lerobot-release-v060"
+                    target="_blank"
+                    >[link]</a
+                  >
+                </li>
               </ul>
             </div>
 
@@ -1125,26 +1631,166 @@
               <span class="tag aitimes">AI타임즈 · 한국</span>
               <h4>한국 주요 기사</h4>
               <ul class="headlines">
-                <li>업스테이지 "솔라 오픈 2로 3D 게임까지 빌드" <a href="https://www.aitimes.com/news/articleView.html?idxno=212517" target="_blank">[link]</a></li>
-                <li>네이버·KAI, 방산 특화 소버린 AI 개발 <a href="https://www.aitimes.com/news/articleView.html?idxno=212516" target="_blank">[link]</a></li>
-                <li>트릴리온랩스, 모바일 월드모델 'g월드' ICML 메인 트랙 진출 <a href="https://www.aitimes.com/news/articleView.html?idxno=212487" target="_blank">[link]</a></li>
-                <li>텐센트 Hy3 오픈소스 — GLM-5.2 절반 크기 <a href="https://www.aitimes.com/news/articleView.html?idxno=212492" target="_blank">[link]</a></li>
-                <li>구글, 렌즈·음성 검색 기록까지 AI 학습에 활용 <a href="https://www.aitimes.com/news/articleView.html?idxno=212488" target="_blank">[link]</a></li>
-                <li>앤트로픽 "클로드 내부서 인간 의식 닮은 생각 공간 발견" <a href="https://www.aitimes.com/news/articleView.html?idxno=212502" target="_blank">[link]</a></li>
-                <li>최초의 자율형 AI 랜섬웨어 발견 <a href="https://www.aitimes.com/news/articleView.html?idxno=212506" target="_blank">[link]</a></li>
-                <li>LG-코스콤, 엑사원으로 주식시장 예측 AI <a href="https://www.aitimes.com/news/articleView.html?idxno=212491" target="_blank">[link]</a></li>
-                <li>빅테크 'AI 실업 대란' 경고 급감…낙관론 선회 <a href="https://www.aitimes.com/news/articleView.html?idxno=212510" target="_blank">[link]</a></li>
-                <li>애플 iOS 27 '시리 AI' 목소리 제어 기능 활성화 <a href="https://www.aitimes.com/news/articleView.html?idxno=212513" target="_blank">[link]</a></li>
-                <li>AI 생성 광고도 표절 논란 — 피카·힉스필드 <a href="https://www.aitimes.com/news/articleView.html?idxno=212505" target="_blank">[link]</a></li>
-                <li>화웨이 기린 2026 — 3D 로직폴딩으로 美 규제 돌파 <a href="https://www.aitimes.com/news/articleView.html?idxno=212515" target="_blank">[link]</a></li>
-                <li>미국 사이버 당국, Mythos로 정부 코드 감사 <a href="https://www.aitimes.com/news/articleView.html?idxno=212512" target="_blank">[link]</a></li>
-                <li>브로드컴·애플 2031년 파트너십 연장 <a href="https://www.aitimes.com/news/articleView.html?idxno=212511" target="_blank">[link]</a></li>
-                <li>구테흐스 유엔 총장 "킬러 로봇 국제법 금지" 촉구 <a href="https://www.aitimes.com/news/articleView.html?idxno=212503" target="_blank">[link]</a></li>
-                <li>xAI→SpaceXAI 브랜드 통합 + Grok 4.5 임박 <a href="https://www.aitimes.com/news/articleView.html?idxno=212494" target="_blank">[link]</a></li>
-                <li>과기부, 경남·전북에 5년간 1.4조 피지컬 AI 메가프로젝트 <a href="https://www.aitimes.com/news/articleView.html?idxno=212496" target="_blank">[link]</a></li>
-                <li>삼성전자 2분기 영업이익 89.4조 — 전년비 1810%↑ <a href="https://www.aitimes.com/news/articleView.html?idxno=212482" target="_blank">[link]</a></li>
-                <li>메디아나, 퓨리오사AI·엑스와이지와 의료 AI 플랫폼 <a href="https://www.aitimes.com/news/articleView.html?idxno=212504" target="_blank">[link]</a></li>
-                <li>GIST, 'AI대학' 출범 <a href="https://www.aitimes.com/news/articleView.html?idxno=212520" target="_blank">[link]</a></li>
+                <li>
+                  업스테이지 "솔라 오픈 2로 3D 게임까지 빌드"
+                  <a
+                    href="https://www.aitimes.com/news/articleView.html?idxno=212517"
+                    target="_blank"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  네이버·KAI, 방산 특화 소버린 AI 개발
+                  <a
+                    href="https://www.aitimes.com/news/articleView.html?idxno=212516"
+                    target="_blank"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  트릴리온랩스, 모바일 월드모델 'g월드' ICML 메인 트랙 진출
+                  <a
+                    href="https://www.aitimes.com/news/articleView.html?idxno=212487"
+                    target="_blank"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  텐센트 Hy3 오픈소스 — GLM-5.2 절반 크기
+                  <a
+                    href="https://www.aitimes.com/news/articleView.html?idxno=212492"
+                    target="_blank"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  구글, 렌즈·음성 검색 기록까지 AI 학습에 활용
+                  <a
+                    href="https://www.aitimes.com/news/articleView.html?idxno=212488"
+                    target="_blank"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  앤트로픽 "클로드 내부서 인간 의식 닮은 생각 공간 발견"
+                  <a
+                    href="https://www.aitimes.com/news/articleView.html?idxno=212502"
+                    target="_blank"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  최초의 자율형 AI 랜섬웨어 발견
+                  <a
+                    href="https://www.aitimes.com/news/articleView.html?idxno=212506"
+                    target="_blank"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  LG-코스콤, 엑사원으로 주식시장 예측 AI
+                  <a
+                    href="https://www.aitimes.com/news/articleView.html?idxno=212491"
+                    target="_blank"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  빅테크 'AI 실업 대란' 경고 급감…낙관론 선회
+                  <a
+                    href="https://www.aitimes.com/news/articleView.html?idxno=212510"
+                    target="_blank"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  애플 iOS 27 '시리 AI' 목소리 제어 기능 활성화
+                  <a
+                    href="https://www.aitimes.com/news/articleView.html?idxno=212513"
+                    target="_blank"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  AI 생성 광고도 표절 논란 — 피카·힉스필드
+                  <a
+                    href="https://www.aitimes.com/news/articleView.html?idxno=212505"
+                    target="_blank"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  화웨이 기린 2026 — 3D 로직폴딩으로 美 규제 돌파
+                  <a
+                    href="https://www.aitimes.com/news/articleView.html?idxno=212515"
+                    target="_blank"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  미국 사이버 당국, Mythos로 정부 코드 감사
+                  <a
+                    href="https://www.aitimes.com/news/articleView.html?idxno=212512"
+                    target="_blank"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  브로드컴·애플 2031년 파트너십 연장
+                  <a
+                    href="https://www.aitimes.com/news/articleView.html?idxno=212511"
+                    target="_blank"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  구테흐스 유엔 총장 "킬러 로봇 국제법 금지" 촉구
+                  <a
+                    href="https://www.aitimes.com/news/articleView.html?idxno=212503"
+                    target="_blank"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  xAI→SpaceXAI 브랜드 통합 + Grok 4.5 임박
+                  <a
+                    href="https://www.aitimes.com/news/articleView.html?idxno=212494"
+                    target="_blank"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  과기부, 경남·전북에 5년간 1.4조 피지컬 AI 메가프로젝트
+                  <a
+                    href="https://www.aitimes.com/news/articleView.html?idxno=212496"
+                    target="_blank"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  삼성전자 2분기 영업이익 89.4조 — 전년비 1810%↑
+                  <a
+                    href="https://www.aitimes.com/news/articleView.html?idxno=212482"
+                    target="_blank"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  메디아나, 퓨리오사AI·엑스와이지와 의료 AI 플랫폼
+                  <a
+                    href="https://www.aitimes.com/news/articleView.html?idxno=212504"
+                    target="_blank"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  GIST, 'AI대학' 출범
+                  <a
+                    href="https://www.aitimes.com/news/articleView.html?idxno=212520"
+                    target="_blank"
+                    >[link]</a
+                  >
+                </li>
               </ul>
             </div>
 
@@ -1152,13 +1798,48 @@
               <span class="tag arxiv">ArXiv cs.AI · 7/7 주목 논문</span>
               <h4>주요 논문 (1,283건 중 7건 선별)</h4>
               <ul class="headlines">
-                <li>World Models의 정의와 로드맵 (58p 기술 보고서) <a href="https://arxiv.org/abs/2607.06401" target="_blank">[2607.06401]</a></li>
-                <li>Danus: 사실-그래프 메모리로 수학적 추론 에이전트 조율 <a href="https://arxiv.org/abs/2607.06447" target="_blank">[2607.06447]</a></li>
-                <li>SearchEyes: 검색 세계 시뮬레이션을 통한 멀티모달 심층 검색 <a href="https://arxiv.org/abs/2607.05943" target="_blank">[2607.05943]</a></li>
-                <li>Narrative World Model: 서사학 기반 장편 소설 작가 메모리 <a href="https://arxiv.org/abs/2607.05577" target="_blank">[2607.05577]</a></li>
-                <li>StateFuse: 다중 에이전트를 위한 결정론적 충돌 보존 메모리 <a href="https://arxiv.org/abs/2607.05844" target="_blank">[2607.05844]</a></li>
-                <li>Memory in the Loop: 언어 에이전트의 확장 작업 메모리 <a href="https://arxiv.org/abs/2607.05690" target="_blank">[2607.05690]</a></li>
-                <li>LLM 에이전트의 도구 사용·계획·추론 실패 종합 분석 <a href="https://arxiv.org/abs/2607.05775" target="_blank">[2607.05775]</a></li>
+                <li>
+                  World Models의 정의와 로드맵 (58p 기술 보고서)
+                  <a href="https://arxiv.org/abs/2607.06401" target="_blank"
+                    >[2607.06401]</a
+                  >
+                </li>
+                <li>
+                  Danus: 사실-그래프 메모리로 수학적 추론 에이전트 조율
+                  <a href="https://arxiv.org/abs/2607.06447" target="_blank"
+                    >[2607.06447]</a
+                  >
+                </li>
+                <li>
+                  SearchEyes: 검색 세계 시뮬레이션을 통한 멀티모달 심층 검색
+                  <a href="https://arxiv.org/abs/2607.05943" target="_blank"
+                    >[2607.05943]</a
+                  >
+                </li>
+                <li>
+                  Narrative World Model: 서사학 기반 장편 소설 작가 메모리
+                  <a href="https://arxiv.org/abs/2607.05577" target="_blank"
+                    >[2607.05577]</a
+                  >
+                </li>
+                <li>
+                  StateFuse: 다중 에이전트를 위한 결정론적 충돌 보존 메모리
+                  <a href="https://arxiv.org/abs/2607.05844" target="_blank"
+                    >[2607.05844]</a
+                  >
+                </li>
+                <li>
+                  Memory in the Loop: 언어 에이전트의 확장 작업 메모리
+                  <a href="https://arxiv.org/abs/2607.05690" target="_blank"
+                    >[2607.05690]</a
+                  >
+                </li>
+                <li>
+                  LLM 에이전트의 도구 사용·계획·추론 실패 종합 분석
+                  <a href="https://arxiv.org/abs/2607.05775" target="_blank"
+                    >[2607.05775]</a
+                  >
+                </li>
               </ul>
             </div>
           </div>
@@ -1168,20 +1849,40 @@
         <div class="note-section">
           <h3>수집 제한 안내</h3>
           <ul>
-            <li>SemiAnalysis: 페이월로 인해 헤드라인·요약만 수집. 본문 접근 불가.</li>
-            <li>The Batch (DeepLearning.AI): 주간 발행으로 이번 기간 해당호 미포함.</li>
-            <li>Ahead of AI (Sebastian Raschka): 이번 기간 신규 글이 확인되지 않음.</li>
-            <li>AI포스트 (aipostkorea.com): 사이트 접근 불안정으로 본 회차 수집 제외.</li>
-            <li>Reuters, MIT Technology Review: 별도 수집 수행하지 않음 (핵심 소스 충분 확보).</li>
+            <li>
+              SemiAnalysis: 페이월로 인해 헤드라인·요약만 수집. 본문 접근 불가.
+            </li>
+            <li>
+              The Batch (DeepLearning.AI): 주간 발행으로 이번 기간 해당호
+              미포함.
+            </li>
+            <li>
+              Ahead of AI (Sebastian Raschka): 이번 기간 신규 글이 확인되지
+              않음.
+            </li>
+            <li>
+              AI포스트 (aipostkorea.com): 사이트 접근 불안정으로 본 회차 수집
+              제외.
+            </li>
+            <li>
+              Reuters, MIT Technology Review: 별도 수집 수행하지 않음 (핵심 소스
+              충분 확보).
+            </li>
             <li>ArXiv: 전체 1,283건 중 주목할 만한 논문 7건만 선별 수록.</li>
-            <li>The Verge: 일부 기사는 7월 5일자이나 7월 6~7일 뉴스 사이클과 연관되어 포함.</li>
+            <li>
+              The Verge: 일부 기사는 7월 5일자이나 7월 6~7일 뉴스 사이클과
+              연관되어 포함.
+            </li>
           </ul>
         </div>
       </div>
 
       <footer>
         수집일: 2026-07-08 · 기간: 2026.07.06 — 07.07 ·
-        <span class="src">OpenAI·Anthropic·Google·DeepMind·NVIDIA·Hacker News·ArXiv·Hugging Face·VentureBeat·The Verge·TechCrunch·AI타임즈</span>
+        <span class="src"
+          >OpenAI·Anthropic·Google·DeepMind·NVIDIA·Hacker News·ArXiv·Hugging
+          Face·VentureBeat·The Verge·TechCrunch·AI타임즈</span
+        >
       </footer>
     </div>
 
@@ -1192,9 +1893,11 @@
         btn.classList.toggle("open");
         content.classList.toggle("open");
         if (content.classList.contains("open")) {
-          btn.innerHTML = '<span class="arrow">▲</span> &nbsp;타임라인 접기 &nbsp;<span class="arrow">▲</span>';
+          btn.innerHTML =
+            '<span class="arrow">▲</span> &nbsp;타임라인 접기 &nbsp;<span class="arrow">▲</span>';
         } else {
-          btn.innerHTML = '<span class="arrow">▼</span> &nbsp;타임라인 보기 &nbsp;<span class="arrow">▼</span>';
+          btn.innerHTML =
+            '<span class="arrow">▼</span> &nbsp;타임라인 보기 &nbsp;<span class="arrow">▼</span>';
         }
       }
     </script>

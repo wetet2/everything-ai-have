@@ -136,14 +136,46 @@
         pointer-events: none;
         z-index: 0;
         background:
-          radial-gradient(circle 3px at  8% 22%, rgba(240, 216, 48, 0.25) 0%, transparent 100%),
-          radial-gradient(circle 2px at 22% 12%, rgba(240, 216, 48, 0.18) 0%, transparent 100%),
-          radial-gradient(circle 4px at 45% 30%, rgba(240, 216, 48, 0.2) 0%, transparent 100%),
-          radial-gradient(circle 2px at 62% 18%, rgba(240, 216, 48, 0.22) 0%, transparent 100%),
-          radial-gradient(circle 3px at 78% 25%, rgba(240, 216, 48, 0.18) 0%, transparent 100%),
-          radial-gradient(circle 2px at 35% 40%, rgba(240, 216, 48, 0.15) 0%, transparent 100%),
-          radial-gradient(circle 4px at 90% 35%, rgba(240, 216, 48, 0.2) 0%, transparent 100%),
-          radial-gradient(circle 3px at 15% 48%, rgba(240, 216, 48, 0.15) 0%, transparent 100%);
+          radial-gradient(
+            circle 3px at 8% 22%,
+            rgba(240, 216, 48, 0.25) 0%,
+            transparent 100%
+          ),
+          radial-gradient(
+            circle 2px at 22% 12%,
+            rgba(240, 216, 48, 0.18) 0%,
+            transparent 100%
+          ),
+          radial-gradient(
+            circle 4px at 45% 30%,
+            rgba(240, 216, 48, 0.2) 0%,
+            transparent 100%
+          ),
+          radial-gradient(
+            circle 2px at 62% 18%,
+            rgba(240, 216, 48, 0.22) 0%,
+            transparent 100%
+          ),
+          radial-gradient(
+            circle 3px at 78% 25%,
+            rgba(240, 216, 48, 0.18) 0%,
+            transparent 100%
+          ),
+          radial-gradient(
+            circle 2px at 35% 40%,
+            rgba(240, 216, 48, 0.15) 0%,
+            transparent 100%
+          ),
+          radial-gradient(
+            circle 4px at 90% 35%,
+            rgba(240, 216, 48, 0.2) 0%,
+            transparent 100%
+          ),
+          radial-gradient(
+            circle 3px at 15% 48%,
+            rgba(240, 216, 48, 0.15) 0%,
+            transparent 100%
+          );
         animation: sunlightDapple 8s ease-in-out infinite alternate;
       }
 
@@ -759,6 +791,7 @@
           opacity 0.6s ease;
       }
       .hidden-content.open {
+        overflow: visible;
         max-height: 50000px;
         opacity: 1;
       }
@@ -793,11 +826,7 @@
         box-shadow:
           0 20px 42px rgba(44, 64, 31, 0.4),
           0 8px 16px rgba(62, 140, 48, 0.22);
-        background: linear-gradient(
-          135deg,
-          var(--leaf) 0%,
-          var(--meadow) 100%
-        );
+        background: linear-gradient(135deg, var(--leaf) 0%, var(--meadow) 100%);
       }
       .reveal-btn .arrow {
         display: inline-block;
@@ -893,36 +922,194 @@
   <body>
     <div class="wrap">
       <header>
-        <svg class="tree tree-left" viewBox="0 0 180 320" xmlns="http://www.w3.org/2000/svg">
-          <ellipse cx="70" cy="105" rx="58" ry="50" fill="#3b7828" opacity="0.65"/>
-          <ellipse cx="115" cy="115" rx="52" ry="46" fill="#3b7828" opacity="0.65"/>
-          <ellipse cx="78" cy="80" rx="60" ry="50" fill="#4a8c35" opacity="0.82"/>
-          <ellipse cx="108" cy="88" rx="55" ry="46" fill="#4a8c35" opacity="0.82"/>
-          <ellipse cx="85" cy="58" rx="50" ry="42" fill="#5ea844" opacity="0.9"/>
-          <ellipse cx="100" cy="62" rx="44" ry="38" fill="#6dab4e" opacity="0.85"/>
-          <ellipse cx="92" cy="40" rx="34" ry="28" fill="#7db862" opacity="0.8"/>
-          <rect x="80" y="165" width="22" height="155" rx="5" fill="#6b4c3b"/>
-          <rect x="80" y="165" width="22" height="155" rx="5" fill="#7a5240" opacity="0.45"/>
-          <path d="M80 310 Q72 322 58 324" stroke="#6b4c3b" stroke-width="7" stroke-linecap="round" fill="none" opacity="0.8"/>
-          <path d="M102 310 Q110 322 125 324" stroke="#6b4c3b" stroke-width="7" stroke-linecap="round" fill="none" opacity="0.8"/>
+        <svg
+          class="tree tree-left"
+          viewBox="0 0 180 320"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <ellipse
+            cx="70"
+            cy="105"
+            rx="58"
+            ry="50"
+            fill="#3b7828"
+            opacity="0.65"
+          />
+          <ellipse
+            cx="115"
+            cy="115"
+            rx="52"
+            ry="46"
+            fill="#3b7828"
+            opacity="0.65"
+          />
+          <ellipse
+            cx="78"
+            cy="80"
+            rx="60"
+            ry="50"
+            fill="#4a8c35"
+            opacity="0.82"
+          />
+          <ellipse
+            cx="108"
+            cy="88"
+            rx="55"
+            ry="46"
+            fill="#4a8c35"
+            opacity="0.82"
+          />
+          <ellipse
+            cx="85"
+            cy="58"
+            rx="50"
+            ry="42"
+            fill="#5ea844"
+            opacity="0.9"
+          />
+          <ellipse
+            cx="100"
+            cy="62"
+            rx="44"
+            ry="38"
+            fill="#6dab4e"
+            opacity="0.85"
+          />
+          <ellipse
+            cx="92"
+            cy="40"
+            rx="34"
+            ry="28"
+            fill="#7db862"
+            opacity="0.8"
+          />
+          <rect x="80" y="165" width="22" height="155" rx="5" fill="#6b4c3b" />
+          <rect
+            x="80"
+            y="165"
+            width="22"
+            height="155"
+            rx="5"
+            fill="#7a5240"
+            opacity="0.45"
+          />
+          <path
+            d="M80 310 Q72 322 58 324"
+            stroke="#6b4c3b"
+            stroke-width="7"
+            stroke-linecap="round"
+            fill="none"
+            opacity="0.8"
+          />
+          <path
+            d="M102 310 Q110 322 125 324"
+            stroke="#6b4c3b"
+            stroke-width="7"
+            stroke-linecap="round"
+            fill="none"
+            opacity="0.8"
+          />
         </svg>
-        <svg class="tree tree-right" viewBox="0 0 200 370" xmlns="http://www.w3.org/2000/svg">
-          <ellipse cx="80" cy="128" rx="68" ry="58" fill="#3b7828" opacity="0.65"/>
-          <ellipse cx="135" cy="138" rx="62" ry="54" fill="#3b7828" opacity="0.65"/>
-          <ellipse cx="85" cy="95" rx="72" ry="58" fill="#4a8c35" opacity="0.82"/>
-          <ellipse cx="128" cy="105" rx="64" ry="54" fill="#4a8c35" opacity="0.82"/>
-          <ellipse cx="95" cy="65" rx="58" ry="50" fill="#5ea844" opacity="0.9"/>
-          <ellipse cx="115" cy="70" rx="50" ry="44" fill="#6dab4e" opacity="0.85"/>
-          <ellipse cx="105" cy="42" rx="38" ry="34" fill="#7db862" opacity="0.8"/>
-          <ellipse cx="90" cy="50" rx="34" ry="30" fill="#95cc77" opacity="0.7"/>
-          <rect x="88" y="200" width="26" height="170" rx="6" fill="#6b4c3b"/>
-          <rect x="88" y="200" width="26" height="170" rx="6" fill="#7a5240" opacity="0.45"/>
-          <path d="M88 360 Q78 374 60 378" stroke="#6b4c3b" stroke-width="8" stroke-linecap="round" fill="none" opacity="0.8"/>
-          <path d="M114 360 Q124 374 142 378" stroke="#6b4c3b" stroke-width="8" stroke-linecap="round" fill="none" opacity="0.8"/>
+        <svg
+          class="tree tree-right"
+          viewBox="0 0 200 370"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <ellipse
+            cx="80"
+            cy="128"
+            rx="68"
+            ry="58"
+            fill="#3b7828"
+            opacity="0.65"
+          />
+          <ellipse
+            cx="135"
+            cy="138"
+            rx="62"
+            ry="54"
+            fill="#3b7828"
+            opacity="0.65"
+          />
+          <ellipse
+            cx="85"
+            cy="95"
+            rx="72"
+            ry="58"
+            fill="#4a8c35"
+            opacity="0.82"
+          />
+          <ellipse
+            cx="128"
+            cy="105"
+            rx="64"
+            ry="54"
+            fill="#4a8c35"
+            opacity="0.82"
+          />
+          <ellipse
+            cx="95"
+            cy="65"
+            rx="58"
+            ry="50"
+            fill="#5ea844"
+            opacity="0.9"
+          />
+          <ellipse
+            cx="115"
+            cy="70"
+            rx="50"
+            ry="44"
+            fill="#6dab4e"
+            opacity="0.85"
+          />
+          <ellipse
+            cx="105"
+            cy="42"
+            rx="38"
+            ry="34"
+            fill="#7db862"
+            opacity="0.8"
+          />
+          <ellipse
+            cx="90"
+            cy="50"
+            rx="34"
+            ry="30"
+            fill="#95cc77"
+            opacity="0.7"
+          />
+          <rect x="88" y="200" width="26" height="170" rx="6" fill="#6b4c3b" />
+          <rect
+            x="88"
+            y="200"
+            width="26"
+            height="170"
+            rx="6"
+            fill="#7a5240"
+            opacity="0.45"
+          />
+          <path
+            d="M88 360 Q78 374 60 378"
+            stroke="#6b4c3b"
+            stroke-width="8"
+            stroke-linecap="round"
+            fill="none"
+            opacity="0.8"
+          />
+          <path
+            d="M114 360 Q124 374 142 378"
+            stroke="#6b4c3b"
+            stroke-width="8"
+            stroke-linecap="round"
+            fill="none"
+            opacity="0.8"
+          />
         </svg>
         <h1>AI <span class="accent">NEWS</span> // 2026</h1>
         <div class="subtitle">
-          비 갠 공원의 뉴스레터 · Anthropic J-space 발견부터 Claude Cowork 모바일 확장까지
+          비 갠 공원의 뉴스레터 · Anthropic J-space 발견부터 Claude Cowork
+          모바일 확장까지
         </div>
         <div class="date-stamp">2026.07.06 — 07.07 // 수집 07.08</div>
       </header>

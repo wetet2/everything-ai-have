@@ -41,6 +41,7 @@ IT 뉴스 (해외):
 
 - **AI타임즈**: https://www.aitimes.com (AI 전문 매체, 링크 다수)
 - **AI포스트**: https://www.aipostkorea.com/ (AI 전문 매체, 링크 다수)
+- **Geeknews**: https://news.hada.io/ (한국어 IT 뉴스 큐레이션, AI 관련 글 선별)
 
 ### 보조 소스 (사용자 요구 또는 시간 여유 시 추가, 2차 병렬 그룹)
 

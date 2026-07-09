@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
-      content="2026년 7월 8일~9일 AI 뉴스 다이제스트. GPT-5.6 출시·GPT-Live 음성 모델·Anthropic 벤 버냉키 임명·SpaceXAI Grok 4.5·Meta Muse Spark 1.1·Tencent Hy3 등 최신 AI 소식."
+      content="2026년 7월 8일~9일 AI 뉴스 다이제스트. GPT-5.6 정식 출시·GPT-Live 음성 모델·Anthropic 버냉키 임명·Claude Reflect·Grok 4.5·Meta Muse Spark·Tencent Hy3 등 최신 AI 소식."
     />
     <title>AI 뉴스 // 2026.07.08-07.09</title>
     <link
@@ -42,8 +42,8 @@
         --text: #d8d8ee;
         --text-dim: #8888aa;
 
-        --tag-openai: var(--neon-green);
         --tag-anthropic: var(--neon-cyan);
+        --tag-openai: var(--neon-green);
         --tag-google: var(--neon-blue);
         --tag-nvidia: var(--neon-green);
         --tag-hn: var(--neon-orange);
@@ -54,23 +54,81 @@
         --tag-huggingface: var(--neon-yellow);
         --tag-reuters: var(--neon-orange);
         --tag-batch: var(--neon-purple);
+
+        --drop: var(--neon-cyan);
+        --rain-deep: var(--neon-purple);
+        --rain-light: var(--neon-pink);
+        --puddle: var(--neon-cyan);
+        --slate: var(--text);
+        --slate-soft: var(--text-dim);
+        --rain: var(--neon-cyan);
+        --drop-soft: var(--neon-blue);
+        --storm: var(--neon-purple);
+        --mist: var(--text-dim);
+        --fog: var(--night);
+        --cloud: var(--asphalt);
+        --sky: var(--street);
       }
 
       @keyframes neonFlicker {
-        0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% { opacity: 1; }
-        20%, 24%, 55% { opacity: 0.45; }
+        0%,
+        19%,
+        21%,
+        23%,
+        25%,
+        54%,
+        56%,
+        100% {
+          opacity: 1;
+        }
+        20%,
+        24%,
+        55% {
+          opacity: 0.45;
+        }
       }
       @keyframes neonPulse {
-        0%, 100% { opacity: 0.5; transform: scale(1); }
-        50% { opacity: 1; transform: scale(1.03); }
+        0%,
+        100% {
+          opacity: 0.5;
+          transform: scale(1);
+        }
+        50% {
+          opacity: 1;
+          transform: scale(1.03);
+        }
       }
       @keyframes glowShift {
-        0%, 100% { box-shadow: 0 0 8px var(--neon-cyan), 0 0 24px rgba(0, 229, 255, 0.3); }
-        50% { box-shadow: 0 0 14px var(--neon-pink), 0 0 32px rgba(255, 45, 149, 0.3); }
+        0%,
+        100% {
+          box-shadow:
+            0 0 8px var(--neon-cyan),
+            0 0 24px rgba(0, 229, 255, 0.3);
+        }
+        50% {
+          box-shadow:
+            0 0 14px var(--neon-pink),
+            0 0 32px rgba(255, 45, 149, 0.3);
+        }
       }
       @keyframes hazeDrift {
-        0%, 100% { opacity: 0.3; transform: translateX(0); }
-        50% { opacity: 0.6; transform: translateX(40px); }
+        0%,
+        100% {
+          opacity: 0.3;
+          transform: translateX(0);
+        }
+        50% {
+          opacity: 0.6;
+          transform: translateX(40px);
+        }
+      }
+      @keyframes scanLine {
+        0% {
+          background-position: 0 0;
+        }
+        100% {
+          background-position: 0 60px;
+        }
       }
 
       body {
@@ -105,10 +163,26 @@
         pointer-events: none;
         z-index: 0;
         background:
-          radial-gradient(ellipse 800px 400px at 15% 0%, rgba(0, 229, 255, 0.07) 0%, transparent 60%),
-          radial-gradient(ellipse 700px 350px at 80% 10%, rgba(255, 45, 149, 0.07) 0%, transparent 55%),
-          radial-gradient(ellipse 600px 300px at 50% 95%, rgba(180, 77, 255, 0.07) 0%, transparent 60%),
-          radial-gradient(ellipse 550px 220px at 30% 50%, rgba(57, 255, 20, 0.04) 0%, transparent 65%);
+          radial-gradient(
+            ellipse 800px 400px at 15% 0%,
+            rgba(0, 229, 255, 0.07) 0%,
+            transparent 60%
+          ),
+          radial-gradient(
+            ellipse 700px 350px at 80% 10%,
+            rgba(255, 45, 149, 0.07) 0%,
+            transparent 55%
+          ),
+          radial-gradient(
+            ellipse 600px 300px at 50% 95%,
+            rgba(180, 77, 255, 0.07) 0%,
+            transparent 60%
+          ),
+          radial-gradient(
+            ellipse 550px 220px at 30% 50%,
+            rgba(57, 255, 20, 0.04) 0%,
+            transparent 65%
+          );
         animation: hazeDrift 20s ease-in-out infinite;
       }
 
@@ -125,9 +199,21 @@
         padding: 64px 20px 44px;
         position: relative;
         border-bottom: 3px solid transparent;
-        border-image: linear-gradient(90deg, var(--neon-pink), var(--neon-cyan), var(--neon-purple), var(--neon-cyan), var(--neon-pink)) 1;
+        border-image: linear-gradient(
+            90deg,
+            var(--neon-pink),
+            var(--neon-cyan),
+            var(--neon-purple),
+            var(--neon-cyan),
+            var(--neon-pink)
+          )
+          1;
         margin-bottom: 60px;
-        background: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(15, 15, 26, 0.5) 100%);
+        background: linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0) 0%,
+          rgba(15, 15, 26, 0.5) 100%
+        );
       }
       header::before {
         content: "✨⚡🌟";
@@ -181,16 +267,25 @@
         letter-spacing: 0.5px;
         border-radius: 999px;
         background: rgba(0, 229, 255, 0.06);
-        box-shadow: 0 0 10px rgba(0, 229, 255, 0.2), inset 0 0 10px rgba(0, 229, 255, 0.05);
+        box-shadow:
+          0 0 10px rgba(0, 229, 255, 0.2),
+          inset 0 0 10px rgba(0, 229, 255, 0.05);
       }
 
       .summary {
         margin-bottom: 60px;
         padding: 36px;
-        background: linear-gradient(145deg, #12121f 0%, #0f0f1a 45%, #141426 100%);
+        background: linear-gradient(
+          145deg,
+          #12121f 0%,
+          #0f0f1a 45%,
+          #141426 100%
+        );
         border: 2px solid var(--line);
         border-radius: 24px;
-        box-shadow: 0 0 15px rgba(180, 77, 255, 0.1), 0 16px 40px rgba(0, 0, 0, 0.4);
+        box-shadow:
+          0 0 15px rgba(180, 77, 255, 0.1),
+          0 16px 40px rgba(0, 0, 0, 0.4);
         position: relative;
         overflow: hidden;
       }
@@ -211,31 +306,18 @@
         margin-bottom: 18px;
         text-shadow: 0 0 10px rgba(0, 229, 255, 0.4);
       }
-      .summary ol {
-        list-style: none;
-        padding: 0;
-        counter-reset: summary;
-      }
-      .summary ol li {
-        counter-increment: summary;
+      .summary p {
+        line-height: 1.9;
         font-size: 16px;
-        line-height: 1.8;
         color: var(--text-dim);
-        padding: 8px 0;
-        border-bottom: 1px dashed rgba(180, 77, 255, 0.12);
-      }
-      .summary ol li::before {
-        content: "0" counter(summary);
-        color: var(--neon-pink);
-        font-weight: 800;
-        font-size: 14px;
-        margin-right: 10px;
-        font-family: "Bagel Fat One", "Dongle", sans-serif;
       }
       .summary .hl {
         color: var(--neon-pink);
         font-weight: 700;
-        background: linear-gradient(transparent 60%, rgba(255, 45, 149, 0.18) 60%);
+        background: linear-gradient(
+          transparent 60%,
+          rgba(255, 45, 149, 0.18) 60%
+        );
         padding: 0 3px;
       }
 
@@ -266,23 +348,64 @@
         border: 2px solid var(--line);
         border-radius: 20px;
         position: relative;
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3), 0 10px 28px rgba(0, 0, 0, 0.3);
+        transition:
+          transform 0.3s ease,
+          box-shadow 0.3s ease;
+        box-shadow:
+          0 0 10px rgba(0, 0, 0, 0.3),
+          0 10px 28px rgba(0, 0, 0, 0.3);
       }
       .trend-card:hover {
         transform: translateY(-6px);
-        box-shadow: 0 0 20px rgba(180, 77, 255, 0.2), 0 20px 40px rgba(0, 0, 0, 0.4);
+        box-shadow:
+          0 0 20px rgba(180, 77, 255, 0.2),
+          0 20px 40px rgba(0, 0, 0, 0.4);
       }
-      .trend-card:nth-child(1) { border-color: rgba(0, 229, 255, 0.35); }
-      .trend-card:nth-child(2) { border-color: rgba(255, 45, 149, 0.35); }
-      .trend-card:nth-child(3) { border-color: rgba(57, 255, 20, 0.35); }
-      .trend-card:nth-child(4) { border-color: rgba(180, 77, 255, 0.35); }
-      .trend-card:nth-child(5) { border-color: rgba(255, 230, 0, 0.3); }
-      .trend-card:nth-child(1):hover { border-color: var(--neon-cyan); box-shadow: 0 0 25px rgba(0, 229, 255, 0.25), 0 20px 40px rgba(0, 0, 0, 0.4); }
-      .trend-card:nth-child(2):hover { border-color: var(--neon-pink); box-shadow: 0 0 25px rgba(255, 45, 149, 0.25), 0 20px 40px rgba(0, 0, 0, 0.4); }
-      .trend-card:nth-child(3):hover { border-color: var(--neon-green); box-shadow: 0 0 25px rgba(57, 255, 20, 0.25), 0 20px 40px rgba(0, 0, 0, 0.4); }
-      .trend-card:nth-child(4):hover { border-color: var(--neon-purple); box-shadow: 0 0 25px rgba(180, 77, 255, 0.25), 0 20px 40px rgba(0, 0, 0, 0.4); }
-      .trend-card:nth-child(5):hover { border-color: var(--neon-yellow); box-shadow: 0 0 25px rgba(255, 230, 0, 0.25), 0 20px 40px rgba(0, 0, 0, 0.4); }
+      .trend-card:nth-child(1) {
+        border-color: rgba(0, 229, 255, 0.35);
+      }
+      .trend-card:nth-child(2) {
+        border-color: rgba(255, 45, 149, 0.35);
+      }
+      .trend-card:nth-child(3) {
+        border-color: rgba(57, 255, 20, 0.35);
+      }
+      .trend-card:nth-child(4) {
+        border-color: rgba(180, 77, 255, 0.35);
+      }
+      .trend-card:nth-child(5) {
+        border-color: rgba(255, 230, 0, 0.3);
+      }
+      .trend-card:nth-child(1):hover {
+        border-color: var(--neon-cyan);
+        box-shadow:
+          0 0 25px rgba(0, 229, 255, 0.25),
+          0 20px 40px rgba(0, 0, 0, 0.4);
+      }
+      .trend-card:nth-child(2):hover {
+        border-color: var(--neon-pink);
+        box-shadow:
+          0 0 25px rgba(255, 45, 149, 0.25),
+          0 20px 40px rgba(0, 0, 0, 0.4);
+      }
+      .trend-card:nth-child(3):hover {
+        border-color: var(--neon-green);
+        box-shadow:
+          0 0 25px rgba(57, 255, 20, 0.25),
+          0 20px 40px rgba(0, 0, 0, 0.4);
+      }
+      .trend-card:nth-child(4):hover {
+        border-color: var(--neon-purple);
+        box-shadow:
+          0 0 25px rgba(180, 77, 255, 0.25),
+          0 20px 40px rgba(0, 0, 0, 0.4);
+      }
+      .trend-card:nth-child(5):hover {
+        border-color: var(--neon-yellow);
+        box-shadow:
+          0 0 25px rgba(255, 230, 0, 0.25),
+          0 20px 40px rgba(0, 0, 0, 0.4);
+      }
       .trend-card .num {
         font-family: "Bagel Fat One", "Dongle", sans-serif;
         font-size: 42px;
@@ -302,11 +425,26 @@
         line-height: 1.75;
         color: var(--text-dim);
       }
-      .trend-card:nth-child(1) .num, .trend-card:nth-child(1) h3 { color: var(--neon-cyan); }
-      .trend-card:nth-child(2) .num, .trend-card:nth-child(2) h3 { color: var(--neon-pink); }
-      .trend-card:nth-child(3) .num, .trend-card:nth-child(3) h3 { color: var(--neon-green); }
-      .trend-card:nth-child(4) .num, .trend-card:nth-child(4) h3 { color: var(--neon-purple); }
-      .trend-card:nth-child(5) .num, .trend-card:nth-child(5) h3 { color: var(--neon-yellow); }
+      .trend-card:nth-child(1) .num,
+      .trend-card:nth-child(1) h3 {
+        color: var(--neon-cyan);
+      }
+      .trend-card:nth-child(2) .num,
+      .trend-card:nth-child(2) h3 {
+        color: var(--neon-pink);
+      }
+      .trend-card:nth-child(3) .num,
+      .trend-card:nth-child(3) h3 {
+        color: var(--neon-green);
+      }
+      .trend-card:nth-child(4) .num,
+      .trend-card:nth-child(4) h3 {
+        color: var(--neon-purple);
+      }
+      .trend-card:nth-child(5) .num,
+      .trend-card:nth-child(5) h3 {
+        color: var(--neon-yellow);
+      }
 
       .timeline {
         margin-bottom: 60px;
@@ -321,7 +459,12 @@
         bottom: 0;
         width: 3px;
         border-radius: 3px;
-        background: linear-gradient(var(--neon-pink) 0%, var(--neon-purple) 30%, var(--neon-cyan) 60%, var(--neon-green) 100%);
+        background: linear-gradient(
+          var(--neon-pink) 0%,
+          var(--neon-purple) 30%,
+          var(--neon-cyan) 60%,
+          var(--neon-green) 100%
+        );
         box-shadow: 0 0 12px rgba(180, 77, 255, 0.4);
       }
       .day {
@@ -345,7 +488,9 @@
         box-shadow: 0 0 14px rgba(0, 229, 255, 0.4);
         transition: transform 0.3s ease;
       }
-      .day:hover::before { transform: scale(1.15); }
+      .day:hover::before {
+        transform: scale(1.15);
+      }
       .day-label {
         font-family: "Jua", "Pretendard", sans-serif;
         font-size: 20px;
@@ -362,12 +507,16 @@
         margin-bottom: 18px;
         position: relative;
         transition: all 0.3s ease;
-        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2), 0 1px 4px rgba(0, 0, 0, 0.2);
+        box-shadow:
+          0 6px 18px rgba(0, 0, 0, 0.2),
+          0 1px 4px rgba(0, 0, 0, 0.2);
       }
       .article:hover {
         border-color: var(--neon-purple);
         transform: translateY(-2px);
-        box-shadow: 0 0 20px rgba(180, 77, 255, 0.15), 0 14px 32px rgba(0, 0, 0, 0.4);
+        box-shadow:
+          0 0 20px rgba(180, 77, 255, 0.15),
+          0 14px 32px rgba(0, 0, 0, 0.4);
       }
       .article .tag {
         display: inline-block;
@@ -379,18 +528,90 @@
         border-radius: 999px;
         margin-bottom: 10px;
       }
-      .tag.openai { color: var(--tag-openai); border-color: var(--tag-openai); background: rgba(57, 255, 20, 0.08); box-shadow: 0 0 8px rgba(57, 255, 20, 0.15); }
-      .tag.anthropic { color: var(--tag-anthropic); border-color: var(--tag-anthropic); background: rgba(0, 229, 255, 0.08); box-shadow: 0 0 8px rgba(0, 229, 255, 0.15); }
-      .tag.google { color: var(--tag-google); border-color: var(--tag-google); background: rgba(68, 138, 255, 0.08); box-shadow: 0 0 8px rgba(68, 138, 255, 0.15); }
-      .tag.nvidia { color: var(--tag-nvidia); border-color: var(--tag-nvidia); background: rgba(57, 255, 20, 0.08); box-shadow: 0 0 8px rgba(57, 255, 20, 0.15); }
-      .tag.hn { color: var(--tag-hn); border-color: var(--tag-hn); background: rgba(255, 109, 0, 0.08); box-shadow: 0 0 8px rgba(255, 109, 0, 0.15); }
-      .tag.aitimes { color: var(--neon-purple); border-color: var(--neon-purple); background: rgba(180, 77, 255, 0.08); box-shadow: 0 0 8px rgba(180, 77, 255, 0.15); }
-      .tag.aipost { color: var(--neon-yellow); border-color: var(--neon-yellow); background: rgba(255, 230, 0, 0.08); box-shadow: 0 0 8px rgba(255, 230, 0, 0.15); }
-      .tag.arxiv { color: var(--tag-arxiv); border-color: var(--tag-arxiv); background: rgba(180, 77, 255, 0.08); box-shadow: 0 0 8px rgba(180, 77, 255, 0.15); }
-      .tag.venturebeat { color: var(--tag-venturebeat); border-color: var(--tag-venturebeat); background: rgba(57, 255, 20, 0.08); box-shadow: 0 0 8px rgba(57, 255, 20, 0.15); }
-      .tag.techcrunch { color: var(--tag-techcrunch); border-color: var(--tag-techcrunch); background: rgba(255, 109, 0, 0.08); box-shadow: 0 0 8px rgba(255, 109, 0, 0.15); }
-      .tag.verge { color: var(--tag-verge); border-color: var(--tag-verge); background: rgba(255, 45, 149, 0.08); box-shadow: 0 0 8px rgba(255, 45, 149, 0.15); }
-      .tag.huggingface { color: var(--tag-huggingface); border-color: var(--tag-huggingface); background: rgba(255, 230, 0, 0.08); box-shadow: 0 0 8px rgba(255, 230, 0, 0.15); }
+      .tag.openai {
+        color: var(--tag-openai);
+        border-color: var(--tag-openai);
+        background: rgba(57, 255, 20, 0.08);
+        box-shadow: 0 0 8px rgba(57, 255, 20, 0.15);
+      }
+      .tag.anthropic {
+        color: var(--tag-anthropic);
+        border-color: var(--tag-anthropic);
+        background: rgba(0, 229, 255, 0.08);
+        box-shadow: 0 0 8px rgba(0, 229, 255, 0.15);
+      }
+      .tag.google {
+        color: var(--tag-google);
+        border-color: var(--tag-google);
+        background: rgba(68, 138, 255, 0.08);
+        box-shadow: 0 0 8px rgba(68, 138, 255, 0.15);
+      }
+      .tag.nvidia {
+        color: var(--tag-nvidia);
+        border-color: var(--tag-nvidia);
+        background: rgba(57, 255, 20, 0.08);
+        box-shadow: 0 0 8px rgba(57, 255, 20, 0.15);
+      }
+      .tag.hn {
+        color: var(--tag-hn);
+        border-color: var(--tag-hn);
+        background: rgba(255, 109, 0, 0.08);
+        box-shadow: 0 0 8px rgba(255, 109, 0, 0.15);
+      }
+      .tag.aitimes {
+        color: var(--neon-purple);
+        border-color: var(--neon-purple);
+        background: rgba(180, 77, 255, 0.08);
+        box-shadow: 0 0 8px rgba(180, 77, 255, 0.15);
+      }
+      .tag.aipost {
+        color: var(--neon-pink);
+        border-color: var(--neon-pink);
+        background: rgba(255, 45, 149, 0.08);
+        box-shadow: 0 0 8px rgba(255, 45, 149, 0.15);
+      }
+      .tag.arxiv {
+        color: var(--tag-arxiv);
+        border-color: var(--tag-arxiv);
+        background: rgba(180, 77, 255, 0.08);
+        box-shadow: 0 0 8px rgba(180, 77, 255, 0.15);
+      }
+      .tag.venturebeat {
+        color: var(--tag-venturebeat);
+        border-color: var(--tag-venturebeat);
+        background: rgba(57, 255, 20, 0.08);
+        box-shadow: 0 0 8px rgba(57, 255, 20, 0.15);
+      }
+      .tag.techcrunch {
+        color: var(--tag-techcrunch);
+        border-color: var(--tag-techcrunch);
+        background: rgba(255, 109, 0, 0.08);
+        box-shadow: 0 0 8px rgba(255, 109, 0, 0.15);
+      }
+      .tag.verge {
+        color: var(--tag-verge);
+        border-color: var(--tag-verge);
+        background: rgba(255, 45, 149, 0.08);
+        box-shadow: 0 0 8px rgba(255, 45, 149, 0.15);
+      }
+      .tag.huggingface {
+        color: var(--tag-huggingface);
+        border-color: var(--tag-huggingface);
+        background: rgba(255, 230, 0, 0.08);
+        box-shadow: 0 0 8px rgba(255, 230, 0, 0.15);
+      }
+      .tag.reuters {
+        color: var(--tag-reuters);
+        border-color: var(--tag-reuters);
+        background: rgba(255, 109, 0, 0.08);
+        box-shadow: 0 0 8px rgba(255, 109, 0, 0.15);
+      }
+      .tag.batch {
+        color: var(--tag-batch);
+        border-color: var(--tag-batch);
+        background: rgba(180, 77, 255, 0.08);
+        box-shadow: 0 0 8px rgba(180, 77, 255, 0.15);
+      }
 
       .article h4 {
         font-family: "Pretendard", sans-serif;
@@ -410,6 +631,15 @@
       .article h4 a:hover {
         color: var(--neon-cyan);
         border-color: var(--neon-cyan);
+      }
+      .article .summary-text {
+        font-size: 15px;
+        line-height: 1.8;
+        color: var(--text-dim);
+      }
+      .article .summary-text::before {
+        content: "⚡ ";
+        color: var(--neon-yellow);
       }
 
       .headlines {
@@ -435,63 +665,12 @@
         font-weight: 700;
         transition: color 0.2s;
       }
-      .headlines a:hover { color: var(--neon-pink); }
-
-      /* 썸네일 카드 그리드 */
-      .thumb-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
-        gap: 18px;
-        margin-bottom: 24px;
+      .headlines a:hover {
+        color: var(--neon-pink);
       }
-      .thumb-card {
-        background: var(--panel);
-        border: 2px solid var(--line);
-        border-radius: 18px;
-        overflow: hidden;
-        transition: all 0.3s ease;
-        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
-        display: flex;
-        flex-direction: column;
-      }
-      .thumb-card:hover {
-        border-color: var(--neon-purple);
-        transform: translateY(-4px);
-        box-shadow: 0 0 20px rgba(180, 77, 255, 0.2), 0 14px 32px rgba(0, 0, 0, 0.4);
-      }
-      .thumb-card .thumb-img {
-        width: 100%;
-        aspect-ratio: 1 / 1;
-        object-fit: cover;
-        display: block;
-        border-bottom: 2px solid var(--line);
-      }
-      .thumb-card .thumb-body {
-        padding: 20px;
-      }
-      .thumb-card h4 {
-        font-family: "Pretendard", sans-serif;
-        font-weight: 800;
-        font-size: 16px;
-        letter-spacing: 0.2px;
-        color: var(--text);
-        line-height: 1.5;
-        margin-bottom: 10px;
-      }
-      .thumb-card h4 a {
-        color: inherit;
-        text-decoration: none;
-        border-bottom: 2px solid rgba(180, 77, 255, 0.3);
-        transition: all 0.2s;
-      }
-      .thumb-card h4 a:hover {
-        color: var(--neon-cyan);
-        border-color: var(--neon-cyan);
-      }
-      .thumb-card .desc {
-        font-size: 14px;
-        line-height: 1.7;
+      .headlines .hl-link {
         color: var(--text-dim);
+        font-size: 13px;
       }
 
       .stats {
@@ -506,14 +685,20 @@
         background: var(--panel);
         border: 2px solid var(--line);
         border-radius: 20px;
-        box-shadow: 0 8px 22px rgba(0, 0, 0, 0.3), 0 2px 6px rgba(0, 0, 0, 0.2);
+        box-shadow:
+          0 8px 22px rgba(0, 0, 0, 0.3),
+          0 2px 6px rgba(0, 0, 0, 0.2);
         position: relative;
         overflow: hidden;
-        transition: transform 0.3s ease, box-shadow 0.3s;
+        transition:
+          transform 0.3s ease,
+          box-shadow 0.3s;
       }
       .stat:hover {
         transform: translateY(-4px);
-        box-shadow: 0 0 20px rgba(180, 77, 255, 0.2), 0 16px 34px rgba(0, 0, 0, 0.4);
+        box-shadow:
+          0 0 20px rgba(180, 77, 255, 0.2),
+          0 16px 34px rgba(0, 0, 0, 0.4);
       }
       .stat::before {
         content: "";
@@ -523,7 +708,12 @@
         width: 100%;
         height: 4px;
         border-radius: 4px 4px 0 0;
-        background: linear-gradient(90deg, var(--neon-pink), var(--neon-purple), var(--neon-cyan));
+        background: linear-gradient(
+          90deg,
+          var(--neon-pink),
+          var(--neon-purple),
+          var(--neon-cyan)
+        );
       }
       .stat .big {
         font-family: "Bagel Fat One", "Dongle", sans-serif;
@@ -540,6 +730,27 @@
         margin-top: 8px;
         font-weight: 600;
       }
+      .stat a {
+        color: inherit;
+        text-decoration: none;
+      }
+      .stat a:hover {
+        opacity: 0.8;
+      }
+
+      footer {
+        text-align: center;
+        padding: 40px 20px;
+        border-top: 2px solid var(--line);
+        margin-top: 40px;
+        font-size: 13px;
+        color: var(--text-dim);
+        letter-spacing: 0.5px;
+      }
+      footer .src {
+        color: var(--neon-cyan);
+        font-weight: 700;
+      }
 
       .key-list {
         display: flex;
@@ -553,12 +764,16 @@
         border-radius: 18px;
         padding: 24px;
         transition: all 0.3s ease;
-        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2), 0 1px 4px rgba(0, 0, 0, 0.2);
+        box-shadow:
+          0 6px 18px rgba(0, 0, 0, 0.2),
+          0 1px 4px rgba(0, 0, 0, 0.2);
       }
       .key-item:hover {
         border-color: var(--neon-purple);
         transform: translateY(-2px);
-        box-shadow: 0 0 20px rgba(180, 77, 255, 0.15), 0 14px 32px rgba(0, 0, 0, 0.4);
+        box-shadow:
+          0 0 20px rgba(180, 77, 255, 0.15),
+          0 14px 32px rgba(0, 0, 0, 0.4);
       }
       .key-item .tag {
         display: inline-block;
@@ -581,11 +796,6 @@
         color: var(--text);
         line-height: 1.5;
       }
-      .key-item h3 a {
-        color: inherit;
-        text-decoration: none;
-      }
-      .key-item h3 a:hover { color: var(--neon-cyan); }
       .key-item p {
         font-size: 15px;
         line-height: 1.8;
@@ -595,12 +805,21 @@
         content: "⚡ ";
         color: var(--neon-pink);
       }
+      .key-item h3 a {
+        color: inherit;
+        text-decoration: none;
+      }
+      .key-item h3 a:hover {
+        color: var(--neon-cyan);
+      }
 
       .hidden-content {
         max-height: 0;
         overflow: hidden;
         opacity: 0;
-        transition: max-height 1s ease, opacity 0.6s ease;
+        transition:
+          max-height 1s ease,
+          opacity 0.6s ease;
       }
       .hidden-content.open {
         overflow: visible;
@@ -619,24 +838,39 @@
         font-weight: 400;
         letter-spacing: 0.5px;
         color: #06060f;
-        background: linear-gradient(135deg, var(--neon-cyan) 0%, var(--neon-purple) 100%);
+        background: linear-gradient(
+          135deg,
+          var(--neon-cyan) 0%,
+          var(--neon-purple) 100%
+        );
         border: none;
         border-radius: 999px;
         cursor: pointer;
         position: relative;
         transition: all 0.4s ease;
-        box-shadow: 0 0 20px rgba(0, 229, 255, 0.4), 0 14px 32px rgba(0, 0, 0, 0.4);
+        box-shadow:
+          0 0 20px rgba(0, 229, 255, 0.4),
+          0 14px 32px rgba(0, 0, 0, 0.4);
       }
       .reveal-btn:hover {
         transform: scale(1.03);
-        box-shadow: 0 0 40px rgba(0, 229, 255, 0.6), 0 0 60px rgba(180, 77, 255, 0.4), 0 20px 42px rgba(0, 0, 0, 0.5);
-        background: linear-gradient(135deg, var(--neon-purple) 0%, var(--neon-pink) 100%);
+        box-shadow:
+          0 0 40px rgba(0, 229, 255, 0.6),
+          0 0 60px rgba(180, 77, 255, 0.4),
+          0 20px 42px rgba(0, 0, 0, 0.5);
+        background: linear-gradient(
+          135deg,
+          var(--neon-purple) 0%,
+          var(--neon-pink) 100%
+        );
       }
       .reveal-btn .arrow {
         display: inline-block;
         transition: transform 0.4s;
       }
-      .reveal-btn.open .arrow { transform: rotate(180deg); }
+      .reveal-btn.open .arrow {
+        transform: rotate(180deg);
+      }
 
       .note-section {
         background: var(--panel);
@@ -666,54 +900,19 @@
         color: var(--neon-pink);
       }
 
-      /* 논문 테이블 */
-      .paper-table {
-        width: 100%;
-        border-collapse: collapse;
-        margin: 20px 0;
-      }
-      .paper-table th {
-        text-align: left;
-        padding: 14px 16px;
-        font-size: 14px;
-        font-weight: 700;
-        color: var(--neon-purple);
-        border-bottom: 2px solid var(--line);
-        letter-spacing: 0.5px;
-      }
-      .paper-table td {
-        padding: 14px 16px;
-        font-size: 14px;
-        line-height: 1.7;
-        color: var(--text-dim);
-        border-bottom: 1px dashed rgba(180, 77, 255, 0.12);
-        vertical-align: top;
-      }
-      .paper-table td:first-child {
-        color: var(--text);
-        font-weight: 700;
-        white-space: nowrap;
-      }
-
-      footer {
-        text-align: center;
-        padding: 40px 20px;
-        border-top: 2px solid var(--line);
-        margin-top: 40px;
-        font-size: 13px;
-        color: var(--text-dim);
-        letter-spacing: 0.5px;
-      }
-      footer .src {
-        color: var(--neon-cyan);
-        font-weight: 700;
-      }
-
       @media (max-width: 700px) {
-        .wrap { padding: 20px 12px; }
-        .timeline { padding-left: 28px; }
-        .day::before { left: -35px; width: 24px; height: 24px; font-size: 13px; }
-        .thumb-grid { grid-template-columns: 1fr; }
+        .wrap {
+          padding: 20px 12px;
+        }
+        .timeline {
+          padding-left: 28px;
+        }
+        .day::before {
+          left: -35px;
+          width: 24px;
+          height: 24px;
+          font-size: 13px;
+        }
       }
     </style>
   </head>
@@ -721,104 +920,179 @@
     <div class="wrap">
       <header>
         <h1>AI <span class="accent">NEWS</span> // 2026</h1>
-        <div class="subtitle">GPT-5.6 출시 · GPT-Live 음성 · AI 코딩 경쟁 · 앤트로픽 거버넌스 강화</div>
+        <div class="subtitle">
+          뉴스레터 · GPT-5.6 출시부터 Grok 4.5·Hy3 코딩 전쟁까지
+        </div>
         <div class="date-stamp">2026.07.08 — 07.09 // 수집 07.10</div>
       </header>
 
       <!-- 핵심 요약 -->
       <section class="summary">
         <h2>◆ 미션 브리핑</h2>
-        <ol>
-          <li>
-            <span class="hl">GPT-5.6 시리즈 정식 출시</span> — 오픈AI가 트럼프 행정부 승인을 받아 GPT-5.6 Sol/Terra/Luna 3종을 출시. Sol은 최상위 지능, Luna는 GLM-5.2에 맞서는 가성비 모델. 동시에 'ChatGPT Work'와 'GPT-Live' 음성 모델도 공개.
-          </li>
-          <li>
-            <span class="hl">앤트로픽의 다각적 행보</span> — 벤 버냉키 전 연준의장을 장기수익신탁에 임명, 'Reflect with Claude' 사용 대시보드 출시, 대중에게 "어려운 질문" 공개 요청 캠페인.
-          </li>
-          <li>
-            <span class="hl">AI 코딩 경쟁 심화</span> — SpaceXAI Grok 4.5, Meta Muse Spark 1.1, Tencent Hy3(Apache 2.0) 등 코딩·에이전트 특화 모델 경쟁 가속.
-          </li>
-          <li>
-            <span class="hl">저작권·법적 분쟁 지속</span> — NYT 등 언론사, 오픈AI가 증거 은폐했다며 법원 제재 요청. 미드저니는 디즈니·워너 상대로 스튜디오들의 AI 내부 사용 실태 공개 요구.
-          </li>
-          <li>
-            <span class="hl">AI 인프라 투자 확대</span> — 메타, 캐나다 첫 1GW AI 데이터센터에 15조원 투입. 앤트로픽, 켄터키 데이터센터 20년 임대 계약 체결(190억 달러).
-          </li>
-        </ol>
+        <p>
+          이번 기간 가장 주목받은 이슈는
+          <span class="hl"
+            >GPT-5.6 시리즈 정식 출시 — 트럼프 행정부 승인 하에 Sol·Terra·Luna 3종 동시 발표, M365 Copilot 기본 모델 변경</span
+          >,
+          <span class="hl"
+            >앤트로픽의 다각적 행보 — 버냉키 전 연준의장 LTBT 임명·'Reflect with Claude' 대시보드·"어려운 질문" 대중 공모</span
+          >,
+          <span class="hl"
+            >AI 코딩 경쟁 심화 — Grok 4.5·Meta Muse Spark 1.1·Tencent Hy3(Apache 2.0) 3파전</span
+          >,
+          <span class="hl"
+            >저작권·법적 분쟁 — NYT 등 언론사 OpenAI 증거 은폐로 법원 제재 요청, Midjourney 디즈니·워너 상대로 AI 사용 실태 공개 요구</span
+          >,
+          <span class="hl"
+            >AI 인프라 투자 확대 — Meta 캐나다 1GW 데이터센터 15조원, Anthropic 켄터키 $190억 20년 임대</span
+          >
+          입니다. GPT-5.6 패밀리 전략과 GPT-Live 완전 양방향 음성, 코딩 특화 모델 3파전, 앤트로픽의 거버넌스·투명성 강화가 이번 주 핵심 흐름입니다.
+        </p>
       </section>
 
       <!-- 통계 -->
       <div class="stats">
         <div class="stat">
-          <div class="big">853pt</div>
-          <div class="lbl">GPT-5.6 HN 포인트</div>
-        </div>
-        <div class="stat">
-          <div class="big">627건</div>
-          <div class="lbl">GPT-5.6 HN 댓글</div>
-        </div>
-        <div class="stat">
           <div class="big">3종</div>
-          <div class="lbl">GPT-5.6 패밀리</div>
+          <div class="lbl">GPT-5.6 패밀리 (Sol·Terra·Luna)</div>
         </div>
         <div class="stat">
           <div class="big">$19B</div>
-          <div class="lbl">Anthropic-TeraWulf 임대</div>
+          <div class="lbl">Anthropic-TeraWulf 20년 임대</div>
         </div>
         <div class="stat">
-          <div class="big">1GW</div>
-          <div class="lbl">Meta 캐나다 데이터센터</div>
+          <div class="big">15조원</div>
+          <div class="lbl">Meta 캐나다 1GW 데이터센터</div>
+        </div>
+        <div class="stat">
+          <div class="big">절반 가격</div>
+          <div class="lbl">Grok 4.5 경쟁사 대비 가격</div>
+        </div>
+        <div class="stat">
+          <div class="big">Apache 2.0</div>
+          <div class="lbl">Tencent Hy3 오픈소스 라이선스</div>
         </div>
         <div class="stat">
           <div class="big">$20B</div>
-          <div class="lbl">Mercor 밸류에이션</div>
+          <div class="lbl">Mercor 기업가치 협상 중</div>
         </div>
         <div class="stat">
-          <div class="big">2.7조</div>
-          <div class="lbl">MiniMax 신규 LLM 매개변수</div>
+          <div class="big">$65M</div>
+          <div class="lbl">Ollama 시리즈 투자, 9M 유저</div>
         </div>
         <div class="stat">
-          <div class="big">14건</div>
-          <div class="lbl">ArXiv 주요 논문</div>
+          <div class="big">$100M</div>
+          <div class="lbl">Gradium 시드 라운드, NVIDIA 지원</div>
         </div>
       </div>
 
       <!-- 5대 핵심뉴스 -->
       <h2 class="section-title">5대 핵심뉴스 // 주요 뉴스</h2>
+
       <div class="key-list">
         <div class="key-item">
-          <span class="tag" style="border-color:var(--neon-green);color:var(--neon-green);background:rgba(57,255,20,0.06)">OpenAI · 모델 출시</span>
-          <h3><a href="https://openai.com/index/gpt-5-6/" target="_blank">GPT-5.6 시리즈 출시 — Sol·Terra·Luna 3종, 정부 승인 첫 사례</a></h3>
+          <span
+            class="tag"
+            style="
+              border-color: var(--tag-openai);
+              color: var(--tag-openai);
+              background: rgba(57, 255, 20, 0.08);
+            "
+            >OpenAI · 모델</span
+          >
+          <h3>
+            <a
+              href="https://openai.com/index/gpt-5-6/"
+              target="_blank"
+              >GPT-5.6 시리즈 정식 출시 — Sol·Terra·Luna 3종 + ChatGPT Work + GPT-Live</a
+            >
+          </h3>
           <p>
-            트럼프 행정부 승인 후 전격 출시. Sol(주력)·Terra(중간급)·Luna(가성비)로 구성. Luna는 GLM-5.2의 가성비 우위를 직접 겨냥. Microsoft 365 Copilot 즉시 탑재로 기업 시장 장악 의지. ChatGPT Work로 팀 협업 플랫폼 진출. GPT-Live로 완전 양방향 음성 대화 지원.
+            트럼프 행정부 승인을 거친 사상 최초의 프론티어 모델. Sol(주력), Terra(중간급), Luna(가성비) 3종 동시 출시로 과거 단일 모델 전략에서 패밀리 전략으로 전환. Luna는 GLM-5.2의 가성비 우위를 직접 겨냥. 'ChatGPT Work'는 팀 단위 업무·다단계 작업 계획·데스크톱·웹·모바일 연속성 지원. GPT-Live-1은 완전 양방향 음성으로 사용자 말이 끝나기 전 응답 가능. M365 Copilot 즉시 탑재로 기업 시장 장악 의지 표명.
           </p>
         </div>
         <div class="key-item">
-          <span class="tag" style="border-color:var(--neon-cyan);color:var(--neon-cyan);background:rgba(0,229,255,0.06)">Anthropic · 거버넌스</span>
-          <h3><a href="https://www.anthropic.com/news/hard-questions" target="_blank">벤 버냉키 LTBT 임명 + Hard Questions 캠페인 + Claude Reflect</a></h3>
+          <span
+            class="tag"
+            style="
+              border-color: var(--tag-anthropic);
+              color: var(--tag-anthropic);
+              background: rgba(0, 229, 255, 0.08);
+            "
+            >Anthropic · 거버넌스</span
+          >
+          <h3>
+            <a
+              href="https://www.anthropic.com/news/ben-bernanke"
+              target="_blank"
+              >벤 버냉키 LTBT 임명 + 'Reflect with Claude' + "어려운 질문" 공모</a
+            >
+          </h3>
           <p>
-            벤 버냉키 전 연준의장을 장기수익신탁에 임명하며 지배구조 강화. 대중에 "AI에 관한 가장 어려운 질문"을 공개 요청하고 답변 과정을 투명하게 공개 약속. Claude Reflect로 사용자 자기 성찰 대시보드 제공 — AI 사용 긍정적 내러티브 구축 의도.
+            벤 버냉키 전 연준 의장을 장기수익신탁(LTBT)에 임명하며 지배구조 강화. 'Claude Wrapped' 스타일의 사용 대시보드 'Reflect' 출시 — 자신의 Claude 사용 패턴을 돌아보는 기능. 동시에 대중에게 AI에 관한 가장 어려운 질문을 공개 요청하고, 답변 과정을 투명하게 공개할 것을 약속하는 캠페인 진행. AI 사용의 긍정적 내러티브 구축 의도가 엿보이는 종합 행보.
           </p>
         </div>
         <div class="key-item">
-          <span class="tag" style="border-color:var(--neon-orange);color:var(--neon-orange);background:rgba(255,109,0,0.06)">AI 코딩 · 3파전</span>
-          <h3><a href="https://venturebeat.com/technology/spacexs-grok-4-5-launches-at-half-the-price-of-rivals-heres-why-that-could-rattle-anthropic-and-openai" target="_blank">Grok 4.5 vs Muse Spark 1.1 vs Hy3 — 코딩 에이전트 경쟁 가속</a></h3>
+          <span
+            class="tag"
+            style="
+              border-color: var(--tag-hn);
+              color: var(--tag-hn);
+              background: rgba(255, 109, 0, 0.08);
+            "
+            >오픈소스 · 코딩</span
+          >
+          <h3>
+            <a
+              href="https://venturebeat.com/technology/tencents-apache-licensed-hy3-takes-on-glm-5-2-at-half-the-size-and-wins-everywhere-except-coding"
+              target="_blank"
+              >AI 코딩 3파전 — Grok 4.5 vs Muse Spark 1.1 vs Hy3</a
+            >
+          </h3>
           <p>
-            SpaceXAI Grok 4.5(Cursor 기술 흡수, Opus 4.7 성능에 10% 가격), Meta Muse Spark 1.1(API 제공), Tencent Hy3(Apache 2.0 오픈소스, GLM-5.2 절반 크기). 동시기 출시되며 코딩 특화 모델 경쟁이 본격화.
+            SpaceXAI Grok 4.5(Cursor 기술 흡수, 코딩·에이전트 특화, 경쟁사 절반 가격), Meta Muse Spark 1.1(자체 코딩 모델, API 제공), Tencent Hy3(Apache 2.0 라이선스, GLM-5.2 절반 크기, 코딩 외 전 분야 우위)가 동시기 출시되며 코딩 특화 모델 경쟁 가속. Grok 4.5는 Opus 4.7 성능에 10% 가격 강조. 오픈소스 진영의 마진 압박이 더욱 거세질 전망.
           </p>
         </div>
         <div class="key-item">
-          <span class="tag" style="border-color:var(--neon-pink);color:var(--neon-pink);background:rgba(255,45,149,0.06)">저작권 · 법적 분쟁</span>
-          <h3><a href="https://techcrunch.com/2026/07/09/new-york-times-says-openai-hid-evidence-in-chatgpt-copyright-trial/" target="_blank">NYT 등 언론사, 오픈AI 증거 은폐 주장 — 법원 제재 요청</a></h3>
+          <span
+            class="tag"
+            style="
+              border-color: var(--neon-cyan);
+              color: var(--neon-cyan);
+              background: rgba(0, 229, 255, 0.08);
+            "
+            >음성 AI · GPT-Live</span
+          >
+          <h3>
+            <a
+              href="https://venturebeat.com/technology/openai-launches-gpt-live-a-full-duplex-voice-upgrade-that-lets-chatgpt-talk-more-like-a-person"
+              target="_blank"
+              >GPT-Live 완전 양방향 음성 — 사람처럼 듣고 동시에 말한다</a
+            >
+          </h3>
           <p>
-            뉴욕타임스 등 주요 언론사, 오픈AI가 AI 시스템 학습·사용 관련 증거를 고의로 은폐했다며 법원에 제재를 요청. 미드저니는 디즈니·워너에 맞서 스튜디오들의 내부 AI 사용 실태 공개 요구. Atlas 브라우저는 출시 1년도 안 돼 종료.
+            GPT-Live-1과 GPT-Live-1 mini 출시. 완전 양방향(full-duplex) 음성으로 사용자 말이 끝나기 전에도 문맥 파악 및 응답 가능. 유료 사용자에게 GPT-Live-1, 무료에게 GPT-Live-1 mini 제공하는 계층화 전략. iOS, Android, 웹 글로벌 출시. API 지원 예정. Paris 기반 Gradium도 $100M 시드 라운드 유치하며 음성 AI 시장 경쟁 가열.
           </p>
         </div>
         <div class="key-item">
-          <span class="tag" style="border-color:var(--neon-purple);color:var(--neon-purple);background:rgba(180,77,255,0.06)">인프라 · 칩</span>
-          <h3><a href="https://techcrunch.com/2026/07/09/metas-new-ai-chips-will-begin-production-in-september/" target="_blank">Meta Iris 칩 9월 생산 + 15조 캐나다 데이터센터 + Ollama $65M</a></h3>
+          <span
+            class="tag"
+            style="
+              border-color: var(--neon-pink);
+              color: var(--neon-pink);
+              background: rgba(255, 45, 149, 0.08);
+            "
+            >인프라 · 투자</span
+          >
+          <h3>
+            <a
+              href="https://www.aipostkorea.com/news/articleView.html?idxno=12030"
+              target="_blank"
+              >AI 인프라 투자 기하급수적 확대 — Meta 15조원 + Anthropic $19B + Meta Iris 칩</a
+            >
+          </h3>
           <p>
-            Meta Iris(MTIA 시리즈) 9월 생산 개시, 6개월 주기 신규 칩 출시. 캐나다 1GW 데이터센터 15조원 투자. 앤트로픽 켄터키 190억 달러 20년 임대. Ollama 65M 달러 투자 유치, 사용자 900만 돌파. Gradium(음성 AI) 1억 달러 시드.
+            Meta, 캐나다 첫 1GW AI 데이터센터에 15조원 투입. Anthropic, 켄터키 데이터센터 20년 $19B 임대 계약. Meta 자체 AI 칩 'Iris', 9월 생산 개시 — 6개월마다 새 자체 칩 출시 계획. Mercor $20B 기업가치 협상, Ollama $65M 시리즈(900만 유저), NVIDIA Nemotron이 LangChain Deep Agents Harness와 결합하여 벤치마크 선도 성능 달성. 인프라 투자 규모가 기하급수적으로 증가하는 추세.
           </p>
         </div>
       </div>
@@ -828,177 +1102,205 @@
       <div class="trends">
         <div class="trend-card">
           <div class="num">01</div>
-          <h3>GPT-5.6 — 오픈AI 패밀리 전략</h3>
+          <h3>GPT-5.6 — 오픈AI의 패밀리 전략 전환</h3>
           <p>
-            Sol·Terra·Luna 3종 동시 출시는 단일 모델 출시와 다른 전략적 전환. Luna는 GLM-5.2의 가성비 우위 직접 겨냥. MS 365 Copilot 즉시 탑재. 정부 사전 승인 첫 사례 — AI 거버넌스의 새로운 장.
+            Sol(주력)·Terra(중간급)·Luna(가성비) 3종 동시 출시는 과거 단일 모델 출시와 다른 전략적 전환. Luna는 GLM-5.2의 가성비 우위를 직접 겨냥. MS 365 Copilot 즉시 탑재로 기업 시장 장악 의지 표명. 정부 사전 승인 절차를 거친 최초의 사례. ChatGPT Work로 팀 단위 생산성 플랫폼으로 확장.
           </p>
         </div>
         <div class="trend-card">
           <div class="num">02</div>
           <h3>음성 AI의 새로운 지평 — GPT-Live</h3>
           <p>
-            완전 양방향(full-duplex) 음성 모델. 사용자 말이 끝나기 전에도 문맥 파악·응답 가능. GPT-Live-1(유료)과 GPT-Live-1 mini(무료) 계층화 전략. API 지원 예정으로 생태계 확장.
+            완전 양방향(full-duplex) 음성 모델로 사용자 말이 끝나기 전에도 문맥 파악 및 응답 가능. GPT-Live-1(유료)·GPT-Live-1 mini(무료) 계층화 전략. 음성 AI의 UX 혁신과 함께 Paris 기반 Gradium의 $100M 시드 유치(NVIDIA 지원)로 음성 스타트업 경쟁도 가속. Slackbot의 CRM·DocuSign 통합으로 업무용 AI 에이전트 활용도 확대.
           </p>
         </div>
         <div class="trend-card">
           <div class="num">03</div>
           <h3>AI 코딩 에이전트 3파전</h3>
           <p>
-            SpaceXAI Grok 4.5(Cursor 흡수)·Meta Muse Spark 1.1·Tencent Hy3(Apache 2.0) 동시 출시. Opus 4.7 성능에 10% 가격 경쟁력. 오픈소스 모델의 마진 압박 가속화.
+            SpaceXAI Grok 4.5(Cursor 기술 흡수)·Meta Muse Spark 1.1(자체 모델)·Tencent Hy3(Apache 2.0 오픈소스) 동시기 출시. Grok 4.5는 Opus 4.7 성능에 10% 가격 강조. Hy3는 제한적 라이선스 철폐·수출 규제 호환 GPU 구동으로 오픈소스 AI의 마진 압박 가속. LLM보다 코딩 에이전트가 'AI의 핵심 제품'으로 부상 중(벤처비트 분석).
           </p>
         </div>
         <div class="trend-card">
           <div class="num">04</div>
-          <h3>앤트로픽의 투명성·거버넌스</h3>
+          <h3>앤트로픽의 투명성·거버넌스 행보</h3>
           <p>
-            벤 버냉키 LTBT 임명으로 지배구조 강화. Hard Questions 캠페인으로 투명성 강조. Claude Reflect로 사용자 자기 성찰 기능 — AI 사용 긍정적 내러티브 구축.
+            벤 버냉키 전 연준의장을 LTBT에 임명하며 지배구조 강화. 대중에 "어려운 질문"을 요청하는 캠페인으로 투명성 강조. Claude Reflect로 사용자 자기 성찰 기능 제공 — AI 사용의 긍정적 내러티브 구축 의도. 저작권 분쟁(OpenAI 증거 은폐·Midjourney 맞고소) 속에서도 차별화된 포지셔닝.
           </p>
         </div>
         <div class="trend-card">
           <div class="num">05</div>
           <h3>AI 인프라·칩 경쟁 확대</h3>
           <p>
-            Meta Iris 칩 9월 생산·캐나다 1GW 센터. 앤트로픽 켄터키 $19B 20년 임대. NVIDIA Vera CPU 싱글스레드 성능. 인프라 투자 규모 기하급수적 증가.
+            Meta Iris 칩 9월 생산 개시(6개월 주기 신규 칩). NVIDIA Nemotron + LangChain Deep Agents로 벤치마크 선도. 캐나다 1GW 데이터센터(15조원), Anthropic 켄터키 $19B 20년 임대. NVIDIA "자신이 만든 컴퓨트 마켓플레이스의 피해자" 분석. 인프라 투자 규모가 기하급수적으로 증가하며 AI 수익 82%가 인프라로 유입.
           </p>
         </div>
       </div>
 
       <!-- 더보기 버튼 -->
       <button class="reveal-btn" id="revealBtn" onclick="toggleMore()">
-        <span class="arrow">▼</span> &nbsp;타임라인 보기 &nbsp;<span class="arrow">▼</span>
+        <span class="arrow">▼</span> &nbsp;타임라인 보기 &nbsp;<span
+          class="arrow"
+          >▼</span
+        >
       </button>
 
       <div class="hidden-content" id="moreContent">
         <!-- 타임라인 -->
         <h2 class="section-title">타임라인</h2>
         <div class="timeline">
-          <!-- 07.09 -->
+          <!-- 07.08 -->
           <div class="day">
-            <div class="day-label">⏵ 2026.07.09 (목) — GPT-5.6 전격 출시의 날</div>
+            <div class="day-label">
+              ⏵ 2026.07.08 (화) — 음성 AI·정부 승인의 날
+            </div>
 
             <div class="article">
-              <span class="tag openai">OpenAI · 모델</span>
-              <h4>GPT-5.6 시리즈 &amp; ChatGPT Work</h4>
-              <!-- 썸네일 그리드 -->
-              <div class="thumb-grid">
-                <div class="thumb-card">
-                  <img class="thumb-img" src="https://images.ctfassets.net/kftzwdyauwt9/8zCPzYVjq2bmne1Dv45Qy/2342acb201e74ccc390b3592120d6d06/5.6_Blog_Art_Card_-_Motion.png" alt="GPT-5.6" loading="lazy" />
-                  <div class="thumb-body">
-                    <h4><a href="https://openai.com/index/gpt-5-6/" target="_blank">GPT-5.6: Frontier intelligence</a></h4>
-                    <p class="desc">Sol·Terra·Luna 3종 구성. 정부 승인 후 첫 출시.</p>
-                  </div>
-                </div>
-                <div class="thumb-card">
-                  <img class="thumb-img" src="https://images.ctfassets.net/kftzwdyauwt9/4EpWY2r0tubXs7DCIhhWnE/cb1ef520e7f6960f91a161d886ee4934/Superapp_Blog_Art_Card_-_Motion.png" alt="ChatGPT Work" loading="lazy" />
-                  <div class="thumb-body">
-                    <h4><a href="https://openai.com/index/chatgpt-for-your-most-ambitious-work/" target="_blank">ChatGPT Work</a></h4>
-                    <p class="desc">팀 협업·다단계 작업·데스크톱·웹·모바일 연속성.</p>
-                  </div>
-                </div>
-                <div class="thumb-card">
-                  <img class="thumb-img" src="https://images.ctfassets.net/kftzwdyauwt9/3MPipvFMxS8m3kTyCtwFgj/015747dcd34cb667a221688cfca64e0f/Frame.png" alt="M365 Copilot" loading="lazy" />
-                  <div class="thumb-body">
-                    <h4><a href="https://openai.com/index/gpt-5-6-preferred-model-microsoft-365-copilot/" target="_blank">GPT-5.6 → M365 Copilot</a></h4>
-                    <p class="desc">Microsoft 365 Copilot 기본 모델로 즉시 탑재.</p>
-                  </div>
-                </div>
-              </div>
+              <span class="tag openai">OpenAI · 신규 출시</span>
+              <h4>GPT-Live 완전 양방향 음성 모델</h4>
               <ul class="headlines">
-                <li>GPT-5.6 System Card <a href="https://deploymentsafety.openai.com/gpt-5-6" target="_blank">[링크]</a></li>
-                <li>OpenAI Bio Bug Bounty <a href="https://openai.com/index/bio-bug-bounty/" target="_blank">[링크]</a></li>
+                <li>
+                  Introducing GPT-Live — 완전 양방향(full-duplex) 음성, 사용자 말이 끝나기 전 응답
+                  <a
+                    href="https://openai.com/index/introducing-gpt-live/"
+                    target="_blank"
+                    >[OpenAI]</a
+                  >
+                </li>
+                <li>
+                  GPT‑Live System Card 안전성 평가
+                  <a
+                    href="https://deploymentsafety.openai.com/gpt-live"
+                    target="_blank"
+                    >[System Card]</a
+                  >
+                </li>
+                <li>
+                  Separating signal from noise in coding evaluations — 코딩 평가 벤치마크 연구
+                  <a
+                    href="https://openai.com/index/separating-signal-from-noise-coding-evaluations/"
+                    target="_blank"
+                    >[OpenAI]</a
+                  >
+                </li>
               </ul>
             </div>
 
             <div class="article">
-              <span class="tag anthropic">Anthropic</span>
-              <h4>벤 버냉키 임명 · Hard Questions · Claude Reflect</h4>
-              <div class="thumb-grid">
-                <div class="thumb-card">
-                  <img class="thumb-img" src="https://www-cdn.anthropic.com/images/4zrzovbb/website/3fe58a56e696628496e95871e00b8287035ea645-2000x1125.jpg" alt="Hard Questions" loading="lazy" />
-                  <div class="thumb-body">
-                    <h4><a href="https://www.anthropic.com/news/hard-questions" target="_blank">Inviting hard questions</a></h4>
-                    <p class="desc">대중에게 AI에 관한 가장 어려운 질문을 공개 요청, 답변 과정 투명 공개 약속.</p>
-                  </div>
-                </div>
-              </div>
+              <span class="tag verge">The Verge · 해외</span>
+              <h4>음성·정부 승인·에이전트 소식</h4>
               <ul class="headlines">
-                <li>Ben Bernanke appointed to LTBT <a href="https://www.anthropic.com/news/ben-bernanke" target="_blank">[링크]</a></li>
-                <li>Reflect with Claude (Claude Wrapped) <a href="https://www.anthropic.com/news/reflect-with-claude" target="_blank">[링크]</a></li>
+                <li>
+                  ChatGPT's upgraded voice mode is better at shutting up
+                  <a
+                    href="https://www.theverge.com/ai-artificial-intelligence/962856/chatgpt-upgraded-voice-mode-gpt-live"
+                    target="_blank"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  GPT-5.6 is go — 트럼프 행정부 승인으로 출시 허가
+                  <a
+                    href="https://www.theverge.com/ai-artificial-intelligence/962675/gpt-5-6-is-go"
+                    target="_blank"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  Amazon, AI 에이전트 'Moonraker'로 추격
+                  <a
+                    href="https://www.theverge.com/ai-artificial-intelligence/962871/amazon-is-reportedly-trying-to-catch-up-in-the-ai-agent-race-with-moonraker"
+                    target="_blank"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  PC 출하량 2년 만에 첫 감소 — RAMageddon
+                  <a
+                    href="https://www.theverge.com/business/963069/pc-shipments-fell-for-the-first-time-in-over-two-years-thanks-to-ramageddon"
+                    target="_blank"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  Google Photos, AI로 동영상 '리믹스' 기능
+                  <a
+                    href="https://www.theverge.com/ai-artificial-intelligence/962752/google-photos-now-lets-you-remix-your-videos-with-ai"
+                    target="_blank"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  FL Studio 2026, AI 챗봇을 어시스턴트 엔지니어로 전환
+                  <a
+                    href="https://www.theverge.com/tech/963052/fl-studio-2026-music-daw-ai-chatbot"
+                    target="_blank"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  Instagram 게시물 Meta AI 학습 거부 방법
+                  <a
+                    href="https://www.theverge.com/ai-artificial-intelligence/962998/you-can-and-should-opt-out-of-letting-people-use-your-instagram-posts-with-metas-ai"
+                    target="_blank"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  This week in the big AI data center buildout — 인프라 주간 정리
+                  <a
+                    href="https://www.theverge.com/ai-artificial-intelligence/962990/this-week-in-the-big-ai-data-center-buildout"
+                    target="_blank"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  OpenAI 수석 미래학자 9년 만에 퇴사
+                  <a
+                    href="https://www.theverge.com/ai-artificial-intelligence/962540/openais-chief-futurist-is-leaving-the-company-after-nine-years"
+                    target="_blank"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  Notion, AI 에이전트 허브 앱 출시
+                  <a
+                    href="https://www.theverge.com/tech/962481/notions-new-app-is-a-hub-for-ai-agents"
+                    target="_blank"
+                    >[link]</a
+                  >
+                </li>
               </ul>
             </div>
 
             <div class="article">
-              <span class="tag nvidia">NVIDIA</span>
-              <h4>Nemotron + LangChain Deep Agents Harness</h4>
+              <span class="tag techcrunch">TechCrunch · 해외</span>
+              <h4>데이터 유출·자율주행·스타트업</h4>
               <ul class="headlines">
-                <li>Nemotron, LangChain Deep Agents Harness와 결합 벤치마크 선도 <a href="https://blogs.nvidia.com/blog/nemotron-langchain-agents-open-stack/" target="_blank">[링크]</a></li>
-              </ul>
-            </div>
-
-            <div class="article">
-              <span class="tag venturebeat">VentureBeat</span>
-              <h4>주요 기사</h4>
-              <ul class="headlines">
-                <li>OpenAI GPT-Live 음성 모델 출시 <a href="https://venturebeat.com/technology/openai-launches-gpt-live-a-full-duplex-voice-upgrade-that-lets-chatgpt-talk-more-like-a-person" target="_blank">[링크]</a></li>
-                <li>Slackbot, Salesforce CRM·Tableau·DocuSign 통합 <a href="https://venturebeat.com/orchestration/slacks-slackbot-can-now-pull-your-crm-data-generate-charts-and-send-docusigns-all-from-a-chat-message" target="_blank">[링크]</a></li>
-                <li>복수 AI 모델 사용 기업, 장애율 2.25배 과소평가 <a href="https://venturebeat.com/orchestration/enterprises-using-multiple-ai-models-are-underestimating-failure-rates-by-2-25x" target="_blank">[링크]</a></li>
-                <li>SpaceX Grok 4.5 — 경쟁사 절반 가격 <a href="https://venturebeat.com/technology/spacexs-grok-4-5-launches-at-half-the-price-of-rivals-heres-why-that-could-rattle-anthropic-and-openai" target="_blank">[링크]</a></li>
-                <li>Tencent Hy3 Apache 라이선스 오픈소스 <a href="https://venturebeat.com/technology/tencents-apache-licensed-hy3-takes-on-glm-5-2-at-half-the-size-and-wins-everywhere-except-coding" target="_blank">[링크]</a></li>
-              </ul>
-            </div>
-
-            <div class="article">
-              <span class="tag verge">The Verge</span>
-              <h4>주요 기사</h4>
-              <ul class="headlines">
-                <li>GPT-5.6, 정부 승인 후 출시 + ChatGPT Work <a href="https://www.theverge.com/ai-artificial-intelligence/963464/openai-gpt-5-6-codex-chatgpt-work" target="_blank">[링크]</a></li>
-                <li>Meta Muse Spark 1.1 코딩 모델 <a href="https://www.theverge.com/ai-artificial-intelligence/963193/meta-muse-spark-model-api" target="_blank">[링크]</a></li>
-                <li>Claude Wrapped (Reflection Dashboard) <a href="https://www.theverge.com/ai-artificial-intelligence/963105/anthropic-claude-wrapped-reflection-ai-usage" target="_blank">[링크]</a></li>
-                <li>Meta Iris 칩 9월 생산 개시 <a href="https://www.theverge.com/tech/963510/meta-reportedly-plans-to-start-manufacturing-its-new-ai-chip-in-september" target="_blank">[링크]</a></li>
-                <li>Google, AI 생성 광고 라벨 부착 <a href="https://www.theverge.com/ai-artificial-intelligence/963628/google-ai-generated-ads-label" target="_blank">[링크]</a></li>
-                <li>NYT 등 언론사, 오픈AI 증거 은폐 주장 <a href="https://www.theverge.com/ai-artificial-intelligence/963452/in-a-court-filing-the-new-york-times-and-other-publications-have-accused-openai-of-withholding-evidence" target="_blank">[링크]</a></li>
-                <li>ChatGPT Atlas 브라우저 종료 <a href="https://www.theverge.com/ai-artificial-intelligence/963654/openai-chatgpt-atlas-ai-browser-shut-down-sunset" target="_blank">[링크]</a></li>
-              </ul>
-            </div>
-
-            <div class="article">
-              <span class="tag techcrunch">TechCrunch</span>
-              <h4>주요 기사</h4>
-              <ul class="headlines">
-                <li>Meta Muse Spark 1.1 <a href="https://techcrunch.com/2026/07/09/meta-enters-the-crowded-ai-coding-battle-with-muse-spark-1-1/" target="_blank">[링크]</a></li>
-                <li>Elon Musk, Mythos/Fable 극찬 <a href="https://techcrunch.com/2026/07/09/elon-musk-praises-mythos-fable-promises-not-to-cut-off-anthropic/" target="_blank">[링크]</a></li>
-                <li>정부, GPT-5.6 안전성 판단 근거는? <a href="https://techcrunch.com/2026/07/09/how-did-the-government-decide-openais-frontier-model-was-safe-to-release/" target="_blank">[링크]</a></li>
-                <li>NVIDIA, 스스로 만든 컴퓨트 시장의 희생양 <a href="https://techcrunch.com/2026/07/09/nvidia-is-a-victim-of-the-compute-marketplace-it-created/" target="_blank">[링크]</a></li>
-                <li>Meta Iris 칩 9월 생산 <a href="https://techcrunch.com/2026/07/09/metas-new-ai-chips-will-begin-production-in-september/" target="_blank">[링크]</a></li>
-                <li>Anthropic·OpenAI·SpaceX, 지난 25년간 IT 엑시트 합산 능가 <a href="https://techcrunch.com/2026/07/09/anthropic-openai-and-spacex-are-bigger-than-the-last-25-years-of-tech-exits/" target="_blank">[링크]</a></li>
-                <li>Mercor, $20B 밸류에이션 협상 <a href="https://techcrunch.com/2026/07/09/mercor-is-in-talks-for-a-20b-valuation/" target="_blank">[링크]</a></li>
-                <li>Gradium(음성 AI), $100M 시드 (NVIDIA 참여) <a href="https://techcrunch.com/2026/07/09/paris-based-ai-voice-startup-gradium-raises-100m-seed-backed-by-nvidia/" target="_blank">[링크]</a></li>
-                <li>Ollama, $65M 투자·900만 사용자 <a href="https://techcrunch.com/2026/07/09/popular-open-source-ai-developer-tool-ollama-raises-65m-grows-to-nearly-9m-users/" target="_blank">[링크]</a></li>
-                <li>AI가 $3조 질문에 답할 수 있을까? <a href="https://techcrunch.com/2026/07/09/can-ai-answer-the-3-trillion-question/" target="_blank">[링크]</a></li>
-              </ul>
-            </div>
-
-            <div class="article">
-              <span class="tag hn">Hacker News · AI 관련</span>
-              <h4>상위 AI 관련 글</h4>
-              <ul class="headlines">
-                <li>GPT-5.6 — 853pt / 627댓글 <a href="https://openai.com/index/gpt-5-6/" target="_blank">[링크]</a></li>
-                <li>ChatGPT Work — 296pt <a href="https://openai.com/index/chatgpt-for-your-most-ambitious-work/" target="_blank">[링크]</a></li>
-                <li>Hy3 (Tencent) — 307pt <a href="https://hy.tencent.com/research/hy3" target="_blank">[링크]</a></li>
-                <li>Muse Spark 1.1 (Meta) — 286pt <a href="https://ai.meta.com/blog/introducing-muse-spark-meta-model-api/" target="_blank">[링크]</a></li>
-                <li>GLM 5.2 on slow computer — 121pt <a href="https://github.com/JustVugg/colibri" target="_blank">[링크]</a></li>
-                <li>Postgres in Rust — 213pt <a href="https://github.com/malisper/pgrust" target="_blank">[링크]</a></li>
-                <li>AI on social media / LinkedIn — 136pt <a href="https://www.pangram.com/blog/ai-in-your-feed" target="_blank">[링크]</a></li>
-              </ul>
-            </div>
-
-            <div class="article">
-              <span class="tag huggingface">Hugging Face</span>
-              <h4>주요 업데이트</h4>
-              <ul class="headlines">
-                <li>Data for Agents (NVIDIA 협업) <a href="https://huggingface.co/blog/nvidia/open-data-for-agents" target="_blank">[링크]</a></li>
-                <li>Native-speed vLLM transformers backend <a href="https://huggingface.co/blog/native-speed-vllm-transformers-backend" target="_blank">[링크]</a></li>
-                <li>Distillation in 2026 — 프론티어 모델 증류 분석 <a href="https://huggingface.co/blog/sergiopaniego/distillation-2026" target="_blank">[링크]</a></li>
+                <li>
+                  대규모 데이터 유출로 수백만 운전면허 번호 노출
+                  <a
+                    href="https://techcrunch.com/2026/07/08/another-massive-data-breach-exposed-millions-of-drivers-license-numbers/"
+                    target="_blank"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  연방, 자율주행차 기업에 응급대응 방해 금지 명령
+                  <a
+                    href="https://techcrunch.com/2026/07/08/feds-demand-autonomous-vehicle-companies-stop-interfering-with-first-responders/"
+                    target="_blank"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  Lovable, $13.2B 기업가치로 2배 상승 협상 중
+                  <a
+                    href="https://techcrunch.com/2026/07/08/lovable-reportedly-in-talks-to-double-its-valuation-to-13-2b/"
+                    target="_blank"
+                    >[link]</a
+                  >
+                </li>
               </ul>
             </div>
 
@@ -1006,141 +1308,662 @@
               <span class="tag aitimes">AI타임즈 · 한국</span>
               <h4>한국 주요 기사</h4>
               <ul class="headlines">
-                <li>AA 순위 뒤흔든 GPT-5.6 시리즈…루나, GLM-5.2 위협 <a href="https://www.aitimes.com/news/articleView.html?idxno=212604" target="_blank">[링크]</a></li>
-                <li>"우리가 안전성 증명해야"…알트먼, 정부 규제 반대서 한발 물러서 <a href="https://www.aitimes.com/news/articleView.html?idxno=212605" target="_blank">[링크]</a></li>
-                <li>구글 이어 오픈AI도 '하네스 무용론' <a href="https://www.aitimes.com/news/articleView.html?idxno=212582" target="_blank">[링크]</a></li>
-                <li>미니맥스, 2.7조 매개변수 차세대 LLM 개발 <a href="https://www.aitimes.com/news/articleView.html?idxno=212584" target="_blank">[링크]</a></li>
-                <li>메타, 촬영 시 LED 꺼지는 AI 안경 테스트 <a href="https://www.aitimes.com/news/articleView.html?idxno=212571" target="_blank">[링크]</a></li>
-                <li>중국, AI 기업에 H200 구매 제한적 허용 <a href="https://www.aitimes.com/news/articleView.html?idxno=212569" target="_blank">[링크]</a></li>
-                <li>GPT-라이브 출시 <a href="https://www.aitimes.com/news/articleView.html?idxno=212568" target="_blank">[링크]</a></li>
-                <li>코딩 특화 Grok 4.5 공개 <a href="https://www.aitimes.com/news/articleView.html?idxno=212563" target="_blank">[링크]</a></li>
-                <li>중국, 클로드 코드 백도어 보안 경고 <a href="https://www.aitimes.com/news/articleView.html?idxno=212570" target="_blank">[링크]</a></li>
-                <li>메타 Muse Image, 인스타 사진 무단 도용 논란 <a href="https://www.aitimes.com/news/articleView.html?idxno=212586" target="_blank">[링크]</a></li>
+                <li>
+                  MS, 엑셀·아웃룩에 자체 'MAI' 모델 도입 — OpenAI·Anthropic 의존도 낮춰
+                  <a
+                    href="https://www.aitimes.com/news/articleView.html?idxno=212531"
+                    target="_blank"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  [7월8일] "최고 모델이 공짜" — OpenAI·Anthropic 무료 토큰 경쟁 이유
+                  <a
+                    href="https://www.aitimes.com/news/articleView.html?idxno=212534"
+                    target="_blank"
+                    >[link]</a
+                  >
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- 07.09 -->
+          <div class="day">
+            <div class="day-label">
+              ⏵ 2026.07.09 (목) — GPT-5.6·코딩 전쟁·인프라 폭발
+            </div>
+
+            <div class="article">
+              <span class="tag openai">OpenAI · 대규모 출시</span>
+              <h4>GPT-5.6 시리즈 + ChatGPT Work + M365 Copilot</h4>
+              <ul class="headlines">
+                <li>
+                  GPT-5.6: Frontier intelligence — Sol·Terra·Luna 3종 출시
+                  <a
+                    href="https://openai.com/index/gpt-5-6/"
+                    target="_blank"
+                    >[OpenAI]</a
+                  >
+                  <a
+                    href="https://openai.com/index/gpt-5-6-system-card/"
+                    target="_blank"
+                    >[System Card]</a
+                  >
+                </li>
+                <li>
+                  ChatGPT Work — 팀 단위 고급 작업 플랫폼
+                  <a
+                    href="https://openai.com/index/chatgpt-for-your-most-ambitious-work/"
+                    target="_blank"
+                    >[OpenAI]</a
+                  >
+                </li>
+                <li>
+                  GPT-5.6, Microsoft 365 Copilot 기본 모델로 변경
+                  <a
+                    href="https://openai.com/index/gpt-5-6-preferred-model-microsoft-365-copilot/"
+                    target="_blank"
+                    >[OpenAI]</a
+                  >
+                </li>
+                <li>
+                  OpenAI Bio Bug Bounty — 생물학적 위험 버그 바운티
+                  <a
+                    href="https://openai.com/index/bio-bug-bounty/"
+                    target="_blank"
+                    >[OpenAI]</a
+                  >
+                </li>
+              </ul>
+            </div>
+
+            <div class="article">
+              <span class="tag anthropic">Anthropic · 거버넌스</span>
+              <h4>버냉키 임명 + Reflect 대시보드 + "어려운 질문"</h4>
+              <ul class="headlines">
+                <li>
+                  Inviting hard questions — 대중에 AI 관련 어려운 질문 공개 요청
+                  <a
+                    href="https://www.anthropic.com/news/hard-questions"
+                    target="_blank"
+                    >[Anthropic]</a
+                  >
+                </li>
+                <li>
+                  Ben Bernanke, Anthropic 장기수익신탁(LTBT)에 임명
+                  <a
+                    href="https://www.anthropic.com/news/ben-bernanke"
+                    target="_blank"
+                    >[Anthropic]</a
+                  >
+                </li>
+                <li>
+                  Reflect with Claude — Claude Wrapped 스타일 사용 대시보드
+                  <a
+                    href="https://www.anthropic.com/news/reflect-with-claude"
+                    target="_blank"
+                    >[Anthropic]</a
+                  >
+                </li>
+              </ul>
+            </div>
+
+            <div class="article">
+              <span class="tag nvidia">NVIDIA · 연구</span>
+              <h4>Nemotron + LangChain Deep Agents</h4>
+              <ul class="headlines">
+                <li>
+                  Nemotron, LangChain Deep Agents Harness와 결합하여 벤치마크 선도 성능 달성
+                  <a
+                    href="https://blogs.nvidia.com/blog/nemotron-langchain-agents-open-stack/"
+                    target="_blank"
+                    >[NVIDIA Blog]</a
+                  >
+                </li>
+              </ul>
+            </div>
+
+            <div class="article">
+              <span class="tag venturebeat">VentureBeat · 해외</span>
+              <h4>GPT-Live·Slackbot·Grok 4.5·Hy3</h4>
+              <ul class="headlines">
+                <li>
+                  OpenAI launches GPT-Live, full-duplex voice upgrade
+                  <a
+                    href="https://venturebeat.com/technology/openai-launches-gpt-live-a-full-duplex-voice-upgrade-that-lets-chatgpt-talk-more-like-a-person"
+                    target="_blank"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  Slackbot, CRM·Tableau·DocuSign 통합 — 채팅 한 줄로 비즈니스 처리
+                  <a
+                    href="https://venturebeat.com/orchestration/slacks-slackbot-can-now-pull-your-crm-data-generate-charts-and-send-docusigns-all-from-a-chat-message"
+                    target="_blank"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  멀티 AI 모델 기업, 장애율 2.25배 과소평가
+                  <a
+                    href="https://venturebeat.com/orchestration/enterprises-using-multiple-ai-models-are-underestimating-failure-rates-by-2-25x"
+                    target="_blank"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  SpaceX's Grok 4.5 — 경쟁사 절반 가격, 코딩·에이전트 특화
+                  <a
+                    href="https://venturebeat.com/technology/spacexs-grok-4-5-launches-at-half-the-price-of-rivals-heres-why-that-could-rattle-anthropic-and-openai"
+                    target="_blank"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  Tencent's Apache-licensed Hy3 — GLM-5.2 절반 크기, 코딩 외 전 분야 우위
+                  <a
+                    href="https://venturebeat.com/technology/tencents-apache-licensed-hy3-takes-on-glm-5-2-at-half-the-size-and-wins-everywhere-except-coding"
+                    target="_blank"
+                    >[link]</a
+                  >
+                </li>
+              </ul>
+            </div>
+
+            <div class="article">
+              <span class="tag verge">The Verge · 해외</span>
+              <h4>GPT-5.6 정식 출시·Muse Spark·저작권 분쟁</h4>
+              <ul class="headlines">
+                <li>
+                  OpenAI rolls out GPT-5.6 after government greenlight — ChatGPT Work 발표
+                  <a
+                    href="https://www.theverge.com/ai-artificial-intelligence/963464/openai-gpt-5-6-codex-chatgpt-work"
+                    target="_blank"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  Meta says its new AI model is ready to compete on coding — Muse Spark 1.1
+                  <a
+                    href="https://www.theverge.com/ai-artificial-intelligence/963193/meta-muse-spark-model-api"
+                    target="_blank"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  Say hello to Claude Wrapped — Anthropic Reflection Dashboard
+                  <a
+                    href="https://www.theverge.com/ai-artificial-intelligence/963105/anthropic-claude-wrapped-reflection-ai-usage"
+                    target="_blank"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  Meta, 자체 AI 칩 'Iris' 9월 생산 개시
+                  <a
+                    href="https://www.theverge.com/tech/963510/meta-reportedly-plans-to-start-manufacturing-its-new-ai-chip-in-september"
+                    target="_blank"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  Google, AI로 생성된 광고에 자동 라벨 부착
+                  <a
+                    href="https://www.theverge.com/ai-artificial-intelligence/963628/google-ai-generated-ads-label"
+                    target="_blank"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  NYT 등 언론사, OpenAI 증거 은폐로 법원 제재 요청
+                  <a
+                    href="https://www.theverge.com/ai-artificial-intelligence/963452/in-a-court-filing-the-new-york-times-and-other-publications-have-accused-openai-of-withholding-evidence"
+                    target="_blank"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  ChatGPT Atlas 브라우저, 출시 1년도 안 되어 종료
+                  <a
+                    href="https://www.theverge.com/ai-artificial-intelligence/963654/openai-chatgpt-atlas-ai-browser-shut-down-sunset"
+                    target="_blank"
+                    >[link]</a
+                  >
+                </li>
+              </ul>
+            </div>
+
+            <div class="article">
+              <span class="tag techcrunch">TechCrunch · 해외</span>
+              <h4>메타·머스크·스타트업·AI 경제</h4>
+              <ul class="headlines">
+                <li>
+                  Meta enters crowded AI coding battle with Muse Spark 1.1
+                  <a
+                    href="https://techcrunch.com/2026/07/09/meta-enters-the-crowded-ai-coding-battle-with-muse-spark-1-1/"
+                    target="_blank"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  Elon Musk praises Mythos/Fable, promises not to 'cut off' Anthropic
+                  <a
+                    href="https://techcrunch.com/2026/07/09/elon-musk-praises-mythos-fable-promises-not-to-cut-off-anthropic/"
+                    target="_blank"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  How did the government decide OpenAI's frontier model was safe to release?
+                  <a
+                    href="https://techcrunch.com/2026/07/09/how-did-the-government-decide-openais-frontier-model-was-safe-to-release/"
+                    target="_blank"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  Nvidia is a victim of the compute marketplace it created
+                  <a
+                    href="https://techcrunch.com/2026/07/09/nvidia-is-a-victim-of-the-compute-marketplace-it-created/"
+                    target="_blank"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  Meta's new AI chips will begin production in September
+                  <a
+                    href="https://techcrunch.com/2026/07/09/metas-new-ai-chips-will-begin-production-in-september/"
+                    target="_blank"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  Anthropic, OpenAI, SpaceX bigger than last 25 years of tech exits
+                  <a
+                    href="https://techcrunch.com/2026/07/09/anthropic-openai-and-spacex-are-bigger-than-the-last-25-years-of-tech-exits/"
+                    target="_blank"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  Anthropic's new Claude feature is quietly selling you on AI
+                  <a
+                    href="https://techcrunch.com/2026/07/09/anthropics-new-claude-feature-is-quietly-selling-you-on-ai/"
+                    target="_blank"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  Google will now disclose which ads are made with AI
+                  <a
+                    href="https://techcrunch.com/2026/07/09/google-will-now-disclose-which-ads-are-made-with-ai/"
+                    target="_blank"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  Mercor in talks for $20B valuation
+                  <a
+                    href="https://techcrunch.com/2026/07/09/mercor-is-in-talks-for-a-20b-valuation/"
+                    target="_blank"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  Paris-based AI voice startup Gradium raises $100M seed (NVIDIA backed)
+                  <a
+                    href="https://techcrunch.com/2026/07/09/paris-based-ai-voice-startup-gradium-raises-100m-seed-backed-by-nvidia/"
+                    target="_blank"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  Ollama raises $65M, grows to nearly 9M users
+                  <a
+                    href="https://techcrunch.com/2026/07/09/popular-open-source-ai-developer-tool-ollama-raises-65m-grows-to-nearly-9m-users/"
+                    target="_blank"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  Can AI answer the $3 trillion question?
+                  <a
+                    href="https://techcrunch.com/2026/07/09/can-ai-answer-the-3-trillion-question/"
+                    target="_blank"
+                    >[link]</a
+                  >
+                </li>
+              </ul>
+            </div>
+
+            <div class="article">
+              <span class="tag aitimes">AI타임즈 · 한국</span>
+              <h4>한국 주요 기사</h4>
+              <ul class="headlines">
+                <li>
+                  AA 순위 뒤흔든 GPT-5.6 시리즈…'루나', 대세 GLM-5.2 위협
+                  <a
+                    href="https://www.aitimes.com/news/articleView.html?idxno=212604"
+                    target="_blank"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  "우리가 안전성 증명해야"…알트먼, '정부 규제 반대'서 한발 물러서
+                  <a
+                    href="https://www.aitimes.com/news/articleView.html?idxno=212605"
+                    target="_blank"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  구글 이어 OpenAI도 '하네스 무용론'…"차세대 모델이 기능 흡수할 것"
+                  <a
+                    href="https://www.aitimes.com/news/articleView.html?idxno=212582"
+                    target="_blank"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  미니맥스, 2.7조 매개변수 차세대 LLM 개발…중국 역대 최대 규모
+                  <a
+                    href="https://www.aitimes.com/news/articleView.html?idxno=212584"
+                    target="_blank"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  메타, 촬영 시 LED 꺼지는 '슈퍼 센싱' AI 안경 테스트 중
+                  <a
+                    href="https://www.aitimes.com/news/articleView.html?idxno=212571"
+                    target="_blank"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  중국, 주요 AI 기업에 엔비디아 'H200' 구매 제한적 허용
+                  <a
+                    href="https://www.aitimes.com/news/articleView.html?idxno=212569"
+                    target="_blank"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  차세대 음성모델 'GPT-라이브' 출시…"사람처럼 듣고 동시에 말해"
+                  <a
+                    href="https://www.aitimes.com/news/articleView.html?idxno=212568"
+                    target="_blank"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  코딩 특화 '그록 4.5' 공개…"오퍼스 4.7 성능에 가격은 10%"
+                  <a
+                    href="https://www.aitimes.com/news/articleView.html?idxno=212563"
+                    target="_blank"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  중국, '클로드 코드'에 백도어 탑재 보안 경고 발령
+                  <a
+                    href="https://www.aitimes.com/news/articleView.html?idxno=212570"
+                    target="_blank"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  메타 '뮤즈 이미지', 인스타 사진 무단 도용 논란
+                  <a
+                    href="https://www.aitimes.com/news/articleView.html?idxno=212586"
+                    target="_blank"
+                    >[link]</a
+                  >
+                </li>
               </ul>
             </div>
 
             <div class="article">
               <span class="tag aipost">AI포스트 · 한국</span>
-              <h4>주요 기사</h4>
-              <ul class="headlines">
-                <li>SpaceXAI Grok 4.5 공개…GPT-5.6에 맞불 <a href="https://www.aipostkorea.com/news/articleView.html?idxno=12027" target="_blank">[링크]</a></li>
-                <li>GPT-라이브 음성 AI 모델 적용 <a href="https://www.aipostkorea.com/news/articleView.html?idxno=12029" target="_blank">[링크]</a></li>
-                <li>메타, 캐나다 첫 1GW AI 데이터센터 착공 <a href="https://www.aipostkorea.com/news/articleView.html?idxno=12030" target="_blank">[링크]</a></li>
-                <li>프라임 인텔렉트, 2000억 투자 유치·유니콘 등극 <a href="https://www.aipostkorea.com/news/articleView.html?idxno=12031" target="_blank">[링크]</a></li>
-                <li>젠슨 황, 비용 절감 슈퍼 에이전트 시대 예고 <a href="https://www.aipostkorea.com/news/articleView.html?idxno=12032" target="_blank">[링크]</a></li>
-              </ul>
-            </div>
-          </div>
-
-          <!-- 07.08 -->
-          <div class="day">
-            <div class="day-label">⏵ 2026.07.08 (화) — GPT-Live·승인·에이전트의 날</div>
-
-            <div class="article">
-              <span class="tag openai">OpenAI · 음성</span>
-              <h4>GPT-Live &amp; 연구</h4>
-              <div class="thumb-grid">
-                <div class="thumb-card">
-                  <img class="thumb-img" src="https://images.ctfassets.net/kftzwdyauwt9/4vJ1lSvYeKz0zM4RVCKwIC/855f7e54052d8a7635e4bf45adf41737/Art_Card_1_1.png" alt="GPT-Live" loading="lazy" />
-                  <div class="thumb-body">
-                    <h4><a href="https://openai.com/index/introducing-gpt-live/" target="_blank">Introducing GPT-Live</a></h4>
-                    <p class="desc">완전 양방향(full-duplex) 음성 AI. 사용자 말이 끝나기 전 응답 가능. iOS·Android·웹 글로벌 출시.</p>
-                  </div>
-                </div>
-                <div class="thumb-card">
-                  <img class="thumb-img" src="https://images.ctfassets.net/kftzwdyauwt9/7j6M3prKIsTmV6cbMaHjhZ/e66f7cdd98c66c99546853cbc22cfe84/Seperating-signal-from-noise-card.png" alt="Coding Eval" loading="lazy" />
-                  <div class="thumb-body">
-                    <h4><a href="https://openai.com/index/separating-signal-from-noise-coding-evaluations/" target="_blank">코딩 평가 노이즈 분리 연구</a></h4>
-                    <p class="desc">코딩 평가 벤치마크에서 노이즈와 실제 신호를 분리하는 방법론.</p>
-                  </div>
-                </div>
-                <div class="thumb-card">
-                  <img class="thumb-img" src="https://images.ctfassets.net/kftzwdyauwt9/6B2Ddp37H6lfMuxOjcvfa0/f65b4ba8a3550da03e1a5db26fe50ca0/System_Card_1x1__1_.jpg" alt="GPT-Live System Card" loading="lazy" />
-                  <div class="thumb-body">
-                    <h4><a href="https://deploymentsafety.openai.com/gpt-live" target="_blank">GPT‑Live System Card</a></h4>
-                    <p class="desc">GPT-Live 안전성 평가 시스템 카드.</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="article">
-              <span class="tag verge">The Verge · 7월 8일</span>
-              <h4>주요 기사</h4>
-              <ul class="headlines">
-                <li>ChatGPT 업그레이드 음성 모드 (GPT-Live) <a href="https://www.theverge.com/ai-artificial-intelligence/962856/chatgpt-upgraded-voice-mode-gpt-live" target="_blank">[링크]</a></li>
-                <li>GPT-5.6 출시 승인 (트럼프 행정부) <a href="https://www.theverge.com/ai-artificial-intelligence/962675/gpt-5-6-is-go" target="_blank">[링크]</a></li>
-                <li>Amazon 'Moonraker' AI 에이전트 추격 <a href="https://www.theverge.com/ai-artificial-intelligence/962871/amazon-is-reportedly-trying-to-catch-up-in-the-ai-agent-race-with-moonraker" target="_blank">[링크]</a></li>
-                <li>PC 출하량 9분기 만에 감소 — RAMageddon <a href="https://www.theverge.com/business/963069/pc-shipments-fell-for-the-first-time-in-over-two-years-thanks-to-ramageddon" target="_blank">[링크]</a></li>
-                <li>Google Photos 비디오 리믹스 (Gemini Omni) <a href="https://www.theverge.com/ai-artificial-intelligence/962752/google-photos-now-lets-you-remix-your-videos-with-ai" target="_blank">[링크]</a></li>
-                <li>FL Studio 2026 AI 챗봇 <a href="https://www.theverge.com/tech/963052/fl-studio-2026-music-daw-ai-chatbot" target="_blank">[링크]</a></li>
-                <li>Instagram, Meta AI 사진 재사용 옵트아웃 방법 <a href="https://www.theverge.com/ai-artificial-intelligence/962998/you-can-and-should-opt-out-of-letting-people-use-your-instagram-posts-with-metas-ai" target="_blank">[링크]</a></li>
-                <li>OpenAI 수석 미래학자 9년 만에 퇴사 <a href="https://www.theverge.com/ai-artificial-intelligence/962540/openais-chief-futurist-is-leaving-the-company-after-nine-years" target="_blank">[링크]</a></li>
-                <li>Notion Agents 앱 출시 <a href="https://www.theverge.com/tech/962481/notions-new-app-is-a-hub-for-ai-agents" target="_blank">[링크]</a></li>
-              </ul>
-            </div>
-
-            <div class="article">
-              <span class="tag techcrunch">TechCrunch · 7월 8일</span>
-              <h4>주요 기사</h4>
-              <ul class="headlines">
-                <li>대규모 운전면허 데이터 유출 <a href="https://techcrunch.com/2026/07/08/another-massive-data-breach-exposed-millions-of-drivers-license-numbers/" target="_blank">[링크]</a></li>
-                <li>자율주행차, 긴급 차량 방해 금지 연방 명령 <a href="https://techcrunch.com/2026/07/08/feds-demand-autonomous-vehicle-companies-stop-interfering-with-first-responders/" target="_blank">[링크]</a></li>
-                <li>Lovable, $13.2B 밸류에이션 협상 <a href="https://techcrunch.com/2026/07/08/lovable-reportedly-in-talks-to-double-its-valuation-to-13-2b/" target="_blank">[링크]</a></li>
-              </ul>
-            </div>
-
-            <div class="article">
-              <span class="tag aitimes">AI타임즈 · 7월 8일</span>
               <h4>한국 주요 기사</h4>
               <ul class="headlines">
-                <li>MS, 엑셀·아웃룩에 자체 MAI 모델 도입 <a href="https://www.aitimes.com/news/articleView.html?idxno=212531" target="_blank">[링크]</a></li>
-                <li>[7월8일] "최고 모델이 공짜"…무료 토큰 경쟁 <a href="https://www.aitimes.com/news/articleView.html?idxno=212534" target="_blank">[링크]</a></li>
+                <li>
+                  일론 머스크의 SpaceXAI, 차세대 '그록 4.5' 공개…"GPT-5.6에 맞불"
+                  <a
+                    href="https://www.aipostkorea.com/news/articleView.html?idxno=12027"
+                    target="_blank"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  "말 끊어도 대화 이어간다"…OpenAI, 차세대 음성 AI 모델 'GPT-라이브' 적용
+                  <a
+                    href="https://www.aipostkorea.com/news/articleView.html?idxno=12029"
+                    target="_blank"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  메타, 캐나다 첫 AI 데이터 센터 착공…13조 원 투입해 1GW 초대형 인프라 구축
+                  <a
+                    href="https://www.aipostkorea.com/news/articleView.html?idxno=12030"
+                    target="_blank"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  엔비디아·인텔·델이 점찍었다…프라임 인텔렉트, 2000억 원 투자 유치 유니콘 등극
+                  <a
+                    href="https://www.aipostkorea.com/news/articleView.html?idxno=12031"
+                    target="_blank"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  "파이썬 코딩보다 AI 에이전트 개발"…젠슨 황, '슈퍼 에이전트' 시대 예고
+                  <a
+                    href="https://www.aipostkorea.com/news/articleView.html?idxno=12032"
+                    target="_blank"
+                    >[link]</a
+                  >
+                </li>
+              </ul>
+            </div>
+
+            <div class="article">
+              <span class="tag hn">Hacker News · AI 주요 글</span>
+              <h4>커뮤니티 화제</h4>
+              <ul class="headlines">
+                <li>
+                  GPT-5.6 — 853포인트, 627댓글
+                  <a
+                    href="https://openai.com/index/gpt-5-6/"
+                    target="_blank"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  ChatGPT Work — 296포인트
+                  <a
+                    href="https://openai.com/index/chatgpt-for-your-most-ambitious-work/"
+                    target="_blank"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  Muse Spark 1.1 (Meta) — 286포인트
+                  <a
+                    href="https://ai.meta.com/blog/introducing-muse-spark-meta-model-api/"
+                    target="_blank"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  Hy3 (Tencent) — 307포인트
+                  <a
+                    href="https://hy.tencent.com/research/hy3"
+                    target="_blank"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  Show HN: Getting GLM 5.2 running on slow computer — 121포인트
+                  <a
+                    href="https://github.com/JustVugg/colibri"
+                    target="_blank"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  Postgres rewritten in Rust, passing 100% regression tests — 213포인트
+                  <a
+                    href="https://github.com/malisper/pgrust"
+                    target="_blank"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  AI content everywhere on social media, especially LinkedIn — 136포인트
+                  <a
+                    href="https://www.pangram.com/blog/ai-in-your-feed"
+                    target="_blank"
+                    >[link]</a
+                  >
+                </li>
+              </ul>
+            </div>
+
+            <div class="article">
+              <span class="tag huggingface">Hugging Face · 커뮤니티</span>
+              <h4>데이터·추론·연구 업데이트</h4>
+              <ul class="headlines">
+                <li>
+                  Data for Agents — NVIDIA 협업, 에이전트 학습용 오픈 데이터셋 (7/8)
+                  <a
+                    href="https://huggingface.co/blog/nvidia/open-data-for-agents"
+                    target="_blank"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  Native-speed vLLM transformers modeling backend (7/8)
+                  <a
+                    href="https://huggingface.co/blog/native-speed-vllm-transformers-backend"
+                    target="_blank"
+                    >[link]</a
+                  >
+                </li>
+                <li>
+                  Distillation in 2026: which frontier models use it and how (7/9)
+                  <a
+                    href="https://huggingface.co/blog/sergiopaniego/distillation-2026"
+                    target="_blank"
+                    >[link]</a
+                  >
+                </li>
+              </ul>
+            </div>
+
+            <div class="article">
+              <span class="tag arxiv">ArXiv cs.AI · 7/8~9 주요 논문</span>
+              <h4>주요 논문 (14건 선별)</h4>
+              <ul class="headlines">
+                <li>
+                  Institutional Red-Teaming: 멀티에이전트 AI 안전성은 배포 규칙이 인과적 주요 요인
+                  <span class="hl-link">[cs.AI]</span>
+                </li>
+                <li>
+                  SkillCenter: 자율 AI 에이전트를 위한 대규모 소스 기반 스킬 라이브러리
+                  <span class="hl-link">[cs.AI]</span>
+                </li>
+                <li>
+                  Recursive Self-Improvement in AI: 제한적 자기 정제→자율 연구 루프 서베이
+                  <span class="hl-link">[cs.AI]</span>
+                </li>
+                <li>
+                  RL Post-Training Builds Compositional Reasoning Strategies (ICML 2026 Workshop)
+                  <span class="hl-link">[cs.AI]</span>
+                </li>
+                <li>
+                  Search, Fail, Recover: 자기 수정 추론 학습 프레임워크
+                  <span class="hl-link">[cs.AI]</span>
+                </li>
+                <li>
+                  Reason Less, Verify More: 도구 사용 LLM 정책 위반 실패 모드
+                  <span class="hl-link">[cs.AI]</span>
+                </li>
+                <li>
+                  Measuring Intelligence Beyond Human Scale — 인간 규모 넘어선 지능 측정
+                  <span class="hl-link">[cs.AI]</span>
+                </li>
+                <li>
+                  The Harness Effect: 엔터프라이즈 에이전틱 AI 토큰 경제학
+                  <span class="hl-link">[cs.AI]</span>
+                </li>
+                <li>
+                  Agon: Competitive Cross-Model RL with Implicit Rival Grading
+                  <span class="hl-link">[cs.AI]</span>
+                </li>
+                <li>
+                  Cost-Effective Agent Harnesses for ARC-AGI-1
+                  <span class="hl-link">[cs.AI]</span>
+                </li>
+                <li>
+                  AgentLens: 코딩 에이전트 평가를 위한 프로덕션 기반 궤적 리뷰
+                  <span class="hl-link">[cs.AI]</span>
+                </li>
+                <li>
+                  Evaluating SageMath-Augmented LLM Agents for Mathematics (ICML 2026 Workshop)
+                  <span class="hl-link">[cs.AI]</span>
+                </li>
+                <li>
+                  Learning social norms enhances compatibility in human-AI coordination
+                  <span class="hl-link">[cs.AI]</span>
+                </li>
+                <li>
+                  Agentic Data Environments — IEEE Data Bulletin 게재
+                  <span class="hl-link">[cs.AI]</span>
+                </li>
               </ul>
             </div>
           </div>
-        </div>
-
-        <!-- 주요 논문 -->
-        <h2 class="section-title">주요 논문 // ArXiv cs.AI</h2>
-        <div class="article">
-          <span class="tag arxiv">ArXiv · 7월 8~9일</span>
-          <h4>주목할 논문 14선 (1,194건 중 선별)</h4>
-          <table class="paper-table">
-            <tr><th>논문</th><th>요약</th></tr>
-            <tr><td>Institutional Red-Teaming</td><td>멀티에이전트 AI 안전성은 모델보다 배포 규칙이 인과적으로 더 큰 영향</td></tr>
-            <tr><td>SkillCenter</td><td>자율 AI 에이전트를 위한 대규모 소스 기반 스킬 라이브러리 구축</td></tr>
-            <tr><td>Recursive Self-Improvement in AI</td><td>제한된 자기 정제에서 자율 연구 루프까지 — AI 자기 개선 서베이</td></tr>
-            <tr><td>RL Post-Training</td><td>RL 사후학습이 조합적 추론 전략을 구축 (ICML 2026 Workshop)</td></tr>
-            <tr><td>Search, Fail, Recover</td><td>실패-복구를 통한 자기 수정 추론 학습 프레임워크</td></tr>
-            <tr><td>Reason Less, Verify More</td><td>도구 사용 LLM 에이전트의 정책 위반 실패 모드 검증</td></tr>
-            <tr><td>Measuring Intelligence Beyond Human Scale</td><td>인간 규모를 넘어선 지능 측정 방법론</td></tr>
-            <tr><td>The Harness Effect</td><td>엔터프라이즈 에이전틱 AI 토큰 경제학과 오케스트레이션 설계</td></tr>
-            <tr><td>Agon</td><td>경쟁적 교차 모델 RL을 통한 추론 평가</td></tr>
-            <tr><td>Cost-Effective Agent Harnesses</td><td>ARC-AGI-1에서 비용 효율적 추상 추론 에이전트</td></tr>
-            <tr><td>AgentLens</td><td>코딩 에이전트 평가를 위한 프로덕션 기반 궤적 리뷰</td></tr>
-            <tr><td>SageMath-Augmented LLM Agents</td><td>수학 연구용 SageMath 강화 LLM 에이전트 (ICML 2026)</td></tr>
-            <tr><td>Learning social norms</td><td>인간-AI 협업에서 사회적 규범 학습이 호환성 향상</td></tr>
-            <tr><td>Agentic Data Environments</td><td>에이전틱 데이터 환경 — IEEE Data Bulletin 게재</td></tr>
-          </table>
         </div>
 
         <!-- 수집 제한 안내 -->
         <div class="note-section">
           <h3>수집 제한 안내</h3>
           <ul>
-            <li>The Batch (DeepLearning.AI): 주간 발행으로 이번 기간 해당호(Issue 360, 7/3)가 기간 전 발행.</li>
-            <li>Google AI 블로그 / Google DeepMind 블로그: 7월 8~9일 신규 게시물 없음 (대부분 5~6월 콘텐츠).</li>
-            <li>Reuters, ArXiv 7월 8일 목록: ArXiv는 7월 9일자 50건 중 주요 논문 14건만 선별.</li>
-            <li>Ahead of AI (Sebastian Raschka): 해당 기간 신규 발행 없음.</li>
-            <li>썸네일: OpenAI 기사는 og:image 확보 완료. Anthropic 1건 확보. 나머지 소스는 텍스트 위주 정리.</li>
+            <li>
+              The Batch (DeepLearning.AI): 주간 발행으로 이번 기간 해당호 미포함 (최신호 Issue 360, 7월 3일).
+            </li>
+            <li>
+              Google AI 블로그 / Google DeepMind: 7월 8~9일 신규 게시물 없음.
+            </li>
+            <li>
+              Reuters: 시간 관계상 일부 항목만 포함.
+            </li>
+            <li>
+              Ahead of AI (Sebastian Raschka): 해당 기간 신규 발행 없음.
+            </li>
+            <li>
+              ArXiv: 7월 9일자 50건 중 주요 논문만 선별 수록.
+            </li>
+            <li>
+              썸네일: 사용자가 썸네일 미포함을 요청하여 모든 og:image 생략.
+            </li>
+            <li>
+              AI타임즈·AI포스트: 개별 기사 페이지 og:image 수집 생략. 제목·링크 중심 정리.
+            </li>
           </ul>
         </div>
       </div>
 
       <footer>
         수집일: 2026-07-10 · 기간: 2026.07.08 — 07.09 ·
-        <span class="src">OpenAI·Anthropic·NVIDIA·Hacker News·VentureBeat·The Verge·TechCrunch·AI타임즈·AI포스트·Hugging Face·ArXiv</span>
+        <span class="src"
+          >OpenAI·Anthropic·NVIDIA·Hacker News·VentureBeat·The Verge·TechCrunch·AI타임즈·AI포스트·Hugging Face·ArXiv</span
+        >
       </footer>
     </div>
 
@@ -1151,9 +1974,11 @@
         btn.classList.toggle("open");
         content.classList.toggle("open");
         if (content.classList.contains("open")) {
-          btn.innerHTML = '<span class="arrow">▲</span> &nbsp;타임라인 접기 &nbsp;<span class="arrow">▲</span>';
+          btn.innerHTML =
+            '<span class="arrow">▲</span> &nbsp;타임라인 접기 &nbsp;<span class="arrow">▲</span>';
         } else {
-          btn.innerHTML = '<span class="arrow">▼</span> &nbsp;타임라인 보기 &nbsp;<span class="arrow">▼</span>';
+          btn.innerHTML =
+            '<span class="arrow">▼</span> &nbsp;타임라인 보기 &nbsp;<span class="arrow">▼</span>';
         }
       }
     </script>

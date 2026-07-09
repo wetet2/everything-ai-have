@@ -125,16 +125,111 @@ IT 뉴스 (해외):
 - 썸네일 수집이 불가능한 기사는 제목+링크만 표기.
 - 중복 기사(여러 소스에서 같은 이슈)는 가장 대표적인 소스 한 곳에 배치하고, 다른 섹션에서는 "(상세 요약은 X/Y 섹션 참고)"로 참조.
 
-### 5단계: 썸네일 수집 → 검증: 각 기사별 og:image 원본 URL 확보
+### 5단계: 썸네일 수집 → 검증: 각 기사별 og:image 원본 URL 확보 (Node.js 스크립트 방식)
 
-기사 제목과 링크만으로는 시각적 정보가 부족하므로, 각 기사 페이지를 HTML 포맷으로 `webfetch`하여 썸네일 이미지를 추출해 md에 추가한다. **해상도 suffix를 변경하거나 URL을 임의로 조작하지 않고, 페이지에 명시된 원본 URL을 그대로 사용**하는 것이 핵심이다.
+기사 제목과 링크만으로는 시각적 정보가 부족하므로, 각 기사 페이지에서 og:image를 추출해 md에 추가한다. **해상도 suffix를 변경하거나 URL을 임의로 조작하지 않고, 페이지에 명시된 원본 URL을 그대로 사용**하는 것이 핵심이다.
 
-**일반적인 추출 방법 (모든 소스 공통):**
+**수집 방식 원칙:**
 
-1. 각 기사 URL을 `format: html`로 개별 `webfetch` (6개씩 병렬, 나머지 소스 수집과 동시 진행)
-2. 응답 HTML에서 `<head>` 내 `<meta property="og:image" content="...">` 태그를 찾는다
-3. `og:image`가 없으면 `<meta name="twitter:image" content="...">`를 대체재로 사용
-4. 추출한 이미지 URL을 `![thumb](이미지URL)` 형식으로 각 기사의 링크 뒤에 추가
+- OpenAI 등 메인 소스의 기사는 4단계 md 작성 중 `webfetch`로 og:image를 직접 수집한다.
+- 나머지 모든 기사는 **Node.js `.mjs` 스크립트로 일괄 수집**한다. `webfetch`를 한땀한땀 호출하는 것보다 수십 배 빠르다.
+
+**Node.js 스크립트 수집 절차:**
+
+1. `temp/fetch-thumbnails.mjs` 생성 (아래 템플릿 참고)
+2. `node temp/fetch-thumbnails.mjs` 실행
+3. 결과 JSON 확인 후 `temp/apply-thumbnails.mjs`로 md에 일괄 적용
+4. 모든 `.mjs`, `.json` 임시 파일 즉시 삭제
+5. 최종 확보율 확인 (`node -e "...match(/\!\[thumb\]/g)..."`)
+
+**fetch-thumbnails.mjs 템플릿:**
+
+```js
+import { readFileSync, writeFileSync } from "node:fs";
+import { fileURLToPath } from "node:url";
+import { dirname, join } from "node:path";
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
+const MD = join(__dirname, "ai-news-YYYY-MM-DD-onwards.md");
+
+const text = readFileSync(MD, "utf-8");
+const urls = [];
+for (const line of text.split("\n")) {
+  const m = line.match(/\[링크\]\((https:\/\/[^)]+)\)/);
+  if (!m) continue;
+  const after = line.slice(m.index + m[0].length);
+  if (/!\[thumb\]/.test(after)) continue; // 이미 썸네일 있으면 건너뜀
+  urls.push(m[1]);
+}
+
+console.log(`수집 대상: ${urls.length}건`);
+
+const CONCURRENCY = 10;
+const results = [];
+
+async function fetchOg(url) {
+  try {
+    const res = await fetch(url, {
+      headers: { "User-Agent": "Mozilla/5.0 (compatible; NewsBot/1.0)" },
+      signal: AbortSignal.timeout(20_000),
+    });
+    const html = await res.text();
+    const og = html.match(/<meta\s+property="og:image"\s+content="([^"]+)"/i);
+    if (og) return og[1].replace(/&amp;/g, "&");
+    const tw = html.match(/<meta\s+name="twitter:image"\s+content="([^"]+)"/i);
+    if (tw) return tw[1].replace(/&amp;/g, "&");
+    return null;
+  } catch { return null; }
+}
+
+async function run() {
+  for (let i = 0; i < urls.length; i += CONCURRENCY) {
+    const batch = urls.slice(i, i + CONCURRENCY);
+    const batchResults = await Promise.all(batch.map(async (url) => {
+      const og = await fetchOg(url);
+      console.log(`${og ? "OK" : "X "} ${url.slice(0, 60)}`);
+      return { url, ogImage: og };
+    }));
+    results.push(...batchResults);
+    await new Promise((r) => setTimeout(r, 500)); // 배치 간 500ms 간격
+  }
+
+  writeFileSync(join(__dirname, "thumbnails-result.json"), JSON.stringify(results, null, 2));
+  const hit = results.filter((r) => r.ogImage).length;
+  console.log(`\n${hit}/${urls.length}건 확보 → thumbnails-result.json`);
+}
+
+run();
+```
+
+**apply-thumbnails.mjs 템플릿:**
+
+```js
+import { readFileSync, writeFileSync } from "node:fs";
+import { fileURLToPath } from "node:url";
+import { dirname, join } from "node:path";
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
+const MD = join(__dirname, "ai-news-YYYY-MM-DD-onwards.md");
+const JSON_FILE = join(__dirname, "thumbnails-result.json");
+
+const text = readFileSync(MD, "utf-8");
+const results = JSON.parse(readFileSync(JSON_FILE, "utf-8"));
+
+let updated = text;
+let added = 0;
+for (const r of results) {
+  if (!r.ogImage) continue;
+  const escaped = r.url.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  const re = new RegExp(`(\\[링크\\]\\(${escaped}\\))(?![^\\n]*!\\[thumb\\])`, "g");
+  const before = updated;
+  updated = updated.replace(re, `$1 | ![thumb](${r.ogImage})`);
+  if (updated !== before) added++;
+}
+
+writeFileSync(MD, updated, "utf-8");
+console.log(`${added}건 썸네일 추가 완료`);
+```
 
 **소스별 og:image CDN 패턴:**
 
@@ -147,6 +242,9 @@ IT 뉴스 (해외):
 | **NVIDIA 블로그** | `https://blogs.nvidia.com/wp-content/uploads/...` | Yoast SEO 플러그인으로 og:image가 명확히 설정됨. |
 | **Hugging Face** | `https://cdn-uploads.huggingface.co/...` 또는 `https://huggingface.co/front/thumbnails/...` | 커뮤니티 글은 작성자 업로드 이미지, 공식 글은 CDN 썸네일. |
 | **Anthropic** | `https://cdn.sanity.io/images/...` 또는 `https://www-cdn.anthropic.com/...` | Sanity CMS 기반. 일부는 OpenGraph API(`/api/opengraph-illustration`) 사용. |
+| **AI포스트** | `https://cdn.aipostkorea.com/news/photo/YYYYMM/IDXNO_HASH_ID.ext` | AI타임즈와 유사한 CDN 구조. 개별 기사 페이지 fetch 필요. |
+| **GitHub** | `https://opengraph.githubassets.com/...` | 레포지토리·이슈 등 og:image 자동 생성. |
+| **Meta AI 블로그** | `https://scontent-*.xx.fbcdn.net/...` | Facebook CDN. 용량 큼. |
 
 **AI타임즈 특별 주의사항:**
 

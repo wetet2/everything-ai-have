@@ -38,6 +38,13 @@ const pages = [
     title: "AI 뉴스",
     desc: "최신 AI 뉴스 다이제스트",
   },
+  {
+    href: "/b",
+    short: "Mine",
+    icon: "💣",
+    title: "지뢰찾기",
+    desc: "초급·중급·상급 지뢰찾기",
+  },
 ];
 
 export default function Home() {

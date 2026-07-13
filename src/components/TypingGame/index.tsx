@@ -196,6 +196,28 @@ export default function TypingGame() {
     <S.TypingPage>
       <Head>
         <title>손은 눈보다 빠르다 - Everything AI Have</title>
+        <meta
+          name="description"
+          content="문장을 따라 입력하며 타자 실力和 CPM을 연습하고 기록할 수 있는 온라인 타자 연습 게임입니다."
+        />
+        <meta property="og:type" content="website" />
+        <meta
+          property="og:title"
+          content="손은 눈보다 빠르다 - Everything AI Have"
+        />
+        <meta
+          property="og:description"
+          content="문장을 따라 입력하며 타자 실력과 CPM을 연습하고 기록할 수 있는 온라인 타자 연습 게임입니다."
+        />
+        <meta name="twitter:card" content="summary" />
+        <meta
+          name="twitter:title"
+          content="손은 눈보다 빠르다 - Everything AI Have"
+        />
+        <meta
+          name="twitter:description"
+          content="문장을 따라 입력하며 타자 실력과 CPM을 연습하고 기록할 수 있는 온라인 타자 연습 게임입니다."
+        />
       </Head>
       <S.Header>
         <Link href="/" style={{ textDecoration: "none", color: "inherit" }}>

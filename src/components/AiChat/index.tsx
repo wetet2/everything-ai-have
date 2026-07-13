@@ -1301,6 +1301,28 @@ const AiChatComponent = () => {
     <S.Page>
       <Head>
         <title>AI Chat — Everything AI Have</title>
+        <meta
+          name="description"
+          content="여러 AI 모델과 자유롭게 대화하고 세션별로 대화를 관리할 수 있는 웹 기반 AI 채팅 도구입니다."
+        />
+        <meta property="og:type" content="website" />
+        <meta
+          property="og:title"
+          content="AI Chat — Everything AI Have"
+        />
+        <meta
+          property="og:description"
+          content="여러 AI 모델과 자유롭게 대화하고 세션별로 대화를 관리할 수 있는 웹 기반 AI 채팅 도구입니다."
+        />
+        <meta name="twitter:card" content="summary" />
+        <meta
+          name="twitter:title"
+          content="AI Chat — Everything AI Have"
+        />
+        <meta
+          name="twitter:description"
+          content="여러 AI 모델과 자유롭게 대화하고 세션별로 대화를 관리할 수 있는 웹 기반 AI 채팅 도구입니다."
+        />
       </Head>
       <S.Header>
         <S.BrandTitle>

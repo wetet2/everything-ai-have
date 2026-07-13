@@ -56,6 +56,24 @@ export default function Home() {
           name="description"
           content="Everything AI Have — 여러 AI 도구를 한곳에 모은 프로젝트입니다."
         />
+        <meta property="og:type" content="website" />
+        <meta
+          property="og:title"
+          content="Everything AI Have"
+        />
+        <meta
+          property="og:description"
+          content="타자연습, 3D 가구 배치, 그림판, AI 채팅, 뉴스, 지뢰찾기 등 다양한 AI 도구를 한곳에서."
+        />
+        <meta name="twitter:card" content="summary" />
+        <meta
+          name="twitter:title"
+          content="Everything AI Have"
+        />
+        <meta
+          name="twitter:description"
+          content="타자연습, 3D 가구 배치, 그림판, AI 채팅, 뉴스, 지뢰찾기 등 다양한 AI 도구를 한곳에서."
+        />
       </Head>
       <S.Grid />
       <S.Scanline />

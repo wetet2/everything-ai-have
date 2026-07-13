@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
+import Head from "next/head";
 import {
   Container,
   Heading,
@@ -527,6 +528,31 @@ export default function FindMine() {
 
   return (
     <Container>
+      <Head>
+        <title>지뢰찾기 — Everything AI Have</title>
+        <meta
+          name="description"
+          content="초급·중급·상급 난이도로 즐기는 클래식 지뢰찾기 게임입니다. 깃발 표시와 힌트로 안전하게 지뢰를 피해 보세요."
+        />
+        <meta property="og:type" content="website" />
+        <meta
+          property="og:title"
+          content="지뢰찾기 — Everything AI Have"
+        />
+        <meta
+          property="og:description"
+          content="초급·중급·상급 난이도로 즐기는 클래식 지뢰찾기 게임입니다."
+        />
+        <meta name="twitter:card" content="summary" />
+        <meta
+          name="twitter:title"
+          content="지뢰찾기 — Everything AI Have"
+        />
+        <meta
+          name="twitter:description"
+          content="초급·중급·상급 난이도로 즐기는 클래식 지뢰찾기 게임입니다."
+        />
+      </Head>
       <Heading>지뢰찾기 — MINESWEEPER</Heading>
 
       <DifficultyRow>

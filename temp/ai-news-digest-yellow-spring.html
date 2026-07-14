@@ -794,7 +794,7 @@
         <div class="subtitle">
           불꽃 인텔리전스 브리핑 · GPT-5.6 Family 출시와 Claude Sonnet 5
         </div>
-        <div class="date-stamp">2026.07.02 – 07.04 // 수집 07.05</div>
+        <div class="date-stamp">2026.07.02 – 07.04</div>
       </header>
 
       <!-- 핵심 요약 -->
@@ -1035,15 +1035,7 @@
       </div>
 
       <!-- 더보기 버튼 -->
-      <button class="reveal-btn" id="revealBtn" onclick="toggleMore()">
-        <span class="arrow">▼</span> &nbsp;타임라인 보기 &nbsp;<span
-          class="arrow"
-          >▼</span
-        >
-      </button>
-
-      <div class="hidden-content" id="moreContent">
-        <!-- 타임라인 -->
+      <!-- 타임라인 -->
         <h2 class="section-title">타임라인</h2>
         <div class="timeline">
           <!-- 07.02 -->
@@ -1420,10 +1412,7 @@
                 </td>
               </tr>
             </tbody>
-          </table>
-        </div>
-
-        <footer>
+          </table><footer>
           <div>◈ 전송 종료 ◈</div>
           <div style="margin-top: 10px">
             출처:
@@ -1440,16 +1429,5 @@
       </div>
     </div>
 
-    <script>
-      function toggleMore() {
-        const content = document.getElementById("moreContent");
-        const btn = document.getElementById("revealBtn");
-        const isOpen = content.classList.toggle("open");
-        btn.classList.toggle("open", isOpen);
-        btn.innerHTML = isOpen
-          ? '<span class="arrow">▲</span> &nbsp;타임라인 숨기기 &nbsp;<span class="arrow">▲</span>'
-          : '<span class="arrow">▼</span> &nbsp;타임라인 보기 &nbsp;<span class="arrow">▼</span>';
-      }
-    </script>
-  </body>
+    </body>
 </html>

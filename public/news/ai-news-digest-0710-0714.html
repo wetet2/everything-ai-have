@@ -1078,12 +1078,7 @@
         </div>
       </div>
 
-      <button class="reveal-btn open" id="revealBtn" onclick="toggleMore()">
-        <span class="arrow">▼</span> &nbsp;타임라인 닫기 &nbsp;<span class="arrow">▼</span>
-      </button>
-
-      <div class="hidden-content open" id="moreContent">
-        <h2 class="section-title">타임라인</h2>
+      <h2 class="section-title">타임라인</h2>
         <div class="timeline">
           <div class="day">
             <div class="day-label">⏵ 2026.07.14 (화) — 모델·인프라·사회</div>
@@ -1277,23 +1272,11 @@
               </ul>
             </div>
           </div>
-        </div>
-      </div>
-
-      <footer>
+        </div><footer>
         <div>AI 뉴스 다이제스트 // 2026.07.10 — 07.14</div>
         <div class="src">출처: OpenAI · Anthropic · Google DeepMind · NVIDIA · Hacker News · ArXiv · Hugging Face · The Batch · VentureBeat · The Verge · TechCrunch · Reuters · AI타임즈 · AI포스트 · GeekNews</div>
       </footer>
     </div>
 
-    <script>
-      function toggleMore() {{
-        var c = document.getElementById("moreContent");
-        var b = document.getElementById("revealBtn");
-        c.classList.toggle("open");
-        b.classList.toggle("open");
-        b.firstChild && (b.childNodes[2].nodeValue = c.classList.contains("open") ? "  타임라인 닫기  " : "  타임라인 닫기  ");
-      }}
-    </script>
-  </body>
+    </body>
 </html>

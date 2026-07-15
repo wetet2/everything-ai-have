@@ -43,20 +43,20 @@ IT 뉴스 (해외):
 - **AI포스트**: https://www.aipostkorea.com/ (AI 전문 매체, 링크 다수)
 - **Geeknews**: https://news.hada.io/ (한국어 IT 뉴스 큐레이션, AI 관련 글 선별)
 
-### 보조 소스 (사용자 요구 또는 시간 여유 시 추가, 2차 병렬 그룹)
+### Playwright 전용 소스 (항상 시도, 2차 병렬 그룹)
 
-#### Playwright 전용 소스 (JS 렌더링·봇 차단 우회 필요)
-
-이 소스들은 일반 `webfetch`로는 접근할 수 없으며, **Playwright**로만 스크래핑 가능하다. 2단계 이후 별도 Playwright 스크래핑 단계에서 처리한다.
+일반 `webfetch`로는 접근할 수 없으며, **Playwright**로만 스크래핑 가능하다. 1차 webfetch 수집 완료 후 `temp/scrape-playwright.mjs`로 무조건 일괄 처리한다.
 
 - **xAI (SpaceXAI)**: https://x.ai/news (🔴 Cloudflare 보호막 — **headed 모드 필수**)
-  - 머스크의 xAI 공식 뉴스룸. Grok 모델 발표·기능 업데이트·파트너십 소식. 사이트 구조가 단순해 Playwright headed 모드로만 접근 가능.
+  - 머스크의 xAI 공식 뉴스룸. Grok 모델 발표·기능 업데이트·파트너십 소식.
 - **Reuters AI**: https://www.reuters.com/technology/artificial-intelligence/ (🔴 봇 차단 — headless 가능)
   - 통신사 AI 섹션. 401 차단이지만 headless Playwright로 우회 가능. og:image 수집도 가능해짐.
 - **MIT Technology Review**: https://www.technologyreview.com/topic/artificial-intelligence/ (🔴 JS 렌더링 — headless 가능, `waitUntil: "load"`)
-  - AI 심층 분석·특집. 날짜는 `article:published_time` 메타태그가 없으므로 **URL 패턴**(`/YYYY/MM/DD/`)에서 추출.
+  - AI 심층 분석·특집. 날짜는 URL 패턴(`/YYYY/MM/DD/`)에서 추출.
 - **The Information**: https://theinformation.com (🔴 봇 차단 — headless 가능, 일부 페이월)
   - 업계 내부·단독 보도. 403 차단이지만 Playwright로 우회 가능. 일부 기사는 페이월.
+
+### 보조 소스 (사용자 요구 또는 시간 여유 시 추가)
 
 #### webfetch 호환 보조 소스
 
@@ -96,19 +96,18 @@ IT 뉴스 (해외):
 - 명시하지 않으면 "최근 7일"을 기본값으로 제안하고 진행.
 - 파일명 규칙: `ai-news-YYYY-MM-DD-onwards.md` (시작일 기준). 이미 같은 파일 있으면 "copy" 접미사 붙이지 말고 사용자에게 확인.
 
-### 2단계: 소스 병렬 수집 → 검증: 핵심 소스 최소 6개 이상 응답
+### 2단계: 소스 병렬 수집 (1차 webfetch) → 검증: 핵심 webfetch 소스 최소 6개 이상 응답
 
-- 핵심 소스 14개를 한 번에 병렬 webfetch (단일 메시지에 여러 tool call). 한 번에 너무 많으면 그룹 분할(예: 해외 모델 5개 + 분석·논문 4개 + IT 뉴스 4개 + 한국 1개).
+- 핵심 소스 중 webfetch 가능한 14개를 한 번에 병렬 webfetch (단일 메시지에 여러 tool call). 한 번에 너무 많으면 그룹 분할(예: 해외 모델 5개 + 분석·논문 4개 + IT 뉴스 4개 + 한국 1개).
 - 형식: `markdown`.
 - ArXiv는 제출 폭증(수백~수천 건)하므로 첫 페이지만 가져오고 주요 선별(10~15건).
 - SemiAnalysis는 본문 페이월이므로 아카이브 헤드라인·요약만 수집 — 본문 요약 시도 금지.
 - NVIDIA/Google AI 블로그(blog.google)는 DeepMind와 별개 소스로 중복 주의. Google 계열은 OpenAI/Anthropic과 중복 빈도 높음 → 가장 대표 소스에 배정.
-- MIT Technology Review가 JavaScript 필요로 실패하면, Playwright로 우회 가능 (2-B단계 참고).
-- 보조 소스는 핵심 소스 응답 부족·사용자 요구 있을 때 2차 병렬 그룹으로 추가 수집. 한국 매체(전자신문·ZDNet 등)는 한국 기업·정책 이슈가 풍부할 때 우선 추가.
+- 보조 소스는 핵심 소스 응답 부족·사용자 요구 있을 때 추가 수집. 한국 매체(전자신문·ZDNet 등)는 한국 기업·정책 이슈가 풍부할 때 우선 추가.
 
-### 2-B단계: Playwright 소스 스크래핑 → 검증: 각 소스별 5건 이상 기사 확보
+### 2-B단계: Playwright 소스 스크래핑 (2차 병렬 그룹) → 검증: 각 소스별 5건 이상 기사 확보
 
-`webfetch`로 접근 불가능한 4개 소스(xAI, Reuters, MIT Technology Review, The Information)는 Playwright로 스크래핑한다. `temp/scrape-playwright.mjs` 파일을 생성해 일괄 처리한다.
+핵심 소스 중 `webfetch`로 접근 불가능한 4개(xAI, Reuters AI, MIT Technology Review, The Information)는 2-B단계에서 Playwright로 무조건 스크래핑한다. 1차 webfetch 완료 후 `temp/scrape-playwright.mjs` 파일을 생성해 일괄 처리한다.
 
 **소스별 접근법:**
 
@@ -314,11 +313,13 @@ console.log(`${added}건 썸네일 추가 완료`);
 
 **썸네일 수집이 불가능한 경우:**
 
-- JS 렌더링이 필요한 사이트 (MIT Technology Review 등)
-- og:image가 아예 없는 텍스트 전용 기사
-- fetch가 차단된 사이트
+Node.js `fetch`로 og:image 수집에 실패하면 순서대로 폴백한다:
 
-이 경우 썸네일 없이 제목+링크만 유지하고, "수집 제한 안내"에 해당 사실을 기록한다.
+1. **Playwright headless**로 해당 페이지를 열어 og:image 재시도
+2. **Playwright headed** (`headless: false`)로 최종 재시도 (Cloudflare 등 강한 차단 대응)
+3. **og:image가 아예 없는 텍스트 전용 기사**는 예외
+
+모든 방법 실패 시 썸네일 없이 제목+링크만 유지하고, "수집 제한 안내"에 해당 사실을 기록한다.
 
 ### 6단계: 한글 번역 → 검증: 영어 제목·설명·카테고리 없음
 
@@ -342,7 +343,7 @@ console.log(`${added}건 썸네일 추가 완료`);
 ## 주의사항
 
 - webfetch는 한 번에 여러 URL을 병렬로 호출 (단일 메시지에 여러 tool call) — 순차 호출 금지, 시간 낭비.
-- **Playwright 소스**(xAI, Reuters, MIT TR, The Information)는 `webfetch`로 접근 불가 → `temp/scrape-playwright.mjs` 스크립트로 별도 처리.
+- **Playwright 소스**(xAI, Reuters AI, MIT Technology Review, The Information)는 핵심 소스이므로 무조건 수집. `webfetch`로 접근 불가 → `temp/scrape-playwright.mjs` 스크립트로 별도 처리.
   - xAI는 Cloudflare 보호막 때문에 **반드시 headed 모드** (`headless: false`) 사용.
   - MIT TR은 `article:published_time` 메타태그 없음 → URL 패턴(`/YYYY/MM/DD/`)에서 날짜 추출.
   - Playwright 스크립트도 사용 완료 후 **즉시 삭제**할 것.

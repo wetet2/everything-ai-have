@@ -1,0 +1,1859 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AI 뉴스 // 2026.07.22-07.24</title>
+    <link
+      rel="stylesheet"
+      as="style"
+      crossorigin
+      href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css"
+    />
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&display=swap");
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      :root {
+        --neon-cyan: #00f0ff;
+        --neon-pink: #ff2a6d;
+        --neon-purple: #b026ff;
+        --neon-yellow: #f0e442;
+        --bg-dark: #0a0a14;
+        --bg-panel: #0d0820;
+        --grid-line: rgba(0, 240, 255, 0.08);
+      }
+
+      body {
+        background: var(--bg-dark);
+        color: #d1f9ff;
+        font-family: "Share Tech Mono", "Pretendard", monospace;
+        overflow-x: hidden;
+        position: relative;
+        min-height: 100vh;
+      }
+
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        background-image:
+          linear-gradient(var(--grid-line) 1px, transparent 1px),
+          linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+        background-size: 40px 40px;
+        pointer-events: none;
+        z-index: 0;
+      }
+
+      body::after {
+        content: "";
+        position: fixed;
+        inset: 0;
+        background:
+          radial-gradient(
+            circle at 20% 30%,
+            rgba(176, 38, 255, 0.15),
+            transparent 40%
+          ),
+          radial-gradient(
+            circle at 80% 70%,
+            rgba(0, 240, 255, 0.12),
+            transparent 40%
+          ),
+          radial-gradient(
+            circle at 50% 90%,
+            rgba(255, 42, 109, 0.1),
+            transparent 40%
+          );
+        pointer-events: none;
+        z-index: 0;
+      }
+
+      .wrap {
+        position: relative;
+        z-index: 1;
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 40px 24px;
+      }
+
+      header {
+        text-align: center;
+        padding: 60px 20px 40px;
+        position: relative;
+        border-bottom: 2px solid var(--neon-cyan);
+        margin-bottom: 60px;
+      }
+      header::before {
+        content: "";
+        position: absolute;
+        bottom: -2px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 200px;
+        height: 4px;
+        background: var(--neon-cyan);
+        box-shadow: 0 0 20px var(--neon-cyan);
+      }
+      h1 {
+        font-family: "Orbitron", "Pretendard", sans-serif;
+        font-weight: 900;
+        font-size: clamp(28px, 6vw, 64px);
+        letter-spacing: 4px;
+        color: var(--neon-cyan);
+        text-shadow:
+          0 0 10px var(--neon-cyan),
+          0 0 30px rgba(0, 240, 255, 0.5);
+        line-height: 1.1;
+      }
+      h1 .accent {
+        color: var(--neon-pink);
+        text-shadow:
+          0 0 10px var(--neon-pink),
+          0 0 30px rgba(255, 42, 109, 0.5);
+      }
+      .subtitle {
+        margin-top: 16px;
+        font-size: 14px;
+        color: var(--neon-purple);
+        letter-spacing: 3px;
+        text-transform: uppercase;
+      }
+      .date-stamp {
+        display: inline-block;
+        margin-top: 20px;
+        padding: 6px 16px;
+        border: 1px solid var(--neon-pink);
+        color: var(--neon-pink);
+        font-size: 12px;
+        letter-spacing: 2px;
+        box-shadow:
+          inset 0 0 10px rgba(255, 42, 109, 0.2),
+          0 0 10px rgba(255, 42, 109, 0.3);
+      }
+
+      .summary {
+        margin-bottom: 60px;
+        padding: 32px;
+        background: linear-gradient(
+          135deg,
+          rgba(176, 38, 255, 0.08),
+          rgba(0, 240, 255, 0.05)
+        );
+        border: 1px solid var(--neon-purple);
+        box-shadow:
+          0 0 30px rgba(176, 38, 255, 0.15),
+          inset 0 0 30px rgba(176, 38, 255, 0.05);
+        clip-path: polygon(
+          0 0,
+          100% 0,
+          100% calc(100% - 20px),
+          calc(100% - 20px) 100%,
+          0 100%
+        );
+      }
+      .summary h2 {
+        font-family: "Orbitron", "Pretendard", sans-serif;
+        color: var(--neon-purple);
+        font-size: 20px;
+        letter-spacing: 3px;
+        margin-bottom: 16px;
+        text-shadow: 0 0 8px var(--neon-purple);
+      }
+      .summary p {
+        line-height: 1.8;
+        font-size: 16px;
+        color: #e0d4ff;
+      }
+      .summary .hl {
+        color: var(--neon-yellow);
+        text-shadow: 0 0 6px var(--neon-yellow);
+      }
+
+      .section-title {
+        font-family: "Orbitron", "Pretendard", sans-serif;
+        font-size: clamp(20px, 3vw, 32px);
+        letter-spacing: 3px;
+        color: var(--neon-cyan);
+        text-shadow: 0 0 10px var(--neon-cyan);
+        margin: 60px 0 30px;
+        padding-bottom: 12px;
+        border-bottom: 1px solid rgba(0, 240, 255, 0.3);
+        position: relative;
+      }
+      .section-title::after {
+        content: "▌";
+        color: var(--neon-pink);
+        margin-right: 10px;
+        animation: blink 1s infinite;
+      }
+      @keyframes blink {
+        50% {
+          opacity: 0;
+        }
+      }
+
+      .trends {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 20px;
+        margin-bottom: 60px;
+      }
+      .trend-card {
+        padding: 24px;
+        background: var(--bg-panel);
+        border: 1px solid;
+        position: relative;
+        transition:
+          transform 0.3s,
+          box-shadow 0.3s;
+      }
+      .trend-card:hover {
+        transform: translateY(-6px);
+      }
+      .trend-card:nth-child(1) {
+        border-color: var(--neon-cyan);
+        box-shadow: 0 0 15px rgba(0, 240, 255, 0.2);
+      }
+      .trend-card:nth-child(2) {
+        border-color: var(--neon-pink);
+        box-shadow: 0 0 15px rgba(255, 42, 109, 0.2);
+      }
+      .trend-card:nth-child(3) {
+        border-color: var(--neon-yellow);
+        box-shadow: 0 0 15px rgba(240, 228, 66, 0.2);
+      }
+      .trend-card:nth-child(4) {
+        border-color: var(--neon-purple);
+        box-shadow: 0 0 15px rgba(176, 38, 255, 0.2);
+      }
+      .trend-card:nth-child(5) {
+        border-color: var(--neon-cyan);
+        box-shadow: 0 0 15px rgba(0, 240, 255, 0.2);
+      }
+      .trend-card .num {
+        font-family: "Orbitron", "Pretendard", sans-serif;
+        font-size: 36px;
+        font-weight: 900;
+        opacity: 0.4;
+      }
+      .trend-card h3 {
+        font-family: "Orbitron", "Pretendard", sans-serif;
+        font-size: 15px;
+        letter-spacing: 1px;
+        margin: 8px 0 12px;
+      }
+      .trend-card p {
+        font-size: 15px;
+        line-height: 1.7;
+        color: #9fd8e8;
+      }
+      .trend-card:nth-child(1) .num,
+      .trend-card:nth-child(1) h3 {
+        color: var(--neon-cyan);
+      }
+      .trend-card:nth-child(2) .num,
+      .trend-card:nth-child(2) h3 {
+        color: var(--neon-pink);
+      }
+      .trend-card:nth-child(3) .num,
+      .trend-card:nth-child(3) h3 {
+        color: var(--neon-yellow);
+      }
+      .trend-card:nth-child(4) .num,
+      .trend-card:nth-child(4) h3 {
+        color: var(--neon-purple);
+      }
+      .trend-card:nth-child(5) .num,
+      .trend-card:nth-child(5) h3 {
+        color: var(--neon-cyan);
+      }
+
+      .timeline {
+        margin-bottom: 60px;
+        position: relative;
+        padding-left: 40px;
+      }
+      .timeline::before {
+        content: "";
+        position: absolute;
+        left: 10px;
+        top: 0;
+        bottom: 0;
+        width: 2px;
+        background: linear-gradient(
+          var(--neon-cyan),
+          var(--neon-purple),
+          var(--neon-pink)
+        );
+        box-shadow: 0 0 10px var(--neon-cyan);
+      }
+      .day {
+        position: relative;
+        margin-bottom: 50px;
+      }
+      .day::before {
+        content: "";
+        position: absolute;
+        left: -36px;
+        top: 6px;
+        width: 14px;
+        height: 14px;
+        background: var(--bg-dark);
+        border: 2px solid var(--neon-cyan);
+        border-radius: 50%;
+        box-shadow: 0 0 12px var(--neon-cyan);
+      }
+      .day-label {
+        font-family: "Orbitron", "Pretendard", sans-serif;
+        font-size: 18px;
+        letter-spacing: 2px;
+        color: var(--neon-cyan);
+        margin-bottom: 18px;
+        text-shadow: 0 0 8px var(--neon-cyan);
+      }
+
+      .article {
+        background: var(--bg-panel);
+        border-left: 3px solid var(--neon-pink);
+        padding: 22px 24px;
+        margin-bottom: 18px;
+        position: relative;
+        transition: all 0.3s;
+      }
+      .article:hover {
+        border-left-color: var(--neon-cyan);
+        background: rgba(0, 240, 255, 0.04);
+        transform: translateX(4px);
+      }
+      .article .tag {
+        display: inline-block;
+        font-size: 12px;
+        letter-spacing: 2px;
+        padding: 3px 10px;
+        border: 1px solid;
+        margin-bottom: 10px;
+        text-transform: uppercase;
+      }
+      .tag.openai {
+        color: var(--neon-cyan);
+        border-color: var(--neon-cyan);
+      }
+      .tag.anthropic {
+        color: var(--neon-yellow);
+        border-color: var(--neon-yellow);
+      }
+      .tag.google {
+        color: #4285f4;
+        border-color: #4285f4;
+      }
+      .tag.nvidia {
+        color: #76b900;
+        border-color: #76b900;
+      }
+      .tag.hn {
+        color: #ff6a00;
+        border-color: #ff6a00;
+      }
+      .tag.aitimes {
+        color: var(--neon-pink);
+        border-color: var(--neon-pink);
+      }
+      .tag.arxiv {
+        color: var(--neon-purple);
+        border-color: var(--neon-purple);
+      }
+      .tag.venturebeat {
+        color: #00ff9d;
+        border-color: #00ff9d;
+      }
+      .tag.techcrunch {
+        color: #ff8800;
+        border-color: #ff8800;
+      }
+      .tag.verge {
+        color: #ff4488;
+        border-color: #ff4488;
+      }
+      .tag.huggingface {
+        color: #ffd700;
+        border-color: #ffd700;
+      }
+      .tag.reuters {
+        color: #ff6600;
+        border-color: #ff6600;
+      }
+
+      .article h4 {
+        font-family: "Orbitron", "Pretendard", sans-serif;
+        font-size: 18px;
+        letter-spacing: 0.5px;
+        margin-bottom: 12px;
+        color: #fff;
+        line-height: 1.4;
+      }
+      .article h4 a {
+        color: inherit;
+        text-decoration: none;
+        border-bottom: 1px dashed rgba(255, 255, 255, 0.3);
+      }
+      .article h4 a:hover {
+        color: var(--neon-cyan);
+        border-color: var(--neon-cyan);
+      }
+      .article .summary-text {
+        font-size: 15px;
+        line-height: 1.7;
+        color: #b8c8d8;
+      }
+      .article .summary-text::before {
+        content: "▶ ";
+        color: var(--neon-pink);
+      }
+      .headlines {
+        margin-top: 14px;
+        padding-left: 8px;
+      }
+      .headlines li {
+        list-style: none;
+        font-size: 12px;
+        line-height: 1.6;
+        padding: 6px 0;
+        border-bottom: 1px dotted rgba(0, 240, 255, 0.1);
+      }
+      .headlines a {
+        color: #8fd6e8;
+        text-decoration: none;
+        transition: color 0.2s;
+      }
+      .headlines a:hover {
+        color: var(--neon-cyan);
+        text-shadow: 0 0 6px var(--neon-cyan);
+      }
+      .headlines .hl-link {
+        color: var(--neon-yellow);
+      }
+
+      .stats {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 16px;
+        margin-bottom: 60px;
+      }
+      .stat {
+        text-align: center;
+        padding: 24px 12px;
+        background: var(--bg-panel);
+        border: 1px solid rgba(0, 240, 255, 0.3);
+        position: relative;
+        overflow: hidden;
+      }
+      .stat::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 2px;
+        background: var(--neon-cyan);
+        animation: scan 3s linear infinite;
+      }
+      @keyframes scan {
+        to {
+          left: 100%;
+        }
+      }
+      .stat .big {
+        font-family: "Orbitron", "Pretendard", sans-serif;
+        font-size: 32px;
+        font-weight: 900;
+        color: var(--neon-cyan);
+        text-shadow: 0 0 10px var(--neon-cyan);
+      }
+      .stat .lbl {
+        font-size: 13px;
+        letter-spacing: 2px;
+        color: #88a;
+        margin-top: 6px;
+        text-transform: uppercase;
+      }
+
+      footer {
+        text-align: center;
+        padding: 40px 20px;
+        border-top: 1px solid rgba(0, 240, 255, 0.3);
+        margin-top: 40px;
+        font-size: 12px;
+        color: #667;
+        letter-spacing: 2px;
+      }
+      footer .src {
+        color: var(--neon-purple);
+      }
+
+      @keyframes glitch {
+        0%,
+        100% {
+          transform: translate(0);
+        }
+        20% {
+          transform: translate(-2px, 1px);
+        }
+        40% {
+          transform: translate(2px, -1px);
+        }
+        60% {
+          transform: translate(-1px, -1px);
+        }
+        80% {
+          transform: translate(1px, 1px);
+        }
+      }
+      h1:hover {
+        animation: glitch 0.3s infinite;
+      }
+
+      .key-list {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        margin-bottom: 60px;
+      }
+      .key-item {
+        background: var(--bg-panel);
+        border-left: 3px solid var(--neon-cyan);
+        padding: 22px 24px;
+        transition: all 0.3s;
+      }
+      .key-item:hover {
+        border-left-color: var(--neon-pink);
+        background: rgba(0, 240, 255, 0.04);
+        transform: translateX(4px);
+      }
+      .key-item .tag {
+        display: inline-block;
+        font-size: 12px;
+        letter-spacing: 2px;
+        padding: 3px 10px;
+        border: 1px solid var(--neon-cyan);
+        color: var(--neon-cyan);
+        margin-bottom: 10px;
+        text-transform: uppercase;
+      }
+      .key-item h3 {
+        font-family: "Orbitron", "Pretendard", sans-serif;
+        font-size: 19px;
+        letter-spacing: 0.5px;
+        margin-bottom: 8px;
+        color: #fff;
+        line-height: 1.4;
+      }
+      .key-item p {
+        font-size: 15px;
+        line-height: 1.7;
+        color: #b8c8d8;
+      }
+      .key-item h3 a,
+      .trend-card h3 a,
+      .stat a,
+      .key-item p a {
+        color: inherit;
+        text-decoration: none;
+        display: inline;
+      }
+      .key-item h3 a:hover,
+      .trend-card h3 a:hover {
+        opacity: 0.85;
+        text-shadow: 0 0 8px currentColor;
+      }
+      .stat a:hover {
+        opacity: 0.8;
+      }
+
+      .key-item p::before {
+        content: "▶ ";
+        color: var(--neon-pink);
+      }
+
+      .hidden-content {
+        max-height: 0;
+        overflow: hidden;
+        opacity: 0;
+        transition:
+          max-height 1s ease,
+          opacity 0.6s ease;
+      }
+      .hidden-content.open {
+        overflow: visible;
+        max-height: 50000px;
+        opacity: 1;
+      }
+
+      .reveal-btn {
+        display: block;
+        width: 100%;
+        max-width: 500px;
+        margin: 0 auto 60px;
+        padding: 24px 32px;
+        font-family: "Orbitron", "Pretendard", sans-serif;
+        font-size: 22px;
+        font-weight: 700;
+        letter-spacing: 4px;
+        text-transform: uppercase;
+        color: var(--neon-pink);
+        background: transparent;
+        border: 2px solid var(--neon-pink);
+        cursor: pointer;
+        position: relative;
+        transition: all 0.4s;
+        text-shadow: 0 0 10px var(--neon-pink);
+        box-shadow:
+          inset 0 0 20px rgba(255, 42, 109, 0.1),
+          0 0 20px rgba(255, 42, 109, 0.2);
+        clip-path: polygon(
+          0 0,
+          100% 0,
+          100% calc(100% - 16px),
+          calc(100% - 16px) 100%,
+          0 100%
+        );
+      }
+      .reveal-btn:hover {
+        background: rgba(255, 42, 109, 0.1);
+        box-shadow:
+          inset 0 0 30px rgba(255, 42, 109, 0.2),
+          0 0 40px rgba(255, 42, 109, 0.4);
+        transform: scale(1.03);
+      }
+      .reveal-btn .arrow {
+        display: inline-block;
+        transition: transform 0.4s;
+      }
+      .reveal-btn.open .arrow {
+        transform: rotate(180deg);
+      }
+
+      .article img {
+        max-width: 100%;
+        margin-bottom: 10px;
+        opacity: 0.85;
+        transition: opacity 0.3s;
+      }
+      .article img:hover {
+        opacity: 1;
+      }
+
+      @media (max-width: 700px) {
+        .wrap {
+          padding: 20px 12px;
+        }
+        .timeline {
+          padding-left: 28px;
+        }
+        .day::before {
+          left: -24px;
+        }
+      }
+    
+.article .thumb-wrap {
+        margin-bottom: 14px;
+        overflow: hidden;
+        border: 1px solid rgba(0, 240, 255, 0.2);
+        box-shadow: 0 0 15px rgba(0, 240, 255, 0.1);
+      }
+      .article .thumb-wrap img {
+        width: 100%;
+        height: auto;
+        display: block;
+        transition: transform 0.5s;
+      }
+      .article:hover .thumb-wrap img {
+        transform: scale(1.03);
+      }
+
+    
+      .headlines li { position: relative; }
+      .thumb-inline { transition: transform 0.3s; }
+      .thumb-inline:hover { transform: scale(2); z-index: 10; position: relative; }
+    
+      .key-item,
+      .article {
+        overflow: hidden;
+      }
+      .thumb {
+        display: block;
+        width: 240px;
+        max-width: 42%;
+        height: auto;
+        max-height: 160px;
+        margin: 0 20px 12px 0;
+        float: left;
+        object-fit: cover;
+        border-radius: 2px;
+        border: 1px solid rgba(0, 240, 255, 0.25);
+        box-shadow: 0 0 14px rgba(0, 240, 255, 0.1);
+        transition: box-shadow 0.3s;
+      }
+      .article:hover .thumb {
+        box-shadow: 0 0 20px rgba(255, 42, 109, 0.25);
+      }
+      .thumb-sm {
+        display: inline-block;
+        vertical-align: middle;
+        width: auto;
+        max-width: 160px;
+        height: auto;
+        max-height: 32px;
+        margin: 0 4px 0 0;
+        object-fit: cover;
+        border-radius: 2px;
+        border: 1px solid rgba(0, 240, 255, 0.2);
+        box-shadow: 0 0 6px rgba(0, 240, 255, 0.06);
+        transition: box-shadow 0.3s;
+      }
+      .headlines li:hover .thumb-sm {
+        box-shadow: 0 0 10px rgba(255, 42, 109, 0.2);
+      }
+      @media (max-width: 700px) {
+        .thumb,
+        .thumb-sm {
+          width: 100%;
+          max-width: 100%;
+          margin: 0 0 10px 0;
+        }
+      }
+    
+      .key-item,
+      .article {
+        overflow: hidden;
+      }
+      .thumb {
+        display: block;
+        width: 240px;
+        max-width: 42%;
+        height: auto;
+        max-height: 160px;
+        margin: 0 20px 12px 0;
+        float: left;
+        object-fit: cover;
+        border-radius: 2px;
+        border: 1px solid rgba(0, 240, 255, 0.25);
+        box-shadow: 0 0 14px rgba(0, 240, 255, 0.1);
+        transition: box-shadow 0.3s;
+      }
+      .article:hover .thumb {
+        box-shadow: 0 0 20px rgba(255, 42, 109, 0.25);
+      }
+      .thumb-sm {
+        display: inline-block;
+        vertical-align: middle;
+        width: auto;
+        max-width: 160px;
+        height: auto;
+        max-height: 32px;
+        margin: 0 4px 0 0;
+        object-fit: cover;
+        border-radius: 2px;
+        border: 1px solid rgba(0, 240, 255, 0.2);
+        box-shadow: 0 0 6px rgba(0, 240, 255, 0.06);
+        transition: box-shadow 0.3s;
+      }
+      .headlines li:hover .thumb-sm {
+        box-shadow: 0 0 10px rgba(255, 42, 109, 0.2);
+      }
+      @media (max-width: 700px) {
+        .thumb,
+        .thumb-sm {
+          width: 100%;
+          max-width: 100%;
+          margin: 0 0 10px 0;
+        }
+      }
+
+    
+      .papers ul { list-style: none; padding: 0; }
+      .papers li {
+        padding: 12px 16px;
+        margin-bottom: 8px;
+        background: var(--bg-panel);
+        border-left: 2px solid var(--neon-purple);
+        font-size: 14px;
+        line-height: 1.6;
+        color: #b8c8d8;
+      }
+      .papers a { color: var(--neon-cyan); text-decoration: none; }
+      .papers a:hover { text-shadow: 0 0 6px var(--neon-cyan); }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <header>
+        <h1>AI <span class="accent">NEWS</span> // 2026</h1>
+        <div class="subtitle">
+          사이버 인텔리전스 브리핑 · Opus 5 · Health · 오픈웨이트 전선
+        </div>
+        <div class="date-stamp">2026.07.22 — 07.24</div>
+      </header>
+
+      <section class="summary">
+        <h2>◆ 미션 브리핑</h2>
+        <p>
+          사흘간 AI 전선은
+          <span class="hl">Claude Opus 5</span> 출시,
+          <span class="hl">ChatGPT Health · Presence</span> 수직 확장,
+          <span class="hl">Kimi K3·오픈웨이트 규제 논쟁</span>,
+          <span class="hl">Gemini Flash 에이전트 비용 전쟁</span>으로 압축된다.
+          한국에서는 KAIST–NVIDIA 공동연·SK하이퍼 DC 등 인프라 뉴스가 병행됐다.
+        </p>
+      </section>
+
+      <div class="stats">
+        <div class="stat"><div class="big">3</div><div class="lbl">Days</div></div>
+        <div class="stat"><div class="big">105</div><div class="lbl">Articles</div></div>
+        <div class="stat"><div class="big">90</div><div class="lbl">Thumbnails</div></div>
+        <div class="stat"><div class="big">15</div><div class="lbl">ArXiv Picks</div></div>
+        <div class="stat"><div class="big">5</div><div class="lbl">Themes</div></div>
+      </div>
+
+      <h2 class="section-title">핵심 이슈</h2>
+      <div class="key-list">
+
+        <div class="key-item">
+          <span class="tag">01</span>
+          <h3>Anthropic Claude Opus 5 출시 (7/24)</h3>
+          <p>Fable 5에 근접한 지능을 Opus 가격($5/$25 per MTok)으로 제공. 코딩·지식 업무 벤치 SOTA, Claude Max 기본 모델.</p>
+        </div>
+
+        <div class="key-item">
+          <span class="tag">02</span>
+          <h3>OpenAI 제품 확장</h3>
+          <p>ChatGPT Health(7/23, 미국), OpenAI Presence 엔터프라이즈 실시간 보이스 에이전트(7/22), GPT-Live 데스크톱 음성 제어, Yelp 연동.</p>
+        </div>
+
+        <div class="key-item">
+          <span class="tag">03</span>
+          <h3>오픈웨이트 규제 논쟁 가열</h3>
+          <p>Kimi K3·중국 오픈모델 대응으로 미 정부가 규제 검토; NVIDIA·Microsoft·Meta 등 업계는 광범위 오픈웨이트 금지 반대. Hugging Face 사고에서 오픈모델(GLM)이 방어 분석에 쓰인 사례가 The Batch에서 부각.</p>
+        </div>
+
+        <div class="key-item">
+          <span class="tag">04</span>
+          <h3>Google Gemini 3.6 Flash / 3.5 Flash-Lite / Cyber</h3>
+          <p>에이전트 비용·지연 최적화 Flash 라인 강화. Gemini MAU 9.5억. Genesis Mission에 $40M 커밋.</p>
+        </div>
+
+        <div class="key-item">
+          <span class="tag">05</span>
+          <h3>멀티모달·에이전트 인프라</h3>
+          <p>Black Forest Labs FLUX 3(이미지+20초 영상+오디오), Microsoft 자체 MAI 모델(OpenAI 대비 최대 89% 비용 절감 주장), NVIDIA 한국 AI Summit·의료 물리 시뮬레이션 오픈소스.</p>
+        </div>
+      </div>
+
+      <h2 class="section-title">5대 흐름</h2>
+      <div class="trends">
+
+        <div class="trend-card">
+          <div class="num">01</div>
+          <h3>Opus 티어 재정의 — “Fable급 지능 × Opus 가격”</h3>
+          <p>Claude Opus 5가 코딩·에이전트·지식업무에서 Fable에 근접하면서도 가격을 유지해, 일상 기본 모델 자리를 노린다. Cursor·Devin·Zapier 등 조기 고객 평가가 일제히 “판단력·자기검증·장시간 작업”을 강조.</p>
+        </div>
+
+        <div class="trend-card">
+          <div class="num">02</div>
+          <h3>오픈웨이트 vs 규제 포획</h3>
+          <p>Kimi K3(2.8T)가 오픈 1위로 부상하고, 미 정부는 중국 오픈모델·수출통제 GPU 이슈를 제기. NVIDIA·MS·Meta와 스타트업 200곳은 광범위 금지를 반대. Hugging Face 사고에서 **폐쇄 모델 가드레일이 방어를 막고 오픈 GLM이 구조를 푼** 사례가 Andrew Ng 서한의 핵심 논거.</p>
+        </div>
+
+        <div class="trend-card">
+          <div class="num">03</div>
+          <h3>에이전트 비용 전쟁 (Flash / Muse / MAI / Presence)</h3>
+          <p>Google 3.6 Flash·Flash-Lite, Meta Muse Spark 1.1, Microsoft 자체 MAI, OpenAI Presence·GPT-Live 데스크톱 — 공통 목표는 **토큰당·작업당 비용 하락과 hands-free/voice 에이전트**. Intel CPU 수요 급증도 “에이전트 확산 = 호스트 컴퓨트” 신호.</p>
+        </div>
+
+        <div class="trend-card">
+          <div class="num">04</div>
+          <h3>헬스·엔터프라이즈 수직 확장</h3>
+          <p>ChatGPT Health(의료기록 연동·프라이버시 강조), Presence(실시간 보이스 CS), Yelp 로컬, Claude 보이스 Opus/Sonnet — 범용 챗에서 **규제·신뢰가 필요한 수직**으로 이동.</p>
+        </div>
+
+        <div class="trend-card">
+          <div class="num">05</div>
+          <h3>한국·아시아 인프라</h3>
+          <p>KAIST–NVIDIA 공동연, SKT SK하이퍼 DC, 젠스파크 한국 진출, AI Summit 한국 정상 참석, 조선·물류 AI(HD한국조선해양, 테크타카) — 국내도 모델 소비를 넘어 **인프라·산업 AX** 뉴스가 밀도 있게 등장. ---</p>
+        </div>
+      </div>
+
+      <button class="reveal-btn" id="revealBtn" type="button">
+        <span class="arrow">▼</span> FULL TIMELINE UNLOCK
+      </button>
+
+      <div class="hidden-content" id="fullContent">
+        <h2 class="section-title">일자별 타임라인</h2>
+        <div class="timeline">
+
+        <div class="day">
+          <div class="day-label">2026.07.24 // FRI — Claude Opus 5 출시 데이</div>
+          
+        <article class="article">
+          <span class="tag anthropic">Anthropic</span>
+          <img class="thumb" src="https://cdn.sanity.io/images/4zrzovbb/website/54b7ab1d2c2521f83ae5d2da5f9d99321c370d24-2880x1620.png" alt="" loading="lazy" onerror="this.style.display='none'" />
+          <h4><a href="https://www.anthropic.com/news/claude-opus-5" target="_blank" rel="noopener">Claude Opus 5 공개</a></h4>
+          <p class="summary-text">Fable 5에 근접한 성능, Opus 4.8과 동일 가격($5 입력 / $25 출력 per MTok). Frontier-Bench·CursorBench·GDPval-AA 등에서 코딩·지식업무 SOTA. Claude Max 기본·Pro 최강 모델. Fast mode(약 2.5× 속도, 2배 요금). 사이버 분류기는 Fable 5보다 약 85% 덜 개입. mid-conversation tool 변경·자동 fallback 베타.</p>
+          <div style="clear:both"></div>
+        </article>
+
+        <article class="article">
+          <span class="tag anthropic">Anthropic</span>
+          <img class="thumb" src="https://cdn.sanity.io/images/4zrzovbb/website/303a79341c6210020de254eaabc259548d27ba58-1200x630.jpg" alt="" loading="lazy" onerror="this.style.display='none'" />
+          <h4><a href="https://www.anthropic.com/news/economic-futures-research-fund-agenda" target="_blank" rel="noopener">Economic Futures Research Fund 연구 아젠다</a></h4>
+          
+          <div style="clear:both"></div>
+        </article>
+
+        <article class="article">
+          <span class="tag anthropic">Anthropic</span>
+          <img class="thumb" src="https://www.anthropic.com/api/opengraph-illustration?name=Hand%20NodeBook&amp;backgroundColor=coral" alt="" loading="lazy" onerror="this.style.display='none'" />
+          <h4><a href="https://www.anthropic.com/news/anthropic-economic-index-connector" target="_blank" rel="noopener">Anthropic Economic Index connector for Claude</a></h4>
+          
+          <div style="clear:both"></div>
+        </article>
+
+        <article class="article">
+          <span class="tag venturebeat">VentureBeat</span>
+          
+          <h4><a href="https://venturebeat.com/orchestration/anthropic-launches-claude-opus-5-a-cheaper-ai-model-for-coding-agents-and-enterprise-workflows" target="_blank" rel="noopener">Anthropic Claude Opus 5 — 코딩·에이전트·엔터프라이즈용 저가(상대) 모델</a></h4>
+          
+          <div style="clear:both"></div>
+        </article>
+
+        <article class="article">
+          <span class="tag venturebeat">VentureBeat</span>
+          
+          <h4><a href="https://venturebeat.com/technology/venturebeat-research-where-enterprise-ai-agent-governance-hasnt-caught-up" target="_blank" rel="noopener">엔터프라이즈 AI 에이전트 거버넌스 격차 (VB Research, 573명 설문)</a></h4>
+          
+          <div style="clear:both"></div>
+        </article>
+
+        <article class="article">
+          <span class="tag techcrunch">TechCrunch</span>
+          <img class="thumb" src="https://techcrunch.com/wp-content/uploads/2026/07/Screenshot-2026-07-24-at-12.47.38-PM.jpg?w=1166" alt="" loading="lazy" onerror="this.style.display='none'" />
+          <h4><a href="https://techcrunch.com/2026/07/24/anthropic-launches-opus-5/" target="_blank" rel="noopener">Anthropic Opus 5 출시</a></h4>
+          
+          <div style="clear:both"></div>
+        </article>
+
+        <article class="article">
+          <span class="tag techcrunch">TechCrunch</span>
+          <img class="thumb" src="https://techcrunch.com/wp-content/uploads/2025/03/GettyImages-2205211212-1.jpg?resize=1200,800" alt="" loading="lazy" onerror="this.style.display='none'" />
+          <h4><a href="https://techcrunch.com/2026/07/24/as-us-weighs-response-to-chinese-ai-industry-urges-against-broad-open-weight-restrictions/" target="_blank" rel="noopener">미 중국 AI 대응 검토 — 업계, 광범위 오픈웨이트 규제 반대</a></h4>
+          
+          <div style="clear:both"></div>
+        </article>
+
+        <article class="article">
+          <span class="tag techcrunch">TechCrunch</span>
+          <img class="thumb" src="https://techcrunch.com/wp-content/uploads/2026/04/Poke-at-3.56.23-PM.jpg?resize=1200,610" alt="" loading="lazy" onerror="this.style.display='none'" />
+          <h4><a href="https://techcrunch.com/2026/07/24/why-cognition-bought-poke-ai-personality-is-becoming-a-competitive-advantage/" target="_blank" rel="noopener">Cognition, Poke 인수 — AI 페르소나가 경쟁 우위</a></h4>
+          
+          <div style="clear:both"></div>
+        </article>
+
+        <article class="article">
+          <span class="tag techcrunch">TechCrunch</span>
+          <img class="thumb" src="https://techcrunch.com/wp-content/uploads/2026/07/attie-logo.webp?w=1200" alt="" loading="lazy" onerror="this.style.display='none'" />
+          <h4><a href="https://techcrunch.com/2026/07/24/blueskys-ai-assistant-attie-expands-into-an-open-social-research-tool/" target="_blank" rel="noopener">Bluesky AI 어시스턴트 Attie, 오픈 소셜 연구 도구로 확장</a></h4>
+          
+          <div style="clear:both"></div>
+        </article>
+
+        <article class="article">
+          <span class="tag techcrunch">TechCrunch</span>
+          <img class="thumb" src="https://techcrunch.com/wp-content/uploads/2026/07/GettyImages-149418827.jpg?resize=1200,837" alt="" loading="lazy" onerror="this.style.display='none'" />
+          <h4><a href="https://techcrunch.com/2026/07/24/midjourney-acquired-the-astrology-app-co-star/" target="_blank" rel="noopener">Midjourney, 점성술 앱 Co-Star 인수</a></h4>
+          
+          <div style="clear:both"></div>
+        </article>
+
+        <article class="article">
+          <span class="tag techcrunch">TechCrunch</span>
+          <img class="thumb" src="https://techcrunch.com/wp-content/uploads/2026/05/openai-logo-code-background.jpg?resize=1200,798" alt="" loading="lazy" onerror="this.style.display='none'" />
+          <h4><a href="https://techcrunch.com/2026/07/24/openais-new-voice-mode-makes-it-to-the-chatgpt-desktop-app/" target="_blank" rel="noopener">OpenAI 신규 보이스 모드, ChatGPT 데스크톱 앱 도착</a></h4>
+          
+          <div style="clear:both"></div>
+        </article>
+
+        <article class="article">
+          <span class="tag verge">The Verge</span>
+          <img class="thumb" src="https://platform.theverge.com/wp-content/uploads/sites/2/2026/06/STKB364_CLAUDE_D.jpg?quality=90&amp;strip=all&amp;crop=0%2C10.732984293194%2C100%2C78.534031413613&amp;w=1200" alt="" loading="lazy" onerror="this.style.display='none'" />
+          <h4><a href="https://www.theverge.com/ai-artificial-intelligence/970105/claude-opus-5-announced-anthropic-ai-model-release" target="_blank" rel="noopener">Claude Opus 5, Fable 5에 ‘근접’한 능력으로 출시</a></h4>
+          
+          <div style="clear:both"></div>
+        </article>
+
+        <article class="article">
+          <span class="tag verge">The Verge</span>
+          <img class="thumb" src="https://platform.theverge.com/wp-content/uploads/sites/2/2026/07/04_Trending.jpg?quality=90&amp;strip=all&amp;crop=0%2C4.9744178812656%2C100%2C60.121795706945&amp;w=1200" alt="" loading="lazy" onerror="this.style.display='none'" />
+          <h4><a href="https://www.theverge.com/tech/970570/meta-ai-chatbot-productivity-update" target="_blank" rel="noopener">Meta AI 챗봇, 어시스턴트형으로 전환 중</a></h4>
+          
+          <div style="clear:both"></div>
+        </article>
+
+        <article class="article">
+          <span class="tag verge">The Verge</span>
+          <img class="thumb" src="https://platform.theverge.com/wp-content/uploads/sites/2/2026/07/thumbnails-on-shorts-static-1.max-700x3000.format-webp.webp?quality=90&amp;strip=all&amp;crop=0,6.4736167937223,100,87.052766412555" alt="" loading="lazy" onerror="this.style.display='none'" />
+          <h4><a href="https://www.theverge.com/creators/970871/youtubes-ai-chatbot-can-make-your-next-video-thumbnail" target="_blank" rel="noopener">YouTube Ask Studio 봇, 썸네일 생성</a></h4>
+          
+          <div style="clear:both"></div>
+        </article>
+
+        <article class="article">
+          <span class="tag verge">The Verge</span>
+          <img class="thumb" src="https://platform.theverge.com/wp-content/uploads/sites/2/2026/07/STK414_AI_CHATBOT_E-1.jpg?quality=90&amp;strip=all&amp;crop=0%2C10.732984293194%2C100%2C78.534031413613&amp;w=1200" alt="" loading="lazy" onerror="this.style.display='none'" />
+          <h4><a href="https://www.theverge.com/ai-artificial-intelligence/970894/midjourney-co-star-acquisition" target="_blank" rel="noopener">Midjourney, Co-Star 인수</a></h4>
+          
+          <div style="clear:both"></div>
+        </article>
+
+        <article class="article">
+          <span class="tag verge">The Verge</span>
+          <img class="thumb" src="https://platform.theverge.com/wp-content/uploads/sites/2/2026/07/VRG_VST_20260724_Site.jpg?quality=90&amp;strip=all&amp;crop=0%2C10.732984293194%2C100%2C78.534031413613&amp;w=1200" alt="" loading="lazy" onerror="this.style.display='none'" />
+          <h4><a href="https://www.theverge.com/podcast/970735/google-zero-reddit-ai-publishers-vergecast" target="_blank" rel="noopener">Google Zero — 퍼블리셔·AI·검색 (Vergecast)</a></h4>
+          
+          <div style="clear:both"></div>
+        </article>
+
+        <article class="article">
+          <span class="tag verge">The Verge</span>
+          <img class="thumb" src="https://platform.theverge.com/wp-content/uploads/sites/2/2026/07/Petridish_illo.jpg?quality=90&amp;strip=all&amp;crop=0%2C10.732984293194%2C100%2C78.534031413613&amp;w=1200" alt="" loading="lazy" onerror="this.style.display='none'" />
+          <h4><a href="https://www.theverge.com/science/970534/genesis-mission-ai-science-funding-trump-grants" target="_blank" rel="noopener">Genesis Mission과 미국 과학 자금의 AI 편중 비판</a></h4>
+          
+          <div style="clear:both"></div>
+        </article>
+
+        <article class="article">
+          <span class="tag hn">Hacker News (AI 관련 상위)</span>
+          <img class="thumb" src="https://cdn.sanity.io/images/4zrzovbb/website/54b7ab1d2c2521f83ae5d2da5f9d99321c370d24-2880x1620.png" alt="" loading="lazy" onerror="this.style.display='none'" />
+          <h4><a href="https://www.anthropic.com/news/claude-opus-5" target="_blank" rel="noopener">Claude Opus 5</a></h4>
+          <p class="summary-text">826 points</p>
+          <div style="clear:both"></div>
+        </article>
+
+        <article class="article">
+          <span class="tag hn">Hacker News (AI 관련 상위)</span>
+          <img class="thumb" src="https://image.cnbcfm.com/api/v1/image/108173882-1752844539526-gettyimages-2225696381-mms28707_1cm2uml7.jpeg?v=1752844582&amp;w=1920&amp;h=1080" alt="" loading="lazy" onerror="this.style.display='none'" />
+          <h4><a href="https://www.cnbc.com/2026/07/24/nvidia-microsoft-meta-open-weight-ai-models.html" target="_blank" rel="noopener">Nvidia·Microsoft·Meta, 오픈웨이트 과잉 규제 경고</a></h4>
+          <p class="summary-text">225 points</p>
+          <div style="clear:both"></div>
+        </article>
+
+        <article class="article">
+          <span class="tag hn">Hacker News (AI 관련 상위)</span>
+          <img class="thumb" src="https://i.guim.co.uk/img/media/e3c91fad3c0af25a6cbbd44c6b091bdfdfdd270d/952_0_4448_3558/master/4448.jpg?width=1200&amp;height=630&amp;quality=85&amp;auto=format&amp;fit=crop&amp;precrop=40:21,offset-x50,offset-y0&amp;overlay-align=bottom%2Cleft&amp;overlay-width=100p&amp;overlay-base64=L2ltZy9zdGF0aWMvb3ZlcmxheXMvdGctb3BpbmlvbnMucG5n&amp;enable=upscale&amp;s=d8a12eef6083a120c19a454c8d40fcfd" alt="" loading="lazy" onerror="this.style.display='none'" />
+          <h4><a href="https://www.theguardian.com/technology/2026/jul/24/openai-rogue-hacker" target="_blank" rel="noopener">OpenAI ‘rogue hacker agent’ 스토리에 회의적 시각 (Guardian)</a></h4>
+          <p class="summary-text">258 points</p>
+          <div style="clear:both"></div>
+        </article>
+
+        <article class="article">
+          <span class="tag hn">Hacker News (AI 관련 상위)</span>
+          <img class="thumb" src="https://bfl.ai/api/og/blog/flux-3-mimic" alt="" loading="lazy" onerror="this.style.display='none'" />
+          <h4><a href="https://bfl.ai/blog/flux-3-mimic" target="_blank" rel="noopener">Flux 3 X Mimic — 비디오-액션 모델</a></h4>
+          <p class="summary-text">289 points</p>
+          <div style="clear:both"></div>
+        </article>
+
+        <article class="article">
+          <span class="tag hn">Hacker News (AI 관련 상위)</span>
+          <img class="thumb" src="https://bfl.ai/api/og/blog/flux-3" alt="" loading="lazy" onerror="this.style.display='none'" />
+          <h4><a href="https://bfl.ai/blog/flux-3" target="_blank" rel="noopener">Flux 3</a></h4>
+          <p class="summary-text">531 points</p>
+          <div style="clear:both"></div>
+        </article>
+
+        <article class="article">
+          <span class="tag arxiv">The Batch (DeepLearning.AI) — Issue 363</span>
+          <img class="thumb" src="https://charonhub.deeplearning.ai/content/images/2026/07/Open-AI-Rally-FINAL.webp" alt="" loading="lazy" onerror="this.style.display='none'" />
+          <h4><a href="https://www.deeplearning.ai/the-batch/issue-363" target="_blank" rel="noopener">Kimi K3가 오픈 프론티어를 재편, Muse Spark 1.1 가격 공세, Cloudflare 크롤러 차단 강화</a></h4>
+          <p class="summary-text">Andrew Ng: OpenAI 에이전트가 Hugging Face를 우발 공격 → 가드레일 때문에 상용 LLM이 로그 분석 거부 → 오픈 GLM 5.2로 자체 인프라에서 방어 분석. 오픈웨이트가 오히려 사이버 방어에 유리하다는 사례. · Kimi K3: 2.8T MoE(활성 ~50B), 1M 컨텍스트, Intelligence Index 3위(오픈 1위), 가중치 7/27 예정. · Meta Muse Spark 1.1: 도구사용·저비용 에이전트, Meta Model API 유료 공개. · Cloudflare: 검색/학습/에이전트 봇 분리 통제, 9/15부터 기본 학습·에이전트 차단.</p>
+          <div style="clear:both"></div>
+        </article>
+
+        <article class="article">
+          <span class="tag openai">xAI (SpaceXAI)</span>
+          
+          <h4><a href="https://x.ai/news/introducing-google-workspace-addon" target="_blank" rel="noopener">Grok in Google Workspace</a></h4>
+          
+          <div style="clear:both"></div>
+        </article>
+
+        <article class="article">
+          <span class="tag aitimes">AI타임즈</span>
+          <img class="thumb" src="https://cdn.aitimes.com/news/photo/202607/213129_216533_4233.jpg" alt="" loading="lazy" onerror="this.style.display='none'" />
+          <h4><a href="https://www.aitimes.com/news/articleView.html?idxno=213129" target="_blank" rel="noopener">오픈AI, 데스크톱 앱에 GPT-Live 음성 제어 도입</a></h4>
+          
+          <div style="clear:both"></div>
+        </article>
+
+        <article class="article">
+          <span class="tag aitimes">AI타임즈</span>
+          <img class="thumb" src="https://cdn.aitimes.com/news/photo/202607/213127_216531_139.jpg" alt="" loading="lazy" onerror="this.style.display='none'" />
+          <h4><a href="https://www.aitimes.com/news/articleView.html?idxno=213127" target="_blank" rel="noopener">앤트로픽 클로드 오퍼스 5 출시 임박→당일 관련 보도</a></h4>
+          
+          <div style="clear:both"></div>
+        </article>
+
+        <article class="article">
+          <span class="tag aitimes">AI타임즈</span>
+          <img class="thumb" src="https://cdn.aitimes.com/news/photo/202607/213146_216560_1539.jpg" alt="" loading="lazy" onerror="this.style.display='none'" />
+          <h4><a href="https://www.aitimes.com/news/articleView.html?idxno=213146" target="_blank" rel="noopener">젠스파크 국내 상륙 — 3년간 $1억 투자</a></h4>
+          
+          <div style="clear:both"></div>
+        </article>
+
+        <article class="article">
+          <span class="tag aitimes">AI타임즈</span>
+          <img class="thumb" src="https://cdn.aitimes.com/news/photo/202607/213132_216542_5026.jpeg" alt="" loading="lazy" onerror="this.style.display='none'" />
+          <h4><a href="https://www.aitimes.com/news/articleView.html?idxno=213132" target="_blank" rel="noopener">MS MAI-이미지-2.5-프로 등 — 오픈AI 모델 대체 가속</a></h4>
+          
+          <div style="clear:both"></div>
+        </article>
+
+        <article class="article">
+          <span class="tag aitimes">AI타임즈</span>
+          <img class="thumb" src="https://cdn.aitimes.com/news/photo/202607/213128_216532_2637.jpg" alt="" loading="lazy" onerror="this.style.display='none'" />
+          <h4><a href="https://www.aitimes.com/news/articleView.html?idxno=213128" target="_blank" rel="noopener">오픈AI 해킹 파장·미 의회 AI 킬 스위치 법안</a></h4>
+          
+          <div style="clear:both"></div>
+        </article>
+
+        <article class="article">
+          <span class="tag aitimes">AI타임즈</span>
+          <img class="thumb" src="https://cdn.aitimes.com/news/photo/202607/213151_216565_2219.png" alt="" loading="lazy" onerror="this.style.display='none'" />
+          <h4><a href="https://www.aitimes.com/news/articleView.html?idxno=213151" target="_blank" rel="noopener">2026 필즈상 수상자 제이콥 치머만, 오픈AI 합류</a></h4>
+          
+          <div style="clear:both"></div>
+        </article>
+
+        <article class="article">
+          <span class="tag aitimes">AI타임즈</span>
+          <img class="thumb" src="https://cdn.aitimes.com/news/photo/202607/213139_216548_2154.jpg" alt="" loading="lazy" onerror="this.style.display='none'" />
+          <h4><a href="https://www.aitimes.com/news/articleView.html?idxno=213139" target="_blank" rel="noopener">딥시크 창립자 — 수익보다 AGI, 첨단 모델 오픈소스 유지</a></h4>
+          
+          <div style="clear:both"></div>
+        </article>
+
+        <article class="article">
+          <span class="tag aitimes">AI타임즈</span>
+          <img class="thumb" src="https://cdn.aitimes.com/news/photo/202607/213133_216538_558.jpg" alt="" loading="lazy" onerror="this.style.display='none'" />
+          <h4><a href="https://www.aitimes.com/news/articleView.html?idxno=213133" target="_blank" rel="noopener">BFL 플럭스 3 — 20초 영상·로봇 제어</a></h4>
+          
+          <div style="clear:both"></div>
+        </article>
+
+        <article class="article">
+          <span class="tag aitimes">AI타임즈</span>
+          <img class="thumb" src="https://cdn.aitimes.com/news/photo/202607/213145_216555_5032.jpg" alt="" loading="lazy" onerror="this.style.display='none'" />
+          <h4><a href="https://www.aitimes.com/news/articleView.html?idxno=213145" target="_blank" rel="noopener">런웨이 생성 미디어 라우터</a></h4>
+          
+          <div style="clear:both"></div>
+        </article>
+
+        <article class="article">
+          <span class="tag aitimes">AI타임즈</span>
+          <img class="thumb" src="https://cdn.aitimes.com/news/photo/202607/213144_216553_2945.png" alt="" loading="lazy" onerror="this.style.display='none'" />
+          <h4><a href="https://www.aitimes.com/news/articleView.html?idxno=213144" target="_blank" rel="noopener">스트라이프, OpenRouter 약 $100억 인수 협상 보도</a></h4>
+          
+          <div style="clear:both"></div>
+        </article>
+
+        <article class="article">
+          <span class="tag aitimes">AI타임즈</span>
+          <img class="thumb" src="https://cdn.aitimes.com/news/photo/202607/213143_216552_1128.png" alt="" loading="lazy" onerror="this.style.display='none'" />
+          <h4><a href="https://www.aitimes.com/news/articleView.html?idxno=213143" target="_blank" rel="noopener">AMD·Cerebras 추론 플랫폼 협력 (성능 5배 주장)</a></h4>
+          
+          <div style="clear:both"></div>
+        </article>
+
+        <article class="article">
+          <span class="tag aitimes">AI타임즈</span>
+          <img class="thumb" src="https://cdn.aitimes.com/news/photo/202607/213140_216550_4346.jpg" alt="" loading="lazy" onerror="this.style.display='none'" />
+          <h4><a href="https://www.aitimes.com/news/articleView.html?idxno=213140" target="_blank" rel="noopener">인텔, 에이전트 확산에 CPU 수요 — 15년 만 최고 매출 성장</a></h4>
+          
+          <div style="clear:both"></div>
+        </article>
+
+        <article class="article">
+          <span class="tag aitimes">AI타임즈</span>
+          <img class="thumb" src="https://cdn.aitimes.com/news/photo/202607/213142_216551_5738.jpg" alt="" loading="lazy" onerror="this.style.display='none'" />
+          <h4><a href="https://www.aitimes.com/news/articleView.html?idxno=213142" target="_blank" rel="noopener">우버, AI 명목 고객서비스 10% 감원</a></h4>
+          
+          <div style="clear:both"></div>
+        </article>
+
+        <article class="article">
+          <span class="tag aitimes">AI타임즈</span>
+          <img class="thumb" src="https://cdn.aitimes.com/news/photo/202607/213134_216541_951.jpg" alt="" loading="lazy" onerror="this.style.display='none'" />
+          <h4><a href="https://www.aitimes.com/news/articleView.html?idxno=213134" target="_blank" rel="noopener">오픈AI 챗GPT 헬스 미국 출시</a></h4>
+          
+          <div style="clear:both"></div>
+        </article>
+
+        <article class="article">
+          <span class="tag aitimes">AI타임즈</span>
+          <img class="thumb" src="https://cdn.aitimes.com/news/photo/202607/213123_216528_5042.jpeg" alt="" loading="lazy" onerror="this.style.display='none'" />
+          <h4><a href="https://www.aitimes.com/news/articleView.html?idxno=213123" target="_blank" rel="noopener">KAIST–엔비디아 AI 공동연구소, 컴퓨팅 약 740억 지원</a></h4>
+          
+          <div style="clear:both"></div>
+        </article>
+
+        <article class="article">
+          <span class="tag aitimes">AI타임즈</span>
+          <img class="thumb" src="https://cdn.aitimes.com/news/photo/202607/213122_216527_1137.jpeg" alt="" loading="lazy" onerror="this.style.display='none'" />
+          <h4><a href="https://www.aitimes.com/news/articleView.html?idxno=213122" target="_blank" rel="noopener">SKT, AI DC 전문 SK하이퍼 신설·7500억 출자</a></h4>
+          
+          <div style="clear:both"></div>
+        </article>
+
+        <article class="article">
+          <span class="tag aitimes">AI타임즈</span>
+          <img class="thumb" src="https://cdn.aitimes.com/news/photo/202607/213152_216566_2237.png" alt="" loading="lazy" onerror="this.style.display='none'" />
+          <h4><a href="https://www.aitimes.com/news/articleView.html?idxno=213152" target="_blank" rel="noopener">테크타카 180억 후속 투자</a></h4>
+          
+          <div style="clear:both"></div>
+        </article>
+
+        <article class="article">
+          <span class="tag aitimes">AI포스트</span>
+          <img class="thumb" src="https://cdn.aipostkorea.com/news/photo/202607/12175_22120_300.png" alt="" loading="lazy" onerror="this.style.display='none'" />
+          <h4><a href="https://www.aipostkorea.com/news/articleView.html?idxno=12175" target="_blank" rel="noopener">택스아이, BNK부산은행 앱 탑재</a></h4>
+          
+          <div style="clear:both"></div>
+        </article>
+
+        <article class="article">
+          <span class="tag aitimes">AI포스트</span>
+          <img class="thumb" src="https://cdn.aipostkorea.com/news/photo/202607/12174_22119_1528.png" alt="" loading="lazy" onerror="this.style.display='none'" />
+          <h4><a href="https://www.aipostkorea.com/news/articleView.html?idxno=12174" target="_blank" rel="noopener">HD한국조선해양 AI 조선소</a></h4>
+          
+          <div style="clear:both"></div>
+        </article>
+
+        <article class="article">
+          <span class="tag aitimes">AI포스트</span>
+          <img class="thumb" src="https://cdn.aipostkorea.com/news/photo/202607/12173_22118_95.png" alt="" loading="lazy" onerror="this.style.display='none'" />
+          <h4><a href="https://www.aipostkorea.com/news/articleView.html?idxno=12173" target="_blank" rel="noopener">전남정보문화산업진흥원 KOLAS AI 품질 인정 확대</a></h4>
+          
+          <div style="clear:both"></div>
+        </article>
+
+        <article class="article">
+          <span class="tag arxiv">MIT Technology Review</span>
+          <img class="thumb" src="https://wp.technologyreview.com/wp-content/uploads/2026/07/AI_in_Biologics_Draft_4_no_Captions.jpg?resize=1200,600" alt="" loading="lazy" onerror="this.style.display='none'" />
+          <h4><a href="https://www.technologyreview.com/2026/07/23/1140346/how-ai-helps-scientists-design-the-next-generation-of-medicines/" target="_blank" rel="noopener">AI가 차세대 의약품 설계를 돕는 방법</a></h4>
+          
+          <div style="clear:both"></div>
+        </article>
+
+        <article class="article">
+          <span class="tag hn">Geeknews (AI 선별)</span>
+          <img class="thumb" src="https://omp.sh/og-image.png" alt="" loading="lazy" onerror="this.style.display='none'" />
+          <h4><a href="https://omp.sh/" target="_blank" rel="noopener">omp — Pi 기반 터미널 AI 코딩 에이전트</a></h4>
+          
+          <div style="clear:both"></div>
+        </article>
+
+        <article class="article">
+          <span class="tag hn">Geeknews (AI 선별)</span>
+          <img class="thumb" src="https://opengraph.githubassets.com/c0263cc4e04ee274df99e067b3a7e87dd0c7cad752054517ccdd0429013903df/Graphify-Labs/graphify" alt="" loading="lazy" onerror="this.style.display='none'" />
+          <h4><a href="https://github.com/Graphify-Labs/graphify" target="_blank" rel="noopener">graphify — 코드베이스 지식 그래프</a></h4>
+          
+          <div style="clear:both"></div>
+        </article>
+
+        <article class="article">
+          <span class="tag hn">Geeknews (AI 선별)</span>
+          <img class="thumb" src="https://cdn.sanity.io/images/bj34pdbp/migration/d52c029ac77689f23a2160c4ef9db64d44ae582b-3600x2025.png?w=1200&amp;h=630&amp;fit=max&amp;fm=jpg" alt="" loading="lazy" onerror="this.style.display='none'" />
+          <h4><a href="https://replit.com/blog/self-driving-company" target="_blank" rel="noopener">자율주행 기업 (Replit)</a></h4>
+          
+          <div style="clear:both"></div>
+        </article>
+
+        <article class="article">
+          <span class="tag hn">Geeknews (AI 선별)</span>
+          <img class="thumb" src="https://www.bvp.com/assets/uploads/2026/05/ATLAS_Energy-Roadmap_final-1.png" alt="" loading="lazy" onerror="this.style.display='none'" />
+          <h4><a href="https://www.bvp.com/atlas/roadmap-the-ai-data-center-stack" target="_blank" rel="noopener">AI 데이터센터 스택 로드맵 (BVP)</a></h4>
+          
+          <div style="clear:both"></div>
+        </article>
+
+        <article class="article">
+          <span class="tag hn">Geeknews (AI 선별)</span>
+          <img class="thumb" src="https://s.yimg.com/lo/mysterio/api/4FA54BF13A6549F8A516F04CD0A3D96DBD564A4F399AF7F14BE8D1B6869393BB/subgraphmysterio/resizefill_w1200_h675;quality_80;format_webp/https:%2F%2Fmedia.zenfs.com%2Fen%2Fbeincrypto_us_662%2F980b4869aad38995d359edf63fee6a97" alt="" loading="lazy" onerror="this.style.display='none'" />
+          <h4><a href="https://finance.yahoo.com/markets/stocks/articles/reddit-may-block-google-ai-133000076.html" target="_blank" rel="noopener">Reddit, Google AI 접근 차단 검토</a></h4>
+          
+          <div style="clear:both"></div>
+        </article>
+        </div>
+        <div class="day">
+          <div class="day-label">2026.07.23 // THU — Health · Voice · 규제</div>
+          
+        <article class="article">
+          <span class="tag openai">OpenAI</span>
+          
+          <h4><a href="https://openai.com/index/health-in-chatgpt/" target="_blank" rel="noopener">ChatGPT Health 출시 (미국 성인 Free/Go/Plus/Pro, 웹·iOS)</a></h4>
+          <p class="summary-text">Apple Health·지원 의료기록 연동. 주 3억+ 건강 관련 질문. 연결 데이터·이를 쓴 대화는 파운데이션 학습·광고에 미사용. GPT-5.6 Sol이 유료 최강 헬스 모델. 의사 협력 HealthBench Professional.</p>
+          <div style="clear:both"></div>
+        </article>
+
+        <article class="article">
+          <span class="tag venturebeat">VentureBeat</span>
+          
+          <h4><a href="https://venturebeat.com/infrastructure/microsoft-launches-new-in-house-ai-models-it-says-cut-costs-up-to-89-versus-openai" target="_blank" rel="noopener">Microsoft 자체 AI 모델 — OpenAI 대비 비용 최대 89% 절감 주장</a></h4>
+          <p class="summary-text">Bing, PowerPoint, OneDrive, Dynamics 365, Excel, GitHub Copilot, Azure 등에 투입.</p>
+          <div style="clear:both"></div>
+        </article>
+
+        <article class="article">
+          <span class="tag venturebeat">VentureBeat</span>
+          
+          <h4><a href="https://venturebeat.com/orchestration/agentic-coding-goes-hands-free-as-openai-brings-gpt-lives-full-duplex-voice-control-to-codex-and-chatgpt-on-the-desktop" target="_blank" rel="noopener">OpenAI, GPT-Live full-duplex 음성을 Codex·ChatGPT 데스크톱에</a></h4>
+          
+          <div style="clear:both"></div>
+        </article>
+
+        <article class="article">
+          <span class="tag venturebeat">VentureBeat</span>
+          
+          <h4><a href="https://venturebeat.com/technology/black-forest-labs-launches-flux-3-capable-of-generating-images-and-20-second-video-with-audio-but-in-limited-release-to-start" target="_blank" rel="noopener">Black Forest Labs FLUX 3 — 이미지+20초 영상(오디오), 제한 출시</a></h4>
+          
+          <div style="clear:both"></div>
+        </article>
+
+        <article class="article">
+          <span class="tag verge">The Verge</span>
+          <img class="thumb" src="https://platform.theverge.com/wp-content/uploads/sites/2/2025/01/verge-placeholder_f212b3.png?quality=90&amp;strip=all&amp;crop=0,0.13712291199202,100,99.725754176016" alt="" loading="lazy" onerror="this.style.display='none'" />
+          <h4><a href="https://www.theverge.com/ai-artificial-intelligence/970420/googles-expanding-access-to-gemini-spark" target="_blank" rel="noopener">Gemini Spark, AI Pro(미국)·Ultra(글로벌)로 접근 확대</a></h4>
+          
+          <div style="clear:both"></div>
+        </article>
+
+        <article class="article">
+          <span class="tag verge">The Verge</span>
+          <img class="thumb" src="https://platform.theverge.com/wp-content/uploads/sites/2/2025/07/8A0A3921.jpeg?quality=90&amp;strip=all&amp;crop=0%2C10.732984293194%2C100%2C78.534031413613&amp;w=1200" alt="" loading="lazy" onerror="this.style.display='none'" />
+          <h4><a href="https://www.theverge.com/tech/970399/amazon-alexa-plus-ai-update-smart-home-devices" target="_blank" rel="noopener">Alexa Plus, 복잡한 지시 처리 AI 업데이트</a></h4>
+          
+          <div style="clear:both"></div>
+        </article>
+
+        <article class="article">
+          <span class="tag verge">The Verge</span>
+          <img class="thumb" src="https://platform.theverge.com/wp-content/uploads/sites/2/2025/01/verge-placeholder_f212b3.png?quality=90&amp;strip=all&amp;crop=0,0.13712291199202,100,99.725754176016" alt="" loading="lazy" onerror="this.style.display='none'" />
+          <h4><a href="https://www.theverge.com/ai-artificial-intelligence/970324/openai-brings-its-updated-voice-mode-to-the-chatgpt-desktop-app" target="_blank" rel="noopener">ChatGPT 데스크톱에 업데이트 보이스 모드</a></h4>
+          
+          <div style="clear:both"></div>
+        </article>
+
+        <article class="article">
+          <span class="tag verge">The Verge</span>
+          
+          <h4><a href="https://www.axios.com/2026/07/23/yelp-reviews-chatgpt-geo-partnership" target="_blank" rel="noopener">ChatGPT, Yelp 리뷰 연동 (Axios)</a></h4>
+          
+          <div style="clear:both"></div>
+        </article>
+
+        <article class="article">
+          <span class="tag verge">The Verge</span>
+          <img class="thumb" src="https://platform.theverge.com/wp-content/uploads/sites/2/2026/07/Claude-Voice-2-3-up.png?quality=90&amp;strip=all&amp;crop=0%2C3.4613147178592%2C100%2C93.077370564282&amp;w=1200" alt="" loading="lazy" onerror="this.style.display='none'" />
+          <h4><a href="https://www.theverge.com/ai-artificial-intelligence/970065/anthropic-voice-mode-claude-opus-sonnet-haiku-ai" target="_blank" rel="noopener">Claude 보이스 모드, Opus·Sonnet 지원</a></h4>
+          
+          <div style="clear:both"></div>
+        </article>
+
+        <article class="article">
+          <span class="tag verge">The Verge</span>
+          <img class="thumb" src="https://platform.theverge.com/wp-content/uploads/sites/2/2026/07/chatgpt-health-launch.webp?quality=90&amp;strip=all&amp;crop=0%2C3.4613147178592%2C100%2C93.077370564282&amp;w=1200" alt="" loading="lazy" onerror="this.style.display='none'" />
+          <h4><a href="https://www.theverge.com/ai-artificial-intelligence/970115/openai-chatgpt-health-launch-claims" target="_blank" rel="noopener">ChatGPT Health 전체 롤아웃 및 주장</a></h4>
+          
+          <div style="clear:both"></div>
+        </article>
+
+        <article class="article">
+          <span class="tag verge">The Verge</span>
+          <img class="thumb" src="https://platform.theverge.com/wp-content/uploads/sites/2/2026/07/STK326_PATREON_D.jpg?quality=90&amp;strip=all&amp;crop=0%2C10.732984293194%2C100%2C78.534031413613&amp;w=1200" alt="" loading="lazy" onerror="this.style.display='none'" />
+          <h4><a href="https://www.theverge.com/tech/970211/patreon-layoffs-ai" target="_blank" rel="noopener">Patreon 20% 감원 (AI 운영 영향 언급)</a></h4>
+          
+          <div style="clear:both"></div>
+        </article>
+
+        <article class="article">
+          <span class="tag verge">The Verge</span>
+          <img class="thumb" src="https://platform.theverge.com/wp-content/uploads/sites/2/2025/01/verge-placeholder_f212b3.png?quality=90&amp;strip=all&amp;crop=0,0.13712291199202,100,99.725754176016" alt="" loading="lazy" onerror="this.style.display='none'" />
+          <h4><a href="https://www.theverge.com/ai-artificial-intelligence/970035/uber-is-laying-off-10-percent-of-customer-service-workers-as-it-continues-to-embrace-ai" target="_blank" rel="noopener">Uber 고객서비스 10% 감원 — ‘AI 수용’</a></h4>
+          
+          <div style="clear:both"></div>
+        </article>
+
+        <article class="article">
+          <span class="tag verge">The Verge</span>
+          
+          <h4><a href="https://www.reuters.com/business/media-telecom/amazons-bezos-pushes-prime-video-redesign-focused-ai-2026-07-23/" target="_blank" rel="noopener">Bezos, Prime Video AI 중심 개편 개입 (Reuters)</a></h4>
+          
+          <div style="clear:both"></div>
+        </article>
+
+        <article class="article">
+          <span class="tag verge">The Verge</span>
+          <img class="thumb" src="https://platform.theverge.com/wp-content/uploads/sites/2/2026/02/STK_414_AI_C-1.jpg?quality=90&amp;strip=all&amp;crop=0%2C10.732984293194%2C100%2C78.534031413613&amp;w=1200" alt="" loading="lazy" onerror="this.style.display='none'" />
+          <h4><a href="https://www.theverge.com/ai-artificial-intelligence/969939/lawmakers-ai-kill-switch-proposal" target="_blank" rel="noopener">의원들 AI ‘킬 스위치’ 법안 준비</a></h4>
+          
+          <div style="clear:both"></div>
+        </article>
+
+        <article class="article">
+          <span class="tag verge">The Verge</span>
+          <img class="thumb" src="https://platform.theverge.com/wp-content/uploads/sites/2/2026/07/DCD_0724_OpenAI_suit.jpg?quality=90&amp;strip=all&amp;crop=0%2C10.732984293194%2C100%2C78.534031413613&amp;w=1200" alt="" loading="lazy" onerror="this.style.display='none'" />
+          <h4><a href="https://www.theverge.com/podcast/968787/apple-openai-trade-secrets-lawsuit-ai-hardware-smartphone-jony-ive" target="_blank" rel="noopener">Apple vs OpenAI 소송 — 포스트 스마트폰 정의 경쟁 (Decoder)</a></h4>
+          
+          <div style="clear:both"></div>
+        </article>
+
+        <article class="article">
+          <span class="tag nvidia">NVIDIA</span>
+          <img class="thumb" src="https://blogs.nvidia.com/wp-content/uploads/2026/07/jhh-k-ai-summit-1920x1080-2.jpg" alt="" loading="lazy" onerror="this.style.display='none'" />
+          <h4><a href="https://blogs.nvidia.com/blog/ai-summit-korea-partners-and-nvidia/" target="_blank" rel="noopener">AI Summit에서 한국, NVIDIA·파트너와 AI 미래 윤곽</a></h4>
+          
+          <div style="clear:both"></div>
+        </article>
+
+        <article class="article">
+          <span class="tag nvidia">NVIDIA</span>
+          <img class="thumb" src="https://blogs.nvidia.com/wp-content/uploads/2026/07/gfn-thursday-7-23-blog-1920x1080-logo.jpg" alt="" loading="lazy" onerror="this.style.display='none'" />
+          <h4><a href="https://blogs.nvidia.com/blog/geforce-now-thursday-path-of-exile-allflame/" target="_blank" rel="noopener">GeForce NOW — Path of Exile 등 (게이밍, 참고)</a></h4>
+          
+          <div style="clear:both"></div>
+        </article>
+
+        <article class="article">
+          <span class="tag huggingface">Hugging Face</span>
+          <img class="thumb" src="https://huggingface.co/blog/assets/nunchaku-diffusers/thumbnail.png" alt="" loading="lazy" onerror="this.style.display='none'" />
+          <h4><a href="https://huggingface.co/blog/nunchaku-diffusers" target="_blank" rel="noopener">Nunchaku 4-bit Diffusion을 Diffusers에</a></h4>
+          
+          <div style="clear:both"></div>
+        </article>
+
+        <article class="article">
+          <span class="tag huggingface">Hugging Face</span>
+          <img class="thumb" src="https://cdn-uploads.huggingface.co/production/uploads/65baa31607366d903890bcf4/bQWnupsg69uYJ6Vy9Q_pj.png" alt="" loading="lazy" onerror="this.style.display='none'" />
+          <h4><a href="https://huggingface.co/blog/badaoui/transformers-on-amd-mi455" target="_blank" rel="noopener">AMD Instinct MI455X Transformers 첫 결과</a></h4>
+          
+          <div style="clear:both"></div>
+        </article>
+
+        <article class="article">
+          <span class="tag techcrunch">TechCrunch</span>
+          <img class="thumb" src="https://techcrunch.com/wp-content/uploads/2026/06/claude-mythos-logo.jpg?resize=1200,800" alt="" loading="lazy" onerror="this.style.display='none'" />
+          <h4><a href="https://techcrunch.com/2026/07/23/how-ai-guardrails-are-impeding-the-work-of-offensive-cybersecurity-researchers/" target="_blank" rel="noopener">AI 가드레일이 공격적 사이버보안 연구를 방해</a></h4>
+          
+          <div style="clear:both"></div>
+        </article>
+
+        <article class="article">
+          <span class="tag techcrunch">TechCrunch</span>
+          <img class="thumb" src="https://techcrunch.com/wp-content/uploads/2026/07/Claude-Voice-2-3-up.jpeg?resize=1200,675" alt="" loading="lazy" onerror="this.style.display='none'" />
+          <h4><a href="https://techcrunch.com/2026/07/23/anthropic-updates-claude-voice-mode-with-more-capable-models/" target="_blank" rel="noopener">Anthropic Claude 보이스 모드 강화</a></h4>
+          
+          <div style="clear:both"></div>
+        </article>
+
+        <article class="article">
+          <span class="tag techcrunch">TechCrunch</span>
+          <img class="thumb" src="https://techcrunch.com/wp-content/uploads/2026/07/GettyImages-2223254975.jpg?resize=1200,800" alt="" loading="lazy" onerror="this.style.display='none'" />
+          <h4><a href="https://techcrunch.com/2026/07/23/patreon-lays-off-off-20-of-its-workforce/" target="_blank" rel="noopener">Patreon 20% 감원</a></h4>
+          
+          <div style="clear:both"></div>
+        </article>
+
+        <article class="article">
+          <span class="tag openai">xAI</span>
+          
+          <h4><a href="https://x.ai/news/workflows" target="_blank" rel="noopener">Workflows in Grok Build</a></h4>
+          
+          <div style="clear:both"></div>
+        </article>
+
+        <article class="article">
+          <span class="tag aitimes">AI타임즈 (7/23 게재·관련)</span>
+          <img class="thumb" src="https://cdn.aitimes.com/news/photo/202607/213095_216496_3628.jpg" alt="" loading="lazy" onerror="this.style.display='none'" />
+          <h4><a href="https://www.aitimes.com/news/articleView.html?idxno=213095" target="_blank" rel="noopener">샤오홍슈 dots-note-3.0, IMO 만점(42점) AI 최초</a></h4>
+          
+          <div style="clear:both"></div>
+        </article>
+
+        <article class="article">
+          <span class="tag aitimes">AI타임즈 (7/23 게재·관련)</span>
+          <img class="thumb" src="https://cdn.aitimes.com/news/photo/202607/213101_216502_352.jpg" alt="" loading="lazy" onerror="this.style.display='none'" />
+          <h4><a href="https://www.aitimes.com/news/articleView.html?idxno=213101" target="_blank" rel="noopener">미국 스타트업 200곳 — 중국산 AI 차단 말라</a></h4>
+          
+          <div style="clear:both"></div>
+        </article>
+
+        <article class="article">
+          <span class="tag aitimes">AI타임즈 (7/23 게재·관련)</span>
+          <img class="thumb" src="https://cdn.aitimes.com/news/photo/202607/213088_216483_1036.jpg" alt="" loading="lazy" onerror="this.style.display='none'" />
+          <h4><a href="https://www.aitimes.com/news/articleView.html?idxno=213088" target="_blank" rel="noopener">Hugging Face, 해킹 분석에 지푸(Zhipu/GLM) 사용 — 과도한 가드레일 비판</a></h4>
+          
+          <div style="clear:both"></div>
+        </article>
+
+        <article class="article">
+          <span class="tag aitimes">AI타임즈 (7/23 게재·관련)</span>
+          <img class="thumb" src="https://cdn.aitimes.com/news/photo/202607/213104_216506_4956.jpg" alt="" loading="lazy" onerror="this.style.display='none'" />
+          <h4><a href="https://www.aitimes.com/news/articleView.html?idxno=213104" target="_blank" rel="noopener">젠슨 황 — 중국 오픈소스 AI 금지 반대</a></h4>
+          
+          <div style="clear:both"></div>
+        </article>
+
+        <article class="article">
+          <span class="tag aitimes">AI타임즈 (7/23 게재·관련)</span>
+          <img class="thumb" src="https://cdn.aitimes.com/news/photo/202607/213118_216522_024.jpg" alt="" loading="lazy" onerror="this.style.display='none'" />
+          <h4><a href="https://www.aitimes.com/news/articleView.html?idxno=213118" target="_blank" rel="noopener">Deezer, 일일 업로드 AI 음원 50% 돌파</a></h4>
+          
+          <div style="clear:both"></div>
+        </article>
+
+        <article class="article">
+          <span class="tag aitimes">AI타임즈 (7/23 게재·관련)</span>
+          <img class="thumb" src="https://cdn.aitimes.com/news/photo/202607/213108_216511_652.png" alt="" loading="lazy" onerror="this.style.display='none'" />
+          <h4><a href="https://www.aitimes.com/news/articleView.html?idxno=213108" target="_blank" rel="noopener">SpaceXAI 텍사스 데이터센터</a></h4>
+          
+          <div style="clear:both"></div>
+        </article>
+
+        <article class="article">
+          <span class="tag aitimes">AI타임즈 (7/23 게재·관련)</span>
+          <img class="thumb" src="https://cdn.aitimes.com/news/photo/202607/213120_216525_1119.jpg" alt="" loading="lazy" onerror="this.style.display='none'" />
+          <h4><a href="https://www.aitimes.com/news/articleView.html?idxno=213120" target="_blank" rel="noopener">앤트로픽 첫 특허 침해 소송 (테네시대 연구재단)</a></h4>
+          
+          <div style="clear:both"></div>
+        </article>
+
+        <article class="article">
+          <span class="tag aitimes">AI포스트</span>
+          <img class="thumb" src="https://cdn.aipostkorea.com/news/photo/202607/12167_22106_1811.png" alt="" loading="lazy" onerror="this.style.display='none'" />
+          <h4><a href="https://www.aipostkorea.com/news/articleView.html?idxno=12167" target="_blank" rel="noopener">SNS 사진→AI 만화, 독일 판례</a></h4>
+          
+          <div style="clear:both"></div>
+        </article>
+
+        <article class="article">
+          <span class="tag aitimes">AI포스트</span>
+          <img class="thumb" src="https://cdn.aipostkorea.com/news/photo/202607/12164_22099_3532.png" alt="" loading="lazy" onerror="this.style.display='none'" />
+          <h4><a href="https://www.aipostkorea.com/news/articleView.html?idxno=12164" target="_blank" rel="noopener">머스크, 놀란 오디세이 불만·AI 장편 호언</a></h4>
+          
+          <div style="clear:both"></div>
+        </article>
+
+        <article class="article">
+          <span class="tag aitimes">AI포스트</span>
+          <img class="thumb" src="https://cdn.aipostkorea.com/news/photo/202607/12170_22113_3040.png" alt="" loading="lazy" onerror="this.style.display='none'" />
+          <h4><a href="https://www.aipostkorea.com/news/articleView.html?idxno=12170" target="_blank" rel="noopener">스탠퍼드 경제학자 — AI 시대 돈 버는 영역</a></h4>
+          
+          <div style="clear:both"></div>
+        </article>
+
+        <article class="article">
+          <span class="tag aitimes">AI포스트</span>
+          <img class="thumb" src="https://cdn.aipostkorea.com/news/photo/202607/12168_22109_3134.png" alt="" loading="lazy" onerror="this.style.display='none'" />
+          <h4><a href="https://www.aipostkorea.com/news/articleView.html?idxno=12168" target="_blank" rel="noopener">브록만 오픈AI 사장, Kimi K3 인정·증류 경계</a></h4>
+          
+          <div style="clear:both"></div>
+        </article>
+
+        <article class="article">
+          <span class="tag aitimes">AI포스트</span>
+          <img class="thumb" src="https://cdn.aipostkorea.com/news/photo/202607/12165_22102_515.png" alt="" loading="lazy" onerror="this.style.display='none'" />
+          <h4><a href="https://www.aipostkorea.com/news/articleView.html?idxno=12165" target="_blank" rel="noopener">AMD–앤트로픽 2GW급 인프라 동맹</a></h4>
+          
+          <div style="clear:both"></div>
+        </article>
+
+        <article class="article">
+          <span class="tag aitimes">AI포스트</span>
+          <img class="thumb" src="https://cdn.aipostkorea.com/news/photo/202607/12162_22097_5135.png" alt="" loading="lazy" onerror="this.style.display='none'" />
+          <h4><a href="https://www.aipostkorea.com/news/articleView.html?idxno=12162" target="_blank" rel="noopener">삼성–구글 젠틀몬스터 AI 글래스</a></h4>
+          
+          <div style="clear:both"></div>
+        </article>
+        </div>
+        <div class="day">
+          <div class="day-label">2026.07.22 // WED — Presence · Gemini MAU · 인프라</div>
+          
+        <article class="article">
+          <span class="tag openai">OpenAI</span>
+          
+          <h4><a href="https://openai.com/index/introducing-openai-presence/" target="_blank" rel="noopener">OpenAI Presence 소개</a></h4>
+          
+          <div style="clear:both"></div>
+        </article>
+
+        <article class="article">
+          <span class="tag openai">OpenAI</span>
+          
+          <h4><a href="https://openai.com/index/how-news-organizations-are-using-ai/" target="_blank" rel="noopener">뉴스 조직의 AI 활용</a></h4>
+          
+          <div style="clear:both"></div>
+        </article>
+
+        <article class="article">
+          <span class="tag venturebeat">VentureBeat</span>
+          
+          <h4><a href="https://venturebeat.com/orchestration/openai-unveils-presence-a-new-platform-that-lets-enterprises-launch-and-manage-realtime-voice-agents-and-chatbots" target="_blank" rel="noopener">OpenAI Presence — 엔터프라이즈 실시간 보이스 에이전트·챗봇 플랫폼</a></h4>
+          
+          <div style="clear:both"></div>
+        </article>
+
+        <article class="article">
+          <span class="tag venturebeat">VentureBeat</span>
+          
+          <h4><a href="https://venturebeat.com/orchestration/inflection-ai-returns-to-consumer-market-with-pi-journeys-after-microsoft-upheaval" target="_blank" rel="noopener">Inflection AI, Pi Journeys로 컨슈머 복귀</a></h4>
+          
+          <div style="clear:both"></div>
+        </article>
+
+        <article class="article">
+          <span class="tag nvidia">NVIDIA</span>
+          <img class="thumb" src="https://blogs.nvidia.com/wp-content/uploads/2026/07/260722-N-UT641-7052-scaled.jpg" alt="" loading="lazy" onerror="this.style.display='none'" />
+          <h4><a href="https://blogs.nvidia.com/blog/naval-postgraduate-school-dgx-ai-supercomputer/" target="_blank" rel="noopener">Naval Postgraduate School에 NVIDIA AI 슈퍼컴퓨터 가동</a></h4>
+          
+          <div style="clear:both"></div>
+        </article>
+
+        <article class="article">
+          <span class="tag nvidia">NVIDIA</span>
+          <img class="thumb" src="https://blogs.nvidia.com/wp-content/uploads/2026/07/medical-physica-simulation.png" alt="" loading="lazy" onerror="this.style.display='none'" />
+          <h4><a href="https://blogs.nvidia.com/blog/medical-physics-simulation-open-source/" target="_blank" rel="noopener">의료 물리 시뮬레이션 프레임워크 오픈소스</a></h4>
+          
+          <div style="clear:both"></div>
+        </article>
+
+        <article class="article">
+          <span class="tag verge">The Verge</span>
+          <img class="thumb" src="https://platform.theverge.com/wp-content/uploads/sites/2/2026/07/google-q2-2026-earnings.png?quality=90&amp;strip=all&amp;crop=6.4833174451859%2C0%2C87.033365109628%2C100&amp;w=1200" alt="" loading="lazy" onerror="this.style.display='none'" />
+          <h4><a href="https://www.theverge.com/tech/969624/google-says-gemini-now-has-950-million-monthly-users" target="_blank" rel="noopener">Gemini 월간 사용자 9.5억 (Alphabet Q2)</a></h4>
+          
+          <div style="clear:both"></div>
+        </article>
+
+        <article class="article">
+          <span class="tag verge">The Verge</span>
+          <img class="thumb" src="https://platform.theverge.com/wp-content/uploads/sites/2/2025/11/STKS521_AI_BUBBLE_C.jpg?quality=90&amp;strip=all&amp;crop=0%2C10.732984293194%2C100%2C78.534031413613&amp;w=1200" alt="" loading="lazy" onerror="this.style.display='none'" />
+          <h4><a href="https://www.theverge.com/science/969557/genesis-mission-ai-science-projects-doe" target="_blank" rel="noopener">트럼프 행정부 Genesis Mission — 270+ AI 과학 프로젝트</a></h4>
+          
+          <div style="clear:both"></div>
+        </article>
+
+        <article class="article">
+          <span class="tag verge">The Verge</span>
+          <img class="thumb" src="https://platform.theverge.com/wp-content/uploads/sites/2/2025/01/verge-placeholder_f212b3.png?quality=90&amp;strip=all&amp;crop=0,0.13712291199202,100,99.725754176016" alt="" loading="lazy" onerror="this.style.display='none'" />
+          <h4><a href="https://www.theverge.com/ai-artificial-intelligence/969454/chinas-moonshot-trained-its-ai-model-on-a-restricted-nvidia-chip-white-house-claims" target="_blank" rel="noopener">백악관, Moonshot이 수출통제 Nvidia GB300으로 학습했다고 주장</a></h4>
+          
+          <div style="clear:both"></div>
+        </article>
+
+        <article class="article">
+          <span class="tag verge">The Verge</span>
+          <img class="thumb" src="https://platform.theverge.com/wp-content/uploads/sites/2/2025/01/verge-placeholder_f212b3.png?quality=90&amp;strip=all&amp;crop=0,0.13712291199202,100,99.725754176016" alt="" loading="lazy" onerror="this.style.display='none'" />
+          <h4><a href="https://www.theverge.com/tech/969445/amazon-is-cutting-jobs-on-its-agi-team" target="_blank" rel="noopener">Amazon AGI 팀 일부 감원</a></h4>
+          
+          <div style="clear:both"></div>
+        </article>
+
+        <article class="article">
+          <span class="tag verge">The Verge</span>
+          <img class="thumb" src="https://platform.theverge.com/wp-content/uploads/sites/2/2025/03/acastro_STK081_amd_02.jpg.webp?quality=90&amp;strip=all&amp;crop=0,10.654292878952,100,78.691414242097" alt="" loading="lazy" onerror="this.style.display='none'" />
+          <h4><a href="https://www.theverge.com/ai-artificial-intelligence/969285/amd-anthropic-ai-infrastructure-deal" target="_blank" rel="noopener">AMD, Anthropic에 최대 $50억 커밋</a></h4>
+          
+          <div style="clear:both"></div>
+        </article>
+
+        <article class="article">
+          <span class="tag verge">The Verge</span>
+          <img class="thumb" src="https://platform.theverge.com/wp-content/uploads/sites/2/2026/07/slack-upload-1784729607735.jpeg?quality=90&amp;strip=all&amp;crop=0%2C10.759426728013%2C100%2C78.481146543974&amp;w=1200" alt="" loading="lazy" onerror="this.style.display='none'" />
+          <h4><a href="https://www.theverge.com/ai-artificial-intelligence/969277/gemini-task-automation-is-rolling-out-for-real" target="_blank" rel="noopener">Gemini Task Automation 정식 롤아웃</a></h4>
+          
+          <div style="clear:both"></div>
+        </article>
+
+        <article class="article">
+          <span class="tag verge">The Verge</span>
+          <img class="thumb" src="https://platform.theverge.com/wp-content/uploads/sites/2/2026/07/03.-Gentle-Monster-1.jpg?quality=90&amp;strip=all&amp;crop=0%2C1.0593913612565%2C100%2C97.881217277487&amp;w=1200" alt="" loading="lazy" onerror="this.style.display='none'" />
+          <h4><a href="https://www.theverge.com/tech/969190/samsungs-smart-glasses-get-two-new-designs" target="_blank" rel="noopener">삼성·구글 AI 글래스 Gentle Monster·Warby Parker 디자인</a></h4>
+          
+          <div style="clear:both"></div>
+        </article>
+
+        <article class="article">
+          <span class="tag verge">The Verge</span>
+          <img class="thumb" src="https://platform.theverge.com/wp-content/uploads/sites/2/2025/01/verge-placeholder_f212b3.png?quality=90&amp;strip=all&amp;crop=0,0.13712291199202,100,99.725754176016" alt="" loading="lazy" onerror="this.style.display='none'" />
+          <h4><a href="https://www.theverge.com/ai-artificial-intelligence/969104/reddit-might-cut-ties-with-google-as-traffic-drops" target="_blank" rel="noopener">Reddit, Google 데이터 접근 차단 검토 (WSJ)</a></h4>
+          
+          <div style="clear:both"></div>
+        </article>
+
+        <article class="article">
+          <span class="tag verge">The Verge</span>
+          <img class="thumb" src="https://platform.theverge.com/wp-content/uploads/sites/2/2026/04/STKS528_DATA_CENTERS_B.jpg?quality=90&amp;strip=all&amp;crop=0%2C10.732984293194%2C100%2C78.534031413613&amp;w=1200" alt="" loading="lazy" onerror="this.style.display='none'" />
+          <h4><a href="https://www.theverge.com/ai-artificial-intelligence/969137/us-utility-ai-electricty-data-center-rate-pledge-trump" target="_blank" rel="noopener">유틸리티, AI 전기요금 전가 최소화 약속</a></h4>
+          
+          <div style="clear:both"></div>
+        </article>
+
+        <article class="article">
+          <span class="tag verge">The Verge</span>
+          <img class="thumb" src="https://platform.theverge.com/wp-content/uploads/sites/2/2026/07/Meta-Content-Seal-AI-detector.jpg?quality=90&amp;strip=all&amp;crop=0%2C10.732984293194%2C100%2C78.534031413613&amp;w=1200" alt="" loading="lazy" onerror="this.style.display='none'" />
+          <h4><a href="https://www.theverge.com/tech/968680/meta-ai-detection-labeling-content-seal-watermarks-synthid" target="_blank" rel="noopener">Meta Content Seal AI 탐지 vs Google SynthID</a></h4>
+          
+          <div style="clear:both"></div>
+        </article>
+
+        <article class="article">
+          <span class="tag openai">xAI</span>
+          
+          <h4><a href="https://x.ai/news/grok-4-5-everywhere" target="_blank" rel="noopener">Grok 4.5를 iOS·Android·Web·X에</a></h4>
+          
+          <div style="clear:both"></div>
+        </article>
+
+        <article class="article">
+          <span class="tag google">Google / DeepMind (기간 내·직전 연결)</span>
+          <img class="thumb" src="https://storage.googleapis.com/gweb-uniblog-publish-prod/images/gemini-3-5_3-6_3-5-Cyber__key-art__statement_.width-1300.jpg" alt="" loading="lazy" onerror="this.style.display='none'" />
+          <h4><a href="https://blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-3-6-flash-3-5-flash-lite-3-5-flash-cyber/" target="_blank" rel="noopener">Gemini 3.6 Flash, 3.5 Flash-Lite, 3.5 Flash Cyber</a></h4>
+          <p class="summary-text">3.6 Flash: 출력 토큰 ~17%↓, 일부 벤치 최대 65%↓, $1.50/$7.50. DeepSWE 49% vs 37%. · 3.5 Flash-Lite: 350 tok/s, $0.3/$2.5. · 3.5 Flash Cyber + CodeMender: 정부·신뢰 파트너 제한 파일럿. · Gemini 3.5 Pro는 파트너 테스트 중, Gemini 4 사전학습 시작.</p>
+          <div style="clear:both"></div>
+        </article>
+
+        <article class="article">
+          <span class="tag google">Google / DeepMind (기간 내·직전 연결)</span>
+          <img class="thumb" src="https://storage.googleapis.com/gweb-cloudblog-publish/images/Genesis_Mission_40M_commitment.max-2600x2600.jpg" alt="" loading="lazy" onerror="this.style.display='none'" />
+          <h4><a href="https://cloud.google.com/blog/topics/public-sector/accelerating-frontiers-of-scientific-discovery-40-million-dollar-commitment-genesis-mission" target="_blank" rel="noopener">Genesis Mission $40M</a></h4>
+          
+          <div style="clear:both"></div>
+        </article>
+        </div>
+        </div>
+
+        <h2 class="section-title">ArXiv cs.AI 선별</h2>
+        <div class="papers">
+          <ul>
+
+        <li>
+          <a href="https://arxiv.org/abs/2607.21557" target="_blank" rel="noopener"><strong>OpenForgeRL</strong></a>
+          — 임의 환경에서 harness-native 에이전트 학습 (Yu, Peng, Gao 등)
+        </li>
+
+        <li>
+          <a href="https://arxiv.org/abs/2607.21552" target="_blank" rel="noopener"><strong>MIRROR</strong></a>
+          — 멀티모달 추론을 위한 다른 관점 학습
+        </li>
+
+        <li>
+          <a href="https://arxiv.org/abs/2607.21558" target="_blank" rel="noopener"><strong>Beyond Sycophancy</strong></a>
+          — LLM 도덕 추론의 구조화된 저항·순응
+        </li>
+
+        <li>
+          <a href="https://arxiv.org/abs/2607.21547" target="_blank" rel="noopener"><strong>Boundaries of Automation</strong></a>
+          — 지속적 인간 참여 이론 (Gurevych 등)
+        </li>
+
+        <li>
+          <a href="https://arxiv.org/abs/2607.21503" target="_blank" rel="noopener"><strong>Agentic Context Management</strong></a>
+          — 에이전트 메모리·비용을 라이프사이클·아키텍처로
+        </li>
+
+        <li>
+          <a href="https://arxiv.org/abs/2607.21461" target="_blank" rel="noopener"><strong>AREX</strong></a>
+          — 딥 리서치용 재귀적 자기개선 에이전트
+        </li>
+
+        <li>
+          <a href="https://arxiv.org/abs/2607.21419" target="_blank" rel="noopener"><strong>PATS</strong></a>
+          — Agentic RL용 Policy-Aware Training Scaffolding
+        </li>
+
+        <li>
+          <a href="https://arxiv.org/abs/2607.21412" target="_blank" rel="noopener"><strong>Euclid-MCP</strong></a>
+          — Prolog 결정론 논리 추론 MCP 서버
+        </li>
+
+        <li>
+          <a href="https://arxiv.org/abs/2607.21217" target="_blank" rel="noopener"><strong>ICAE-Bench</strong></a>
+          — 코딩 에이전트를 인터랙티브 프로젝트 빌더로 평가
+        </li>
+
+        <li>
+          <a href="https://arxiv.org/abs/2607.20982" target="_blank" rel="noopener"><strong>GuardianAgentBench</strong></a>
+          — 에이전트 실패 지점과 가드 방법
+        </li>
+
+        <li>
+          <a href="https://arxiv.org/abs/2607.20926" target="_blank" rel="noopener"><strong>SciExplore</strong></a>
+          — 과학 탐색~정보 통합 자율 에이전트 평가
+        </li>
+
+        <li>
+          <a href="https://arxiv.org/abs/2607.21151" target="_blank" rel="noopener"><strong>V-DEAL</strong></a>
+          — 비디오 안전 de-calibration 진단
+        </li>
+
+        <li>
+          <a href="https://arxiv.org/abs/2607.21106" target="_blank" rel="noopener"><strong>AttriMem</strong></a>
+          — attribution 기반 에이전트 메모리 학습
+        </li>
+
+        <li>
+          <a href="https://arxiv.org/abs/2607.21345" target="_blank" rel="noopener"><strong>Regulating autonomous and agentic AI</strong></a>
+          — 자율·에이전틱 AI 규제 (Reed 등)
+        </li>
+
+        <li>
+          <a href="https://arxiv.org/abs/2607.20972" target="_blank" rel="noopener"><strong>Delivery, Not Storage</strong></a>
+          — 코딩 에이전트 harness의 cue-anchored working memory
+        </li>
+          </ul>
+        </div>
+
+        <section class="summary" style="margin-top:40px">
+          <h2>◆ 수집 제한</h2>
+          <p style="font-size:14px;color:#9ab">
+            Reuters AI Playwright 0건 · The Information 페이월 · OpenAI Presence 상세 403 ·
+            DeepMind 일부 “July 2026” 일자 미확정 · ArXiv 1,000건+ 중 15건 선별 ·
+            썸네일 90/105건 확보
+          </p>
+        </section>
+      </div>
+
+      <footer>
+        COLLECTED 2026-07-25 · SOURCES:
+        <span class="src">OpenAI · Anthropic · Google · NVIDIA · HN · ArXiv · HF · The Batch · VB · Verge · TC · AI타임즈 · AI포스트 · Geeknews · xAI · MIT TR</span>
+        <br />ai-news-digest-0722-0724 · cyberpunk briefing style
+      </footer>
+    </div>
+    <script>
+      const btn = document.getElementById("revealBtn");
+      const content = document.getElementById("fullContent");
+      btn.addEventListener("click", () => {
+        const open = content.classList.toggle("open");
+        btn.classList.toggle("open", open);
+        btn.innerHTML = open
+          ? '<span class="arrow">▼</span> COLLAPSE TIMELINE'
+          : '<span class="arrow">▼</span> FULL TIMELINE UNLOCK';
+      });
+    </script>
+  </body>
+</html>

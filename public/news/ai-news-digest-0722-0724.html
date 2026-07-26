@@ -580,64 +580,6 @@
         color: var(--neon-pink);
       }
 
-      .hidden-content {
-        max-height: 0;
-        overflow: hidden;
-        opacity: 0;
-        transition:
-          max-height 1s ease,
-          opacity 0.6s ease;
-      }
-      .hidden-content.open {
-        overflow: visible;
-        max-height: 50000px;
-        opacity: 1;
-      }
-
-      .reveal-btn {
-        display: block;
-        width: 100%;
-        max-width: 500px;
-        margin: 0 auto 60px;
-        padding: 24px 32px;
-        font-family: "Orbitron", "Pretendard", sans-serif;
-        font-size: 22px;
-        font-weight: 700;
-        letter-spacing: 4px;
-        text-transform: uppercase;
-        color: var(--neon-pink);
-        background: transparent;
-        border: 2px solid var(--neon-pink);
-        cursor: pointer;
-        position: relative;
-        transition: all 0.4s;
-        text-shadow: 0 0 10px var(--neon-pink);
-        box-shadow:
-          inset 0 0 20px rgba(255, 42, 109, 0.1),
-          0 0 20px rgba(255, 42, 109, 0.2);
-        clip-path: polygon(
-          0 0,
-          100% 0,
-          100% calc(100% - 16px),
-          calc(100% - 16px) 100%,
-          0 100%
-        );
-      }
-      .reveal-btn:hover {
-        background: rgba(255, 42, 109, 0.1);
-        box-shadow:
-          inset 0 0 30px rgba(255, 42, 109, 0.2),
-          0 0 40px rgba(255, 42, 109, 0.4);
-        transform: scale(1.03);
-      }
-      .reveal-btn .arrow {
-        display: inline-block;
-        transition: transform 0.4s;
-      }
-      .reveal-btn.open .arrow {
-        transform: rotate(180deg);
-      }
-
       .article img {
         max-width: 100%;
         margin-bottom: 10px;
@@ -888,11 +830,7 @@
         </div>
       </div>
 
-      <button class="reveal-btn" id="revealBtn" type="button">
-        <span class="arrow">▼</span> FULL TIMELINE UNLOCK
-      </button>
-
-      <div class="hidden-content" id="fullContent">
+      <div id="fullContent">
         <h2 class="section-title">일자별 타임라인</h2>
         <div class="timeline">
 
@@ -1844,16 +1782,5 @@
         <br />ai-news-digest-0722-0724 · cyberpunk briefing style
       </footer>
     </div>
-    <script>
-      const btn = document.getElementById("revealBtn");
-      const content = document.getElementById("fullContent");
-      btn.addEventListener("click", () => {
-        const open = content.classList.toggle("open");
-        btn.classList.toggle("open", open);
-        btn.innerHTML = open
-          ? '<span class="arrow">▼</span> COLLAPSE TIMELINE'
-          : '<span class="arrow">▼</span> FULL TIMELINE UNLOCK';
-      });
-    </script>
   </body>
 </html>

@@ -121,7 +121,7 @@
         background: var(--cyan);
         color: var(--night);
         transform: translateY(-160%);
-        transition: transform 260ms var(--ease-smooth);
+        transition: all 0.2s;
       }
 
       .skip-link:focus {
@@ -221,7 +221,7 @@
         letter-spacing: 0.12em;
 
         color: var(--ink-dim);
-        transition: color 240ms var(--ease-smooth);
+        transition: all 0.2s;
       }
 
       .topnav a:hover,
@@ -269,11 +269,7 @@
         letter-spacing: 0.08em;
 
         border: 1px solid var(--line-strong);
-        transition:
-          border-color 260ms var(--ease-smooth),
-          background 260ms var(--ease-smooth),
-          color 260ms var(--ease-smooth),
-          transform 260ms var(--ease-smooth);
+        transition: all 0.2s;
       }
 
       .button:hover,
@@ -502,7 +498,7 @@
         opacity: 0.72;
         content: "";
         pointer-events: none;
-        transition: opacity 420ms var(--ease-smooth);
+        transition: all 0.2s;
       }
 
       .story-image img {
@@ -513,10 +509,7 @@
         transform: scale(1);
 
         filter: saturate(0.72) contrast(1.04);
-        transition:
-          filter 320ms var(--ease-smooth),
-          transform 700ms var(--ease-smooth);
-        will-change: filter, transform;
+        transition: all 0.2s;
       }
 
       .story-image:hover::after,
@@ -632,7 +625,7 @@
       .story-link::after {
         content: "↗";
         color: var(--cyan);
-        transition: transform 240ms var(--ease-smooth);
+        transition: all 0.2s;
       }
 
       .story-link:hover::after {
@@ -697,10 +690,7 @@
         background: transparent;
         color: var(--ink-faint);
         border: 1px solid var(--line);
-        transition:
-          color 260ms var(--ease-smooth),
-          border-color 260ms var(--ease-smooth),
-          background 260ms var(--ease-smooth);
+        transition: all 0.2s;
       }
 
       .filter-button:hover,
@@ -880,18 +870,6 @@
           align-items: flex-start;
           flex-direction: column;
           gap: 8px;
-        }
-      }
-
-      @media (prefers-reduced-motion: reduce) {
-        html {
-          scroll-behavior: auto;
-        }
-
-        *,
-        *::before,
-        *::after {
-          transition-duration: 0.01ms !important;
         }
       }
     </style>

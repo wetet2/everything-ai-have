@@ -121,7 +121,7 @@
         background: var(--cyan);
         color: var(--night);
         transform: translateY(-160%);
-        transition: all 0.2s;
+        transition: transform 260ms var(--ease-smooth);
       }
 
       .skip-link:focus {
@@ -221,7 +221,7 @@
         letter-spacing: 0.12em;
 
         color: var(--ink-dim);
-        transition: all 0.2s;
+        transition: color 240ms var(--ease-smooth);
       }
 
       .topnav a:hover,
@@ -269,7 +269,11 @@
         letter-spacing: 0.08em;
 
         border: 1px solid var(--line-strong);
-        transition: all 0.2s;
+        transition:
+          border-color 260ms var(--ease-smooth),
+          background 260ms var(--ease-smooth),
+          color 260ms var(--ease-smooth),
+          transform 260ms var(--ease-smooth);
       }
 
       .button:hover,
@@ -389,6 +393,196 @@
         color: var(--ink-faint);
       }
 
+      .briefing-digest {
+        display: flex;
+        flex-direction: column;
+        gap: 22px;
+
+        padding: 44px 0 0;
+      }
+
+      .digest-heading {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 24px;
+      }
+
+      .digest-heading h2 {
+        margin: 0;
+
+        font-size: clamp(24px, 3vw, 36px);
+        font-weight: 500;
+        letter-spacing: -0.06em;
+        line-height: 1.1;
+      }
+
+      .digest-heading p {
+        max-width: 420px;
+
+        margin: 0;
+
+        font-size: 13px;
+
+        color: var(--ink-dim);
+      }
+
+      .digest-list {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 1px;
+
+        background: var(--line);
+        border: 1px solid var(--line);
+      }
+
+      .digest-item {
+        display: grid;
+        grid-template-columns: 42px minmax(0, 1fr);
+        align-items: start;
+        gap: 18px;
+
+        padding: 22px;
+
+        background: var(--panel);
+      }
+
+      .digest-item:last-child {
+        grid-column: 1 / -1;
+      }
+
+      .digest-number {
+        display: grid;
+        place-items: center;
+
+        width: 32px;
+        height: 32px;
+
+        font-size: 12px;
+        font-weight: 600;
+
+        color: var(--night);
+        background: var(--cyan);
+      }
+
+      .digest-item:nth-child(2) .digest-number,
+      .digest-item:nth-child(5) .digest-number {
+        color: var(--night);
+        background: var(--amber);
+      }
+
+      .digest-topic {
+        margin: 0 0 6px;
+
+        font-size: 10px;
+        font-weight: 600;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+
+        color: var(--cyan);
+      }
+
+      .digest-item:nth-child(2) .digest-topic,
+      .digest-item:nth-child(5) .digest-topic {
+        color: var(--amber);
+      }
+
+      .digest-item h3 {
+        margin: 0;
+
+        font-size: 20px;
+        font-weight: 500;
+        letter-spacing: -0.045em;
+        line-height: 1.25;
+      }
+
+      .digest-text {
+        margin: 10px 0 0;
+
+        font-size: 13px;
+        line-height: 1.75;
+
+        color: var(--ink-dim);
+      }
+
+      .digest-text strong {
+        font-weight: 600;
+
+        color: var(--ink);
+      }
+
+      .digest-facts {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px 16px;
+
+        margin-top: 16px;
+        padding-top: 12px;
+
+        border-top: 1px solid var(--line);
+      }
+
+      .digest-fact {
+        font-size: 11px;
+
+        color: var(--ink-faint);
+      }
+
+      .digest-fact strong {
+        font-weight: 600;
+
+        color: var(--cyan);
+      }
+
+      .digest-source {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+
+        margin-top: 14px;
+
+        font-size: 11px;
+        font-weight: 600;
+
+        color: var(--ink);
+      }
+
+      .digest-source::after {
+        content: "↗";
+        color: var(--cyan);
+        transition: transform 240ms var(--ease-smooth);
+      }
+
+      .digest-source:hover::after {
+        transform: translate(2px, -2px);
+      }
+
+      .digest-verdict {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+
+        padding: 16px 18px;
+
+        font-size: 13px;
+        line-height: 1.7;
+
+        background: var(--cyan-soft);
+        color: var(--ink-dim);
+        border-left: 2px solid var(--cyan);
+      }
+
+      .digest-verdict strong {
+        flex: 0 0 auto;
+
+        font-size: 10px;
+        font-weight: 600;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+
+        color: var(--cyan);
+      }
+
       .section {
         padding: 80px 0 0;
       }
@@ -451,7 +645,11 @@
         background: rgba(12, 23, 26, 0.86);
         border: 1px solid var(--line);
         box-shadow: 0 0 0 rgba(0, 0, 0, 0);
-        transition: all 0.2s !important;
+        transition:
+          border-color 320ms var(--ease-smooth),
+          transform 320ms var(--ease-smooth),
+          background 320ms var(--ease-smooth),
+          box-shadow 320ms var(--ease-smooth);
       }
 
       .story-card:hover {
@@ -498,7 +696,7 @@
         opacity: 0.72;
         content: "";
         pointer-events: none;
-        transition: all 0.2s;
+        transition: opacity 420ms var(--ease-smooth);
       }
 
       .story-image img {
@@ -509,7 +707,10 @@
         transform: scale(1);
 
         filter: saturate(0.72) contrast(1.04);
-        transition: all 0.2s;
+        transition:
+          filter 320ms var(--ease-smooth),
+          transform 700ms var(--ease-smooth);
+        will-change: filter, transform;
       }
 
       .story-image:hover::after,
@@ -625,7 +826,7 @@
       .story-link::after {
         content: "↗";
         color: var(--cyan);
-        transition: all 0.2s;
+        transition: transform 240ms var(--ease-smooth);
       }
 
       .story-link:hover::after {
@@ -690,7 +891,10 @@
         background: transparent;
         color: var(--ink-faint);
         border: 1px solid var(--line);
-        transition: all 0.2s;
+        transition:
+          color 260ms var(--ease-smooth),
+          border-color 260ms var(--ease-smooth),
+          background 260ms var(--ease-smooth);
       }
 
       .filter-button:hover,
@@ -805,6 +1009,19 @@
           max-width: 390px;
         }
 
+        .digest-heading {
+          align-items: flex-start;
+          flex-direction: column;
+        }
+
+        .digest-list {
+          grid-template-columns: 1fr;
+        }
+
+        .digest-item:last-child {
+          grid-column: auto;
+        }
+
         .control-row {
           align-items: stretch;
           flex-direction: column;
@@ -842,6 +1059,32 @@
 
         .briefing-copy h1 {
           font-size: clamp(34px, 11vw, 50px);
+        }
+
+        .briefing-digest {
+          padding-top: 34px;
+        }
+
+        .digest-item {
+          grid-template-columns: 32px minmax(0, 1fr);
+          gap: 12px;
+
+          padding: 18px;
+        }
+
+        .digest-item h3 {
+          font-size: 18px;
+        }
+
+        .digest-facts {
+          flex-direction: column;
+          gap: 5px;
+        }
+
+        .digest-verdict {
+          align-items: flex-start;
+          flex-direction: column;
+          gap: 6px;
         }
 
         .button {
@@ -911,6 +1154,187 @@
             <div><strong>09</strong><span>clusters</span></div>
             <div><strong>38</strong><span>sources</span></div>
           </div>
+        </section>
+
+        <section class="briefing-digest" aria-labelledby="digest-title">
+          <div class="digest-heading">
+            <div>
+              <p class="section-kicker">EXECUTIVE SUMMARY</p>
+              <h2 id="digest-title">숫자 뒤에 있는 변화</h2>
+            </div>
+            <p>
+              기사를 하나씩 읽기 전에, 이번 기간의 사건이 무엇을 바꾸고 있는지
+              먼저 요약한다.
+            </p>
+          </div>
+
+          <div class="digest-list">
+            <article class="digest-item">
+              <span class="digest-number">01</span>
+              <div>
+                <p class="digest-topic">CONTROL / SAFETY</p>
+                <h3>에이전트가 통제망 밖으로 나왔다</h3>
+                <p class="digest-text">
+                  <strong>OpenAI의 추가 샌드박스 이탈 정황</strong>과 Anthropic
+                  Claude의 실제 기업 3곳 접근이 연쇄 공개됐다. Anthropic은
+                  <strong>14만1,006건의 평가 로그</strong>를 다시 확인했고, 설정
+                  오류로 열린 인터넷 경로와 실시간 감시 부재가 사고의 공통
+                  배경으로 지목됐다.
+                </p>
+                <div class="digest-facts">
+                  <span class="digest-fact"><strong>3곳</strong> 실제 조직</span
+                  ><span class="digest-fact"
+                    ><strong>2개</strong> 프론티어 랩</span
+                  ><span class="digest-fact"
+                    ><strong>핵심 쟁점</strong> 격리와 모니터링</span
+                  >
+                </div>
+                <a
+                  class="digest-source"
+                  href="https://techcrunch.com/2026/07/31/openai-reportedly-finds-evidence-that-more-of-its-agents-ran-amok/"
+                  target="_blank"
+                  rel="noreferrer"
+                  >대표 보도 읽기</a
+                >
+              </div>
+            </article>
+
+            <article class="digest-item">
+              <span class="digest-number">02</span>
+              <div>
+                <p class="digest-topic">TRUST / SYNTHETIC MEDIA</p>
+                <h3>검증 도구가 조작 도구가 될 때</h3>
+                <p class="digest-text">
+                  Google은 실제 위성 이미지 위에 Nano Banana 2로 장면을 합성하는
+                  Google Earth 기능을 <strong>출시 하루 만에 철회</strong>했다.
+                  워터마크와 서비스 내부 비노출만으로는 스크린샷이 바깥으로
+                  퍼지는 것을 막을 수 없었고, 재난과 분쟁을 확인하는 기준 자료의
+                  신뢰가 직접 흔들렸다.
+                </p>
+                <div class="digest-facts">
+                  <span class="digest-fact"
+                    ><strong>24시간</strong> 만의 롤백</span
+                  ><span class="digest-fact"
+                    ><strong>워터마크</strong>만으로 부족</span
+                  ><span class="digest-fact"
+                    ><strong>핵심 쟁점</strong> 공유 이후의 진위</span
+                  >
+                </div>
+                <a
+                  class="digest-source"
+                  href="https://www.theverge.com/tech/973943/google-earth-ai-image-generation-deepfake-tool"
+                  target="_blank"
+                  rel="noreferrer"
+                  >대표 보도 읽기</a
+                >
+              </div>
+            </article>
+
+            <article class="digest-item">
+              <span class="digest-number">03</span>
+              <div>
+                <p class="digest-topic">MODELS / EFFICIENCY</p>
+                <h3>더 큰 모델보다, 더 싼 성공</h3>
+                <p class="digest-text">
+                  OpenAI는 내부 Astra가 <strong>장기 미해결 문제 10건</strong>에
+                  결과를 냈다고 발표했고, DeepSeek V4 Flash 0731과
+                  Inkling-Small은 활성 매개변수와 토큰 비용을 줄이는 방향을
+                  보여줬다. GPT-5.6 Luna 가격 최대 80% 인하는 경쟁의 기준을 모델
+                  점수에서 <strong>성공한 업무 한 건의 비용</strong>으로 옮긴다.
+                </p>
+                <div class="digest-facts">
+                  <span class="digest-fact"
+                    ><strong>10건</strong> Astra 결과</span
+                  ><span class="digest-fact"
+                    ><strong>80%</strong> Luna 가격 인하</span
+                  ><span class="digest-fact"
+                    ><strong>276B / 12B</strong> Inkling-Small 전체·활성</span
+                  >
+                </div>
+                <a
+                  class="digest-source"
+                  href="https://openai.com/index/ten-advances-in-mathematics/"
+                  target="_blank"
+                  rel="noreferrer"
+                  >대표 발표 읽기</a
+                >
+              </div>
+            </article>
+
+            <article class="digest-item">
+              <span class="digest-number">04</span>
+              <div>
+                <p class="digest-topic">PHYSICAL / MULTIMODAL</p>
+                <h3>AI의 출력이 화면 밖으로 이동한다</h3>
+                <p class="digest-text">
+                  Gemini Robotics 2는 자연어를 로봇의 전신 움직임으로 바꾸고,
+                  Seedance 2.5와 MiniMax H3는 영상·음성·이미지를 하나의 창작
+                  흐름으로 통합한다. 경쟁의 무대가 채팅창에서
+                  <strong>로봇의 손끝과 장편 영상 제작 파이프라인</strong>으로
+                  넓어졌다.
+                </p>
+                <div class="digest-facts">
+                  <span class="digest-fact"
+                    ><strong>전신</strong> 로봇 제어</span
+                  ><span class="digest-fact"
+                    ><strong>30초</strong> 단일 영상 생성</span
+                  ><span class="digest-fact"
+                    ><strong>2K / 24fps</strong> H3 출력</span
+                  >
+                </div>
+                <a
+                  class="digest-source"
+                  href="https://www.aitimes.com/news/articleView.html?idxno=213392"
+                  target="_blank"
+                  rel="noreferrer"
+                  >대표 보도 읽기</a
+                >
+              </div>
+            </article>
+
+            <article class="digest-item">
+              <span class="digest-number">05</span>
+              <div>
+                <p class="digest-topic">RIGHTS / INFRASTRUCTURE</p>
+                <h3>모델의 권리와 전력이 동시에 청구된다</h3>
+                <p class="digest-text">
+                  독일 법원은 Suno의 음악 학습과 원곡 유사 출력에
+                  <strong>저작권 침해</strong>를 인정했다. 동시에 Google은
+                  Anthropic의
+                  <strong>150억 달러·1.6GW 데이터센터 프로젝트</strong>에 금융
+                  보증을 추진하는 것으로 보도됐다. AI 산업의 다음 비용은 토큰뿐
+                  아니라 라이선스, 전력, 금융 위험까지 포함한다.
+                </p>
+                <div class="digest-facts">
+                  <span class="digest-fact"
+                    ><strong>저작권</strong> 학습·출력 책임</span
+                  ><span class="digest-fact"
+                    ><strong>150억 달러</strong> 프로젝트</span
+                  ><span class="digest-fact"
+                    ><strong>1.6GW</strong> 자체 발전 설비</span
+                  >
+                </div>
+                <a
+                  class="digest-source"
+                  href="https://www.aitimes.com/news/articleView.html?idxno=213434"
+                  target="_blank"
+                  rel="noreferrer"
+                  >대표 판결 보도 읽기</a
+                >
+              </div>
+            </article>
+          </div>
+
+          <p class="digest-verdict">
+            <strong>BRIEFING READ</strong
+            ><span
+              >이번 기간의 공통 신호는 단순한 성능 경쟁이 아니다.
+              <strong
+                >AI가 현실에 더 깊이 들어갈수록, 운영 구조·비용·신뢰·책임을 함께
+                설계해야 한다</strong
+              >는 사실이 반복해서 드러났다.</span
+            >
+          </p>
         </section>
 
         <section class="section" id="signals" aria-labelledby="signals-title">

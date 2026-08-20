@@ -5,11 +5,14 @@ import {
   Heading,
   DifficultyRow,
   DiffButton,
+  ModeRow,
+  ModeButton,
   Panel,
   Hud,
   Counter,
   FaceButton,
   FaceGraphic,
+  FieldScrollArea,
   Field,
   Cell,
   MineMark,
@@ -272,10 +275,17 @@ export default function FindMine() {
   );
   const [gameState, setGameState] = useState<GameState>("ready");
   const [time, setTime] = useState(0);
+  const [touchMode, setTouchMode] = useState<"dig" | "flag">("dig");
+
   const [pressed, setPressed] = useState<Set<string>>(new Set());
   const [holding, setHolding] = useState<Set<string>>(new Set());
   const pressOrigin = useRef<{ r: number; c: number } | null>(null);
   const suppressClick = useRef(false);
+
+  // 모바일 터치 및 롱프레스 관리
+  const longPressTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const isLongPressed = useRef(false);
+  const touchStartPos = useRef<{ x: number; y: number } | null>(null);
 
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
@@ -340,6 +350,10 @@ export default function FindMine() {
     const clear = () => {
       setHolding(new Set());
       pressOrigin.current = null;
+      if (longPressTimer.current) {
+        clearTimeout(longPressTimer.current);
+        longPressTimer.current = null;
+      }
     };
     window.addEventListener("mouseup", clear);
     window.addEventListener("touchend", clear);
@@ -348,17 +362,6 @@ export default function FindMine() {
       window.removeEventListener("touchend", clear);
     };
   }, []);
-
-  // 누름 해제와 액션(열기/코드)을 같은 핸들러에서 처리해 중간 프레임 없이 즉시 반영
-  const release = (r: number, c: number) => {
-    const origin = pressOrigin.current;
-    setHolding(new Set());
-    pressOrigin.current = null;
-    if (origin && origin.r === r && origin.c === c) {
-      suppressClick.current = true;
-      handleReveal(r, c);
-    }
-  };
 
   // 숫자 위 코드(chord): 주변 깃발 수가 숫자와 같으면 나머지 타일 열기
   const chord = useCallback(
@@ -407,7 +410,6 @@ export default function FindMine() {
         });
       } else {
         // 조건 미충족: 주변 8칸만 눌리는 애니메이션, 실제로는 열리지 않음
-        // (깃발(폭탄 설정) 타일은 제외)
         const pressNeighbors = neighbors.filter(
           ([nr, nc]) => !board[nr][nc].flagged,
         );
@@ -483,6 +485,76 @@ export default function FindMine() {
     [gameState],
   );
 
+  // 누름 해제와 액션(열기/코드)을 같은 핸들러에서 처리
+  const release = (r: number, c: number) => {
+    const origin = pressOrigin.current;
+    setHolding(new Set());
+    pressOrigin.current = null;
+    if (origin && origin.r === r && origin.c === c) {
+      suppressClick.current = true;
+      if (touchMode === "flag" && !board[r][c].revealed) {
+        handleFlag(r, c);
+      } else {
+        handleReveal(r, c);
+      }
+    }
+  };
+
+  const handleTouchStart = (r: number, c: number, e: React.TouchEvent) => {
+    const touch = e.touches[0];
+    touchStartPos.current = { x: touch.clientX, y: touch.clientY };
+    isLongPressed.current = false;
+
+    startHold(r, c);
+
+    // 380ms 롱프레스 감지 시 깃발 토글
+    if (longPressTimer.current) clearTimeout(longPressTimer.current);
+    longPressTimer.current = setTimeout(() => {
+      if (!board[r][c].revealed) {
+        isLongPressed.current = true;
+        if (typeof navigator !== "undefined" && navigator.vibrate) {
+          navigator.vibrate(40);
+        }
+        handleFlag(r, c);
+        setHolding(new Set());
+      }
+    }, 380);
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    if (!touchStartPos.current) return;
+    const touch = e.touches[0];
+    const dx = Math.abs(touch.clientX - touchStartPos.current.x);
+    const dy = Math.abs(touch.clientY - touchStartPos.current.y);
+
+    // 스크롤/패닝 중이면 누름 및 롱프레스 취소
+    if (dx > 10 || dy > 10) {
+      if (longPressTimer.current) {
+        clearTimeout(longPressTimer.current);
+        longPressTimer.current = null;
+      }
+      setHolding(new Set());
+      pressOrigin.current = null;
+    }
+  };
+
+  const handleTouchEnd = (r: number, c: number) => {
+    if (longPressTimer.current) {
+      clearTimeout(longPressTimer.current);
+      longPressTimer.current = null;
+    }
+
+    if (isLongPressed.current) {
+      isLongPressed.current = false;
+      suppressClick.current = true;
+      setHolding(new Set());
+      pressOrigin.current = null;
+      return;
+    }
+
+    release(r, c);
+  };
+
   const reset = useCallback(() => {
     setBoard(createEmptyBoard(rows, cols));
     setGameState("ready");
@@ -532,7 +604,7 @@ export default function FindMine() {
         <title>지뢰찾기 — Everything AI Have</title>
         <meta
           name="description"
-          content="초급·중급·상급 난이도로 즐기는 클래식 지뢰찾기 게임입니다. 깃발 표시와 힌트로 안전하게 지뢰를 피해 보세요."
+          content="초급·중급·상급 난이도로 즐기는 클래식 지뢰찾기 게임입니다. 모바일 터치 및 깃발 모드를 지원합니다."
         />
         <meta property="og:type" content="website" />
         <meta
@@ -567,6 +639,23 @@ export default function FindMine() {
         ))}
       </DifficultyRow>
 
+      <ModeRow>
+        <ModeButton
+          $active={touchMode === "dig"}
+          onClick={() => setTouchMode("dig")}
+          title="타일 열기 모드"
+        >
+          ⛏️ 열기 모드
+        </ModeButton>
+        <ModeButton
+          $active={touchMode === "flag"}
+          onClick={() => setTouchMode("flag")}
+          title="깃발 표시 모드"
+        >
+          🚩 깃발 모드
+        </ModeButton>
+      </ModeRow>
+
       <Panel>
         <Hud>
           <Counter>
@@ -590,55 +679,62 @@ export default function FindMine() {
           </Counter>
         </Hud>
 
-        <Field $cols={cols}>
-          {board.map((row, r) =>
-            row.map((cell, c) => {
-              const key = `${r},${c}`;
-              const isPressed = pressed.has(key) || holding.has(key);
-              return (
-                <Cell
-                  key={key}
-                  $revealed={cell.revealed}
-                  $n={cell.adjacent}
-                  $mine={cell.mine}
-                  $lost={gameState === "lost"}
-                  $pressed={isPressed}
-                  onMouseDown={(e) => {
-                    if (e.button === 0) startHold(r, c);
-                  }}
-                  onMouseUp={() => release(r, c)}
-                  onTouchStart={(e) => {
-                    e.preventDefault();
-                    startHold(r, c);
-                  }}
-                  onTouchEnd={() => release(r, c)}
-                  onClick={() => {
-                    if (suppressClick.current) {
-                      suppressClick.current = false;
-                      return;
-                    }
-                    handleReveal(r, c);
-                  }}
-                  onContextMenu={(e) => {
-                    e.preventDefault();
-                    handleFlag(r, c);
-                  }}
-                >
-                  {renderCellContent(cell)}
-                </Cell>
-              );
-            }),
-          )}
-        </Field>
+        <FieldScrollArea>
+          <Field $cols={cols}>
+            {board.map((row, r) =>
+              row.map((cell, c) => {
+                const key = `${r},${c}`;
+                const isPressed = pressed.has(key) || holding.has(key);
+                return (
+                  <Cell
+                    key={key}
+                    $revealed={cell.revealed}
+                    $n={cell.adjacent}
+                    $mine={cell.mine}
+                    $lost={gameState === "lost"}
+                    $pressed={isPressed}
+                    onMouseDown={(e) => {
+                      if (e.button === 0) startHold(r, c);
+                    }}
+                    onMouseUp={() => release(r, c)}
+                    onTouchStart={(e) => handleTouchStart(r, c, e)}
+                    onTouchMove={handleTouchMove}
+                    onTouchEnd={() => handleTouchEnd(r, c)}
+                    onClick={() => {
+                      if (suppressClick.current) {
+                        suppressClick.current = false;
+                        return;
+                      }
+                      if (touchMode === "flag" && !cell.revealed) {
+                        handleFlag(r, c);
+                      } else {
+                        handleReveal(r, c);
+                      }
+                    }}
+                    onContextMenu={(e) => {
+                      e.preventDefault();
+                      handleFlag(r, c);
+                    }}
+                  >
+                    {renderCellContent(cell)}
+                  </Cell>
+                );
+              }),
+            )}
+          </Field>
+        </FieldScrollArea>
       </Panel>
 
       <Status>
         {gameState === "won" && "🎉 클리어!"}
         {gameState === "lost" && "💥 게임 오버"}
-        {gameState === "ready" && "좌클릭으로 시작 · 첫 클릭은 항상 안전"}
+        {gameState === "ready" && "첫 탭/클릭은 항상 안전합니다"}
         {gameState === "playing" && "진행 중…"}
       </Status>
-      <Hint>좌클릭: 열기 · 우클릭: 깃발 · 숫자 클릭: 주변 자동 열기</Hint>
+      <Hint>
+        PC: 좌클릭 열기 · 우클릭 깃발 · 숫자 클릭 자동 열기<br />
+        모바일: 탭 열기 · 길게 누르기 깃발 · 상단 ⛏️/🚩 모드 전환 지원
+      </Hint>
     </Container>
   );
 }

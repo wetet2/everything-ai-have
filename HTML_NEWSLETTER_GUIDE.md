@@ -2,12 +2,13 @@
 
 > 이 문서는 `temp/ai-news-2026-08-16-onwards.md`를 기반으로 독립형 HTML 뉴스레터를 작성하는 표준 방법을 정리한 문서다.
 >
-> 최종 HTML 경로 규칙: `public/news/ai-news-digest-MMDD-MMDD.html`
+> **기본 HTML 샘플/템플릿**: [`HTML_NEWLETTER_SAMPLE.html`](HTML_NEWLETTER_SAMPLE.html) (뉴스레터 제작 시 이 파일의 UI/UX 디자인, 컴포넌트 마크업, CSS 스타일 및 스크립트 구조를 기본 템플릿으로 참고한다.)
 >
-> 최근 실행 예시: [`public/news/ai-news-digest-0816-0821.html`](public/news/ai-news-digest-0816-0821.html)
+> 최종 HTML 경로 규칙: `public/news/ai-news-digest-MMDD-MMDD.html`
 
 ## 1. 목표
 
+- 뉴스레터 제작 시 기본 HTML 구조 및 디자인 템플릿으로 [`HTML_NEWLETTER_SAMPLE.html`](HTML_NEWLETTER_SAMPLE.html)을 참고하여 구현한다.
 - 과도한 브랜딩(NEXUS, SIGNAL, Intelligence 등)이나 불필요한 미사여구를 배제하고 직관적인 `AI News` 헤더를 사용한다.
 - 뉴스 Markdown의 제목·요약·출처·썸네일을 하나의 독립 HTML에 담는다.
 - 최종 HTML 파일은 반드시 `public/news/` 폴더에 `ai-news-digest-MMDD-MMDD.html` 형식으로 생성/배치한다.
@@ -20,6 +21,7 @@
 
 | 구분 | 적용 원칙 |
 |---|---|
+| 기준 샘플 | [`HTML_NEWLETTER_SAMPLE.html`](HTML_NEWLETTER_SAMPLE.html) 구조 및 스타일 참고 |
 | 파일 위치 및 명명 | `public/news/ai-news-digest-MMDD-MMDD.html` (예: `public/news/ai-news-digest-0816-0821.html`) |
 | 브랜딩 | `AI News` (NEXUS, SIGNAL, Intelligence, Curated Archive 등 과장된 수식어 배제) |
 | 상단 메타 | 수집 날짜 범위만 간결하게 표시 (`YYYY.MM.DD — MM.DD`) |

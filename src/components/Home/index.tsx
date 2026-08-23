@@ -45,6 +45,13 @@ const pages = [
     title: "지뢰찾기",
     desc: "초급·중급·상급 지뢰찾기",
   },
+  {
+    href: "/e",
+    short: "2048",
+    icon: "🔢",
+    title: "2048 게임",
+    desc: "타일을 합쳐 2048 만들기",
+  },
 ];
 
 export default function Home() {
@@ -63,7 +70,7 @@ export default function Home() {
         />
         <meta
           property="og:description"
-          content="타자연습, 3D 가구 배치, 그림판, AI 채팅, 뉴스, 지뢰찾기 등 다양한 AI 도구를 한곳에서."
+          content="타자연습, 3D 가구 배치, 그림판, AI 채팅, 뉴스, 지뢰찾기, 2048 등 다양한 AI 도구를 한곳에서."
         />
         <meta name="twitter:card" content="summary" />
         <meta
@@ -72,7 +79,7 @@ export default function Home() {
         />
         <meta
           name="twitter:description"
-          content="타자연습, 3D 가구 배치, 그림판, AI 채팅, 뉴스, 지뢰찾기 등 다양한 AI 도구를 한곳에서."
+          content="타자연습, 3D 가구 배치, 그림판, AI 채팅, 뉴스, 지뢰찾기, 2048 등 다양한 AI 도구를 한곳에서."
         />
       </Head>
       <S.Grid />

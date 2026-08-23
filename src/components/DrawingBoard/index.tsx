@@ -8,7 +8,7 @@ import RectIcon from "../../../resources/icons/RectIcon";
 import TextIcon from "../../../resources/icons/TextIcon";
 import TrashIcon from "../../../resources/icons/TrashIcon";
 import CircleIcon from "../../../resources/icons/CircleIcon";
-import SaveIcon from "../../../resources/icons/SaveIcon";
+import ImageIcon from "../../../resources/icons/ImageIcon";
 import UndoIcon from "../../../resources/icons/UndoIcon";
 import RedoIcon from "../../../resources/icons/RedoIcon";
 import * as S from "./styled";
@@ -38,6 +38,7 @@ type LoadedImage = {
 type ResizeHandle = "n" | "s" | "e" | "w" | "ne" | "nw" | "se" | "sw";
 
 const IMAGE_RESIZE_HANDLE_SIZE = 10;
+const IMAGE_RESIZE_TOUCH_HIT_SIZE = 36;
 const IMAGE_MIN_SIZE = 20;
 const TEXT_OVERLAY_DRAW_OFFSET_X = 7;
 
@@ -145,6 +146,8 @@ export default function DrawingBoard() {
   const rectSnapshot = useRef<ImageData | null>(null);
   // Shift 키 눌림 상태 추적
   const isShiftPressed = useRef(false);
+  // 마우스가 캔버스 밖에 있는지 추적 (재진입 시 펜 경로 이어그리기용)
+  const isOutsideCanvas = useRef(false);
 
   // 현재 브러시/텍스트 색상
   const getDrawColor = useCallback(() => color, [color]);
@@ -225,40 +228,47 @@ export default function DrawingBoard() {
   }, []);
 
   // 특정 이미지의 리사이즈 핸들 영역 계산
-  const getResizeHandleRects = useCallback((img: LoadedImage) => {
-    const pad = 4;
-    const x = img.x - pad;
-    const y = img.y - pad;
-    const w = img.width + pad * 2;
-    const h = img.height + pad * 2;
-    const hs = IMAGE_RESIZE_HANDLE_SIZE;
-    const hh = hs / 2;
+  const getResizeHandleRects = useCallback(
+    (img: LoadedImage, hitSize = IMAGE_RESIZE_HANDLE_SIZE) => {
+      const pad = 4;
+      const x = img.x - pad;
+      const y = img.y - pad;
+      const w = img.width + pad * 2;
+      const h = img.height + pad * 2;
+      const hs = hitSize;
+      const hh = hs / 2;
 
-    return {
-      nw: { x: x - hh, y: y - hh, w: hs, h: hs },
-      n: { x: x + w / 2 - hh, y: y - hh, w: hs, h: hs },
-      ne: { x: x + w - hh, y: y - hh, w: hs, h: hs },
-      e: { x: x + w - hh, y: y + h / 2 - hh, w: hs, h: hs },
-      se: { x: x + w - hh, y: y + h - hh, w: hs, h: hs },
-      s: { x: x + w / 2 - hh, y: y + h - hh, w: hs, h: hs },
-      sw: { x: x - hh, y: y + h - hh, w: hs, h: hs },
-      w: { x: x - hh, y: y + h / 2 - hh, w: hs, h: hs },
-    } as Record<ResizeHandle, { x: number; y: number; w: number; h: number }>;
-  }, []);
+      return {
+        nw: { x: x - hh, y: y - hh, w: hs, h: hs },
+        n: { x: x + w / 2 - hh, y: y - hh, w: hs, h: hs },
+        ne: { x: x + w - hh, y: y - hh, w: hs, h: hs },
+        e: { x: x + w - hh, y: y + h / 2 - hh, w: hs, h: hs },
+        se: { x: x + w - hh, y: y + h - hh, w: hs, h: hs },
+        s: { x: x + w / 2 - hh, y: y + h - hh, w: hs, h: hs },
+        sw: { x: x - hh, y: y + h - hh, w: hs, h: hs },
+        w: { x: x - hh, y: y + h / 2 - hh, w: hs, h: hs },
+      } as Record<ResizeHandle, { x: number; y: number; w: number; h: number }>;
+    },
+    [],
+  );
 
-  // 클릭한 위치가 리사이즈 핸들인지 확인 (최상위 이미지 우선)
+  // 클릭/터치한 위치가 리사이즈 핸들인지 확인 (최상위 이미지 우선, 모서리 핸들 우선 판정)
   const getResizeHandleAtPosition = useCallback(
-    (x: number, y: number) => {
+    (x: number, y: number, isTouch = false) => {
+      const hitSize = isTouch
+        ? IMAGE_RESIZE_TOUCH_HIT_SIZE
+        : IMAGE_RESIZE_HANDLE_SIZE;
       for (let i = loadedImages.length - 1; i >= 0; i--) {
-        const rects = getResizeHandleRects(loadedImages[i]);
+        const rects = getResizeHandleRects(loadedImages[i], hitSize);
+        // 터치 시 모서리 핸들이 우선 판정되도록 모서리 먼저 확인
         const handles: ResizeHandle[] = [
           "nw",
-          "n",
           "ne",
-          "e",
           "se",
-          "s",
           "sw",
+          "n",
+          "e",
+          "s",
           "w",
         ];
         for (const handle of handles) {
@@ -474,30 +484,38 @@ export default function DrawingBoard() {
       if (!ctx || !drawingLayer || !drawingCtx) return;
 
       const dpr = window.devicePixelRatio || 1;
+      const newWidth = wrap.clientWidth * dpr;
+      const newHeight = wrap.clientHeight * dpr;
 
-      // 기존 드로잉 레이어를 임시 캔버스에 복사
-      const tempDrawingLayer = document.createElement("canvas");
-      tempDrawingLayer.width = drawingLayer.width;
-      tempDrawingLayer.height = drawingLayer.height;
-      tempDrawingLayer.getContext("2d")?.drawImage(drawingLayer, 0, 0);
-
-      // HiDPI 대응: 캔버스 내적 픽셀 수를 DPR 배로 늘리고 CSS 크기는 그대로 유지
-      canvas.width = wrap.clientWidth * dpr;
-      canvas.height = wrap.clientHeight * dpr;
+      // 표시 캔버스는 항상 컨테이너에 맞춤
+      canvas.width = newWidth;
+      canvas.height = newHeight;
       canvas.style.width = `${wrap.clientWidth}px`;
       canvas.style.height = `${wrap.clientHeight}px`;
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
-      drawingLayer.width = wrap.clientWidth * dpr;
-      drawingLayer.height = wrap.clientHeight * dpr;
-      drawingCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      // 드로잉 레이어는 역대 최대 크기를 유지 (절대 줄이지 않음)
+      const targetW = Math.max(drawingLayer.width, newWidth);
+      const targetH = Math.max(drawingLayer.height, newHeight);
+      const needsGrow = targetW > drawingLayer.width || targetH > drawingLayer.height;
 
-      // 드로잉 레이어 내용 복원 (변환을 초기화해서 1:1 픽셀 복사)
-      drawingCtx.save();
-      drawingCtx.setTransform(1, 0, 0, 1, 0, 0);
-      drawingCtx.clearRect(0, 0, drawingLayer.width, drawingLayer.height);
-      drawingCtx.drawImage(tempDrawingLayer, 0, 0);
-      drawingCtx.restore();
+      if (needsGrow) {
+        // 기존 드로잉 레이어를 임시 캔버스에 복사
+        const tempDrawingLayer = document.createElement("canvas");
+        tempDrawingLayer.width = drawingLayer.width;
+        tempDrawingLayer.height = drawingLayer.height;
+        tempDrawingLayer.getContext("2d")?.drawImage(drawingLayer, 0, 0);
+
+        drawingLayer.width = targetW;
+        drawingLayer.height = targetH;
+        drawingCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+        // 드로잉 레이어 내용 복원 (변환을 초기화해서 1:1 픽셀 복사)
+        drawingCtx.save();
+        drawingCtx.setTransform(1, 0, 0, 1, 0, 0);
+        drawingCtx.drawImage(tempDrawingLayer, 0, 0);
+        drawingCtx.restore();
+      }
 
       renderScene();
     };
@@ -807,7 +825,24 @@ export default function DrawingBoard() {
 
   const handleMouseMove = useCallback(
     (e: React.MouseEvent<HTMLCanvasElement>) => {
+      // 캔버스 밖에서 마우스를 놓고 다시 들어온 경우 드로잉 종료
+      if (isDrawing.current && e.buttons === 0) {
+        isDrawing.current = false;
+        rectSnapshot.current = null;
+      }
+
       const pos = getPos(e);
+
+      // 펜 모드에서 드로잉 중이고 캔버스 밖에서 돌아온 경우 새 경로로 이어 그리기
+      if (mode === "pen" && isDrawing.current && isOutsideCanvas.current) {
+        const drawingLayer = drawingLayerRef.current;
+        const drawingCtx = drawingLayer?.getContext("2d");
+        if (drawingCtx) {
+          drawingCtx.beginPath();
+          drawingCtx.moveTo(pos.x, pos.y);
+        }
+      }
+      isOutsideCanvas.current = false;
 
       if (mode === "pen") {
         penCursorRef.current = { x: pos.x, y: pos.y, visible: true };
@@ -1120,26 +1155,14 @@ export default function DrawingBoard() {
     ],
   );
 
-  // 캔버스 밖으로 마우스가 나가도 드로잉 종료
-  const handleMouseLeave = useCallback(
-    (e: React.MouseEvent<HTMLCanvasElement>) => {
-      if (isDrawing.current) {
-        handleMouseUp(e);
-      }
-
-      if (penCursorRef.current.visible) {
-        penCursorRef.current.visible = false;
-        renderScene();
-      }
-
-      if (mode === "text") {
-        setCanvasCursor("text");
-      } else {
-        setCanvasCursor("crosshair");
-      }
-    },
-    [handleMouseUp, renderScene, mode],
-  );
+  // 캔버스 밖으로 마우스가 나가면 커서 프리뷰만 숨기고 드로잉은 유지
+  const handleMouseLeave = useCallback(() => {
+    isOutsideCanvas.current = true;
+    if (penCursorRef.current.visible) {
+      penCursorRef.current.visible = false;
+      renderScene();
+    }
+  }, [renderScene]);
 
   const handleTouchStart = useCallback(
     (e: React.TouchEvent<HTMLCanvasElement>) => {
@@ -1151,7 +1174,7 @@ export default function DrawingBoard() {
         e.preventDefault();
         touchMovedRef.current = false;
 
-        const resizeTarget = getResizeHandleAtPosition(pos.x, pos.y);
+        const resizeTarget = getResizeHandleAtPosition(pos.x, pos.y, true);
         if (resizeTarget) {
           saveState();
           setResizingImageIndex(resizeTarget.imageIndex);
@@ -1557,9 +1580,10 @@ export default function DrawingBoard() {
     const dpr = window.devicePixelRatio || 1;
 
     // 투명 픽셀이 검정으로 보이지 않도록 임시 캔버스에 흰 배경 + 내용 합성
+    // 드로잉 레이어 전체 크기로 내보내기 (화면이 줄어도 잘리지 않도록)
     const tempCanvas = document.createElement("canvas");
-    tempCanvas.width = canvas.width;
-    tempCanvas.height = canvas.height;
+    tempCanvas.width = drawingLayer.width;
+    tempCanvas.height = drawingLayer.height;
     const tempCtx = tempCanvas.getContext("2d");
     if (!tempCtx) return;
 
@@ -1653,6 +1677,39 @@ export default function DrawingBoard() {
     restoreSnapshot(next);
     syncStackState();
   }, [makeSnapshot, restoreSnapshot, syncStackState]);
+
+  // 캔버스 밖에서 마우스/터치를 놓았을 때 드로잉 종료
+  useEffect(() => {
+    const handleWindowMouseUp = () => {
+      if (isDrawing.current) {
+        isDrawing.current = false;
+        rectSnapshot.current = null;
+      }
+      if (draggingImageIndex !== null) {
+        setDraggingImageIndex(null);
+        setCanvasCursor(mode === "image" ? "default" : "crosshair");
+      }
+      if (resizingImageIndex !== null) {
+        setResizingImageIndex(null);
+        setActiveResizeHandle(null);
+        setCanvasCursor(mode === "image" ? "default" : "crosshair");
+      }
+    };
+
+    const handleWindowTouchEnd = () => {
+      if (isDrawing.current) {
+        isDrawing.current = false;
+        rectSnapshot.current = null;
+      }
+    };
+
+    window.addEventListener("mouseup", handleWindowMouseUp);
+    window.addEventListener("touchend", handleWindowTouchEnd);
+    return () => {
+      window.removeEventListener("mouseup", handleWindowMouseUp);
+      window.removeEventListener("touchend", handleWindowTouchEnd);
+    };
+  }, [draggingImageIndex, resizingImageIndex, mode]);
 
   // 텍스트 오버레이가 표시될 때 자동 포커스
   useEffect(() => {
@@ -1971,7 +2028,7 @@ export default function DrawingBoard() {
             onClick={() => fileInputRef.current?.click()}
             title="이미지 불러오기"
           >
-            <SaveIcon />
+            <ImageIcon />
           </S.ToolButton>
           <S.ToolButton onClick={handleClear} title="전체 삭제">
             <TrashIcon />

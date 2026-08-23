@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import Head from "next/head";
+import Link from "next/link";
 import {
   Container,
   Header,
@@ -378,7 +379,11 @@ export default function Game2048() {
 
       <Container>
         <Header>
-          <Title>2048</Title>
+          <Title>
+            <Link href="/" style={{ textDecoration: "none", color: "inherit" }}>
+              2048
+            </Link>
+          </Title>
           <ScoreArea>
             <ScoreBox>
               <ScoreLabel>점수</ScoreLabel>

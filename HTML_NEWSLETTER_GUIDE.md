@@ -9,12 +9,14 @@
 ## 1. 목표
 
 - 뉴스레터 제작 시 기본 HTML 구조 및 디자인 템플릿으로 [`HTML_NEWLETTER_SAMPLE.html`](HTML_NEWLETTER_SAMPLE.html)을 참고하여 구현한다.
-- 과도한 브랜딩(NEXUS, SIGNAL, Intelligence 등)이나 불필요한 미사여구를 배제하고 직관적인 `AI News` 헤더를 사용한다.
+- 과도한 브랜딩(NEXUS, SIGNAL, Intelligence 등)이나 **'실물 검증', '100% 검증'과 같은 내부 작업 수식어를 일체 배제**하고 직관적이고 담백한 `AI News` 헤더를 사용한다.
+- **중간 팝업(모달) 제거 및 원문 직행**: 기사 카드를 클릭했을 때 중간 상세 팝업 창을 띄우지 않고, **새 탭(`target="_blank" rel="noopener noreferrer"`)에서 즉시 원문 기사 페이지로 바로 이동**하도록 구현한다.
 - 뉴스 Markdown의 제목·요약·출처·썸네일을 하나의 독립 HTML에 담는다.
 - 최종 HTML 파일은 반드시 `public/news/` 폴더에 `ai-news-digest-MMDD-MMDD.html` 형식으로 생성/배치한다.
 - 첫 화면은 광고나 과장된 hero 대신 편집자가 정리한 요약본처럼 직관적으로 구성한다.
-- 핵심 흐름 5개를 먼저 보여주고, 전체 기사는 검색·필터 가능한 아카이브로 제공한다.
-- 썸네일은 외부 이미지 URL 대신 HTML 내부의 base64 WebP로 포함하여 단일 파일로 완전 독립 실행되게 한다.
+- 핵심 흐름 5개를 먼저 보여주고, 주요 모델 격돌 시 **독립된 "Benchmark Showdown (벤치마크)" 섹션**을 미려한 카드와 매트릭스 표로 제공한다.
+- 전체 기사는 검색·필터 가능한 아카이브 그리드로 제공하며, 기사 수는 고정 제한 없이 기간 내 보도량에 따라 유동적으로 조절한다(20~40건 이상).
+- 썸네일은 외부 이미지 URL 대신 HTML 내부의 base64 WebP/JPEG로 포함하여 단일 파일로 완전 독립 실행(Standalone)되게 한다.
 - 데스크톱과 모바일 모두에서 가로 스크롤 없이 읽을 수 있게 한다.
 
 ## 2. 기본 구성 요소
@@ -23,14 +25,16 @@
 |---|---|
 | 기준 샘플 | [`HTML_NEWLETTER_SAMPLE.html`](HTML_NEWLETTER_SAMPLE.html) 구조 및 스타일 참고 |
 | 파일 위치 및 명명 | `public/news/ai-news-digest-MMDD-MMDD.html` (예: `public/news/ai-news-digest-0816-0821.html`) |
-| 브랜딩 | `AI News` (NEXUS, SIGNAL, Intelligence, Curated Archive 등 과장된 수식어 배제) |
-| 상단 메타 | 수집 날짜 범위만 간결하게 표시 (`YYYY.MM.DD — MM.DD`) |
+| 브랜딩 | `AI News` (NEXUS, SIGNAL, Intelligence, 실물 검증 등 과시적 수식어 전면 배제) |
+| 상단 메타 | 수집 날짜 범위만 간결하게 표시 (`YYYY.MM.DD — MM.DD 주간 브리핑`) |
 | 첫 화면 요약 | 5개 핵심 흐름 (수치, 맥락, 대표 기사 링크) |
-| 전체 기사 그리드 | 상위 리드 카드 + 아카이브 카드 분리 렌더링 |
-| 검색 및 필터 | 중요 뉴스, 카테고리별 필터 버튼 및 실시간 텍스트 검색 |
-| 썸네일 | Playwright로 수집한 최대 640px WebP base64 인라인 임베딩 (클릭 시 원문 링크 이동) |
+| 특별 벤치마크 섹션 | 주요 프론티어 모델 비교 시 독립 섹션(시그니처 카드, 매트릭스 테이블, 추천 가이드) 구성 |
+| 전체 기사 그리드 | 검색/필터 가능한 기사 카드 그리드 (카드 클릭 시 새 탭에서 원문 기사로 직행, 모달 없음) |
+| 기사 수 유연성 | 20~25건을 표준 기준으로 하되, 기간 내 보도량에 따라 30~40건 이상 유연하게 확장 가능 |
+| 검색 및 필터 | 카테고리별 필터 버튼 및 실시간 텍스트 검색 |
+| 썸네일 | Playwright로 수집한 최대 640px WebP/JPEG base64 인라인 임베딩 (깨짐 없는 Standalone) |
 | 폰트 | Pretendard 단일 폰트 적용 (mono 폰트 금지) |
-| 하단 푸터 | 데이터 기준일 및 출처 안내만 간결하게 표기 |
+| 하단 푸터 | 데이터 기준일 및 출처 안내만 간결하게 표기 (불필요한 검증 문구 배제) |
 
 ## 3. 전체 작성 순서
 
@@ -89,18 +93,21 @@ HTML은 다음 순서로 읽힌다.
   <div class="page-shell">
     <header class="topbar">
       <div class="brand">AI News</div>
-      <div class="topbar-meta">2026.08.16 — 08.21</div>
+      <div class="topbar-meta">2026.08.30 — 09.04 주간 브리핑</div>
     </header>
     <main id="main-content">
-      <section class="briefing-intro">브리핑 제목·수집 통계</section>
+      <section class="briefing-intro">브리핑 제목·요약</section>
       <section class="briefing-digest">5개 핵심 흐름 요약</section>
+      <!-- 주요 모델 출시 시 벤치마크 쇼다운 섹션 추가 -->
+      <section class="benchmark-section" id="benchmark-showdown">
+        3대 모델 스탠딩 카드 + 종합 매트릭스 표 + 시나리오별 권장 가이드
+      </section>
       <section class="section" id="stories">
         <div class="control-row">필터·검색</div>
-        <div class="lead-grid" id="leadGrid"></div>
         <div class="story-grid" id="storyGrid"></div>
       </section>
     </main>
-    <footer class="footer">데이터 기준일·출처 안내</footer>
+    <footer class="footer">데이터 기준일·출처 안내 (담백한 문구)</footer>
   </div>
 </body>
 ```
@@ -111,8 +118,8 @@ HTML은 다음 순서로 읽힌다.
 
 - 소제목: `주간 AI 뉴스 브리핑`
 - 제목: `이번 브리핑의 5대 핵심 흐름`
-- 통계: `25 Stories`, `05 Key Clusters`
-- 설명: 기간 내 주요 이슈의 핵심 방향을 2~3문장으로 간략히 안내
+- 통계/날짜: 기간 내 주요 이슈의 핵심 방향을 2~3문장으로 간략히 안내
+- **금지**: '실물 검증', '100% 검증' 등 내부 작업이나 과시적 수식어는 헤더/뱃지에 일체 포함하지 않는다.
 
 ### 4.2 5개 핵심 요약
 
@@ -122,51 +129,56 @@ HTML은 다음 순서로 읽힌다.
 - 카테고리 태그
 - 핵심 제목
 - 2~3문장의 맥락 요약
-- 핵심 수치/사실 태그 3개
-- 대표 기사 링크
+- 핵심 수치/사실 불릿 포인트
+- 대표 기사 원문 링크
 
-강조할 정보는 일반 문장 안에서 `<strong>`으로 표시하고, 숫자는 별도의 `digest-fact`로 분리한다.
+### 4.3 벤치마크 쇼다운 섹션 (Benchmark Showdown)
 
-```html
-<p class="digest-desc">
-  OpenAI가 <strong>Astra 모델의 안전 위험</strong>으로 학습을 일시 감속했습니다.
-</p>
-<div class="digest-facts">
-  <span class="digest-fact"><strong>30분</strong> 의심 행동 탐지</span>
-  <span class="digest-fact"><strong>45개</strong> 스웜 에이전트</span>
-</div>
-```
+신규 주요 모델이 발표되거나 주요 벤치마크 격돌이 있는 주차에는 독립 섹션을 구성한다.
 
-## 5. 기사 카드 렌더링
+1. **상단 3개 모델 시그니처 카드**:
+   - 모델별 브랜드 컬러 (Anthropic 앰버/골드, Google 시안/블루, OpenAI 에메랄드 등)
+   - 대형 Intelligence Index 점수 배너
+   - 주요 벤치마크(LongAgent-Bench, Terminal-Bench 등) 핵심 수치 불릿
+   - 토큰당 비용 뱃지
+2. **종합 벤치마크 매트릭스 테이블**:
+   - 지능 지수, 벤치 점수, 초기 지연(TTFT), 컨텍스트 윈도우, API 비용, 개발도구(GitHub Copilot 등) 지원 현황을 1:1 대조하는 글래스모피즘 표
+3. **시나리오별 권장 가이드**:
+   - 실무 개발자 관점에서 어떤 작업에 어떤 모델이 최적인지 명확한 불릿 가이드 제공
 
-### 5.1 핵심 카드와 전체 아카이브 분리
+## 5. 기사 카드 렌더링 및 직접 링크 규칙
 
-JavaScript에서 필터 결과의 상위 5개를 핵심 리드 카드로 렌더링하고 나머지를 전체 아카이브에 렌더링한다.
+### 5.1 중간 팝업(모달) 절대 금지 & 즉시 원문 직행
+- **중간 상세 모달(Modal) 창은 사용자 경험을 저해하므로 절대 사용하지 않는다.**
+- 기사 카드는 전체를 `<a>` 태그로 구성하거나 클릭 이벤트로 감싸, **사용자가 카드 어디를 클릭하든 새 탭(`target="_blank" rel="noopener noreferrer"`)에서 해당 기사의 원문 웹페이지로 즉시 열리도록** 구현한다.
+- 썸네일 이미지 및 타이틀 모두 원문 링크로 즉시 직행해야 한다.
 
-```js
-leadGrid.innerHTML = leadStories.map(s => cardTemplate(s, true)).join("");
-storyGrid.innerHTML = normalStories.map(s => cardTemplate(s, false)).join("");
-```
-
-필터 결과가 없으면 안내 문구를 표시한다.
-
-### 5.2 카드에 포함할 정보 및 링크 구조
-
-- **썸네일 링크 (`a.story-image`)**: 썸네일 클릭 시 새 탭(`target="_blank" rel="noopener noreferrer"`)에서 원문 기사로 바로 이동하도록 `<a>` 태그로 감싼다.
-- **날짜 및 중요 뉴스 라벨**: 기사 작성일과 `⭐ 중요` 또는 카테고리 뱃지 표시.
-- **기사 제목 링크**: 제목 클릭 시 원문으로 이동.
-- **간략한 요약**: 1~2문장 핵심 사실 요약.
-- **대표 출처 및 원문 링크**: 출처명 및 `원문 ↗` 링크.
+### 5.2 카드 마크업 구조
 
 ```html
-<article class="story-card">
-  <a class="story-image" href="${story.url}" target="_blank" rel="noopener noreferrer" aria-label="${story.title}">
-    <img src="${story.image}" alt="${story.title}" loading="lazy">
-  </a>
-  <div class="story-body">
-    <!-- 메타, 제목, 요약, 출처 및 링크 -->
+<a class="story-card" href="${story.url}" target="_blank" rel="noopener noreferrer" aria-label="${story.title}">
+  <div class="story-thumb-wrap">
+    <img src="${story.thumbnail}" alt="${story.title}" class="story-thumb" loading="lazy">
   </div>
-</article>
+  <div class="story-body">
+    <div class="story-meta">
+      <span class="story-cat">${story.category}</span>
+      <span class="story-date">${story.date}</span>
+    </div>
+    <h3 class="story-title">${story.title}</h3>
+    <p class="story-summary">${story.summary}</p>
+    <div class="story-tags">
+      ${story.tags.map(t => `<span class="story-tag">#${t}</span>`).join('')}
+    </div>
+    <div class="story-action">
+      <span class="source-domain">${getDomain(story.url)}</span>
+      <span class="open-btn">
+        <span>원문 기사</span>
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 17l9.2-9.2M17 17V8H8"/></svg>
+      </span>
+    </div>
+  </div>
+</a>
 ```
 
 ### 5.3 필터·검색
@@ -230,10 +242,14 @@ storyGrid.innerHTML = normalStories.map(s => cardTemplate(s, false)).join("");
 
 ## 8. 최종 검증 체크리스트
 
-- [ ] 상단 헤더에 `AI News`만 깔끔하게 표시되는가? (NEXUS, SIGNAL, Curated Archive 등 불필요한 단어 제거 확인)
-- [ ] 하단 푸터에 과장된 문구 없이 `AI News · 데이터 기준: ...`으로 표시되는가?
-- [ ] 5대 핵심 흐름 요약과 수치가 정상 표시되는가?
-- [ ] 25개 모든 기사 카드에 실물 base64 썸네일이 누락 없이 표시되는가?
-- [ ] 필터 및 검색이 실시간으로 동작하는가?
-- [ ] 데스크톱 및 모바일(390px)에서 가로 스크롤이 없는가?
-- [ ] JavaScript 오류(`pageerror`)가 0건인가?
+- [ ] 상단 헤더에 `AI News` 및 주간 브리핑 일자만 깔끔하게 표시되는가? (NEXUS, SIGNAL, Intelligence 등 과장된 브랜딩 및 **'실물 검증', '100% 검증' 등 내부 작업 수식어 일체 배제**)
+- [ ] 하단 푸터에 과시적 문구 없이 `© YYYY AI News. Curated weekly tech digest.` 형태로 담백하게 표시되는가?
+- [ ] 5대 핵심 흐름 요약과 대표 기사 원문 링크가 정상 동작하는가?
+- [ ] 주요 모델 발표 시 **독립된 'Benchmark Showdown' 벤치마크 섹션(시그니처 카드, 매트릭스 표, 추천 가이드)**이 포함되었는가?
+- [ ] **[필수] 중간 팝업 모달 없이, 기사 카드를 클릭하면 새 탭(`target="_blank"`)에서 해당 기사의 원문 페이지로 즉시 직행하는가?**
+- [ ] **[필수] 모든 기사 카드 링크가 실제 동작하는 실물 URL(HTTP 200 OK)이며 내용이 카드와 일치하는가?**
+- [ ] 모든 기사 카드에 실제 웹페이지에서 추출한 고화질 base64 썸네일이 누락 없이 인라인 탑재되었는가?
+- [ ] 필터(카테고리) 및 검색이 실시간으로 부드럽게 동작하는가?
+- [ ] 데스크톱 및 모바일(390px)에서 가로 스크롤 없이 매끄럽게 렌더링되는가?
+- [ ] CSS 순서 규칙(flex/grid → position → sizing → padding/margin → font → background → etc.)이 준수되었는가?
+- [ ] 브라우저 콘솔 및 JavaScript 오류(`pageerror`)가 0건인가?
